@@ -1,0 +1,67 @@
+{
+ "W": 1600,
+ "H": 900,
+ "fps": 30,
+ "bitrate": 2600000,
+ "fade": 0.4,
+ "theme": "site",
+ "bgImage": "bg-calm.jpg",
+ "bgY": 0.55,
+ "scenes": [
+  {
+   "kind": "card",
+   "dur": 4.0,
+   "hand": "Hi, I'm Sai :)",
+   "lines": [
+    "I'm a product designer at Heizen.",
+    "This is my work on Superfine's employee ordering app."
+   ]
+  },
+  {
+   "kind": "card",
+   "dur": 4.6,
+   "hand": "the problem",
+   "lines": [
+    "Employees on a company meal program order lunch every day.",
+    "They needed one front door, a clear status, and no surprises at checkout."
+   ]
+  },
+  {
+   "kind": "desk",
+   "chrome": true,
+   "src": "out-employee-web",
+   "from": 8.5,
+   "to": 22,
+   "speed": 1.5,
+   "maxHold": 0.9,
+   "tail": 0.6,
+   "captions": [
+    "The allowance is always in view.",
+    "Required choices come first.",
+    "The header keeps count."
+   ]
+  },
+  {
+   "kind": "phone",
+   "src": "out-employee",
+   "from": 17.5,
+   "to": 36,
+   "speed": 1.6,
+   "maxHold": 0.9,
+   "tail": 0.6,
+   "label": "Mobile",
+   "captions": [
+    "The same flow on a phone.",
+    "Checkout says when she\u2019ll be charged."
+   ]
+  },
+  {
+   "kind": "card",
+   "dur": 3.6,
+   "hand": "let's walk through it",
+   "lines": [
+    "The web app first, then the same flow on a phone."
+   ]
+  }
+ ]
+}

@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# case-video: raw recorded frames and render previews (re-create with tools/case-video)
+tools/case-video/out-*/
+tools/case-video/*.mp4
+tools/case-video/v-*.png
+
+# Heizen Studio UI rebuild: local only, its screenshots show real client and team data
+tools/heizen-studio-ui/

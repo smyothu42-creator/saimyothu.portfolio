@@ -1,0 +1,337 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>html,body{margin:0;background:#111}canvas{display:block}</style>
+</head><body><canvas id="c"></canvas>
+<script>
+// Scene-based video composer. window.run(cfg) draws each scene onto the canvas
+// in real time and records it with MediaRecorder; chunks go to window.saveChunk.
+const C = document.getElementById('c'), X = C.getContext('2d')
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
+const ease = (t) => t * t * (3 - 2 * t)
+// Colour theme. 'site' matches the portfolio: its blurred mountain backdrop,
+// white Figtree, a soft blue accent. 'cream' is the earlier Superfine look.
+const THEMES = {
+  site: { ink: '#ffffff', dim: 'rgba(255,255,255,0.62)', acc: 'rgba(168,200,255,0.95)', hand: '#e9f0ff', shadow: 'rgba(0,0,0,0.55)', panel: 'rgba(255,255,255,0.06)' },
+  cream: { ink: '#1E2B27', dim: '#67695F', acc: '#B85C36', hand: '#B85C36', shadow: 'rgba(40,30,10,0.28)', panel: null },
+}
+let T = THEMES.site
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v))
+
+function rrect(x, y, w, h, r) { X.beginPath(); X.roundRect(x, y, w, h, r) }
+function wrap(text, maxW) {
+  const words = text.split(' '), lines = []; let line = ''
+  for (const w of words) { const t = line ? line + ' ' + w : w; if (X.measureText(t).width > maxW && line) { lines.push(line); line = w } else line = t }
+  if (line) lines.push(line); return lines
+}
+const img = (src) => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src })
+
+// Source clip: frames with timestamps, compressed (long idle holds capped) and
+// sped up, giving a list of [outT, file] plus captions on the same clock.
+async function prepClip(sc) {
+  const idx = await (await fetch(sc.src + '/index.json')).json()
+  const fr = idx.frames.filter((f) => f.t >= (sc.from ?? 0) && f.t <= (sc.to ?? 1e9))
+  const speed = sc.speed ?? 1, maxHold = sc.maxHold ?? 1.6
+  const map = []; let out = 0, prev = fr[0].t
+  for (const f of fr) { out += Math.min(f.t - prev, maxHold) / speed; prev = f.t; map.push({ t: out, file: f.file, src: f.t }) }
+  const toOut = (srcT) => { let best = map[0]; for (const m of map) { if (m.src <= srcT) best = m; else break } return best.t + Math.max(0, Math.min(srcT - best.src, maxHold)) / speed }
+  const marks = (sc.captions || idx.marks.filter((m) => m.t >= (sc.from ?? 0) - 0.5 && m.t <= (sc.to ?? 1e9)).map((m) => m.cap))
+  const capT = idx.marks.filter((m) => m.t >= (sc.from ?? 0) - 0.5 && m.t <= (sc.to ?? 1e9)).map((m) => Math.max(0, toOut(m.t)))
+  const caps = marks.map((cap, i) => ({ cap, t: capT[i] ?? 0 }))
+  const dur = sc.dur ?? map.at(-1).t + (sc.tail ?? 1.2)
+  return { ...sc, map, caps, dur, w: idx.w, h: idx.h, cache: new Map() }
+}
+async function frameAt(clip, t) {
+  let lo = 0, hi = clip.map.length - 1
+  while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (clip.map[mid].t <= t) lo = mid; else hi = mid - 1 }
+  const want = [lo, lo + 1, lo + 2, lo + 3].filter((k) => k < clip.map.length)
+  for (const k of want) if (!clip.cache.has(k)) clip.cache.set(k, img(clip.src + '/' + clip.map[k].file))
+  for (const k of clip.cache.keys()) if (k < lo - 2) clip.cache.delete(k)
+  return clip.cache.get(lo)
+}
+
+// ---- painters -------------------------------------------------------------
+function bg(cfg) {
+  if (cfg._bg) { X.drawImage(cfg._bg, 0, 0); return }
+  const g = X.createLinearGradient(0, 0, 0, C.height)
+  g.addColorStop(0, cfg.bgTop || '#F7F2E6'); g.addColorStop(1, cfg.bgBottom || '#EFE8D8')
+  X.fillStyle = g; X.fillRect(0, 0, C.width, C.height)
+}
+// The site backdrop, drawn once: cover-fit, blurred, darkened, with the dark
+// glass sheen the site's cards have.
+async function makeBg(cfg) {
+  // A product's own colours: a base with soft glows over it (`mesh`:
+  // { base, glows: [[x, y, radius, colour], ...] }, all relative to the canvas),
+  // and a little grain so the blend doesn't band in the JPEG.
+  if (cfg.mesh) {
+    const c = document.createElement('canvas'); c.width = C.width; c.height = C.height
+    const x = c.getContext('2d'), W = c.width, H = c.height
+    x.fillStyle = cfg.mesh.base; x.fillRect(0, 0, W, H)
+    for (const [gx, gy, r, col] of cfg.mesh.glows) {
+      const g = x.createRadialGradient(gx * W, gy * H, 0, gx * W, gy * H, r * W)
+      g.addColorStop(0, col); g.addColorStop(1, col.slice(0, 7) + '00')
+      x.fillStyle = g; x.fillRect(0, 0, W, H)
+    }
+    const d = x.getImageData(0, 0, W, H), p = d.data
+    for (let i = 0; i < p.length; i += 4) { const n = (Math.random() - 0.5) * 7; p[i] += n; p[i + 1] += n; p[i + 2] += n }
+    x.putImageData(d, 0, 0)
+    return c
+  }
+  if (!cfg.bgImage) return null
+  const im = await img(cfg.bgImage), c = document.createElement('canvas'); c.width = C.width; c.height = C.height
+  const x = c.getContext('2d'), s = Math.max(c.width / im.width, c.height / im.height) * 1.08
+  x.filter = `blur(${cfg.bgBlur ?? 26}px) brightness(${cfg.bgDim ?? 0.62}) saturate(1.1)`
+  x.drawImage(im, (c.width - im.width * s) / 2, (c.height - im.height * s) * (cfg.bgY ?? 0.5), im.width * s, im.height * s)
+  x.filter = 'none'
+  if (cfg.bgFlat) return c // a product colour: no dark glass over it
+  const g = x.createLinearGradient(0, 0, 0, c.height)
+  g.addColorStop(0, 'rgba(10,20,45,0.25)'); g.addColorStop(1, 'rgba(2,6,16,0.55)')
+  x.fillStyle = g; x.fillRect(0, 0, c.width, c.height)
+  return c
+}
+function phone(frame, cx, cy, H) {
+  const sh = 52 / 844, sw = 390 / 844 // status band + screen width, relative to app height
+  const appH = H / (1 + sh), screenW = appH * sw, screenH = H, bez = H * 0.022
+  const x = cx - screenW / 2, y = cy - screenH / 2
+  X.save(); X.shadowColor = T.shadow; X.shadowBlur = 60; X.shadowOffsetY = 30
+  rrect(x - bez, y - bez, screenW + bez * 2, screenH + bez * 2, H * 0.085); X.fillStyle = '#16171a'; X.fill(); X.strokeStyle = 'rgba(255,255,255,0.14)'; X.lineWidth = 2; X.stroke(); X.restore()
+  X.save(); rrect(x, y, screenW, screenH, H * 0.07); X.clip()
+  // status band takes the app's own top colour
+  const tmp = phone.t || (phone.t = document.createElement('canvas').getContext('2d', { willReadFrequently: true }))
+  tmp.canvas.width = 4; tmp.canvas.height = 2; tmp.drawImage(frame, 0, 0, frame.width, 6, 0, 0, 4, 2)
+  const p = tmp.getImageData(1, 0, 1, 1).data
+  X.fillStyle = `rgb(${p[0]},${p[1]},${p[2]})`; X.fillRect(x, y, screenW, screenH - appH + 2)
+  X.drawImage(frame, x, y + (screenH - appH), screenW, appH)
+  const dark = p[0] * 0.3 + p[1] * 0.59 + p[2] * 0.11 < 120
+  X.fillStyle = dark ? '#fff' : '#111'
+  X.font = `600 ${H * 0.019}px -apple-system, Figtree, sans-serif`; X.textBaseline = 'middle'
+  const sy = y + (screenH - appH) * 0.58
+  X.fillText('11:12', x + screenW * 0.13, sy)
+  // signal / wifi / battery
+  const gx = x + screenW * 0.72, u = H * 0.0045
+  for (let i = 0; i < 4; i++) X.fillRect(gx + i * u * 2.2, sy + u * 2 - i * u * 0.9, u * 1.5, u * 1.2 + i * u * 0.9)
+  rrect(gx + u * 13, sy - u * 2.2, u * 9, u * 4.4, u * 1.4); X.strokeStyle = X.fillStyle; X.lineWidth = u * 0.5; X.globalAlpha = 0.5; X.stroke(); X.globalAlpha = 1
+  rrect(gx + u * 13.8, sy - u * 1.4, u * 6.5, u * 2.8, u * 0.8); X.fill()
+  X.restore()
+  // dynamic island
+  rrect(cx - screenW * 0.16, y + H * 0.012, screenW * 0.32, H * 0.034, H * 0.017); X.fillStyle = '#000'; X.fill()
+}
+function caption(c, x, y, maxW, size, alpha, color) {
+  X.globalAlpha = alpha; X.fillStyle = color || T.ink; X.font = `600 ${size}px Figtree`; X.textBaseline = 'top'
+  wrap(c, maxW).forEach((l, i) => X.fillText(l, x, y + i * size * 1.2)); X.globalAlpha = 1
+}
+function capAt(clip, t) {
+  let k = -1; clip.caps.forEach((c, i) => { if (c.t <= t + 0.05) k = i }); if (k < 0) return null
+  return { k, cap: clip.caps[k].cap, a: ease(clamp((t - clip.caps[k].t) / 0.45)) }
+}
+
+// Screen only (cfg.raw): the app plus an iOS status band, edge to edge, so
+// the page can draw the device frame and the captions itself.
+function screenOnly(frame) {
+  const W = C.width, H = C.height, appH = W * (frame.height / frame.width), band = H - appH
+  const tmp = phone.t || (phone.t = document.createElement('canvas').getContext('2d', { willReadFrequently: true }))
+  tmp.canvas.width = 4; tmp.canvas.height = 2; tmp.drawImage(frame, 0, 0, frame.width, 6, 0, 0, 4, 2)
+  const p = tmp.getImageData(1, 0, 1, 1).data
+  X.fillStyle = `rgb(${p[0]},${p[1]},${p[2]})`; X.fillRect(0, 0, W, band + 2)
+  X.drawImage(frame, 0, band, W, appH)
+  const dark = p[0] * 0.3 + p[1] * 0.59 + p[2] * 0.11 < 120
+  X.fillStyle = dark ? '#fff' : '#111'; X.textBaseline = 'middle'
+  const sy = band * 0.56, u = W * 0.0105
+  X.font = `600 ${W * 0.043}px -apple-system, Figtree, sans-serif`; X.fillText('11:12', W * 0.1, sy)
+  const gx = W * 0.71
+  for (let i = 0; i < 4; i++) X.fillRect(gx + i * u * 2.2, sy + u * 2 - i * u * 0.9, u * 1.5, u * 1.2 + i * u * 0.9)
+  rrect(gx + u * 13, sy - u * 2.2, u * 9, u * 4.4, u * 1.4); X.strokeStyle = X.fillStyle; X.lineWidth = u * 0.5; X.globalAlpha = 0.5; X.stroke(); X.globalAlpha = 1
+  rrect(gx + u * 13.8, sy - u * 1.4, u * 6.5, u * 2.8, u * 0.8); X.fill()
+}
+
+async function drawScene(sc, t, cfg) {
+  const W = C.width, H = C.height
+  if (cfg.raw && sc.kind === 'phone') { screenOnly(await frameAt(sc, t)); return }
+  if (cfg.raw && sc.kind === 'desk') { X.drawImage(await frameAt(sc, t), 0, 0, C.width, C.height); return }
+  bg(cfg)
+  if (sc.kind === 'phone') {
+    const f = await frameAt(sc, t)
+    const solo = sc.layout === 'solo'
+    { const dh = H * 0.86, dw = dh / DEVICE_RATIO, cx = solo ? W / 2 : W * 0.66; device(f, cx - dw / 2, (H - dh) / 2, dw) }
+    if (!solo) {
+      const c = capAt(sc, t)
+      if (sc.label) { X.fillStyle = T.dim; X.font = `500 ${H * 0.026}px Figtree`; X.textBaseline = 'top'; X.fillText(sc.label, W * 0.08, H * 0.3) }
+      if (c) {
+        X.fillStyle = T.acc; X.font = `600 ${H * 0.022}px Figtree`
+        X.globalAlpha = c.a; X.fillText(`${c.k + 1} / ${sc.caps.length}`, W * 0.08, H * 0.38); X.globalAlpha = 1
+        caption(c.cap, W * 0.08, H * 0.43 + (1 - c.a) * 14, W * 0.36, H * 0.052, c.a)
+      }
+    }
+  } else if (sc.kind === 'desk' && sc.chrome) {
+    const f = await frameAt(sc, t), bw = Math.min(W * 0.8, (H * 0.76) / (f.height / f.width + 0.035)), bh = bw * (f.height / f.width) + bw * 0.035
+    browser(f, (W - bw) / 2, (H * 0.88 - bh) / 2, bw)
+    const c = capAt(sc, t)
+    if (c) { X.textAlign = 'center'; caption(c.cap, W / 2, H - H * 0.1, W * 0.8, H * 0.04, c.a); X.textAlign = 'left' }
+  } else if (sc.kind === 'desk') {
+    const f = await frameAt(sc, t)
+    const k = f.width / (sc.css || f.width)
+    // camera: crop rect per caption (CSS px of the source), eased between them
+    const c = capAt(sc, t)
+    const rects = sc.crops || [[0, 0, f.width / k, f.height / k]]
+    const ci = c ? Math.min(c.k, rects.length - 1) : 0
+    const from = rects[Math.max(0, ci - (c && c.k > 0 && c.k < rects.length ? 1 : 0))], to = rects[ci]
+    const m = c ? ease(clamp((t - sc.caps[c.k].t) / 0.9)) : 1
+    const r = to.map((v, i) => from[i] + (v - from[i]) * m)
+    const pad = W * 0.04, capH = H * 0.13
+    const maxW = W - pad * 2, maxH = H - pad - capH
+    const s = Math.min(maxW / r[2], maxH / r[3]), bw = r[2] * s, bh = r[3] * s
+    const x = (W - bw) / 2, y = pad * 0.8 + (maxH - bh) / 2
+    X.save(); X.shadowColor = T.shadow; X.shadowBlur = 50; X.shadowOffsetY = 24
+    rrect(x, y, bw, bh, 18); X.fillStyle = sc.fill || '#E9E9E7'; X.fill(); X.restore()
+    X.save(); rrect(x, y, bw, bh, 18); X.clip(); X.drawImage(f, r[0] * k, r[1] * k, r[2] * k, r[3] * k, x, y, bw, bh); X.restore()
+    if (c) { X.textAlign = 'center'; caption(c.cap, W / 2, H - capH + H * 0.03 + (1 - c.a) * 10, W * 0.8, H * 0.04, c.a); X.textAlign = 'left' }
+  } else if (sc.kind === 'card') {
+    const a = ease(clamp(t / 0.6))
+    const R = H * 0.17, handS = H * 0.11, s0 = H * 0.064, s1 = H * 0.044, maxW = W * 0.74
+    X.font = `600 ${s0}px Figtree`
+    const sizes = (sc.lines || []).map((l, i) => { const s = i ? s1 : s0; X.font = `600 ${s}px Figtree`; return { s, n: wrap(l, maxW).length } })
+    const block = (sc.photo ? R * 2 + H * 0.06 : 0) + (sc.hand ? handS * 1.15 : 0) + sizes.reduce((v, x) => v + x.n * x.s * 1.2 + H * 0.018, 0)
+    let y = (H - block) / 2
+    if (sc.photo) {
+      const cx = W / 2, cy = y + R
+      X.save(); X.globalAlpha = a; X.beginPath(); X.arc(cx, cy, R, 0, Math.PI * 2); X.clip()
+      const p = sc._img, s = Math.max((R * 2) / p.width, (R * 2) / p.height) * (sc.zoom || 1)
+      X.drawImage(p, cx - p.width * s * (sc.fx ?? 0.5), cy - p.height * s * (sc.fy ?? 0.4), p.width * s, p.height * s)
+      X.restore(); y = cy + R + H * 0.06
+    }
+    X.textAlign = 'center'; X.textBaseline = 'top'
+    if (sc.hand) { X.globalAlpha = a; X.fillStyle = T.hand; X.font = `600 ${handS}px Caveat`; X.fillText(sc.hand, W / 2, y); y += handS * 1.15; X.globalAlpha = 1 }
+    ;(sc.lines || []).forEach((l, i) => {
+      const la = ease(clamp((t - 0.35 - i * 0.45) / 0.5)), { s, n } = sizes[i]
+      caption(l, W / 2, y + (1 - la) * 12, maxW, s, la * a, i === 0 ? T.ink : T.dim)
+      y += n * s * 1.2 + H * 0.018
+    })
+    X.textAlign = 'left'
+  }
+}
+
+// Clean device for stills: titanium edge, thin black bezel, side buttons,
+// Dynamic Island, and the screen drawn like screenOnly(). (x, y) is the top
+// left of the device, w its width; the height follows the app's aspect.
+function screenInto(frame, x, y, w, h) {
+  const appH = w * (frame.height / frame.width), band = h - appH
+  const tmp = phone.t || (phone.t = document.createElement('canvas').getContext('2d', { willReadFrequently: true }))
+  tmp.canvas.width = 4; tmp.canvas.height = 2; tmp.drawImage(frame, 0, 0, frame.width, 6, 0, 0, 4, 2)
+  const p = tmp.getImageData(1, 0, 1, 1).data
+  X.fillStyle = `rgb(${p[0]},${p[1]},${p[2]})`; X.fillRect(x, y, w, band + 2)
+  X.drawImage(frame, x, y + band, w, appH)
+  const dark = p[0] * 0.3 + p[1] * 0.59 + p[2] * 0.11 < 120
+  X.fillStyle = dark ? '#fff' : '#111'; X.textBaseline = 'middle'
+  const sy = y + band * 0.56, u = w * 0.0105
+  X.font = `600 ${w * 0.043}px -apple-system, Figtree, sans-serif`; X.fillText('11:12', x + w * 0.1, sy)
+  const gx = x + w * 0.71
+  for (let i = 0; i < 4; i++) X.fillRect(gx + i * u * 2.2, sy + u * 2 - i * u * 0.9, u * 1.5, u * 1.2 + i * u * 0.9)
+  rrect(gx + u * 13, sy - u * 2.2, u * 9, u * 4.4, u * 1.4); X.strokeStyle = X.fillStyle; X.lineWidth = u * 0.5; X.globalAlpha = 0.5; X.stroke(); X.globalAlpha = 1
+  rrect(gx + u * 13.8, sy - u * 1.4, u * 6.5, u * 2.8, u * 0.8); X.fill()
+}
+// iPhone 18 Pro proportions: body about 71.9 × 150 mm (≈ 1 : 2.087), screen
+// 402 × 874 pt (≈ 1 : 2.174), bezel ≈ 3.7% of the width each side, corner
+// radius ≈ 16.7% of the width, Dynamic Island about 126 × 37 pt.
+const SCREEN_RATIO = 874 / 402
+function device(frame, x, y, w) {
+  X.imageSmoothingQuality = 'high'
+  const rim = w * (T.rim ?? 0.005), bez = w * (T.bezel ?? 0.032), sw = w - 2 * (rim + bez)
+  const sh = sw * SCREEN_RATIO, h = sh + 2 * (rim + bez), r = w * 0.167
+  X.save(); X.shadowColor = T.deviceShadow || 'rgba(0,0,0,0.6)'; X.shadowBlur = w * 0.3; X.shadowOffsetY = w * 0.12
+  rrect(x, y, w, h, r); X.fillStyle = '#111'; X.fill(); X.restore()
+  const g = X.createLinearGradient(x, y, x + w * 0.6, y + h)
+  ;(T.rimStops || [[0, '#9a9ba0'], [0.4, '#4a4b50'], [0.7, '#6e7075'], [1, '#3a3b3f']]).forEach(([p, c]) => g.addColorStop(p, c))
+  rrect(x, y, w, h, r); X.fillStyle = g; X.fill()
+  rrect(x + rim, y + rim, w - 2 * rim, h - 2 * rim, r - rim); X.fillStyle = '#000'; X.fill()
+  const sx = x + rim + bez, sy = y + rim + bez
+  X.save(); rrect(sx, sy, sw, sh, r - rim - bez); X.clip(); screenInto(frame, sx, sy, sw, sh); X.restore()
+  const iw = sw * 0.313, ih = sw * 0.092
+  rrect(x + w / 2 - iw / 2, sy + sw * 0.027, iw, ih, ih / 2); X.fillStyle = '#000'; X.fill()
+  return h
+}
+const DEVICE_RATIO = (1 - 2 * 0.037) * SCREEN_RATIO + 2 * 0.037 // device height / width
+
+// Browser window for stills and the intro: a light title bar with three
+// dots and an address pill, then the page. (x, y) top left, w the width;
+// returns the height.
+function browser(frame, x, y, w, url = '') {
+  X.imageSmoothingQuality = 'high'
+  const bar = w * 0.035, r = w * 0.016, ph = w * (frame.height / frame.width), h = bar + ph
+  X.save(); X.shadowColor = T.deviceShadow || 'rgba(0,0,0,0.55)'; X.shadowBlur = w * 0.06; X.shadowOffsetY = w * 0.03
+  rrect(x, y, w, h, r); X.fillStyle = '#f3f3f2'; X.fill(); X.restore()
+  X.save(); rrect(x, y, w, h, r); X.clip()
+  X.fillStyle = '#efeeec'; X.fillRect(x, y, w, bar)
+  ;['#ff5f57', '#febc2e', '#28c840'].forEach((c, i) => { X.beginPath(); X.arc(x + bar * 0.55 + i * bar * 0.5, y + bar / 2, bar * 0.14, 0, Math.PI * 2); X.fillStyle = c; X.fill() })
+  const pw = w * 0.34; rrect(x + w / 2 - pw / 2, y + bar * 0.2, pw, bar * 0.6, bar * 0.3); X.fillStyle = '#e2e1de'; X.fill()
+  X.fillStyle = '#6b6a66'; X.font = `500 ${bar * 0.32}px Figtree`; X.textAlign = 'center'; X.textBaseline = 'middle'; X.fillText(url, x + w / 2, y + bar / 2); X.textAlign = 'left'
+  X.fillStyle = 'rgba(0,0,0,0.08)'; X.fillRect(x, y + bar - 1, w, 1)
+  X.drawImage(frame, x, y + bar, w, ph); X.restore()
+  return h
+}
+
+// A still (cover image): the backdrop plus phones showing chosen frames.
+// cfg.phones: [{ src: 'out-driver/f00012.jpg', x, y, h, rot }] in 0–1 canvas units.
+// One phone on a transparent canvas, for mock.mjs to place in CSS 3D.
+window.phonePng = async (src, w, look = {}) => {
+  T = { ...THEMES.site, deviceShadow: 'rgba(0,0,0,0)', ...look }
+  const edge = 2 * ((T.rim ?? 0.005) + (T.bezel ?? 0.032)) // height follows the frame's thickness
+  C.width = w; C.height = Math.ceil(w * ((1 - edge) * SCREEN_RATIO + edge)); X.clearRect(0, 0, C.width, C.height)
+  await document.fonts.load('500 20px Figtree'); await document.fonts.ready
+  device(await img(src), 0, 0, w)
+  return C.toDataURL(look.png ? 'image/png' : 'image/webp', 0.96) // keeps the transparent corners
+}
+
+window.still = async (cfg) => {
+  C.width = cfg.W; C.height = cfg.H; T = THEMES[cfg.theme || 'site']
+  if (cfg.shadow) T = { ...T, shadow: cfg.shadow, deviceShadow: cfg.shadow } // tinted to the mesh; black looks dirty on light colours
+  await document.fonts.load('500 20px Figtree'); await document.fonts.ready
+  if (cfg.screen) { screenInto(await img(cfg.screen), 0, 0, C.width, C.height); return C.toDataURL('image/jpeg', 0.88) }
+  cfg._bg = await makeBg(cfg); bg(cfg)
+  for (const p of cfg.phones) {
+    const f = await img(p.src)
+    if (p.browser) { browser(f, p.x * C.width - (p.w * C.width) / 2, p.y * C.height, p.w * C.width); continue }
+    if (p.w) {
+      // `rot` (degrees) turns the phone around the top-centre point it is placed by.
+      X.save(); X.translate(p.x * C.width, p.y * C.height); X.rotate(((p.rot || 0) * Math.PI) / 180)
+      device(f, -(p.w * C.width) / 2, 0, p.w * C.width); X.restore(); continue
+    }
+    X.save(); X.translate(p.x * C.width, p.y * C.height); X.rotate(((p.rot || 0) * Math.PI) / 180)
+    phone(f, 0, 0, p.h * C.height); X.restore()
+  }
+  return C.toDataURL('image/jpeg', 0.9)
+}
+
+window.run = async (cfg) => {
+  C.width = cfg.W; C.height = cfg.H
+  T = THEMES[cfg.theme || 'site']
+  await document.fonts.load('600 40px Figtree'); await document.fonts.load('600 40px Caveat'); await document.fonts.ready
+  cfg._bg = await makeBg(cfg)
+  const scenes = []
+  for (const sc of cfg.scenes) {
+    if (sc.kind === 'card') scenes.push({ ...sc, dur: sc.dur, _img: sc.photo ? await img(sc.photo) : null })
+    else scenes.push(await prepClip(sc))
+  }
+  const total = scenes.reduce((s, x) => s + x.dur, 0)
+  const stream = C.captureStream(0), track = stream.getVideoTracks()[0]
+  const rec = new MediaRecorder(stream, { mimeType: cfg.mime || 'video/mp4;codecs=avc1.640028', videoBitsPerSecond: cfg.bitrate || 3_000_000 })
+  const done = new Promise((r) => (rec.onstop = r))
+  rec.ondataavailable = async (e) => { if (e.data.size) { const b = new Uint8Array(await e.data.arrayBuffer()); let s = ''; for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000)); await window.saveChunk(btoa(s)) } }
+  rec.start(1000)
+  const fps = cfg.fps || 30, n = Math.ceil(total * fps), start = performance.now(), fade = cfg.fade ?? 0.35
+  let base = 0, si = 0
+  for (let i = 0; i < n; i++) {
+    const T = i / fps
+    while (si < scenes.length - 1 && T >= base + scenes[si].dur) { base += scenes[si].dur; si++ }
+    const sc = scenes[si], t = T - base
+    await drawScene(sc, t, cfg)
+    // dip through the background at scene joins
+    const edge = Math.min(t, sc.dur - t)
+    if (!cfg.raw && scenes.length > 1 && edge < fade) { X.globalAlpha = 1 - edge / fade; bg(cfg); X.globalAlpha = 1 }
+    track.requestFrame()
+    const due = start + ((i + 1) / fps) * 1000
+    const wait = due - performance.now(); if (wait > 0) await sleep(wait)
+  }
+  await sleep(300); rec.stop(); await done
+  return { total, frames: n, late: performance.now() - start - total * 1000, caps: scenes.flatMap((s) => (s.caps || []).map((c) => ({ t: +c.t.toFixed(2), cap: c.cap }))) }
+}
+</script></body></html>

@@ -1,0 +1,66 @@
+{
+ "W": 1600,
+ "H": 900,
+ "fps": 30,
+ "bitrate": 2600000,
+ "fade": 0.4,
+ "scenes": [
+  {
+   "kind": "card",
+   "dur": 4.2,
+   "hand": "Hi, I'm Sai :)",
+   "lines": [
+    "I'm a product designer at Heizen.",
+    "This is my work on Superfine Kitchen."
+   ]
+  },
+  {
+   "kind": "card",
+   "dur": 4.6,
+   "hand": "the problem",
+   "lines": [
+    "Superfine\u2019s drivers carry hot food to Bay Area offices.",
+    "One free hand, a 60-minute clock, and every office is different."
+   ]
+  },
+  {
+   "kind": "phone",
+   "src": "out-driver",
+   "from": 5.6,
+   "to": 22.5,
+   "speed": 1.6,
+   "maxHold": 0.9,
+   "tail": 0.6,
+   "label": "Driver app",
+   "captions": [
+    "Scan each slip, tick the cart.",
+    "One slide confirms the load."
+   ]
+  },
+  {
+   "kind": "phone",
+   "src": "out-driver",
+   "from": 29.6,
+   "to": 46,
+   "speed": 1.9,
+   "maxHold": 0.8,
+   "tail": 0.6,
+   "label": "Driver app",
+   "captions": [
+    "Instructions come in order at the door.",
+    "Collect the totes, then the proof photo."
+   ]
+  },
+  {
+   "kind": "card",
+   "dur": 3.6,
+   "hand": "let's walk through it",
+   "lines": [
+    "The driver app, from the kitchen to the door."
+   ]
+  }
+ ],
+ "theme": "site",
+ "bgImage": "bg-calm.jpg",
+ "bgY": 0.55
+}

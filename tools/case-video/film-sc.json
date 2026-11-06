@@ -1,0 +1,163 @@
+{
+ "W": 1600,
+ "H": 900,
+ "fps": 30,
+ "bitrate": 3200000,
+ "bgImage": "bg-calm.jpg",
+ "bgY": 0.5,
+ "bgDim": 0.62,
+ "label": "Supply Chain Brain \u00b7 Product demo",
+ "scenes": [
+  {
+   "kind": "hello",
+   "dur": 3.6,
+   "hand": "Hi, I'm Sai :)",
+   "line": "Product designer at Heizen.",
+   "sub": "This is Supply Chain Brain, Heizen's discovery workbench."
+  },
+  {
+   "kind": "title",
+   "dur": 4.4,
+   "eyebrow": "The problem",
+   "text": "Discovery lives in *200-page* documents.",
+   "sub": "Consultants turn briefs, calls, SOPs and spreadsheets into a picture of a client's operation, by hand."
+  },
+  {
+   "kind": "stats",
+   "dur": 3.8,
+   "eyebrow": "What the tool models",
+   "items": [
+    {
+     "n": "12",
+     "l": "value-chain stages"
+    },
+    {
+     "n": "11",
+     "l": "kinds of entity"
+    },
+    {
+     "n": "4",
+     "l": "evidence pools, kept apart"
+    }
+   ]
+  },
+  {
+   "kind": "title",
+   "dur": 3.0,
+   "text": "So every claim on the map shows *its evidence.*"
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.0,
+   "src": "out-sc",
+   "from": 0.5,
+   "to": 5.4,
+   "focus": [
+    0.35,
+    0.62
+   ],
+   "zoom": 1.35,
+   "tx": 0.7,
+   "title": "Start from sources",
+   "sub": "Transcripts, SOPs and registers go in as evidence.",
+   "callout": "5 client sources"
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.2,
+   "src": "out-sc",
+   "from": 5.8,
+   "to": 10.8,
+   "focus": [
+    0.35,
+    0.28
+   ],
+   "zoom": 1.35,
+   "tx": 0.7,
+   "title": "One operation map",
+   "sub": "The client's value chain, stage by stage.",
+   "callout": "Level 0 \u00b7 value chain"
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.4,
+   "src": "out-sc",
+   "from": 11.0,
+   "to": 19.6,
+   "focus": [
+    0.68,
+    0.2
+   ],
+   "zoom": 1.4,
+   "tx": 0.7,
+   "title": "Drill in, see the confidence",
+   "sub": "Every workflow is Confirmed, Inferred or Needs correction.",
+   "callout": "Needs correction"
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.4,
+   "src": "out-sc",
+   "from": 21.5,
+   "to": 30.5,
+   "focus": [
+    0.88,
+    0.3
+   ],
+   "zoom": 1.4,
+   "tx": 0.66,
+   "title": "Gaps as hypotheses",
+   "sub": "What we think is happening, why, and how sure we are.",
+   "callout": "88% confidence"
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.0,
+   "src": "out-sc",
+   "from": 34.3,
+   "to": 39.4,
+   "focus": [
+    0.4,
+    0.36
+   ],
+   "zoom": 1.35,
+   "tx": 0.7,
+   "title": "The next questions",
+   "sub": "What to ask the client, ranked and tied to a process.",
+   "callout": "Ask next"
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.2,
+   "src": "out-sc",
+   "from": 39.8,
+   "to": 45.0,
+   "focus": [
+    0.38,
+    0.33
+   ],
+   "zoom": 1.45,
+   "tx": 0.7,
+   "title": "Against best practice",
+   "sub": "6.1 days to post an invoice, against a 1.8-day benchmark.",
+   "callout": "Benchmarked"
+  },
+  {
+   "kind": "outro",
+   "dur": 4.6,
+   "title": "Supply Chain Brain",
+   "points": [
+    "Evidence on every claim",
+    "Hypotheses, not verdicts",
+    "Built as a real prototype"
+   ],
+   "foot": "Heizen \u00b7 Supply chain consulting"
+  }
+ ]
+}

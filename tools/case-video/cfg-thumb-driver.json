@@ -1,0 +1,1 @@
+{"W": 1000, "H": 1000, "theme": "site", "phones": [{"src": "out-driver/f00477.jpg", "x": 0.27, "y": 0.15, "w": 0.47, "rot": -15}, {"src": "out-driver/f00177.jpg", "x": 0.56, "y": 0.05, "w": 0.53, "rot": -6}], "mesh": {"base": "#9db5a6", "glows": [[0.2, 0.05, 0.9, "#cfdccfff"], [1, 1, 0.9, "#6f8f80ff"]]}, "shadow": "rgba(36,62,52,0.42)"}

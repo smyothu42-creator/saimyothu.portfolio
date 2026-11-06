@@ -1,0 +1,28 @@
+{
+ "W": 1890,
+ "H": 1400,
+ "theme": "site",
+ "bgImage": "bg-calm.jpg",
+ "bgY": 0.42,
+ "bgDim": 0.66,
+ "phones": [
+  {
+   "src": "out-driver/f00477.jpg",
+   "x": 0.31,
+   "y": 0.13,
+   "w": 0.2
+  },
+  {
+   "src": "out-driver/f00926.jpg",
+   "x": 0.69,
+   "y": 0.13,
+   "w": 0.2
+  },
+  {
+   "src": "out-driver/f00177.jpg",
+   "x": 0.5,
+   "y": 0.07,
+   "w": 0.235
+  }
+ ]
+}

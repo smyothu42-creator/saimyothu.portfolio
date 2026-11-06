@@ -1,0 +1,7 @@
+["@5500","REC","#Maya signs in with her work email.","@1200","Demo: use a corporate email","@500","TYPE:input[type=password]|demo1234","@400","$button[type=submit]","@3800",
+ "#She lands on Neptune Corp's menu. The allowance is in the header.","@2400","!260","@1200",
+ "#Required choices open first, so nothing gets missed.","Choose options for Paneer Tikka Bowl","@1600","Tofu","@900","Italian","@1100",
+ "#The header keeps count: $1.50 over the allowance.","Add to order","@2400","Open cart","@2400",
+ "#Checkout shows the cut-off, and when she'll be charged.","Checkout","@3800","!600","@1800","Check payment","@1600","Confirm","@1400",
+ "#One confirmation, one email.","Place order","@3200",
+ "#Every order shows where it is.","Track my orders","@4000"]

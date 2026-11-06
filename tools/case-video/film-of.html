@@ -1,0 +1,166 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style>
+</head><body><canvas id="c"></canvas>
+<script>
+// OrderFlow intro. Re-cuts the real launch film (square, 1920 x 1920) into a
+// 16:9 case-study film in the launch film's own look: new text scenes, and its
+// product shots placed beside new captions. window.film(cfg) plays the scenes
+// in real time and records them with MediaRecorder. Scene kinds:
+//   text  { bg, lines: [{ t, c?, size?, italic? }] }, *word* takes `em` colour
+//   clip  { from, to, crop: [x, y, w, h], caps: [{ at, h, p }], ink, sub }
+//   full  { from, to } the square frame centred on its own background colour
+//   stats { items: [{ n, l }] }
+const C = document.getElementById('c'), X = C.getContext('2d')
+let W = 0, H = 0
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
+const out3 = (t) => 1 - Math.pow(1 - t, 3)
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v))
+const COL = { cream: '#fcfcf3', dark: '#211b1b', orange: '#f38605', brown: '#6b3208', white: '#ffffff' }
+const FONT = (size, w = 600, it = false) => `${it ? 'italic ' : ''}${w} ${size}px Poppins`
+
+function rrect(x, y, w, h, r) { X.beginPath(); X.roundRect(x, y, w, h, r) }
+
+// One line of text with *emphasis* runs, rising into place.
+function line(l, cx, y, a, dy, em, align = 'center') {
+  const size = l.size || 76
+  X.font = FONT(size, l.w || 600, l.italic)
+  X.letterSpacing = `${-size * 0.03}px`
+  const runs = l.t.split('*').map((s, i) => ({ s, on: i % 2 === 1 })).filter((r) => r.s)
+  const widths = runs.map((r) => { X.font = FONT(size, r.on ? 700 : l.w || 600, r.on || l.italic); return X.measureText(r.s).width })
+  let x = align === 'center' ? cx - widths.reduce((p, c) => p + c, 0) / 2 : cx
+  X.textBaseline = 'alphabetic'; X.textAlign = 'left'
+  runs.forEach((r, i) => {
+    X.font = FONT(size, r.on ? 700 : l.w || 600, r.on || l.italic)
+    X.globalAlpha = a; X.fillStyle = r.on ? em : l.c
+    X.fillText(r.s, x, y + dy); x += widths[i]
+  })
+  X.globalAlpha = 1; X.letterSpacing = '0px'
+}
+
+function drawText(sc, t) {
+  X.fillStyle = COL[sc.bg]; X.fillRect(0, 0, W, H)
+  const gap = sc.gap || 104, n = sc.lines.length, y0 = H / 2 - ((n - 1) * gap) / 2 + 26
+  sc.lines.forEach((l, i) => {
+    const p = out3(clamp((t - 0.12 - i * (sc.stagger ?? 0.34)) / 0.55))
+    line({ ...l, c: COL[l.c || sc.ink] }, W / 2, y0 + i * gap, p, (1 - p) * 26, COL[sc.em])
+  })
+}
+
+function caption(sc, t) {
+  if (!sc.caps) return
+  const ink = COL[sc.ink], sub = COL[sc.sub || sc.ink]
+  const list = sc.caps, k = list.reduce((b, c, i) => (t >= c.at ? i : b), 0), c = list[k]
+  const p = out3(clamp((t - c.at - 0.1) / 0.5)), x = 88
+  const lines = c.h.split('\n'), size = 56, lh = 68
+  const total = lines.length * lh + (c.p ? 62 : 0), y0 = H / 2 - total / 2 + 44
+  lines.forEach((s, i) => line({ t: s, size, c: ink, w: 600 }, x, y0 + i * lh, p, (1 - p) * 18, ink, 'left'))
+  if (c.p) {
+    X.font = FONT(30, 500); X.fillStyle = sub; X.globalAlpha = p * 0.86; X.textAlign = 'left'
+    X.fillText(c.p, x, y0 + lines.length * lh + 16 + (1 - p) * 18); X.globalAlpha = 1
+  }
+}
+
+function drawClip(sc, v, t) {
+  X.fillStyle = COL[sc.bg]; X.fillRect(0, 0, W, H)
+  const [cx, cy, cw, ch] = sc.crop || [0, 0, 1, 1], S = v.videoWidth
+  const h = sc.h || H, w = (h * cw) / ch, x = sc.center ? (W - w) / 2 : W - w - (sc.right ?? 0), y = (H - h) / 2
+  X.save()
+  if (sc.round) { rrect(x, y, w, h, sc.round); X.clip() }
+  X.drawImage(v, cx * S, cy * S, cw * S, ch * S, x, y, w, h)
+  X.restore()
+  caption(sc, t)
+}
+
+function drawFull(sc, v) {
+  X.fillStyle = COL[sc.bg]; X.fillRect(0, 0, W, H)
+  X.drawImage(v, (W - H) / 2, 0, H, H)
+}
+
+function drawStats(sc, t) {
+  X.fillStyle = COL.dark; X.fillRect(0, 0, W, H)
+  line({ t: sc.title, size: 34, c: COL.cream, w: 500 }, W / 2, 232, out3(clamp(t / 0.5)), 0, COL.cream)
+  const n = sc.items.length, col = W / n
+  sc.items.forEach((it, i) => {
+    const p = out3(clamp((t - 0.25 - i * 0.28) / 0.9)), cx = col * i + col / 2
+    let s = it.n
+    const m = it.n.match(/^([\d,]+)(.*)$/)
+    if (m) { const v = Math.round(+m[1].replace(/,/g, '') * p); s = v.toLocaleString('en-US') + m[2] }
+    line({ t: s, size: 116, c: COL.orange, w: 700 }, cx, 500, clamp(p * 2), (1 - p) * 20, COL.orange)
+    line({ t: it.l, size: 29, c: COL.cream, w: 500 }, cx, 572, clamp(p * 2), (1 - p) * 20, COL.cream)
+    if (it.l2) line({ t: it.l2, size: 29, c: COL.cream, w: 500 }, cx, 612, clamp(p * 2), (1 - p) * 20, COL.cream)
+  })
+}
+
+async function seekTo(v, t) {
+  v.pause(); v.currentTime = t
+  await new Promise((r) => { if (!v.seeking) r(); else v.addEventListener('seeked', r, { once: true }) })
+}
+
+window.film = async (cfg) => {
+  W = C.width = cfg.W; H = C.height = cfg.H
+  await document.fonts.load(FONT(60, 600)); await document.fonts.load(FONT(60, 700, true)); await document.fonts.load(FONT(30, 500)); await document.fonts.ready
+  const mk = async () => {
+    const v = document.createElement('video'); v.src = cfg.src; v.muted = true; v.preload = 'auto'
+    await new Promise((r) => (v.onloadeddata = r)); return v
+  }
+  const vids = [await mk(), await mk()]
+  // Fill colours come from the video as Chrome decodes it, so the square frame
+  // sits on the 16:9 canvas with no visible edge.
+  const px = document.createElement('canvas').getContext('2d', { willReadFrequently: true })
+  px.canvas.width = px.canvas.height = 1
+  for (const [name, at] of [['cream', 2], ['dark', 8], ['orange', 22.4]]) {
+    await seekTo(vids[0], at); px.drawImage(vids[0], 8, 8, 4, 4, 0, 0, 1, 1)
+    const d = px.getImageData(0, 0, 1, 1).data; COL[name] = `rgb(${d[0]},${d[1]},${d[2]})`
+  }
+  const clips = cfg.scenes.filter((s) => s.from != null)
+  clips.forEach((s, i) => (s.v = vids[i % 2]))
+  await seekTo(clips[0].v, clips[0].from)
+
+  // Keeps the outgoing frame so scenes can cross-fade.
+  const prev = document.createElement('canvas'); prev.width = W; prev.height = H
+  const stream = C.captureStream(cfg.fps || 30)
+  const rec = new MediaRecorder(stream, { mimeType: 'video/mp4;codecs=avc1.640028', videoBitsPerSecond: cfg.bitrate || 3200000 })
+  const pend = []
+  rec.ondataavailable = async (e) => { if (!e.data.size) return; pend.push((async () => { const b = new Uint8Array(await e.data.arrayBuffer()); let s = ''; for (let i = 0; i < b.length; i += 32768) s += String.fromCharCode.apply(null, b.subarray(i, i + 32768)); return btoa(s) })()) }
+  const done = new Promise((r) => (rec.onstop = r))
+  X.fillStyle = COL.cream; X.fillRect(0, 0, W, H)
+  rec.start(1000)
+
+  const FADE = 0.28
+  let total = 0
+  for (let i = 0; i < cfg.scenes.length; i++) {
+    const sc = cfg.scenes[i]
+    prev.getContext('2d').drawImage(C, 0, 0)
+    const dur = sc.from != null ? sc.to - sc.from : sc.dur
+    if (sc.v) { await sc.v.play() }
+    // While this scene runs, park the next clip on its first frame.
+    const nextClip = cfg.scenes.slice(i + 1).find((s) => s.from != null)
+    if (nextClip && nextClip.v !== sc.v) seekTo(nextClip.v, nextClip.from)
+    const t0 = performance.now()
+    await new Promise((resolve) => {
+      const tick = () => {
+        const t = (performance.now() - t0) / 1000
+        if (sc.kind === 'text') drawText(sc, t)
+        else if (sc.kind === 'stats') drawStats(sc, t)
+        else if (sc.kind === 'clip') drawClip(sc, sc.v, t)
+        else if (sc.kind === 'full') drawFull(sc, sc.v)
+        if (i > 0 && t < FADE) { X.globalAlpha = 1 - t / FADE; X.drawImage(prev, 0, 0); X.globalAlpha = 1 }
+        if (t >= dur) return resolve()
+        requestAnimationFrame(tick)
+      }
+      tick()
+    })
+    if (sc.v) {
+      sc.v.pause()
+      const after = cfg.scenes.slice(i + 1).find((s) => s.from != null && s.v === sc.v)
+      if (after) seekTo(after.v, after.from)
+    }
+    total += dur
+  }
+  await sleep(120); rec.stop(); await done
+  for (const p of pend) await window.saveChunk(await p)
+  return { total }
+}
+</script></body></html>

@@ -1,0 +1,1 @@
+{"W": 1600, "H": 1600, "theme": "site", "mesh": {"base": "#0e5a52", "glows": []}, "shadow": "rgba(0,20,18,0.28)", "phones": [{"browser": true, "src": "out-hi-emp/menu.png", "x": 1.13, "y": 0.065, "w": 2.1}]}

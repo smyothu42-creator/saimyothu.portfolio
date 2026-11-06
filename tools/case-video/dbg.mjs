@@ -1,0 +1,12 @@
+import { launch, sleep, clickText } from './lib.mjs'
+const { browser, page } = await launch(390, 844, 2)
+page.on('console', (m) => m.type() === 'error' && console.log('console:', m.text().slice(0, 300)))
+page.on('pageerror', (e) => console.log('pageerror:', e.message.slice(0, 300)))
+await page.goto('http://localhost:3100/login', { waitUntil: 'networkidle0', timeout: 120000 })
+await sleep(4000)
+console.log('hydrated?', await page.evaluate(() => !!document.querySelector('button')?.[Object.keys(document.querySelector('button')).find((k) => k.startsWith('__reactProps'))]))
+await clickText(page, 'Demo: use a corporate email'); await sleep(800)
+console.log('email', await page.$eval('input[type=email], input[name=email]', (e) => e.value).catch((e) => 'noinput'))
+await page.type('input[type=password]', 'demo1234'); await page.click('button[type=submit]'); await sleep(5000)
+console.log(page.url())
+await browser.close()

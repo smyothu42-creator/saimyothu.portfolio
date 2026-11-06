@@ -1,153 +1,280 @@
-import { useRef } from 'react'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { Draggable } from 'gsap/Draggable'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { ABOUT, PROFILE } from '../data'
+import { Card, BackButton, Button, Icon, ConnectCard, Filter, TakeNote } from './ui'
+import { newestFirst, range } from '../dates'
+import Testimonials from './Testimonials'
 
-gsap.registerPlugin(Draggable)
 
-// Draggable "scrapbook" About page — scattered cards the visitor can throw
-// around the canvas. Each .scrap is a GSAP Draggable; press brings it to front.
-export default function AboutPage({ onNavigate }) {
-  const ref = useRef(null)
-
-  useGSAP(() => {
-    const root = ref.current
-    const cards = gsap.utils.toArray('.scrap', root)
-
-    // Seed each card's resting rotation, then play a staggered entrance.
-    cards.forEach((c) => gsap.set(c, { rotation: parseFloat(c.dataset.rot || 0) }))
-    gsap.from(cards, {
-      autoAlpha: 0, scale: 0.85, y: 40,
-      duration: 0.6, ease: 'back.out(1.4)', stagger: { each: 0.06, from: 'random' },
-    })
-
-    let z = 20
-    const drags = Draggable.create(cards, {
-      bounds: root,
-      edgeResistance: 0.65,
-      inertia: false,
-      onPress() {
-        this.target.style.zIndex = ++z
-        gsap.to(this.target, { scale: 1.05, duration: 0.2, ease: 'power2.out' })
-      },
-      onRelease() {
-        gsap.to(this.target, { scale: 1, duration: 0.35, ease: 'power3.out' })
-      },
-    })
-    return () => drags.forEach((d) => d.kill())
-  }, { scope: ref })
+export default function AboutPage() {
+  const roles = newestFirst(ABOUT.experience)
 
   return (
-    <main className="about-page" ref={ref}>
-      <span className="about-hint">✦ drag things around</span>
+    <>
+      <HeroSlides />
 
-      {/* Signature + tagline */}
-      <div className="scrap scrap-sign" data-rot="-3" style={{ left: '42%', top: '40%' }}>
-        <span className="scrap-sign-name">Sai Myo Thu</span>
-        <span className="scrap-sign-tag">I design, then I build</span>
-      </div>
+      {/* Intro and core values in one card: who I am, then what I stand by. */}
+      <Card className="sv-text sv-services">
+        <p className="sv-statement">{ABOUT.headline.join(' ')}</p>
+        {ABOUT.bio.map((p, i) => <p key={i}>{p}</p>)}
+        {ABOUT.showValues && (
+          <>
+            <p className="sv-label sv-label-left sv-values-label">My core values</p>
+            <ul className="sv-pills">
+              {ABOUT.values.map((v) => (
+                <li key={v}><span className="sv-pill is-static"><span className="sv-pill-head">{v}</span></span></li>
+              ))}
+            </ul>
+          </>
+        )}
 
-      {/* Profile phone card */}
-      <div className="scrap scrap-profile" data-rot="-4" style={{ left: '5%', top: '14%' }}>
-        <div className="scrap-profile-top">
-          <div className="scrap-profile-name">Sai Myo Thu</div>
-          <div className="scrap-profile-bio">Loves design, prototyping, storytelling, and visual craft.</div>
+      </Card>
+
+
+      <Craft />
+
+      <Card>
+        <div className="sv-exp-head-row">
+          <h2 className="sv-h2">Work Experience</h2>
+          <Button href="/Sai-Myo-Thu-Resume.pdf" external className="sv-resume" aria-label="Resume (opens the PDF)">
+            Resume
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" /></svg>
+          </Button>
         </div>
-        <img className="scrap-profile-img" src="/sai-portrait.jpg" alt="Sai" draggable="false" />
-      </div>
+        <ul className="sv-exp">
+          {roles.map((e) => <Role key={e.co} e={e} />)}
+        </ul>
+      </Card>
 
-      {/* Resume — a real-looking résumé page */}
-      <div className="scrap scrap-resume" data-rot="6" style={{ left: '6%', top: '40%' }}>
-        <div className="resume-paper">
-          <div className="resume-top">
-            <div className="resume-id">
-              <div className="resume-name">Sai Myo Thu <span className="resume-badge">✓</span></div>
-              <div className="resume-role">Product Designer</div>
-            </div>
-            <div className="resume-contact">
-              <span>www.saimyothu.com</span>
-              <span>hello@saimyothu.com</span>
-            </div>
+      <Testimonials />
+
+      <ConnectCard />
+    </>
+  )
+}
+
+// "What a product designer does": (optionally) my view on the role, then
+// tabs for the designer side and the entrepreneur side. Each tab is a glass
+// progress track: one dot per step, joined by short segments that stop short
+// of each circle and light up behind the current step,
+// and the current step shown large underneath. It steps through on its own
+// until someone picks a step (or hovers it); reduced motion: no auto-play.
+function Craft() {
+  const { showIntro, label, title, statement, body, tabs } = ABOUT.craft
+  const [tab, setTab] = useState(tabs[0].id)
+  const t = tabs.find((x) => x.id === tab)
+  return (
+    <Card className="sv-text sv-craft">
+      {showIntro ? (
+        <>
+          <h2 className="sv-h2">{title}</h2>
+          <p className="sv-statement">{statement}</p>
+          <p>{body}</p>
+        </>
+      ) : null}
+      <div className="sv-craft-tabs">
+        <Filter
+          role="tablist"
+          label={label}
+          value={tab}
+          onChange={setTab}
+          options={tabs.map((x) => ({ id: x.id, label: x.label, panel: `craft-${x.id}` }))}
+        />
+      </div>
+      <Track key={t.id} t={t} />
+    </Card>
+  )
+}
+
+// `tab`: render as the panel of a tab (Craft); `delay`: ms per step while
+// auto-playing; steps may carry a short `name` for under the dot (defaults
+// to `word`).
+function Track({ t, tab = true, delay = 3000 }) {
+  const n = t.steps.length
+  const [at, setAt] = useState(0)
+  const [auto, setAuto] = useState(true)
+  const [hold, setHold] = useState(false)
+  useEffect(() => {
+    if (!auto || hold || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const id = setTimeout(() => setAt((x) => (x + 1) % n), delay)
+    return () => clearTimeout(id)
+  }, [at, auto, hold, n, delay])
+  const step = t.steps[at]
+
+  return (
+    <div
+      className={'sv-craft-panel' + (tab ? '' : ' is-solo')}
+      {...(tab ? { id: `craft-${t.id}`, role: 'tabpanel' } : {})}
+      onPointerEnter={() => setHold(true)}
+      onPointerLeave={() => setHold(false)}
+      onPointerDown={() => setAuto(false)} // any tap inside: stop auto-play so nothing moves under it
+    >
+      <ol className="sv-track" style={{ '--n': n }}>
+        {t.steps.map((s, k) => (
+          <li key={s.word}>
+            <button
+              className={'sv-track-step' + (k === at ? ' is-on' : k < at ? ' is-done' : '')}
+              aria-pressed={k === at}
+              onClick={() => { setAt(k); setAuto(false) }}
+            >
+              <span className="sv-track-dot" aria-hidden="true" />
+              <span className="sv-track-name">{s.name || s.word}</span>
+            </button>
+            {k < n - 1 && <span className={'sv-track-seg' + (k < at ? ' is-done' : '')} aria-hidden="true" />}
+          </li>
+        ))}
+      </ol>
+      <div className="sv-track-now" aria-live="polite" key={at}>
+        <h3>{step.word}</h3>
+        <p>{step.line}</p>
+      </div>
+    </div>
+  )
+}
+
+// The photo's "My take" note: drops out of the chip, right edges lined up,
+// growing from the chip's corner. Lives in <body> (the photo card clips its
+// contents) at page coordinates, so it scrolls with the page. Closes on a
+// click elsewhere, Esc, or the photo again.
+function TakeDrop({ open, anchor, trigger, onClose }) {
+  const box = useRef(null)
+  const [pos, setPos] = useState(null)
+  useLayoutEffect(() => {
+    if (!open) return
+    const place = () => {
+      const r = anchor.current?.getBoundingClientRect()
+      if (r) setPos({ top: r.bottom + window.scrollY + 10, right: document.documentElement.clientWidth - r.right - window.scrollX })
+    }
+    place()
+    window.addEventListener('resize', place)
+    return () => window.removeEventListener('resize', place)
+  }, [open, anchor])
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e) => { if (e.key === 'Escape') { onClose(); trigger.current?.focus() } }
+    const onDown = (e) => {
+      if (box.current?.contains(e.target) || trigger.current?.contains(e.target)) return
+      onClose()
+    }
+    document.addEventListener('keydown', onKey)
+    document.addEventListener('pointerdown', onDown)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.removeEventListener('pointerdown', onDown)
+    }
+  }, [open, onClose, trigger])
+
+  return createPortal(
+    <TakeNote
+      id="sv-take-drop"
+      boxRef={box}
+      className="sv-take-drop"
+      open={!!(open && pos)}
+      style={pos ? { top: pos.top, right: pos.right } : undefined}
+    />,
+    document.body,
+  )
+}
+
+// One role: logo tile, "Role at Company", dates; opens to show its note.
+function Role({ e }) {
+  const [open, setOpen] = useState(false)
+  const head = (
+    <>
+      <span className="sv-exp-logo">{e.logo ? <img src={e.logo} alt="" /> : e.co[0]}</span>
+      <span className="sv-exp-text">
+        <span className="sv-exp-role">{e.role} at {e.co}</span>
+        <span className="sv-dim">{range(e.start, e.end)}</span>
+      </span>
+    </>
+  )
+  if (!e.note) return <li className="sv-exp-row"><div className="sv-exp-head">{head}</div></li>
+  return (
+    <li className={'sv-exp-row' + (open ? ' is-open' : '')}>
+      <button className="sv-exp-head" aria-expanded={open} onClick={() => setOpen((v) => !v)}>
+        {head}
+        <span className="sv-exp-chev"><Icon name="chevron" size={20} /></span>
+      </button>
+      <div className="sv-exp-body"><p>{e.note}</p></div>
+    </li>
+  )
+}
+
+// Top photo card as a slideshow: ABOUT.photos first, then the hero photo,
+// cross-fading every 3 seconds (reduced motion: a plain fade, no zoom). The
+// dots jump to a photo; the name stays on top.
+function HeroSlides() {
+  const slides = [
+    ...(ABOUT.photos || []),
+    { src: PROFILE.hero?.src || PROFILE.portrait, alt: PROFILE.name, position: PROFILE.hero?.position },
+  ]
+  const [i, setI] = useState(0)
+  const [takeOpen, setTakeOpen] = useState(false)
+  const takeChip = useRef(null)
+  const takeLink = useRef(null)
+  // Always advances on its own; a dot click restarts the 3 s timer.
+  useEffect(() => {
+    if (slides.length < 2) return
+    const id = setTimeout(() => setI((x) => (x + 1) % slides.length), 3000)
+    return () => clearTimeout(id)
+  }, [i, slides.length])
+
+  return (
+    <Card
+      className={'sv-photo-hero' + (ABOUT.takes?.length ? ' is-link' : '')}
+      data-open={takeOpen || undefined} // not a class: re-rendering className would drop the scroll-reveal's "in"
+      style={{ aspectRatio: PROFILE.hero?.aspect }}
+    >
+      <div className="sv-slides" aria-live="polite">
+        {slides.map((sl, k) => (
+          <div
+            key={sl.src}
+            className={'sv-slide' + (k === i ? ' is-on' : '')}
+            style={{ backgroundImage: `url(${sl.src})`, backgroundPosition: sl.position }}
+            role="img"
+            aria-label={sl.alt}
+            aria-hidden={k !== i}
+          />
+        ))}
+      </div>
+      <BackButton href="/" label="Back to home" />
+      {/* like the home card: the whole photo opens my take; on hover the card
+          lifts and the chip opposite the back button folds out to "My take" */}
+      {ABOUT.takes?.length > 0 && (
+        <>
+          <button
+            ref={takeLink}
+            type="button"
+            className="sv-card-link"
+            aria-label="My take"
+            aria-expanded={takeOpen}
+            aria-controls="sv-take-drop"
+            onClick={() => setTakeOpen((v) => !v)}
+          />
+          <span className="sv-intro-hint sv-photo-hint" aria-hidden="true" ref={takeChip}>
+            <span className="sv-intro-hint-text"><span>My take</span></span>
+            <Icon name="quote" size={16} stroke={2} />
+          </span>
+          <TakeDrop open={takeOpen} anchor={takeChip} trigger={takeLink} onClose={() => setTakeOpen(false)} />
+        </>
+      )}
+      <div className="sv-hero-foot">
+        <h1 className="sv-h1">{PROFILE.name}</h1>
+        {slides.length > 1 && (
+          <div className="sv-dots" role="tablist" aria-label="Photos">
+            {slides.map((sl, k) => (
+              <button
+                key={sl.src}
+                role="tab"
+                aria-selected={k === i}
+                aria-label={sl.caption || sl.alt}
+                className={'sv-dot' + (k === i ? ' is-on' : '')}
+                onClick={() => setI(k)}
+              />
+            ))}
           </div>
-          <div className="resume-cols">
-            <div className="resume-col">
-              <h4>Experience</h4>
-              <div className="resume-item">
-                <b>Retina AI — Product Designer</b>
-                <i>2024 – Present</i>
-                <p>Led the end-to-end redesign of an AI nutrition platform and built the front-end.</p>
-              </div>
-              <div className="resume-item">
-                <b>Freelance — Product Designer</b>
-                <i>2020 – 2024</i>
-                <p>Designed digital products for startups across fintech, health, and commerce.</p>
-              </div>
-              <div className="resume-item">
-                <b>Studio Aung — UI Designer</b>
-                <i>2018 – 2020</i>
-                <p>Shipped marketing sites and brand systems for local clients.</p>
-              </div>
-            </div>
-            <div className="resume-col">
-              <h4>Education</h4>
-              <div className="resume-item">
-                <b>Self-taught</b>
-                <p>Design, front-end, and motion — learning by building.</p>
-              </div>
-              <h4>Skills</h4>
-              <div className="resume-skills">
-                Figma · React · TypeScript · GSAP · Prototyping · UX Research · Design Systems · Motion
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="resume-file">resume.pdf</div>
+        )}
       </div>
-
-      {/* Terminal window */}
-      <div className="scrap scrap-term" data-rot="2" style={{ left: '40%', top: '60%' }}>
-        <div className="term-bar">
-          <span className="term-dot r" /><span className="term-dot y" /><span className="term-dot g" />
-          <span className="term-title">sai — zsh</span>
-        </div>
-        <div className="term-body">
-          <p><span className="term-prompt">~ $</span> whoami</p>
-          <p>Product Designer · 6+ years</p>
-          <p><span className="term-prompt">~ $</span> ls interests/</p>
-          <p>design/ code/ coffee/ photography/</p>
-        </div>
-      </div>
-
-      {/* Folder */}
-      <div className="scrap scrap-folder" data-rot="-6" style={{ left: '30%', top: '20%' }}>
-        <span className="folder-tab" />
-        <span className="folder-count">12</span>
-      </div>
-
-      {/* Photo polaroids */}
-      <div className="scrap scrap-photos" data-rot="6" style={{ left: '68%', top: '24%' }}>
-        <div className="polaroid" style={{ '--p': '#bcd4ec' }}><span>✺</span><b>seattle</b></div>
-        <div className="polaroid" style={{ '--p': '#e7cfe0' }}><span>❀</span><b>blooms</b></div>
-        <div className="polaroid" style={{ '--p': '#d6e7c9' }}><span>☀</span><b>moments</b></div>
-      </div>
-
-      {/* Ticket */}
-      <div className="scrap scrap-ticket" data-rot="-2" style={{ left: '62%', top: '6%' }}>
-        <div className="ticket-l">
-          <div className="ticket-name">DESIGN<br />TOUR</div>
-          <div className="ticket-est">EST. 2018 → PRESENT</div>
-        </div>
-        <div className="ticket-r">
-          <div className="ticket-row"><b>Time</b> Anytime</div>
-          <div className="ticket-row"><b>Where</b> Myanmar · Online</div>
-          <div className="ticket-barcode" />
-        </div>
-      </div>
-
-      {/* Sticky note */}
-      <div className="scrap scrap-note" data-rot="4" style={{ left: '82%', top: '60%' }}>
-        Currently open to<br />new projects ✏︎
-      </div>
-    </main>
+    </Card>
   )
 }

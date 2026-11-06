@@ -1,0 +1,174 @@
+{
+ "W": 1600,
+ "H": 900,
+ "fps": 30,
+ "bitrate": 3200000,
+ "theme": {
+  "page": "#F8F6EF",
+  "page2": "#EFEBE2",
+  "ink": "#2A2A2A",
+  "dim": "rgba(42,42,42,0.64)",
+  "acc": "#3A6779",
+  "glow1": "rgba(172,203,210,0.5)",
+  "glow2": "rgba(226,212,196,0.7)",
+  "scrim": "248,246,239",
+  "pill": "#2A2A2A",
+  "pillInk": "#FFFFFF",
+  "spot": "42,42,42"
+ },
+ "label": "Heizen Discovery Tool \u00b7 Product demo",
+ "scenes": [
+  {
+   "kind": "hello",
+   "dur": 3.6,
+   "hand": "Hi, I'm Sai :)",
+   "line": "Product designer at Heizen.",
+   "sub": "This is the Heizen Discovery Tool."
+  },
+  {
+   "kind": "title",
+   "dur": 4.4,
+   "eyebrow": "The problem",
+   "text": "A lead, a call today, and *no time* to read.",
+   "sub": "Consultants walk into first calls with a company name and a few hours, and too much information everywhere."
+  },
+  {
+   "kind": "stats",
+   "dur": 3.8,
+   "eyebrow": "What we aimed for",
+   "items": [
+    {
+     "n": "4 \u2192 1",
+     "l": "discovery calls, compressed"
+    },
+    {
+     "n": "38%",
+     "l": "off the headline, after an honest audit"
+    },
+    {
+     "n": "5,200",
+     "l": "words on screen, down from 9,244"
+    }
+   ]
+  },
+  {
+   "kind": "title",
+   "dur": 3.0,
+   "text": "So the front page says *what we'd build.*"
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.2,
+   "src": "out-hz",
+   "from": 0.8,
+   "to": 5.9,
+   "focus": [
+    0.22,
+    0.06
+   ],
+   "zoom": 1.45,
+   "tx": 0.7,
+   "title": "What to build",
+   "sub": "Three ranked builds, each with its value and effort.",
+   "callout": "\u20b95.3 Cr a year"
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.2,
+   "src": "out-hz",
+   "from": 8.0,
+   "to": 12.1,
+   "focus": [
+    0.6,
+    0.2
+   ],
+   "zoom": 1.45,
+   "tx": 0.7,
+   "title": "Thirty-second brief",
+   "sub": "What we know, and what nobody has looked at yet.",
+   "callout": "Make is blank"
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.6,
+   "src": "out-hz",
+   "from": 14.2,
+   "to": 21.8,
+   "focus": [
+    0.35,
+    0.3
+   ],
+   "zoom": 1.3,
+   "tx": 0.7,
+   "spot": 1.6,
+   "title": "The operation, mapped",
+   "sub": "Health and evidence on every stage, then drill in.",
+   "callout": "Source \u00b7 critical"
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.2,
+   "src": "out-hz",
+   "from": 23.6,
+   "to": 31.1,
+   "focus": [
+    0.9,
+    0.12
+   ],
+   "zoom": 1.5,
+   "tx": 0.66,
+   "title": "Gaps, with effort",
+   "sub": "Each one says how hard it is to fix.",
+   "callout": "Low effort"
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.0,
+   "src": "out-hz",
+   "from": 32.9,
+   "to": 37.0,
+   "focus": [
+    0.3,
+    0.25
+   ],
+   "zoom": 1.4,
+   "tx": 0.7,
+   "title": "Questions for the call",
+   "sub": "By thread or by stakeholder, ready to copy.",
+   "callout": "Head of Procurement"
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.2,
+   "src": "out-hz",
+   "from": 38.7,
+   "to": 43.0,
+   "focus": [
+    0.35,
+    0.33
+   ],
+   "zoom": 1.4,
+   "tx": 0.7,
+   "title": "Atlas",
+   "sub": "Which past project already proves the fix.",
+   "callout": "Proven before"
+  },
+  {
+   "kind": "outro",
+   "dur": 4.6,
+   "title": "Heizen Discovery Tool",
+   "points": [
+    "What to build, first",
+    "Every number has a comparator",
+    "Ask Helix anywhere"
+   ],
+   "foot": "Heizen \u00b7 Supply chain discovery"
+  }
+ ]
+}

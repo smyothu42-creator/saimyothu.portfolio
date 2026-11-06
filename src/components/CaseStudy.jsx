@@ -1,147 +1,427 @@
-import { useEffect, useRef, useState } from 'react'
-import { CASES } from '../data'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
+import { CASES, HOME_WORK, MORE_WORK } from '../data'
+import { scrollToY } from '../scroll'
+import { useDragPill } from '../useDragPill'
+import {
+  TLDR, Flow, Compare, Journey, Decision, Blueprint, People, Principles, Mock, Insights,
+  JourneyMap, Tree, Frameworks, Wireframes, Spec, Closing,
+  HMW, Details, Achievements, Roadmap,
+} from './CaseBlocks'
+import { Impact, Role, Sub, IconList, Segments, Table, Iterations, Pills, Walkthrough, Film, Shot, WalkTabs, ShotTabs, Reel, Demo, Choices, BeforeAfter } from './Story'
+import { Illo, Person } from './Illos'
+import { Card, BackButton, ConnectCard, Icon } from './ui'
+import Media from './Media'
 
-// Full case-study page. Reads the matching case by slug and renders a sticky
-// section nav (left) + hero + content sections, modelled on the reference.
-export default function CaseStudy({ slug, onNavigate }) {
-  const study = CASES.find((c) => c.slug === slug)
-  const next = CASES[(CASES.findIndex((c) => c.slug === slug) + 1) % CASES.length]
-  const [active, setActive] = useState(study?.study?.sections?.[0]?.id || '')
-  const rootRef = useRef(null)
-
-  // Scrollspy: highlight the section currently in view in the sticky nav.
-  useEffect(() => {
-    if (!study?.study) return
-    const ids = [...study.study.sections.map((s) => s.id), 'see-next']
-    const els = ids.map((id) => document.getElementById('sec-' + id)).filter(Boolean)
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.dataset.sec) })
-      },
-      { rootMargin: '-45% 0px -50% 0px', threshold: 0 },
-    )
-    els.forEach((el) => io.observe(el))
-    return () => io.disconnect()
-  }, [study])
-
-  if (!study) return null
-
-  const s = study.study
-  // Fallback page for cases without authored study content.
-  if (!s) {
+// Case study as a column of cards, like the project pages on the reference:
+//   cover card (project art, back button, title over its foot)
+//   facts grid (role, timeline, scope, team, tools)
+//   summary card
+//   one card per section: optional eyebrow → heading → lead → blocks
+//   a closing "full story" card
+// Text blocks sit straight on the dark glass. Product visuals (screens,
+// films, journey maps, boards) sit on a light plate inside the card, the way
+// photos sit on the reference's dark cards.
+export default function CaseStudy({ slug }) {
+  const c = CASES.find((x) => x.slug === slug)
+  if (!c) {
     return (
-      <main className="cs" ref={rootRef}>
-        <div className="cs-wrap">
-          <button className="cs-back" onClick={() => onNavigate('/')}>← Back to work</button>
-          <h1 className="cs-title">{study.title}</h1>
-          <p className="cs-summary">{study.desc}</p>
-          <div className="cs-tags">{study.tags.map((t) => <span key={t}>{t}</span>)}</div>
-        </div>
-      </main>
+      <Card className="sv-pagehead">
+        <BackButton href="/" label="Back to home" />
+        <h1 className="sv-h1">Project not found</h1>
+        <p className="sv-pagehead-sub"><a className="sv-link" href="/">Back to home</a></p>
+      </Card>
     )
   }
+  const s = c.study
 
-  const navItems = [...s.sections.map((sec) => ({ id: sec.id, label: sec.nav })), { id: 'see-next', label: 'See Next' }]
-
-  const goSection = (id) => {
-    document.getElementById('sec-' + id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
+  const facts = (s
+    ? [
+        ['Role', [s.role]],
+        ['Timeline', [s.duration]],
+        ['Scope', s.scope],
+        ['Team', s.team],
+        ['Tools', s.tools?.split(',').map((t) => t.trim())],
+      ]
+    : [
+        ['Domain', [c.domain]],
+        ['Focus', c.tags],
+      ]
+  )
+    .map(([k, v]) => [k, (v || []).filter(Boolean)])
+    .filter(([, v]) => v.length)
 
   return (
-    <main className="cs" ref={rootRef}>
-      <div className="cs-topbar">
-        <button className="cs-back" onClick={() => onNavigate('/')} aria-label="Back to work" data-magnetic>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>
-          <span>Back to work</span>
-        </button>
-      </div>
+    <div className="sv-case" style={s?.accent ? { '--acc': s.accent } : undefined}>
+      {s?.sections?.length > 1 && <CaseNav sections={s.sections} />}
+      <Card className="sv-cover" id="cs-top">
+        <Media art={c.art} title={c.title} />
+        <BackButton href="/" label="Back to home" />
+        <h1 className="sv-cover-title">{c.title}</h1>
+      </Card>
 
-      <div className="cs-layout">
-        {/* Sticky section nav */}
-        <aside className="cs-nav">
-          <ul>
-            {navItems.map((it) => (
-              <li key={it.id}>
-                <button
-                  className={'cs-nav-link' + (active === it.id ? ' is-active' : '')}
-                  onClick={() => goSection(it.id)}
-                >
-                  {it.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </aside>
-
-        {/* Content column */}
-        <div className="cs-main">
-          {/* Hero */}
-          <section className="cs-hero" id="sec-context" data-sec="context">
-            <div className="cs-hero-grid">
-              <h1 className="cs-title">{s.heading}</h1>
-              <div className="cs-hero-side">
-                <p className="cs-summary">{s.summary}</p>
-                <div className="cs-tags">{s.tags.map((t) => <span key={t}>{t}</span>)}</div>
-                <button className="cs-skip" onClick={() => goSection('solution')} data-magnetic>
-                  <span className="cs-skip-ico">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19" /><polyline points="19 12 12 19 5 12" /></svg>
-                  </span>
-                  <span className="cs-skip-label">Skip to Solution</span>
-                </button>
-              </div>
+      {facts.length > 0 && (
+        <Card className={'sv-facts' + (facts.length % 2 ? ' is-odd' : '')}>
+          {facts.map(([k, v]) => (
+            <div className="sv-fact" key={k}>
+              <dt>{k}</dt>
+              <dd>{v.join(k === 'Tools' || k === 'Focus' ? ', ' : ' · ')}</dd>
             </div>
-
-            <dl className="cs-meta">
-              <div><dt>Role</dt><dd>{s.role}</dd></div>
-              <div><dt>Duration</dt><dd>{s.duration}</dd></div>
-              <div><dt>Tools</dt><dd>{s.tools}</dd></div>
-            </dl>
-
-            {/* First section's blocks live in the hero block (Context) */}
-            {s.sections[0].blocks.map((b, i) => <Block key={i} block={b} />)}
-          </section>
-
-          {/* Remaining sections */}
-          {s.sections.slice(1).map((sec) => (
-            <section className="cs-section" key={sec.id} id={'sec-' + sec.id} data-sec={sec.id}>
-              <h2 className="cs-section-label">{sec.nav}</h2>
-              {sec.blocks.map((b, i) => <Block key={i} block={b} />)}
-            </section>
           ))}
+        </Card>
+      )}
 
-          {/* See next */}
-          <section className="cs-section cs-next" id="sec-see-next" data-sec="see-next">
-            <h2 className="cs-section-label">See Next</h2>
-            <button className="cs-next-card" onClick={() => onNavigate('/work/' + next.slug)} data-magnetic>
-              <span className="cs-next-title">{next.title}</span>
-              <span className="cs-next-arrow">↗</span>
-            </button>
-          </section>
-        </div>
-      </div>
-    </main>
+      <Card className="sv-text">
+        {s?.heading && <p className="sv-statement">{plain(s.heading)}</p>}
+        <p>{s?.summary ?? c.desc}</p>
+      </Card>
+
+      {s?.sections.map((sec) => <Section key={sec.id} sec={sec} />)}
+
+      <OtherWork current={c.slug} />
+
+      {s?.gallery?.length > 0 && <Gallery images={s.gallery} />}
+      {!s && <ConnectCard />}
+    </div>
   )
 }
 
-function Block({ block }) {
-  if (block.kind === 'split') {
-    return (
-      <div className="cs-split">
-        {block.items.map((it, i) => (
-          <div key={i}><h3 className="cs-h">{it.h}</h3><p className="cs-p">{it.p}</p></div>
+// The end of a case study: the next four projects from the home page, starting
+// after this one and wrapping round, so each page points somewhere different.
+function OtherWork({ current }) {
+  const order = [...HOME_WORK, ...MORE_WORK]
+  const from = order.indexOf(current) + 1
+  const next = [...order.slice(from), ...order.slice(0, from)].filter((slug) => slug !== current).slice(0, 4)
+  const items = next.map((slug) => CASES.find((c) => c.slug === slug)).filter(Boolean)
+  return (
+    <Card className="sv-others">
+      <h2 className="sv-h2">More Work</h2>
+      <div className="sv-others-grid">
+        {items.map((c) => (
+          <a key={c.slug} className="sv-other" href={`/work/${c.slug}`}>
+            <Media art={c.art.thumb ? { ...c.art, img: c.art.thumb } : c.art} title={c.title} />
+            <span className="sv-other-foot">
+              <span>
+                <span className="sv-other-name">{c.title}</span>
+                <span className="sv-other-domain">{c.domain}</span>
+              </span>
+              <span className="sv-other-arrow"><Icon name="arrowRight" size={20} stroke={1.8} /></span>
+            </span>
+          </a>
         ))}
+      </div>
+    </Card>
+  )
+}
+
+// `*words*` in a title render as a light italic accent; plain() strips the
+// markers for labels.
+const plain = (t = '') => t.replace(/\*/g, '')
+function rich(t = '') {
+  return t.split(/\*(.+?)\*/).map((part, i) => (i % 2 ? <em className="acc-i" key={i}>{part}</em> : part))
+}
+
+// One section as one card. `bare` sections (the product film) are the visual
+// alone. A section's opening `lead` block sits under its heading, and an
+// optional `illo` sits beside the heading. `title` (optional) is the heading
+// when it should say more than the short `nav` label in the side list.
+function Section({ sec }) {
+  if (sec.bare) {
+    const card = (
+      <Card className="sv-sec sv-sec-bare" aria-label={plain(sec.nav)} id={sec.id}>
+        {sec.blocks.map((b, j) => <Block key={j} block={b} />)}
+      </Card>
+    )
+    return sec.immersive ? <Immersive>{card}</Immersive> : card
+  }
+  const opensWithLead = sec.blocks[0]?.kind === 'lead'
+  const lead = opensWithLead ? sec.blocks[0].p : null
+  const body = opensWithLead ? sec.blocks.slice(1) : sec.blocks
+  return (
+    <Card className={'sv-sec' + (sec.illo ? ' has-illo' : '')} id={sec.id}>
+      <div className="sv-sec-head">
+        <div>
+          {sec.eyebrow && <p className="sv-label sv-label-left">{sec.eyebrow}</p>}
+          <h2 className="sv-h2">{rich(sec.title || sec.nav)}</h2>
+          {lead && <p className="sv-sec-lead">{rich(lead)}</p>}
+        </div>
+        {sec.illo && <Illo name={sec.illo} className="sv-illo" />}
+      </div>
+      {body.length > 0 && (
+        <div className="sv-sec-body">
+          {body.map((b, j) => <Block key={j} block={b} />)}
+        </div>
+      )}
+    </Card>
+  )
+}
+
+// Scroll-linked full screen for a bare video section (`immersive: true`):
+// when the card reaches the middle of the screen it is pinned, and as the
+// page scrolls it grows until the video fills the viewport (corners and
+// padding easing to zero), holds there for a moment, then shrinks back as
+// the scroll carries on. GSAP ScrollTrigger, scrubbed. Off for reduced motion.
+// The pin's scroll room would leave a screen-sized hole under the video going
+// in and above it coming out, so the cards around it are held still (CSS
+// `translate`, which leaves their reveal transform alone) for the whole pin.
+gsap.registerPlugin(ScrollTrigger)
+function Immersive({ children }) {
+  const wrap = useRef(null)
+  useGSAP(() => {
+    const el = wrap.current
+    const card = el?.firstElementChild
+    if (!card || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const frame = card.querySelector('.st-reel-frame')
+    const r0 = getComputedStyle(card).borderRadius
+    const p0 = getComputedStyle(card).padding
+    const f0 = frame ? getComputedStyle(frame).borderRadius : '0px'
+    // Scale at which the 16:9 video covers the whole viewport.
+    const cover = () => {
+      const w = card.offsetWidth
+      return Math.max(window.innerWidth / w, window.innerHeight / (w * 9 / 16)) * 1.002
+    }
+    const grow = { duration: 0.4, ease: 'power2.inOut' }
+    let above = []
+    let below = []
+    const hold = (st) => {
+      const room = st.end - st.start
+      above.forEach((n) => { n.style.translate = `0 ${st.progress * room}px` })
+      below.forEach((n) => { n.style.translate = `0 ${(st.progress - 1) * room}px` })
+    }
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: el,
+        start: 'center center',
+        end: '+=150%',
+        pin: true,
+        // The case column is a flex box, where GSAP turns pin spacing off by
+        // default; without it the next cards scroll up over the pinned video.
+        pinSpacing: true,
+        scrub: 0.6,
+        invalidateOnRefresh: true,
+        onUpdate: hold,
+        onRefresh: hold,
+      },
+      // Stay above the rest of the page for as long as it's enlarged, even
+      // while the scrub is still catching up after the pin lets go.
+      onUpdate: () => {
+        const scale = gsap.getProperty(el, 'scale')
+        el.classList.toggle('is-immersive', scale > 1.003)
+        // Keep the video's controls their size, and on screen: covering the
+        // window crops the video past its edges.
+        el.style.setProperty('--reel-ui', 1 / scale)
+        el.style.setProperty('--reel-x', `${-Math.max(0, (el.offsetWidth * scale - window.innerWidth) / 2) / scale}px`)
+        el.style.setProperty('--reel-y', `${-Math.max(0, (el.offsetHeight * scale - window.innerHeight) / 2) / scale}px`)
+      },
+    })
+    tl.to(el, { scale: cover, ...grow }, 0)
+      .to(card, { borderRadius: 0, padding: 0, borderColor: 'rgba(255,255,255,0)', ...grow }, 0)
+    if (frame) tl.to(frame, { borderRadius: 0, ...grow }, 0)
+    tl.to({}, { duration: 0.25 })
+    tl.to(el, { scale: 1, ...grow }, '>')
+      .to(card, { borderRadius: r0, padding: p0, borderColor: 'rgba(255,255,255,0.1)', ...grow }, '<')
+    if (frame) tl.to(frame, { borderRadius: f0, ...grow }, '<')
+    tl.to({}, { duration: 0.06 }) // settle back before the pin lets go
+
+    // Everything before and after the video on the page, bar fixed items
+    // like the side list.
+    const main = el.closest('main')
+    for (let n = tl.scrollTrigger.spacer || el; n && n !== main; n = n.parentElement) {
+      for (let s = n.previousElementSibling; s; s = s.previousElementSibling) above.push(s)
+      for (let s = n.nextElementSibling; s; s = s.nextElementSibling) below.push(s)
+    }
+    const inFlow = (n) => getComputedStyle(n).position !== 'fixed'
+    above = above.filter(inFlow)
+    below = below.filter(inFlow)
+    hold(tl.scrollTrigger)
+    return () => [...above, ...below].forEach((n) => { n.style.translate = '' })
+  }, { scope: wrap })
+  return <div className="sv-immersive" ref={wrap}>{children}</div>
+}
+
+// Auto-scrolling photo strip; the list is doubled so the loop is seamless.
+function Gallery({ images }) {
+  return (
+    <Card className="sv-gallery">
+      <div className="sv-gallery-track">
+        {[...images, ...images].map((src, i) => (
+          <img key={i} src={src} alt="" loading="lazy" aria-hidden={i >= images.length} />
+        ))}
+      </div>
+    </Card>
+  )
+}
+
+// Blocks keyed by `kind` in data.js. TEXT kinds sit on the dark card; every
+// other visual goes on a light plate.
+const VISUALS = {
+  tldr: TLDR, flow: Flow, compare: Compare, journey: Journey, decision: Decision,
+  blueprint: Blueprint, people: People, principles: Principles, mock: Mock, insights: Insights,
+  journeymap: JourneyMap, tree: Tree, frameworks: Frameworks, wireframes: Wireframes, spec: Spec, closing: Closing,
+  hmw: HMW, details: Details, achievements: Achievements, roadmap: Roadmap,
+  impact: Impact, role: Role, sub: Sub, iconlist: IconList, segments: Segments, table: Table,
+  iterations: Iterations, pills: Pills, walkthrough: Walkthrough, film: Film, shot: Shot, walktabs: WalkTabs, shottabs: ShotTabs,
+  reel: Reel, demo: Demo, choices: Choices, beforeafter: BeforeAfter,
+}
+const TEXT = new Set(['impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'choices'])
+
+function Block({ block }) {
+  const Visual = VISUALS[block.kind]
+  if (Visual) {
+    const node = <Visual {...block} caption={undefined} />
+    const plated = TEXT.has(block.kind) ? node : <div className={'sv-plate is-' + block.kind + (block.wide ? ' is-wide' : '')}>{node}</div>
+    if (!block.caption) return plated
+    return (
+      <figure className="cs-fig">
+        {plated}
+        <figcaption className="cs-figcap">{block.caption}</figcaption>
+      </figure>
+    )
+  }
+  // Term / explanation rows. An item's `illo` puts that person's bust in
+  // front of the term.
+  if (block.kind === 'notes') {
+    return (
+      <dl className="cs-notes">
+        {block.items.map((it) => (
+          <div key={it.t}>
+            <dt>{it.illo && <Person name={it.illo} className="cs-notes-person" />}{it.t}</dt>
+            <dd>{it.p}</dd>
+          </div>
+        ))}
+      </dl>
+    )
+  }
+  if (block.kind === 'split') {
+    return block.items.map((it, i) => (
+      <div className="cs-sub" key={i}>
+        <h3>{it.h}</h3>
+        <p>{it.p}</p>
+      </div>
+    ))
+  }
+  if (block.kind === 'lead') return <p className="sv-sec-lead">{block.p}</p>
+  if (block.kind === 'list') {
+    return (
+      <div className="cs-prose">
+        {block.p && <p>{block.p}</p>}
+        <ul className="cs-list">{block.items.map((it, i) => <li key={i}>{it}</li>)}</ul>
       </div>
     )
   }
-  if (block.kind === 'lead') return <p className="cs-lead">{block.p}</p>
   if (block.kind === 'stats') {
     return (
       <div className="cs-stats">
         {block.items.map((it, i) => (
-          <div key={i}><span className="cs-stat-num">{it.num}</span><span className="cs-stat-label">{it.label}</span></div>
+          <div key={i}><span className="cs-stat-num">{it.num}</span><span>{it.label}</span></div>
         ))}
       </div>
     )
   }
-  return <p className="cs-p">{block.p}</p>
+  return <p>{block.p}</p>
+}
+
+// Section list: a glass panel fixed on the left, mirroring the main menu,
+// listing the case study's sections. The section in view is highlighted
+// (the one whose top last passed a line a third of the way down the
+// screen); clicking an item scrolls there. Hidden on narrower screens.
+function CaseNav({ sections }) {
+  // A section with a `group` (e.g. a design phase: Understand, Define…) is
+  // listed once, under its group's name, pointing at the group's first section.
+  const items = [{ id: 'cs-top', label: 'Overview' }]
+  for (const x of sections) {
+    if (x.group && items.some((it) => it.group === x.group)) continue
+    items.push({ id: x.id, label: x.group || plain(x.nav), group: x.group })
+  }
+  const [active, setActive] = useState(items[0].id)
+  const links = useRef({})
+  const list = useRef(null)
+  const [pill, setPill] = useState(null)
+
+  // One glass highlight slides behind the active item (like the main menu).
+  useLayoutEffect(() => {
+    const el = links.current[active]
+    if (el) setPill({ x: 0, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight })
+  }, [active])
+
+  useEffect(() => {
+    let raf = 0
+    const update = () => {
+      raf = 0
+      const line = window.innerHeight / 3
+      let cur = items[0].id
+      for (const it of items) {
+        const el = document.getElementById(it.id)
+        if (el && el.getBoundingClientRect().top <= line) cur = it.id
+      }
+      setActive(cur)
+    }
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update) }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sections])
+
+  // Scroll to a section. Images above it may load while scrolling and push
+  // it down, so check again once the scroll ends and nudge if needed.
+  const jump = (id) => {
+    const target = () => {
+      const el = document.getElementById(id)
+      if (id === 'cs-top' || !el) return 0
+      // Immersive holds cards with `translate`; aim for where they really sit.
+      const held = parseFloat(getComputedStyle(el).translate.split(' ')[1]) || 0
+      return el.getBoundingClientRect().top + window.scrollY - held - 24
+    }
+    scrollToY(target(), 1)
+    setTimeout(() => {
+      const y = target()
+      if (Math.abs(y - window.scrollY) > 4) scrollToY(y, 0.4)
+    }, 1050)
+  }
+
+  // The highlight can be dragged: let go on a section to jump there.
+  const drag = useDragPill({
+    root: list,
+    axis: 'y',
+    items: () => items.map((it) => ({ key: it.id, el: links.current[it.id] })),
+    pill,
+    current: active,
+    onPick: (id) => { setActive(id); jump(id) },
+  })
+  const shownOn = drag.near ?? active
+
+  return (
+    <nav className="sv-toc" aria-label="On this page">
+      <ol ref={list} className={drag.dragging ? 'is-dragging' : undefined} {...drag.handlers}>
+        <span
+          className={'sv-toc-glass' + (pill ? '' : ' is-hidden')}
+          style={pill ? { ...drag.pillStyle(), height: pill.h } : undefined}
+          aria-hidden="true"
+        />
+        {items.map((it) => (
+          <li key={it.id}>
+            <a
+              href={`#${it.id}`}
+              ref={(el) => { links.current[it.id] = el }}
+              className={'sv-toc-item' + (shownOn === it.id ? ' is-active' : '')}
+              aria-current={active === it.id ? 'true' : undefined}
+              draggable={false}
+              onClick={(e) => { e.preventDefault(); if (!drag.blockClick(e)) jump(it.id) }}
+            >
+              <span className="sv-toc-dot" aria-hidden="true" />
+              <span className="sv-toc-label">{it.label}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
 }

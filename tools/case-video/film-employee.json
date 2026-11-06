@@ -1,0 +1,166 @@
+{
+ "W": 1600,
+ "H": 900,
+ "fps": 30,
+ "bitrate": 3200000,
+ "label": "Superfine Kitchen · Employee ordering",
+ "scenes": [
+  {
+   "kind": "title",
+   "dur": 4.4,
+   "eyebrow": "The problem",
+   "text": "Lunch is covered. *But how much?*",
+   "sub": "Employees on a company meal program couldn't see the allowance, the cut-off, or whether lunch was coming."
+  },
+  {
+   "kind": "stats",
+   "dur": 3.8,
+   "eyebrow": "What the app has to get right",
+   "items": [
+    {
+     "n": "$15",
+     "l": "a day from the company"
+    },
+    {
+     "n": "24 h",
+     "l": "before delivery, the card is charged"
+    },
+    {
+     "n": "0",
+     "l": "accessibility violations in 36 checks"
+    }
+   ]
+  },
+  {
+   "kind": "title",
+   "dur": 2.8,
+   "text": "It says what it costs, *before you ask.*"
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.2,
+   "src": "out-employee-web",
+   "from": 1.0,
+   "to": 8.3,
+   "focus": [
+    0.72,
+    0.42
+   ],
+   "zoom": 1.4,
+   "spot": 1.4,
+   "title": "One front door",
+   "sub": "Sign in with the work email and land on the right menu.",
+   "callout": "Company email",
+   "tx": 0.7
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.2,
+   "src": "out-employee-web",
+   "from": 8.9,
+   "to": 12.9,
+   "focus": [
+    0.86,
+    0.04
+   ],
+   "zoom": 1.4,
+   "title": "Allowance in view",
+   "sub": "What's left today sits in the header while she browses.",
+   "callout": "$15.00 left today",
+   "tx": 0.7
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.4,
+   "src": "out-employee-web",
+   "from": 13.4,
+   "to": 19.3,
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "zoom": 1.35,
+   "spot": 1.8,
+   "title": "Choices come first",
+   "sub": "Required options open before the meal goes in the cart.",
+   "callout": "Pick a protein and a sauce",
+   "tx": 0.7
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.4,
+   "src": "out-employee-web",
+   "from": 21.4,
+   "to": 25.9,
+   "focus": [
+    0.86,
+    0.42
+   ],
+   "zoom": 1.4,
+   "title": "The cart splits it",
+   "sub": "Company pays, she pays, line by line.",
+   "callout": "Company pays · You pay",
+   "tx": 0.7
+  },
+  {
+   "kind": "demo",
+   "device": "browser",
+   "dur": 4.4,
+   "src": "out-employee-web",
+   "from": 26.3,
+   "to": 33.0,
+   "focus": [
+    0.8,
+    0.33
+   ],
+   "zoom": 1.4,
+   "title": "No surprise charge",
+   "sub": "Checkout shows the cut-off and when the card is charged.",
+   "callout": "Charged 24 h before delivery",
+   "tx": 0.7
+  },
+  {
+   "kind": "demo",
+   "dur": 4.6,
+   "src": "out-employee",
+   "from": 7.5,
+   "to": 24.0,
+   "focus": [
+    0.5,
+    0.55
+   ],
+   "zoom": 1.12,
+   "title": "Same flow on a phone",
+   "sub": "Bottom sheets for choices and the total pinned above the thumb.",
+   "callout": "Rebuilt for one hand"
+  },
+  {
+   "kind": "outro",
+   "dur": 4.6,
+   "title": "Corporate Employee Ordering",
+   "points": [
+    "Allowance in view",
+    "Web first, then phone",
+    "WCAG 2.2 AA tested"
+   ],
+   "foot": "Superfine Kitchen · San Francisco"
+  }
+ ],
+ "theme": {
+  "page": "#04413f",
+  "page2": "#0e5a52",
+  "ink": "#fbf7ee",
+  "dim": "rgba(251,247,238,0.68)",
+  "acc": "#f5e616",
+  "glow1": "rgba(245,230,22,0.10)",
+  "glow2": "rgba(38,140,125,0.45)",
+  "scrim": "4,65,63",
+  "pill": "#f5e616",
+  "pillInk": "#04413f",
+  "spot": "0,24,22"
+ }
+}

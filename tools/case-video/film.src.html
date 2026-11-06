@@ -1,0 +1,332 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style>
+</head><body><canvas id="c"></canvas>
+<script>
+// Motion-graphics product film. window.film(cfg) renders the scenes in real
+// time onto the canvas and records them with MediaRecorder (chunks go to
+// window.saveChunk). Scene kinds: hello, title, stats, demo, outro.
+const C = document.getElementById('c'), X = C.getContext('2d')
+let W = 0, H = 0
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
+const ease = (t) => t * t * (3 - 2 * t)
+const out3 = (t) => 1 - Math.pow(1 - t, 3)
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v))
+const lerp = (a, b, t) => a + (b - a) * t
+// Theme: 'site' (portfolio: dark mountains) or a product theme passed in
+// cfg.theme as { page, page2, ink, dim, acc, glow1, glow2, scrim, pill, pillInk, spot }.
+let ACC = '#a8c8ff', INK = '#ffffff', DIM = 'rgba(255,255,255,0.62)'
+let TH = { dark: true, scrim: '3,8,22', pill: 'rgba(255,255,255,0.96)', pillInk: '#0b1a33', spot: '2,8,24', glowA: 'rgba(140,180,255,0.55)', handInk: '#eaf1ff', track: '#fff' }
+
+/*PAINTERS*/
+
+// ---- background: drifting backdrop, moving glows, vignette, grain ---------
+let BG = null, GRAIN = null
+const GLOWS = [
+  { x: 0.2, y: 0.3, r: 0.55, s: 0.11, p: 0, c: '70,120,255' },
+  { x: 0.8, y: 0.7, r: 0.5, s: 0.09, p: 2, c: '120,90,255' },
+  { x: 0.6, y: 0.2, r: 0.4, s: 0.13, p: 4, c: '60,170,255' },
+]
+function makeGrain() {
+  const c = document.createElement('canvas'); c.width = c.height = 256
+  const x = c.getContext('2d'), d = x.createImageData(256, 256)
+  for (let i = 0; i < d.data.length; i += 4) { const v = Math.random() * 255; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255 }
+  x.putImageData(d, 0, 0); return c
+}
+function drawBg(T) {
+  if (!TH.dark) return drawLightBg(T)
+  const s = 1.07 + 0.025 * Math.sin(T * 0.15), dx = Math.sin(T * 0.08) * 26, dy = Math.cos(T * 0.1) * 14
+  X.save(); X.translate(W / 2 + dx, H / 2 + dy); X.scale(s, s); X.drawImage(BG, -W / 2, -H / 2); X.restore()
+  X.globalCompositeOperation = 'lighter'
+  for (const g of GLOWS) {
+    const gx = W * (g.x + 0.09 * Math.sin(T * g.s + g.p)), gy = H * (g.y + 0.08 * Math.cos(T * g.s * 1.3 + g.p)), r = W * g.r
+    const gr = X.createRadialGradient(gx, gy, 0, gx, gy, r)
+    gr.addColorStop(0, `rgba(${g.c},0.16)`); gr.addColorStop(1, `rgba(${g.c},0)`)
+    X.fillStyle = gr; X.fillRect(0, 0, W, H)
+  }
+  X.globalCompositeOperation = 'source-over'
+  const v = X.createRadialGradient(W / 2, H / 2, H * 0.3, W / 2, H / 2, W * 0.75)
+  v.addColorStop(0, 'rgba(0,0,8,0)'); v.addColorStop(1, 'rgba(0,0,8,0.6)')
+  X.fillStyle = v; X.fillRect(0, 0, W, H)
+  X.save(); X.globalAlpha = 0.045; X.globalCompositeOperation = 'overlay'
+  X.fillStyle = X.createPattern(GRAIN, 'repeat'); X.translate((T * 997) % 256, (T * 613) % 256); X.fillRect(-256, -256, W + 512, H + 512); X.restore()
+}
+
+function drawLightBg(T) {
+  const g = X.createLinearGradient(0, 0, W * 0.3, H)
+  g.addColorStop(0, TH.page); g.addColorStop(1, TH.page2); X.fillStyle = g; X.fillRect(0, 0, W, H)
+  const blobs = [{ x: 0.18, y: 0.25, r: 0.45, s: 0.11, p: 0, c: TH.glow1 }, { x: 0.82, y: 0.75, r: 0.5, s: 0.09, p: 2, c: TH.glow2 }, { x: 0.7, y: 0.15, r: 0.35, s: 0.13, p: 4, c: TH.glow1 }]
+  for (const b of blobs) {
+    const gx = W * (b.x + 0.08 * Math.sin(T * b.s + b.p)), gy = H * (b.y + 0.07 * Math.cos(T * b.s * 1.3 + b.p)), r = W * b.r
+    const gr = X.createRadialGradient(gx, gy, 0, gx, gy, r); gr.addColorStop(0, b.c); gr.addColorStop(1, 'rgba(255,255,255,0)')
+    X.fillStyle = gr; X.fillRect(0, 0, W, H)
+  }
+  // faint dot grid, like the Operations canvas
+  X.fillStyle = 'rgba(42,42,42,0.06)'
+  const step = 34, ox = (T * 6) % step
+  for (let x = -step + ox; x < W; x += step) for (let y = 0; y < H; y += step) X.fillRect(x, y, 2, 2)
+  X.save(); X.globalAlpha = 0.03; X.globalCompositeOperation = 'multiply'
+  X.fillStyle = X.createPattern(GRAIN, 'repeat'); X.translate((T * 997) % 256, (T * 613) % 256); X.fillRect(-256, -256, W + 512, H + 512); X.restore()
+}
+
+// ---- kinetic type: words rise into place from behind a line mask ---------
+function layout(text, size, weight, maxW, font = 'Figtree') {
+  X.font = `${weight} ${size}px ${font}`
+  const sp = X.measureText(' ').width, lines = []
+  let cur = [], curW = 0, on = false // on: inside a *marked phrase*, which can span words
+  for (const raw of text.split(' ')) {
+    const marks = (raw.match(/\*/g) || []).length
+    const w = { w: raw.replace(/\*/g, ''), acc: on || marks > 0 }; w.ww = X.measureText(w.w).width
+    if (marks % 2) on = !on
+    if (cur.length && curW + sp + w.ww > maxW) { lines.push({ words: cur, w: curW }); cur = []; curW = 0 }
+    curW += (cur.length ? sp : 0) + w.ww; cur.push(w)
+  }
+  if (cur.length) lines.push({ words: cur, w: curW })
+  return { lines, sp }
+}
+function kinetic(text, x, y, o) {
+  const { size, weight = 700, maxW = W * 0.8, align = 'left', t, delay = 0, stagger = 0.055, color = INK, lh = size * 1.14, a = 1, font = 'Figtree' } = o
+  const L = layout(text, size, weight, maxW, font)
+  X.textBaseline = 'top'; let i = 0
+  L.lines.forEach((ln, li) => {
+    const ly = y + li * lh; let lx = align === 'center' ? x - ln.w / 2 : x
+    X.save(); X.beginPath(); X.rect(lx - 40, ly - size * 0.2, ln.w + 80, lh + size * 0.1); X.clip()
+    for (const wd of ln.words) {
+      const p = out3(clamp((t - delay - i * stagger) / 0.6))
+      X.globalAlpha = a * p; X.font = `${weight} ${size}px ${font}`
+      if (wd.acc) { X.shadowColor = TH.glowA; X.shadowBlur = TH.dark ? size * 0.5 : 0; X.fillStyle = ACC } else { X.shadowBlur = 0; X.fillStyle = color }
+      X.fillText(wd.w, lx, ly + (1 - p) * lh * 0.95)
+      lx += wd.ww + L.sp; i++
+    }
+    X.restore()
+  })
+  X.globalAlpha = 1
+  return L.lines.length * lh
+}
+const measureLines = (text, size, weight, maxW) => layout(text, size, weight, maxW).lines.length
+
+// Small label with a line that draws in before it.
+function eyebrow(text, x, y, t, a, align = 'left') {
+  const p = out3(clamp(t / 0.6)), q = out3(clamp((t - 0.15) / 0.6))
+  X.font = `600 ${H * 0.026}px Figtree`; X.textBaseline = 'middle'
+  const tw = X.measureText(text).width, lw = H * 0.05, total = lw + 14 + tw
+  const x0 = align === 'center' ? x - total / 2 : x
+  X.globalAlpha = a; X.fillStyle = ACC; X.fillRect(x0, y - 1, lw * p, 2)
+  X.globalAlpha = a * q; X.fillText(text, x0 + lw + 14 + (1 - q) * 10, y); X.globalAlpha = 1
+}
+
+// ---- frames from a recording ---------------------------------------------
+const CLIPS = {}
+async function clip(src) {
+  if (!CLIPS[src]) { const idx = await (await fetch(src + '/index.json')).json(); CLIPS[src] = { ...idx, cache: new Map() } }
+  return CLIPS[src]
+}
+async function frameOf(c, src, t) {
+  const fr = c.frames; let lo = 0, hi = fr.length - 1
+  while (lo < hi) { const m = (lo + hi + 1) >> 1; if (fr[m].t <= t) lo = m; else hi = m - 1 }
+  for (let k = lo; k < Math.min(fr.length, lo + 8); k++) if (!c.cache.has(k)) c.cache.set(k, img(src + '/' + fr[k].file))
+  for (const k of c.cache.keys()) if (k < lo - 3) c.cache.delete(k)
+  return c.cache.get(lo)
+}
+
+// ---- scenes ----------------------------------------------------------------
+// Every scene fades and drifts up during its last 0.45 s.
+const exitA = (sc, t) => 1 - ease(clamp((t - (sc.dur - 0.45)) / 0.45))
+
+async function hello(sc, t) {
+  const a = exitA(sc, t), dy = -(1 - a) * 24
+  X.save(); X.translate(0, dy)
+  const hs = H * 0.13; X.font = `600 ${hs}px Caveat`; X.textBaseline = 'top'
+  const tw = X.measureText(sc.hand).width, p = ease(clamp(t / 1.2))
+  const y0 = H * 0.3
+  X.save(); X.beginPath(); X.rect(W / 2 - tw / 2 - 20, y0 - hs * 0.3, (tw + 40) * p, hs * 1.6); X.clip()
+  X.globalAlpha = a; X.fillStyle = TH.handInk; X.shadowColor = TH.glowA; X.shadowBlur = TH.dark ? 30 : 0
+  X.textAlign = 'center'; X.fillText(sc.hand, W / 2, y0); X.textAlign = 'left'; X.restore()
+  kinetic(sc.line, W / 2, y0 + hs * 1.35, { size: H * 0.062, t, delay: 0.9, align: 'center', a })
+  kinetic(sc.sub, W / 2, y0 + hs * 1.35 + H * 0.09, { size: H * 0.034, weight: 500, color: DIM, t, delay: 1.3, align: 'center', a })
+  X.restore()
+}
+
+async function title(sc, t) {
+  const a = exitA(sc, t), size = sc.size || H * 0.075, maxW = W * 0.76
+  const n = measureLines(sc.text, size, 700, maxW), sn = sc.sub ? measureLines(sc.sub, H * 0.032, 500, W * 0.62) : 0
+  const block = (sc.eyebrow ? H * 0.08 : 0) + n * size * 1.14 + (sc.sub ? H * 0.04 + sn * H * 0.032 * 1.35 : 0)
+  let y = (H - block) / 2 - H * 0.02 - (1 - a) * 24
+  if (sc.eyebrow) { eyebrow(sc.eyebrow, W / 2, y + H * 0.015, t, a, 'center'); y += H * 0.08 }
+  y += kinetic(sc.text, W / 2, y, { size, t, delay: 0.2, align: 'center', maxW, a })
+  if (sc.sub) kinetic(sc.sub, W / 2, y + H * 0.04, { size: H * 0.032, weight: 500, color: DIM, t, delay: 0.75, align: 'center', maxW: W * 0.62, lh: H * 0.032 * 1.35, stagger: 0.025, a })
+}
+
+async function stats(sc, t) {
+  const a = exitA(sc, t), n = sc.items.length, colW = W * 0.8 / n, x0 = W * 0.1, cy = H * 0.5 - (1 - a) * 24
+  if (sc.eyebrow) eyebrow(sc.eyebrow, W / 2, H * 0.24, t, a, 'center')
+  sc.items.forEach((it, i) => {
+    const d = 0.25 + i * 0.22, p = out3(clamp((t - d) / 0.8)), cx = x0 + colW * (i + 0.5)
+    if (i) { const lp = ease(clamp((t - d) / 0.7)); X.globalAlpha = a * 0.25; X.fillStyle = TH.track; X.fillRect(x0 + colW * i, cy - H * 0.11 * lp, 1, H * 0.22 * lp) }
+    const m = /^(\D*)(\d+)(.*)$/.exec(it.n)
+    const val = m ? m[1] + Math.round(+m[2] * clamp(p * 1.15)) + m[3] : it.n
+    X.globalAlpha = a * p; X.textAlign = 'center'; X.textBaseline = 'alphabetic'
+    X.font = `800 ${H * 0.13}px Figtree`; X.fillStyle = INK; X.shadowColor = TH.glowA; X.shadowBlur = TH.dark ? 40 : 0
+    X.fillText(val, cx, cy + (1 - p) * 30); X.shadowBlur = 0
+    X.font = `500 ${H * 0.03}px Figtree`; X.fillStyle = DIM
+    wrap(it.l, colW * 0.8).forEach((l, k) => X.fillText(l, cx, cy + H * 0.075 + k * H * 0.04 + (1 - p) * 30))
+    X.textAlign = 'left'; X.globalAlpha = 1
+  })
+}
+
+// Demo chapter: the real screen in a device, the camera pushing into the
+// part that matters, a spotlight and a callout; number, title and line on
+// the left over a dark scrim.
+async function demo(sc, t) {
+  const a = exitA(sc, t), c = await clip(sc.src)
+  const srcT = lerp(sc.from, sc.to, clamp(t / (sc.dur * 0.9)))
+  const f = await frameOf(c, sc.src, srcT)
+  const browserMode = sc.device === 'browser'
+  // base layout
+  let dx, dy, dw, dh, scr
+  if (browserMode) {
+    dw = W * 0.6; const bar = dw * 0.035, ph = dw * (f.height / f.width); dh = bar + ph
+    dx = W * 0.97 - dw; dy = (H - dh) / 2
+    scr = { x: dx, y: dy + bar, w: dw, h: ph }
+  } else {
+    dh = H * 0.86; dw = dh / ((1 - 0.074) * SCREEN_RATIO + 0.074)
+    dx = W * 0.7 - dw / 2; dy = (H - dh) / 2
+    const rim = dw * 0.005, bez = dw * 0.032, sw = dw - 2 * (rim + bez), sh = sw * SCREEN_RATIO, band = sh - sw * (f.height / f.width)
+    scr = { x: dx + rim + bez, y: dy + rim + bez + band, w: sw, h: sh - band, r: dw * 0.13, sx: dx + rim + bez, sy: dy + rim + bez, sh }
+  }
+  const F = { x: scr.x + sc.focus[0] * scr.w, y: scr.y + sc.focus[1] * scr.h }
+  const ent = out3(clamp(t / 0.8))
+  const zp = ease(clamp((t - 0.9) / 1.2)), z = 1 + ((sc.zoom ?? (browserMode ? 1.55 : 1.3)) - 1) * zp
+  const tgt = { x: lerp(F.x, sc.tx ? W * sc.tx : (browserMode ? W * 0.67 : dx + dw / 2), zp), y: lerp(F.y, H * (sc.ty ?? 0.52), zp) }
+  X.save()
+  X.globalAlpha = a * ent
+  X.translate(0, (1 - ent) * 70 - (1 - a) * 20)
+  X.translate(tgt.x, tgt.y); X.scale(z * (0.94 + 0.06 * ent), z * (0.94 + 0.06 * ent)); X.translate(-F.x, -F.y)
+  if (browserMode) browser(f, dx, dy, dw); else device(f, dx, dy, dw)
+  // spotlight on the screen
+  if (sc.focus && zp > 0) {
+    X.save(); rrect(scr.sx ?? scr.x, scr.sy ?? scr.y, scr.w, scr.sh ?? scr.h, scr.r || 0); X.clip()
+    const R = (browserMode ? scr.w * 0.15 : scr.w * 0.42) * (sc.spot || 1), dim = sc.dim ?? (TH.dark ? (browserMode ? 0.62 : 0.5) : 0.42)
+    const g = X.createRadialGradient(F.x, F.y, R * 0.55, F.x, F.y, R * 1.6)
+    g.addColorStop(0, `rgba(${TH.spot},0)`); g.addColorStop(1, `rgba(${TH.spot},${dim * zp})`)
+    X.fillStyle = g; X.fillRect(dx - 10, dy - 10, dw + 20, dh + 20); X.restore()
+  }
+  X.restore()
+  // callout at the focus point (screen space)
+  if (sc.callout) {
+    const cp = out3(clamp((t - 1.6) / 0.5)) * a
+    if (cp > 0) {
+      const px = tgt.x, py = tgt.y
+      const pulse = 1 + 0.25 * Math.sin(t * 6)
+      X.globalAlpha = cp
+      X.beginPath(); X.arc(px, py, 9 * pulse, 0, Math.PI * 2); X.fillStyle = TH.dark ? 'rgba(168,200,255,0.35)' : 'rgba(92,149,168,0.35)'; X.fill()
+      X.beginPath(); X.arc(px, py, 5, 0, Math.PI * 2); X.fillStyle = ACC; X.fill()
+      X.font = `600 ${H * 0.026}px Figtree`; const tw = X.measureText(sc.callout).width, pw = tw + 44, ph = H * 0.056
+      const above = py - ph - 46 > 40
+      const by = above ? py - 34 - ph : py + 34
+      const bx = clamp(px - pw / 2, W * 0.44, W - pw - 20)
+      X.strokeStyle = TH.dark ? 'rgba(168,200,255,0.8)' : ACC; X.lineWidth = 1.5
+      X.beginPath(); X.moveTo(px, py + (above ? -8 : 8)); X.lineTo(px, above ? by + ph : by); X.stroke()
+      X.save(); X.translate(bx + pw / 2, by + ph / 2); X.scale(0.9 + 0.1 * cp, 0.9 + 0.1 * cp)
+      X.shadowColor = 'rgba(0,0,0,0.4)'; X.shadowBlur = 24; X.shadowOffsetY = 8
+      rrect(-pw / 2, -ph / 2, pw, ph, ph / 2); X.fillStyle = TH.pill; X.fill(); X.shadowBlur = 0; X.shadowOffsetY = 0
+      X.fillStyle = TH.pillInk; X.textBaseline = 'middle'; X.textAlign = 'center'; X.fillText(sc.callout, 0, 1); X.textAlign = 'left'
+      X.restore(); X.globalAlpha = 1
+    }
+  }
+  // scrim + text
+  const s = X.createLinearGradient(0, 0, W * 0.6, 0)
+  if (browserMode) {
+    // web: a solid dark panel behind the text, fading out over the window
+    s.addColorStop(0, `rgba(${TH.scrim},${0.94 * a * ent})`); s.addColorStop(0.6, `rgba(${TH.scrim},${0.9 * a * ent})`); s.addColorStop(0.85, `rgba(${TH.scrim},${0.35 * a * ent})`); s.addColorStop(1, `rgba(${TH.scrim},0)`)
+  } else {
+    s.addColorStop(0, `rgba(${TH.scrim},${0.82 * a * ent})`); s.addColorStop(0.7, `rgba(${TH.scrim},${0.45 * a * ent})`); s.addColorStop(1, `rgba(${TH.scrim},0)`)
+  }
+  X.fillStyle = s; X.fillRect(0, 0, W * 0.6, H)
+  const tx = W * 0.075, colW = browserMode ? W * 0.3 : W * 0.4, ts = H * 0.07, ss = H * 0.031
+  const nl = measureLines(sc.title, ts, 700, colW), sl = measureLines(sc.sub, ss, 500, colW)
+  const block = H * 0.12 + nl * ts * 1.1 + H * 0.035 + sl * ss * 1.4
+  let y = (H - block) / 2 - (1 - a) * 20
+  // big chapter number
+  const np = out3(clamp(t / 0.7))
+  X.globalAlpha = a * np; X.font = `800 ${H * 0.085}px Figtree`; X.textBaseline = 'top'
+  X.fillStyle = ACC; X.fillText(sc.n, tx, y + (1 - np) * 20)
+  X.font = `500 ${H * 0.024}px Figtree`; X.fillStyle = DIM; X.fillText(sc.of || '', tx + H * 0.13, y + H * 0.03)
+  X.globalAlpha = 1; y += H * 0.12
+  y += kinetic(sc.title, tx, y, { size: ts, t, delay: 0.2, maxW: colW, a, lh: ts * 1.1 })
+  kinetic(sc.sub, tx, y + H * 0.035, { size: ss, weight: 500, color: DIM, t, delay: 0.6, maxW: colW, lh: ss * 1.4, stagger: 0.025, a })
+}
+
+async function outro(sc, t) {
+  const a = exitA({ dur: sc.dur + 10 }, t)
+  const y0 = H * 0.27
+  eyebrow(sc.eyebrow || 'Designed at Heizen', W / 2, y0, t, a, 'center')
+  kinetic(sc.title, W / 2, y0 + H * 0.06, { size: H * 0.1, weight: 800, t, delay: 0.25, align: 'center', a, maxW: W * 0.9 })
+  const n = sc.points.length, gap = W * 0.03
+  X.font = `600 ${H * 0.032}px Figtree`
+  const widths = sc.points.map((p) => X.measureText(p).width + H * 0.06)
+  let x = W / 2 - (widths.reduce((s, w) => s + w, 0) + gap * (n - 1)) / 2
+  const py = y0 + H * 0.26
+  sc.points.forEach((p, i) => {
+    const q = out3(clamp((t - 0.9 - i * 0.25) / 0.6))
+    X.globalAlpha = a * q
+    const r = H * 0.018, cx = x + r, cy = py + H * 0.016
+    X.beginPath(); X.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * q); X.strokeStyle = ACC; X.lineWidth = 2; X.stroke()
+    X.beginPath(); X.moveTo(cx - r * 0.45, cy); X.lineTo(cx - r * 0.1, cy + r * 0.38); X.lineTo(cx + r * 0.5, cy - r * 0.35); X.stroke()
+    X.font = `600 ${H * 0.032}px Figtree`; X.fillStyle = INK; X.textBaseline = 'top'; X.fillText(p, x + r * 2 + H * 0.016, py + (1 - q) * 14)
+    x += widths[i] + gap
+  })
+  if (sc.foot) { const q = out3(clamp((t - 1.8) / 0.6)); X.globalAlpha = a * q; X.font = `500 ${H * 0.026}px Figtree`; X.fillStyle = DIM; X.textAlign = 'center'; X.fillText(sc.foot, W / 2, py + H * 0.13); X.textAlign = 'left' }
+  X.globalAlpha = 1
+}
+
+const SCENES = { hello, title, stats, demo, outro }
+
+// Brand label (top left) and a progress line with chapter ticks (bottom).
+function chrome(cfg, T, total, scenes) {
+  const a = clamp((T - (scenes[0]?.dur || 0) + 0.3) / 0.6) * (1 - clamp((T - total + 1) / 0.8))
+  if (a <= 0) return
+  X.globalAlpha = a * 0.85; X.font = `600 ${H * 0.022}px Figtree`; X.textBaseline = 'middle'; X.fillStyle = INK
+  X.fillText(cfg.label, W * 0.075, H * 0.07)
+  const x0 = W * 0.075, x1 = W * 0.925, y = H * 0.93
+  X.globalAlpha = a * 0.25; X.fillStyle = TH.track; X.fillRect(x0, y, x1 - x0, 2)
+  X.globalAlpha = a; X.fillStyle = ACC; X.fillRect(x0, y, (x1 - x0) * clamp(T / total), 2)
+  let s = 0
+  for (const sc of scenes) {
+    if (sc.kind === 'demo') { const p = s / total; X.globalAlpha = a * (T >= s ? 1 : 0.4); X.beginPath(); X.arc(x0 + (x1 - x0) * p, y + 1, 3.5, 0, Math.PI * 2); X.fill() }
+    s += sc.dur
+  }
+  X.globalAlpha = 1
+}
+
+window.film = async (cfg) => {
+  W = C.width = cfg.W; H = C.height = cfg.H
+  await document.fonts.load('700 40px Figtree'); await document.fonts.load('800 40px Figtree'); await document.fonts.load('600 40px Caveat'); await document.fonts.ready
+  if (cfg.theme && typeof cfg.theme === 'object') {
+    const t = cfg.theme; TH = { dark: false, glowA: 'rgba(0,0,0,0)', track: t.ink, handInk: t.acc, spot: t.spot || '42,42,42', ...t }
+    ACC = t.acc; INK = t.ink; DIM = t.dim
+  }
+  BG = TH.dark ? await makeBg(cfg) : null; GRAIN = makeGrain()
+  const scenes = cfg.scenes, total = scenes.reduce((s, x) => s + x.dur, 0)
+  const demos = scenes.filter((s) => s.kind === 'demo'); demos.forEach((s, i) => { s.n = s.n || String(i + 1).padStart(2, '0'); s.of = `of ${String(demos.length).padStart(2, '0')}` })
+  for (const s of demos) await clip(s.src)
+  const stream = C.captureStream(0), track = stream.getVideoTracks()[0]
+  const rec = new MediaRecorder(stream, { mimeType: 'video/mp4;codecs=avc1.640028', videoBitsPerSecond: cfg.bitrate || 5_000_000 })
+  const done = new Promise((r) => (rec.onstop = r))
+  rec.ondataavailable = async (e) => { if (e.data.size) { const b = new Uint8Array(await e.data.arrayBuffer()); let s = ''; for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000)); await window.saveChunk(btoa(s)) } }
+  rec.start(1000)
+  const fps = cfg.fps || 30, n = Math.ceil(total * fps), start = performance.now()
+  for (let i = 0; i < n; i++) {
+    const T = i / fps
+    drawBg(T)
+    let s = 0
+    for (const sc of scenes) { if (T >= s && T < s + sc.dur) { await SCENES[sc.kind](sc, T - s) } s += sc.dur }
+    chrome(cfg, T, total, scenes)
+    track.requestFrame()
+    const wait = start + ((i + 1) / fps) * 1000 - performance.now(); if (wait > 0) await sleep(wait)
+  }
+  await sleep(300); rec.stop(); await done
+  return { total, frames: n, late: Math.round(performance.now() - start - total * 1000) }
+}
+</script></body></html>

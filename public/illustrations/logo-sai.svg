@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="60 30 880 880">
+  <!-- hair, back mass -->
+  <g fill="#111">
+    <circle cx="500" cy="270" r="220"/>
+    <circle cx="320" cy="300" r="170"/>
+    <circle cx="680" cy="300" r="170"/>
+    <circle cx="240" cy="420" r="105"/>
+    <circle cx="760" cy="420" r="105"/>
+    <ellipse cx="222" cy="500" rx="42" ry="60"/>
+    <ellipse cx="778" cy="500" rx="42" ry="60"/>
+    <!-- flicks -->
+    <path d="M200 330 C 150 330, 120 300, 125 270 C 150 300, 190 290, 220 290 Z"/>
+    <path d="M800 330 C 850 330, 880 300, 875 270 C 850 300, 810 290, 780 290 Z"/>
+    <path d="M160 470 C 120 470, 100 440, 105 415 C 125 440, 160 430, 185 430 Z"/>
+    <path d="M840 470 C 880 470, 900 440, 895 415 C 875 440, 840 430, 815 430 Z"/>
+    <path d="M300 150 C 270 110, 280 75, 305 65 C 300 100, 330 120, 350 130 Z"/>
+    <path d="M690 140 C 730 105, 760 110, 775 130 C 740 125, 720 150, 705 165 Z"/>
+    <path d="M175 590 C 150 610, 150 640, 165 655 C 170 630, 195 615, 215 610 Z"/>
+    <path d="M825 590 C 850 610, 850 640, 835 655 C 830 630, 805 615, 785 610 Z"/>
+  </g>
+  <g stroke="#111" stroke-linecap="round" stroke-linejoin="round">
+    <!-- ears -->
+    <ellipse cx="226" cy="598" rx="38" ry="52" fill="#fff" stroke-width="18"/>
+    <ellipse cx="774" cy="598" rx="38" ry="52" fill="#fff" stroke-width="18"/>
+    <path d="M218 585 C 232 592, 234 610, 222 620" fill="none" stroke-width="10"/>
+    <path d="M782 585 C 768 592, 766 610, 778 620" fill="none" stroke-width="10"/>
+  </g>
+  <!-- face -->
+  <path d="M245 440 C 240 660, 330 850, 500 868 C 670 850, 760 660, 755 440 L 745 360 L 255 360 Z" fill="#fff" stroke="#111" stroke-width="18" stroke-linejoin="round"/>
+  <!-- bangs -->
+  <path fill="#111" d="M236 520 C 250 440, 280 450, 310 410 C 335 445, 370 435, 392 395 C 410 425, 445 420, 470 385
+    C 485 430, 525 450, 560 415 C 585 448, 625 445, 645 420 C 670 445, 705 450, 728 470 C 745 455, 760 490, 764 520
+    L 790 300 L 210 300 Z"/>
+  <path fill="#111" d="M470 385 C 448 440, 462 478, 498 492 C 486 462, 496 438, 518 420 Z"/>
+  <g stroke="#111" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- brows -->
+    <path d="M325 478 Q 375 462 428 476" stroke-width="24"/>
+    <path d="M572 476 Q 625 462 675 478" stroke-width="24"/>
+    <!-- glasses -->
+    <rect x="285" y="505" width="180" height="118" rx="24" stroke-width="18" fill="#fff"/>
+    <rect x="535" y="505" width="180" height="118" rx="24" stroke-width="18" fill="#fff"/>
+    <path d="M465 540 Q 500 528 535 540" stroke-width="16"/>
+    <path d="M285 535 L 248 530" stroke-width="14"/>
+    <path d="M715 535 L 752 530" stroke-width="14"/>
+    <!-- eyes: sleepy lids + pupils -->
+    <path d="M322 568 Q 375 548 428 566" stroke-width="14"/>
+    <path d="M572 568 Q 625 548 678 566" stroke-width="14"/>
+    <path d="M350 558 A 25 26 0 0 0 400 558 Z" fill="#111" stroke-width="6"/>
+    <path d="M600 558 A 25 26 0 0 0 650 558 Z" fill="#111" stroke-width="6"/>
+    <!-- nose -->
+    <path d="M500 610 L 497 690" stroke-width="15"/>
+    <!-- blush -->
+    <path d="M318 660 L 332 688 M346 656 L 360 684" stroke-width="11"/>
+    <path d="M640 656 L 654 684 M668 660 L 682 688" stroke-width="11"/>
+    <!-- mouth -->
+    <path d="M455 765 Q 500 756 545 768" stroke-width="16"/>
+  </g>
+</svg>

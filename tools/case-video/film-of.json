@@ -1,0 +1,172 @@
+{
+ "W": 1600,
+ "H": 900,
+ "fps": 30,
+ "bitrate": 3400000,
+ "src": "file:///Users/saimyothu/claude-workspace/saimyothu-portfolio/tools/case-video/of-launch.mp4",
+ "scenes": [
+  {
+   "kind": "text",
+   "dur": 2.5,
+   "bg": "cream",
+   "ink": "orange",
+   "em": "brown",
+   "lines": [
+    {
+     "t": "Rush hour at a café in Yangon."
+    }
+   ]
+  },
+  {
+   "kind": "text",
+   "dur": 3.1,
+   "bg": "cream",
+   "ink": "orange",
+   "em": "brown",
+   "gap": 100,
+   "lines": [
+    {
+     "t": "Wrong orders."
+    },
+    {
+     "t": "Slow service."
+    },
+    {
+     "t": "*Old menus.*"
+    }
+   ]
+  },
+  {
+   "kind": "text",
+   "dur": 2.7,
+   "bg": "dark",
+   "ink": "cream",
+   "em": "orange",
+   "gap": 100,
+   "lines": [
+    {
+     "t": "Most cafés still run on"
+    },
+    {
+     "t": "*pen and paper.*"
+    }
+   ]
+  },
+  {
+   "kind": "text",
+   "dur": 2.3,
+   "bg": "orange",
+   "ink": "white",
+   "em": "white",
+   "lines": [
+    {
+     "t": "So we built *OrderFlow.*"
+    }
+   ]
+  },
+  {
+   "kind": "clip",
+   "from": 11.7,
+   "to": 18.4,
+   "bg": "cream",
+   "ink": "orange",
+   "sub": "brown",
+   "caps": [
+    {
+     "at": 0,
+     "h": "Guests scan\nthe table QR.",
+     "p": "No app, no login."
+    },
+    {
+     "at": 2.5,
+     "h": "They order on\ntheir own phone.",
+     "p": "In English or Burmese."
+    }
+   ]
+  },
+  {
+   "kind": "clip",
+   "from": 21.0,
+   "to": 28.2,
+   "bg": "orange",
+   "ink": "white",
+   "crop": [
+    0.04,
+    0.125,
+    0.92,
+    0.665
+   ],
+   "h": 730,
+   "right": 56,
+   "round": 22,
+   "caps": [
+    {
+     "at": 0,
+     "h": "Staff see\nevery order\nas it lands.",
+     "p": "Live, on one board."
+    },
+    {
+     "at": 3.2,
+     "h": "Or the whole\nfloor, table\nby table.",
+     "p": "Same orders, as a map."
+    }
+   ]
+  },
+  {
+   "kind": "clip",
+   "from": 29.2,
+   "to": 34.7,
+   "bg": "dark",
+   "ink": "cream",
+   "sub": "cream",
+   "crop": [
+    0.04,
+    0.02,
+    0.92,
+    0.72
+   ],
+   "h": 780,
+   "right": 56,
+   "round": 22,
+   "caps": [
+    {
+     "at": 0,
+     "h": "Owners run\nthe menu\nthemselves.",
+     "p": "Items, prices, what’s sold out."
+    }
+   ]
+  },
+  {
+   "kind": "stats",
+   "dur": 4.4,
+   "title": "By October 2026",
+   "items": [
+    {
+     "n": "4",
+     "l": "cafés live"
+    },
+    {
+     "n": "1,000+",
+     "l": "orders at RAW",
+     "l2": "in its first 42 days"
+    },
+    {
+     "n": "42/42",
+     "l": "days in use"
+    }
+   ]
+  },
+  {
+   "kind": "full",
+   "from": 37.45,
+   "to": 39.3,
+   "bg": "dark"
+  },
+  {
+   "kind": "full",
+   "from": 47.5,
+   "to": 49.7,
+   "bg": "cream"
+  }
+ ]
+}
