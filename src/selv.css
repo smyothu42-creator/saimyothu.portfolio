@@ -2357,10 +2357,11 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .cs-dec-base { width: 150px; height: 16px; margin-top: -3px; border-radius: 50%; background: radial-gradient(ellipse at 50% 30%, #f6f7f9, #c3c6cb 60%, #7e8187); box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.6); }
 
 /* 2 · Offline: a dimmed desk computer, the admin on a phone with 4G. */
-.cs-dec-off { position: relative; display: flex; align-items: center; justify-content: center; gap: 44px; width: 100%; }
+.cs-dec-off { position: relative; display: flex; align-items: center; justify-content: center; gap: 36px; width: 100%; padding-top: 44px; }
 .cs-dec-desk { display: flex; flex-direction: column; align-items: center; gap: 0; }
 .cs-dec-desk > * { opacity: 0.8; }
-.cs-dec-mobile { display: flex; flex-direction: column; align-items: center; }
+.cs-dec-mobile { position: relative; display: flex; flex-direction: column; align-items: center; }
+.cs-dec-mobile .cs-dec-pill { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); }
 .cs-dec-desk-screen { width: 290px; aspect-ratio: 16 / 10; height: auto; border-radius: 8px; display: grid; place-items: center; border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.06); color: var(--sv-text); }
 .cs-dec-desk-screen svg, .cs-dec-pill svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .cs-dec-desk-foot { width: 60px; height: 20px; border: 1px solid rgba(255, 255, 255, 0.3); border-top: 0; }
@@ -2435,7 +2436,7 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .cs-dec-wifi .cut { stroke: #ff8a7a; stroke-width: 2; stroke-dasharray: 1; stroke-dashoffset: 1; animation: dec-cut 3s ease-in-out infinite; }
 @keyframes dec-cut { 0%, 45% { stroke-dashoffset: 1; opacity: 1; } 60%, 88% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .cs-dec-wifi path { animation: none !important; } .cs-dec-wifi .cut { stroke-dashoffset: 0; } }
-@media (max-width: 760px) { .cs-dec-off { gap: 28px; } .cs-dec-desk-screen { width: 200px; } .cs-dec-pill { white-space: normal; text-align: center; max-width: 150px; font-size: 11px; } }
+@media (max-width: 760px) { .cs-dec-off { gap: 28px; padding-top: 0; } .cs-dec-mobile .cs-dec-pill { position: static; transform: none; margin-bottom: 10px; } .cs-dec-desk-screen { width: 200px; } .cs-dec-pill { white-space: normal; text-align: center; max-width: 150px; font-size: 11px; } }
 
 /* MVP: phone and browser side by side, screens cross-fading like a video. */
 .cs-mock { container-type: inline-size; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(20px, 4cqw, 40px); align-items: center; margin-top: 8px; }
