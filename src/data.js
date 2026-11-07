@@ -91,7 +91,6 @@ export const CASES = [
         {
           id: 'impact',
           nav: 'Impact',
-          illo: 'shipping',
           blocks: [
             { kind: 'impact', headline: 'Seven months in, four cafés use OrderFlow every day, and every pilot is still running.', items: [
               { num: '4', label: 'Cafés live, October 2026' },
@@ -270,7 +269,6 @@ export const CASES = [
         {
           id: 'impact',
           nav: 'Impact',
-          illo: 'shipping',
           blocks: [
             { kind: 'lead', p: 'A web app for employees on a company meal program, built from five interview findings and tested against WCAG 2.2 AA.' },
             { kind: 'notes', items: [
@@ -739,7 +737,6 @@ export const CASES = [
         {
           id: 'impact',
           nav: 'Impact',
-          illo: 'shipping',
           blocks: [
             { kind: 'lead', p: 'Users reported faster top-ups, fewer errors and more confidence using the app. The feedback was positive, and it showed how far simple, thoughtful design can go.' },
           ],
