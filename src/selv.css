@@ -2451,14 +2451,7 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 
 /* Design execution: shipping the front end. */
 .cs-ship { display: flex; flex-direction: column; gap: 22px; }
-.cs-ship .cs-stat-h { margin: 0; }
 .cs-ship-p { margin: -8px 0 0; font-size: 17px; line-height: 1.55; color: var(--sv-soft); max-width: 38em; }
-.cs-ship-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 0; }
-.cs-ship-step { display: inline-flex; align-items: center; }
-.cs-ship-arrow { margin: 0 8px; color: var(--sv-dim); font-size: 13px; }
-.cs-ship-chip { padding: 7px 14px; border-radius: 999px; font-size: 13px; line-height: 1; color: var(--sv-text); white-space: nowrap;
-  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16); animation: ship-glow 4.2s ease-in-out infinite; }
-@keyframes ship-glow { 0%, 12% { border-color: rgba(255, 178, 125, 0.9); background-color: rgba(239, 122, 44, 0.22); } 30%, 100% { border-color: rgba(255, 255, 255, 0.16); background-color: rgba(255, 255, 255, 0.08); } }
 .cs-term { border-radius: 14px; overflow: hidden; background: #0d1117; border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 24px 50px -28px rgba(0, 0, 0, 0.9); }
 .cs-term-bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: #161b22; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
 .cs-term-bar i { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; } .cs-term-bar i:nth-child(2) { background: #febc2e; } .cs-term-bar i:nth-child(3) { background: #28c840; }
@@ -2471,5 +2464,5 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 @keyframes term-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 .cs-term-cmd.is-cursor i { display: inline-block; width: 7px; height: 14px; vertical-align: -2px; background: #c9d1d9; animation: term-blink 1s steps(1) infinite; }
 @keyframes term-blink { 50% { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .cs-term-line { animation: none; opacity: 1; } .cs-ship-chip, .cs-term-cmd.is-cursor i { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .cs-term-line { animation: none; opacity: 1; } .cs-term-cmd.is-cursor i { animation: none; } }
 @media (max-width: 640px) { .cs-term-body { font-size: 11px; } }

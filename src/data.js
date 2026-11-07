@@ -204,24 +204,6 @@ export const CASES = [
           title: 'Designed, then *delivered in code*',
           blocks: [
             { kind: 'lead', p: 'I mapped the flows in FigJam, designed both apps on one design system in Figma, and delivered their front end in code, so what we tested in cafés was what I designed.' },
-            { kind: 'ship',
-              h: 'Shipping the front end',
-              p: 'Every change went out the same way: its own branch, a pull request, type check, lint and build, a changelog note on how it was checked, then staging before production.',
-              stats: [
-                { num: '53', label: 'Commits by me, Jun to Nov 2026' },
-                { num: '2', label: 'Front-end repos: guest app and admin' },
-                { num: '68', label: 'Pull requests merged across both' },
-              ],
-              steps: ['Figma', 'Branch', 'Pull request', 'Checks', 'Staging', 'Production'],
-              log: [
-                ['055d995', 'admin', 'feat(admin): rework order flows, room checkout, and admin UI polish'],
-                ['66814c1', 'guest', 'feat: guest sign-in UI, online-order updates and language hydration fix'],
-                ['6a7b878', 'admin', 'feat(reports): add item sales and sales summary tabs'],
-                ['1d7f7e0', 'guest', 'feat(loyalty): refresh loyalty/home UI, add rewards hub and zh/ko locales'],
-                ['ef4a261', 'admin', 'design: rebuild the print prompt around what a cashier needs at the counter'],
-                ['ef40d2f', 'guest', 'feat(menu): show out-of-stock items instead of hiding them'],
-              ],
-            },
             { kind: 'demo', src: '/case/orderflow/guest.mp4', poster: '/case/orderflow/guest.jpg', alt: 'Screen recording of the guest app: the menu, switching to Burmese, browsing, adding two items, the basket, placing the order and following it', steps: [
               { t: 0, text: 'Scan the QR, no app' },
               { t: 0.77, text: 'Burmese or English' },
@@ -232,6 +214,30 @@ export const CASES = [
               { t: 28.38, text: 'Track until ready' },
             ] },
             { kind: 'reel', ratio: '7 / 5', src: '/case/orderflow/admin.mp4?v=2', poster: '/case/orderflow/admin.jpg', alt: 'The admin panel: the live order board, the table map, adding a menu item in English and Burmese, and the menu list', caption: 'The order board, the table map and the menu, from our launch film.' },
+          ],
+        },
+        {
+          id: 'shipping',
+          nav: 'Shipping',
+          toc: false,
+          title: 'Shipping the *front end*',
+          blocks: [
+            { kind: 'lead', p: 'Every change went out the same way: its own branch, type check, lint and build, a changelog note on how it was checked, then staging before production.' },
+            { kind: 'ship',
+              stats: [
+                { num: '53', label: 'Commits by me, Jun to Nov 2026' },
+                { num: '2', label: 'Front-end repos: guest app and admin' },
+                { num: '4', label: 'Pull requests of mine merged' },
+              ],
+              log: [
+                ['055d995', 'admin', 'feat(admin): rework order flows, room checkout, and admin UI polish'],
+                ['66814c1', 'guest', 'feat: guest sign-in UI, online-order updates and language hydration fix'],
+                ['6a7b878', 'admin', 'feat(reports): add item sales and sales summary tabs'],
+                ['1d7f7e0', 'guest', 'feat(loyalty): refresh loyalty/home UI, add rewards hub and zh/ko locales'],
+                ['ef4a261', 'admin', 'design: rebuild the print prompt around what a cashier needs at the counter'],
+                ['ef40d2f', 'guest', 'feat(menu): show out-of-stock items instead of hiding them'],
+              ],
+            },
           ],
         },
         {

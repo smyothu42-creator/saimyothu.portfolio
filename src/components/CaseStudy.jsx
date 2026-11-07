@@ -694,23 +694,13 @@ function MockPair({ phone, browser }) {
   )
 }
 
-// Design execution: how the front end shipped. A few real numbers, the path
-// every change took, and a terminal with real commits from the two repos.
-function Ship({ h, p, stats, steps, log }) {
+// Shipping the front end: a few real numbers and a terminal with real
+// commits from the two front-end repos.
+function Ship({ stats, log }) {
   return (
     <div className="cs-ship">
-      <h3 className="cs-stat-h">{h}</h3>
-      <p className="cs-ship-p">{p}</p>
       <div className="cs-stats">
         {stats.map((it) => <div key={it.label}><span className="cs-stat-num">{it.num}</span><span>{it.label}</span></div>)}
-      </div>
-      <div className="cs-ship-steps" role="list">
-        {steps.map((t, i) => (
-          <span key={t} className="cs-ship-step" role="listitem">
-            {i > 0 && <span className="cs-ship-arrow" aria-hidden="true">→</span>}
-            <span className="cs-ship-chip" style={{ animationDelay: `${i * 0.35}s` }}>{t}</span>
-          </span>
-        ))}
       </div>
       <div className="cs-term" aria-label="Recent commits">
         <div className="cs-term-bar" aria-hidden="true"><i /><i /><i /><span>orderflow · zsh</span></div>
