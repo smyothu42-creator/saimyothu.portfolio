@@ -1467,6 +1467,17 @@ button.sv-pill:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(
 .sv-card .cs-stats > div { padding: 0 24px; border: 0; border-left: 1px solid var(--sv-line); color: var(--sv-dim); font-size: 14px; line-height: 1.4; }
 .sv-card .cs-stats > div:first-child { padding-left: 0; border-left: 0; }
 .sv-card .cs-stat-num { display: block; margin-bottom: 6px; font-size: clamp(32px, 3.6vw, 42px); letter-spacing: -0.02em; color: var(--sv-text); }
+/* Stat rows with a title, brand tiles and a source line (The Opportunity). */
+.cs-statrow + .cs-statrow { margin-top: 36px; }
+.cs-stat-h { margin: 0 0 16px; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sv-dim); }
+.sv-card .cs-stats > div.has-logos { display: flex; flex-direction: row; align-items: center; gap: 14px; }
+.cs-logos { display: flex; flex: none; }
+.cs-logo { display: block; width: 44px; height: 44px; border-radius: 11px; box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.6); }
+.cs-logo + .cs-logo { margin-left: -14px; transform: rotate(8deg); }
+.cs-logos .cs-logo:first-child:not(:last-child) { transform: rotate(-8deg); }
+.cs-stat-txt { min-width: 0; }
+.cs-stat-note { margin: 18px 0 0; font-size: 12px; line-height: 1.5; color: var(--sv-dim); opacity: 0.8; }
+@media (max-width: 640px) { .sv-card .cs-stats > div.has-logos { flex-direction: column; align-items: flex-start; } .cs-logo { width: 38px; height: 38px; } }
 @media (max-width: 640px) { .sv-card .cs-stats { grid-template-columns: 1fr 1fr; } .sv-card .cs-stats > div { padding: 0 16px 0 0; border-left: 0; } }
 .sv-card .st-role, .sv-card .st-segments { gap: 32px; }
 .sv-card .st-sub-h, .sv-card .cs-sub h3 { color: var(--sv-text); font-size: 21px; font-weight: 500; }

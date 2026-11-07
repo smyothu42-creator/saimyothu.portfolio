@@ -115,12 +115,16 @@ export const CASES = [
           illo: 'table',
           blocks: [
             { kind: 'lead', p: 'Myanmar has 23,741 cafés and restaurants, and at rush hour most still take orders on pen and paper. Restaurant software grows about 17% a year worldwide, yet nothing here let the guest order.' },
-            { kind: 'table', cols: ['Option', 'Cost to start', 'Guests order themselves', 'Reaches the kitchen'], rows: [
-              ['Pen and paper', 'Free', 'No', 'Someone carries it'],
-              ['Traditional POS', 'About 3.5M MMK', 'No', 'Staff type it in'],
-              ['Cloud POS', 'About 880K MMK a year', 'No', 'Staff type it in'],
-              ['OrderFlow', 'Two months free', 'Yes', 'Straight away'],
+            { kind: 'stats', h: 'Market size', items: [
+              { num: '6.2T', label: 'MMK: restaurant software in Asia-Pacific, 2027' },
+              { num: '33.2B', label: 'MMK a year across Myanmar’s 23,741 cafés and restaurants' },
+              { num: '4.3B', label: 'MMK a year in Yangon, where we start (3,043 shops)' },
             ] },
+            { kind: 'stats', h: 'Why now', items: [
+              { logos: ['foodpanda', 'grabfood'], num: '39.8M', label: 'People online in Myanmar' },
+              { logos: ['kbzpay'], num: '19M', label: 'People pay by phone (KBZPay)' },
+              { num: '25%', label: 'Inflation, so printed prices go stale' },
+            ], note: 'Sources: ReportLinker, Asia-Pacific restaurant software 2027; poidata.io shop counts; DataReportal, Digital 2026 Myanmar; KBZ Bank, 2024; Asian Development Bank, 2025.' },
           ],
         },
         {

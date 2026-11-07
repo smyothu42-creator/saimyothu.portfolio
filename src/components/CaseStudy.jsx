@@ -222,12 +222,21 @@ function Block({ block }) {
       </div>
     )
   }
+  // A row of numbers. `h` titles the row, an item's `logos` puts brand tiles
+  // in front of its number, and `note` lists the sources under the row.
   if (block.kind === 'stats') {
     return (
-      <div className="cs-stats">
-        {block.items.map((it, i) => (
-          <div key={i}><span className="cs-stat-num">{it.num}</span><span>{it.label}</span></div>
-        ))}
+      <div className="cs-statrow">
+        {block.h && <h3 className="cs-stat-h">{block.h}</h3>}
+        <div className="cs-stats">
+          {block.items.map((it, i) => (
+            <div key={i} className={it.logos ? 'has-logos' : undefined}>
+              {it.logos && <span className="cs-logos">{it.logos.map((l) => <BrandTile key={l} name={l} />)}</span>}
+              <span className="cs-stat-txt"><span className="cs-stat-num">{it.num}</span><span>{it.label}</span></span>
+            </div>
+          ))}
+        </div>
+        {block.note && <p className="cs-stat-note">{block.note}</p>}
       </div>
     )
   }
@@ -337,5 +346,38 @@ function CaseNav({ sections, top = true, overview }) {
         ))}
       </ol>
     </nav>
+  )
+}
+
+// Small app-icon tiles for the brands a stat refers to, drawn in each brand's
+// colour so no image files are needed.
+const BRANDS = {
+  foodpanda: { bg: '#D70F64', label: 'foodpanda', art: (
+    <g fill="#fff">
+      <circle cx="14" cy="15" r="5" /><circle cx="34" cy="15" r="5" />
+      <ellipse cx="24" cy="27" rx="13" ry="11.5" />
+      <g fill="#D70F64"><ellipse cx="19" cy="26" rx="3.4" ry="4" /><ellipse cx="29" cy="26" rx="3.4" ry="4" /><ellipse cx="24" cy="32.5" rx="2.2" ry="1.5" /></g>
+      <g fill="#fff"><circle cx="19.6" cy="25.4" r="1.2" /><circle cx="29.6" cy="25.4" r="1.2" /></g>
+    </g>
+  ) },
+  grabfood: { bg: '#00B14F', label: 'GrabFood', art: (
+    <g fill="#fff" fontFamily="inherit" fontWeight="700" textAnchor="middle">
+      <text x="24" y="22" fontSize="12">Grab</text><text x="24" y="35" fontSize="12">Food</text>
+    </g>
+  ) },
+  kbzpay: { bg: '#1653A5', label: 'KBZPay', art: (
+    <g fill="#fff" fontFamily="inherit" fontWeight="800" textAnchor="middle">
+      <text x="24" y="23" fontSize="13">KBZ</text><text x="24" y="36" fontSize="12" fontWeight="600">Pay</text>
+    </g>
+  ) },
+}
+function BrandTile({ name }) {
+  const b = BRANDS[name]
+  if (!b) return null
+  return (
+    <svg className="cs-logo" viewBox="0 0 48 48" role="img" aria-label={b.label}>
+      <rect width="48" height="48" rx="11" fill={b.bg} />
+      {b.art}
+    </svg>
   )
 }
