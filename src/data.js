@@ -76,6 +76,7 @@ export const CASES = [
     // (tools/case-video/film-of.html).
     study: {
       navTop: false,
+      overviewNav: 'Project Overview',
       layout: 'story',
       heading: 'Designing QR table ordering for cafés in Myanmar',
       summary: 'Guests scan a QR on the table and order on their own phone, and staff run every order from one admin panel. I co-founded OrderFlow and work on both sides of it.',
@@ -88,17 +89,9 @@ export const CASES = [
       tools: 'Claude, Figma, Trello',
       sections: [
         {
-          id: 'hello',
-          nav: 'Intro',
-          bare: true,
-          toc: false,
-          blocks: [
-            { kind: 'reel', src: '/case/orderflow/intro.mp4?v=2', audio: '/case/orderflow/intro.m4a', poster: '/case/orderflow/intro.jpg', alt: 'Intro: rush hour in a Yangon café, then OrderFlow: guests scan the table QR and order on their phone, staff see every order live, owners run the menu. Four cafés live by October 2026.' },
-          ],
-        },
-        {
           id: 'impact',
           nav: 'Impact',
+          illo: 'shipping',
           blocks: [
             { kind: 'impact', headline: 'Seven months in, four cafés use OrderFlow every day, and every pilot is still running.', items: [
               { num: '4', label: 'Cafés live, October 2026' },
@@ -109,17 +102,12 @@ export const CASES = [
           ],
         },
         {
-          id: 'overview',
-          nav: 'Project Overview',
-          illo: 'shipping',
+          id: 'hello',
+          nav: 'Intro',
+          bare: true,
+          toc: false,
           blocks: [
-            { kind: 'notes', items: [
-              { t: 'Product', p: 'QR table ordering for cafés in Myanmar: guests order from their phone at the table, and staff run every order from one admin panel.' },
-              { t: 'Team', p: 'Two engineers, Khant Lin Nyan and Thaw Zin Tun, and a brand designer, Hein Htet Kyaw. I lead product and design.' },
-              { t: 'Timeline', p: 'Started in November 2025. The first café went live in August 2026, and four cafés run it every day as of October 2026.' },
-              { t: 'My role', p: 'Co-founder and product manager.' },
-              { t: 'Responsibilities', p: 'Deciding what we build and in what order, designing the guest app and the admin, delivering the front end in code, and setting up every pilot café in person.' },
-            ] },
+            { kind: 'reel', src: '/case/orderflow/intro.mp4?v=2', audio: '/case/orderflow/intro.m4a', poster: '/case/orderflow/intro.jpg', alt: 'Intro: rush hour in a Yangon café, then OrderFlow: guests scan the table QR and order on their phone, staff see every order live, owners run the menu. Four cafés live by October 2026.' },
           ],
         },
         {
@@ -265,6 +253,7 @@ export const CASES = [
     // Recordings: tools/case-video (web 1440 × 900 primary, phone 402 × 874 secondary).
     study: {
       navTop: false,
+      overviewNav: 'Project Overview',
       layout: 'story',
       heading: 'Designing lunch ordering that says what it costs, before you ask',
       // TODO(Sai): confirm your part and the dates.
@@ -279,17 +268,9 @@ export const CASES = [
       tools: 'Figma, Claude Code, axe-core',
       sections: [
         {
-          id: 'hello',
-          nav: 'Intro',
-          bare: true,
-          toc: false,
-          blocks: [
-            { kind: 'reel', src: '/case/superfine-employee/intro.mp4?v=3', audio: '/case/superfine-employee/intro.m4a', poster: '/case/superfine-employee/intro.jpg', alt: 'Intro: employees could not see their allowance, the cut-off or their lunch. Then the app: sign in, allowance in view, choices first, a cart that splits the cost, and the same flow on a phone.' },
-          ],
-        },
-        {
           id: 'impact',
           nav: 'Impact',
+          illo: 'shipping',
           blocks: [
             { kind: 'lead', p: 'A web app for employees on a company meal program, built from five interview findings and tested against WCAG 2.2 AA.' },
             { kind: 'notes', items: [
@@ -300,16 +281,12 @@ export const CASES = [
           ],
         },
         {
-          id: 'overview',
-          nav: 'Project Overview',
-          illo: 'shipping',
+          id: 'hello',
+          nav: 'Intro',
+          bare: true,
+          toc: false,
           blocks: [
-            { kind: 'notes', items: [
-              { t: 'Product', p: 'Lunch ordering for employees on a company meal program, on the web and on a phone.' },
-              { t: 'Client', p: 'Superfine Kitchen, which cooks in San Francisco and delivers lunch to Bay Area offices.' },
-              { t: 'Timeline', p: 'June to September 2026.' },
-              { t: 'My role', p: 'Product designer at Heizen: interviews, flows and screens, a working prototype built with AI, and the accessibility audit.' },
-            ] },
+            { kind: 'reel', src: '/case/superfine-employee/intro.mp4?v=3', audio: '/case/superfine-employee/intro.m4a', poster: '/case/superfine-employee/intro.jpg', alt: 'Intro: employees could not see their allowance, the cut-off or their lunch. Then the app: sign in, allowance in view, choices first, a cart that splits the cost, and the same flow on a phone.' },
           ],
         },
         {
@@ -746,6 +723,7 @@ export const CASES = [
     // TODO(Sai): add the dates and where the app is now.
     study: {
       navTop: false,
+      overviewNav: 'Project Overview',
       layout: 'story',
       heading: 'A merchant wallet for shopkeepers, not tech people',
       summary: 'MTB Bank partnered with us to support small businesses in Myanmar by improving its merchant app. The goal was a faster, more intuitive system for people with limited tech skills, one that reinforced trust in MTB’s digital ecosystem.',
@@ -759,31 +737,20 @@ export const CASES = [
       tools: 'Figma',
       sections: [
         {
+          id: 'impact',
+          nav: 'Impact',
+          illo: 'shipping',
+          blocks: [
+            { kind: 'lead', p: 'Users reported faster top-ups, fewer errors and more confidence using the app. The feedback was positive, and it showed how far simple, thoughtful design can go.' },
+          ],
+        },
+        {
           id: 'hello',
           nav: 'Intro',
           bare: true,
           toc: false,
           blocks: [
             { kind: 'reel', src: '/case/mtb-pay-merchant/intro.mp4?v=4', audio: '/case/mtb-pay-merchant/intro.m4a?v=3', poster: '/case/mtb-pay-merchant/intro.jpg?v=2', alt: 'Intro: slow transactions and frequent errors for small shops in Myanmar. Then a day at one shop counter with MTB Pay Merchant: a morning phone top-up, a QR payment in the lunch rush, a refund in the afternoon, and the day on one screen at closing time.' },
-          ],
-        },
-        {
-          id: 'impact',
-          nav: 'Impact',
-          blocks: [
-            { kind: 'lead', p: 'Users reported faster top-ups, fewer errors and more confidence using the app. The feedback was positive, and it showed how far simple, thoughtful design can go.' },
-          ],
-        },
-        {
-          id: 'overview',
-          nav: 'Project Overview',
-          illo: 'shipping',
-          blocks: [
-            { kind: 'notes', items: [
-              { t: 'Product', p: 'A merchant wallet for small businesses in Myanmar, made with MTB Bank to replace an outdated merchant app.' },
-              { t: 'Team', p: '4 product designers, 11 developers and 3 stakeholders.' },
-              { t: 'My role', p: 'UI/UX designer: the interface, the design system, iteration and developer handoff.' },
-            ] },
           ],
         },
         {
