@@ -135,14 +135,14 @@ function Section({ sec }) {
   const body = opensWithLead ? sec.blocks.slice(1) : sec.blocks
   return (
     <Card className={'sv-sec' + (sec.illo ? ' has-illo' : '')} id={sec.id}>
-      <div className="sv-sec-head">
+      {(!sec.notitle || lead || sec.illo) && <div className="sv-sec-head">
         <div>
           {sec.eyebrow && <p className="sv-label sv-label-left">{sec.eyebrow}</p>}
-          <h2 className="sv-h2">{rich(sec.title || sec.nav)}</h2>
+          {!sec.notitle && <h2 className="sv-h2">{rich(sec.title || sec.nav)}</h2>}
           {lead && <p className="sv-sec-lead">{rich(lead)}</p>}
         </div>
         {sec.illo && <Illo name={sec.illo} className="sv-illo" />}
-      </div>
+      </div>}
       {body.length > 0 && (
         <div className="sv-sec-body">
           {body.map((b, j) => <Block key={j} block={b} />)}
@@ -349,37 +349,20 @@ function CaseNav({ sections, top = true, overview }) {
   )
 }
 
-// Small app-icon tiles for the brands a stat refers to, drawn in each brand's
-// colour so no image files are needed.
-const BRANDS = {
-  foodpanda: { bg: '#D70F64', label: 'foodpanda', art: (
-    <g fill="#fff">
-      <circle cx="14" cy="15" r="5" /><circle cx="34" cy="15" r="5" />
-      <ellipse cx="24" cy="27" rx="13" ry="11.5" />
-      <g fill="#D70F64"><ellipse cx="19" cy="26" rx="3.4" ry="4" /><ellipse cx="29" cy="26" rx="3.4" ry="4" /><ellipse cx="24" cy="32.5" rx="2.2" ry="1.5" /></g>
-      <g fill="#fff"><circle cx="19.6" cy="25.4" r="1.2" /><circle cx="29.6" cy="25.4" r="1.2" /></g>
-    </g>
-  ) },
-  grabfood: { bg: '#00B14F', label: 'GrabFood', art: (
-    <g fill="#fff" fontFamily="inherit" fontWeight="700" textAnchor="middle">
-      <text x="24" y="22" fontSize="12">Grab</text><text x="24" y="35" fontSize="12">Food</text>
-    </g>
-  ) },
-  kbzpay: { bg: '#1653A5', label: 'KBZPay', art: (
-    <g fill="#fff" fontFamily="inherit" fontWeight="800" textAnchor="middle">
-      <text x="24" y="23" fontSize="13">KBZ</text><text x="24" y="36" fontSize="12" fontWeight="600">Pay</text>
-    </g>
-  ) },
-}
+// Brand marks in front of a stat: the apps' real store icons
+// (public/logos/apps) and the Myanmar flag, drawn.
+const BRANDS = { foodpanda: 'foodpanda', grab: 'Grab', kbzpay: 'KBZPay' }
 function BrandTile({ name }) {
-  const b = BRANDS[name]
-  if (!b) return null
-  return (
-    <svg className="cs-logo" viewBox="0 0 48 48" role="img" aria-label={b.label}>
-      <rect width="48" height="48" rx="11" fill={b.bg} />
-      {b.art}
-    </svg>
-  )
+  if (name === 'myanmar') {
+    return (
+      <svg className="cs-logo is-flag" viewBox="0 0 18 12" role="img" aria-label="Myanmar flag">
+        <rect width="18" height="4" fill="#FECB00" /><rect y="4" width="18" height="4" fill="#34B233" /><rect y="8" width="18" height="4" fill="#EA2839" />
+        <path fill="#fff" d="M9 1.6l1.18 3.63h3.82l-3.09 2.24 1.18 3.63L9 8.86l-3.09 2.24 1.18-3.63L4 5.23h3.82z" />
+      </svg>
+    )
+  }
+  if (!BRANDS[name]) return null
+  return <img className="cs-logo" src={`/logos/apps/${name}.png`} alt={BRANDS[name]} width="64" height="64" loading="lazy" />
 }
 
 // Product vision: OrderFlow in the middle, the first module (`live`) filled

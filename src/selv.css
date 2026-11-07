@@ -1472,12 +1472,21 @@ button.sv-pill:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(
 .cs-stat-h { margin: 0 0 16px; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sv-dim); }
 .sv-card .cs-stats > div.has-logos { display: flex; flex-direction: row; align-items: center; gap: 14px; }
 .cs-logos { display: flex; flex: none; }
-.cs-logo { display: block; width: 44px; height: 44px; border-radius: 11px; box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.6); }
-.cs-logo + .cs-logo { margin-left: -14px; transform: rotate(8deg); }
+.cs-logo { display: block; width: 64px; height: 64px; border-radius: 15px; box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.55); }
+.cs-logo.is-flag { width: 54px; height: 36px; border-radius: 6px; }
+/* Rows with icons: the paired icons need a wider first column and slightly smaller numbers. */
+@media (min-width: 641px) {
+  .sv-card .cs-stats:has(.has-logos) { grid-template-columns: 1.25fr 1fr 1fr; }
+  .sv-card .cs-stats > div.has-logos { gap: 12px; }
+  .sv-card .cs-stats > div.has-logos .cs-logo:not(.is-flag) { width: 52px; height: 52px; border-radius: 13px; }
+  .sv-card .cs-stats > div.has-logos .cs-logo.is-flag { width: 46px; height: 31px; }
+  .sv-card .cs-stats > div.has-logos .cs-stat-num { font-size: clamp(28px, 2.8vw, 34px); white-space: nowrap; }
+}
+.cs-logo + .cs-logo { margin-left: -18px; transform: rotate(8deg); }
 .cs-logos .cs-logo:first-child:not(:last-child) { transform: rotate(-8deg); }
 .cs-stat-txt { min-width: 0; }
 .cs-stat-note { margin: 18px 0 0; font-size: 12px; line-height: 1.5; color: var(--sv-dim); opacity: 0.8; }
-@media (max-width: 640px) { .sv-card .cs-stats > div.has-logos { flex-direction: column; align-items: flex-start; } .cs-logo { width: 38px; height: 38px; } }
+@media (max-width: 640px) { .sv-card .cs-stats > div.has-logos { flex-direction: column; align-items: flex-start; } .cs-logo { width: 48px; height: 48px; border-radius: 12px; } .cs-logo.is-flag { width: 42px; height: 28px; } }
 @media (max-width: 640px) { .sv-card .cs-stats { grid-template-columns: 1fr 1fr; } .sv-card .cs-stats > div { padding: 0 16px 0 0; border-left: 0; } }
 .sv-card .st-role, .sv-card .st-segments { gap: 32px; }
 .sv-card .st-sub-h, .sv-card .cs-sub h3 { color: var(--sv-text); font-size: 21px; font-weight: 500; }

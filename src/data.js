@@ -91,6 +91,7 @@ export const CASES = [
         {
           id: 'impact',
           nav: 'Impact',
+          notitle: true,
           blocks: [
             { kind: 'impact', items: [
               { num: '4', label: 'Cafés in 6 months' },
@@ -112,7 +113,6 @@ export const CASES = [
           id: 'opportunity',
           nav: 'The Opportunity',
           title: 'Big market, *one gap*',
-          illo: 'table',
           blocks: [
             { kind: 'lead', p: 'Most of Myanmar’s 23,741 cafés still take orders on paper, and none let the guest order.' },
             { kind: 'stats', h: 'Market size', items: [
@@ -121,10 +121,10 @@ export const CASES = [
               { num: '4.3B', label: 'MMK a year in Yangon, where we start (3,043 shops)' },
             ] },
             { kind: 'stats', h: 'Digital adoption', items: [
-              { logos: ['foodpanda', 'grabfood'], num: '39.8M', label: 'People online in Myanmar' },
-              { logos: ['kbzpay'], num: '19M', label: 'People pay by phone (KBZPay)' },
-              { num: '25%', label: 'Inflation, so printed prices go stale' },
-            ], note: 'Sources: ReportLinker, Asia-Pacific restaurant software 2027; poidata.io shop counts; DataReportal, Digital 2026 Myanmar; KBZ Bank, 2024; Asian Development Bank, 2025.' },
+              { logos: ['foodpanda', 'grab'], num: '39.8M', label: 'People online in Myanmar' },
+              { logos: ['kbzpay'], num: '19M', label: 'People pay with KBZPay' },
+              { logos: ['myanmar'], num: '25%', label: 'Inflation in Myanmar' },
+            ] },
           ],
         },
         {
@@ -279,6 +279,7 @@ export const CASES = [
         {
           id: 'impact',
           nav: 'Impact',
+          notitle: true,
           blocks: [
             { kind: 'impact', items: [
               { num: '16', label: 'Accessibility problems found and fixed' },
@@ -747,6 +748,7 @@ export const CASES = [
         {
           id: 'impact',
           nav: 'Impact',
+          notitle: true,
           blocks: [
             { kind: 'lead', p: 'Merchants reported faster top-ups, fewer errors and more confidence using the app.' },
           ],
