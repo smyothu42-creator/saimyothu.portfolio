@@ -1,8 +1,8 @@
 {
- "W": 1280,
- "H": 720,
+ "W": 1120,
+ "H": 630,
  "fps": 30,
- "bitrate": 850000,
+ "bitrate": 600000,
  "src": "file:///Users/saimyothu/claude-workspace/saimyothu-portfolio/tools/case-video/of-launch.mp4",
  "scenes": [
   {

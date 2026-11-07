@@ -436,7 +436,9 @@ export function ShotTabs({ items }) {
 // like the demos on diana.lu: a big rounded video, muted and looping, with a
 // small "Demo n" label and a one-line title above it. It plays only while it
 // is on screen; with reduced motion it shows the poster and a play button.
-export function Reel({ src, poster, audio, label, title, ratio = '16 / 9', alt }) {
+// `eager` starts downloading the video as the page loads (a film near the top),
+// so it is buffered by the time it scrolls into view.
+export function Reel({ src, poster, audio, label, title, ratio = '16 / 9', alt, eager = false }) {
   const ref = useRef(null)
   const song = useRef(null)
   const seek = useRef(null)
@@ -531,7 +533,7 @@ export function Reel({ src, poster, audio, label, title, ratio = '16 / 9', alt }
           muted
           loop
           playsInline
-          preload="none"
+          preload={eager ? 'auto' : 'none'}
           aria-label={alt || title}
           onPlay={() => { setPlaying(true); follow() }}
           onPause={() => { setPlaying(false); song.current?.pause() }}
