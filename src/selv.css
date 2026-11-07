@@ -2436,3 +2436,17 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 @keyframes dec-cut { 0%, 45% { stroke-dashoffset: 1; opacity: 1; } 60%, 88% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .cs-dec-wifi path { animation: none !important; } .cs-dec-wifi .cut { stroke-dashoffset: 0; } }
 @media (max-width: 760px) { .cs-dec-off { gap: 28px; } .cs-dec-desk-screen { width: 200px; } .cs-dec-pill { white-space: normal; text-align: center; max-width: 150px; font-size: 11px; } }
+
+/* MVP: phone and browser side by side, screens cross-fading like a video. */
+.cs-mock { container-type: inline-size; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(20px, 4cqw, 40px); align-items: center; margin-top: 8px; }
+.cs-mock-col { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.cs-mock-col figcaption { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sv-dim); }
+.cs-mock-col.is-phone .st-device { --w: min(210px, 30cqw); }
+.cs-mock-col.is-browser .st-browser { width: 100%; }
+.cs-mock-screen { position: relative; }
+.cs-mock-screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; opacity: 0; transition: opacity 0.6s ease; }
+.cs-mock-screen img.is-on { opacity: 1; }
+.cs-mock-bar { position: absolute; left: 10%; right: 10%; bottom: 10px; z-index: 4; height: 3px; border-radius: 3px; background: rgba(0, 0, 0, 0.18); overflow: hidden; }
+.cs-mock-bar i { display: block; height: 100%; background: #ef7a2c; transform-origin: 0 50%; animation: cs-mock-fill linear both; }
+@keyframes cs-mock-fill { from { transform: scaleX(0); } }
+@media (max-width: 640px) { .cs-mock { grid-template-columns: 1fr; } .cs-mock-col.is-phone .st-device { --w: min(220px, 62vw); } }

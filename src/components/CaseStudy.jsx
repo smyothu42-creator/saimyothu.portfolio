@@ -180,9 +180,9 @@ const VISUALS = {
   hmw: HMW, details: Details, achievements: Achievements, roadmap: Roadmap,
   impact: Impact, role: Role, sub: Sub, iconlist: IconList, segments: Segments, table: Table,
   iterations: Iterations, pills: Pills, walkthrough: Walkthrough, film: Film, shot: Shot, walktabs: WalkTabs, shottabs: ShotTabs,
-  reel: Reel, demo: Demo, choices: Choices, beforeafter: BeforeAfter, hub: Hub, decisions: Decisions, arch: Arch,
+  reel: Reel, demo: Demo, choices: Choices, beforeafter: BeforeAfter, hub: Hub, decisions: Decisions, arch: Arch, mockpair: MockPair,
 }
-const TEXT = new Set(['hub', 'decisions', 'arch', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'choices'])
+const TEXT = new Set(['hub', 'decisions', 'arch', 'mockpair', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'choices'])
 
 function Block({ block }) {
   const Visual = VISUALS[block.kind]
@@ -654,6 +654,44 @@ function Arch({ items }) {
           </li>
         ))}
       </ol>
+    </div>
+  )
+}
+
+// MVP: the guest flow on a phone and the shop flow in a browser, side by
+// side, each playing through its screens like a short video (cross-fade and a
+// thin progress bar). Hovering pauses it.
+const MOCK_MS = 2600
+function MockScreens({ srcs, alt, hold }) {
+  const [i, setI] = useState(0)
+  const [tick, setTick] = useState(0)
+  useEffect(() => {
+    if (hold || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const t = setTimeout(() => { setI((x) => (x + 1) % srcs.length); setTick((k) => k + 1) }, MOCK_MS)
+    return () => clearTimeout(t)
+  }, [i, hold, srcs.length])
+  return (
+    <>
+      {srcs.map((src, k) => <img key={src} src={src} alt={k === 0 ? alt : ''} className={k === i ? 'is-on' : undefined} loading="lazy" />)}
+      <span className="cs-mock-bar" aria-hidden="true"><i key={tick} style={{ animationDuration: MOCK_MS + 'ms', animationPlayState: hold ? 'paused' : 'running' }} /></span>
+    </>
+  )
+}
+function MockPair({ phone, browser }) {
+  const [hold, setHold] = useState(false)
+  return (
+    <div className="cs-mock" onPointerEnter={() => setHold(true)} onPointerLeave={() => setHold(false)}>
+      <figure className="cs-mock-col is-phone">
+        <div className="st-device"><div className="st-device-screen cs-mock-screen"><MockScreens {...phone} hold={hold} /><span className="st-device-island" /></div></div>
+        <figcaption>{phone.label}</figcaption>
+      </figure>
+      <figure className="cs-mock-col is-browser">
+        <div className="st-browser">
+          <div className="st-browser-bar" aria-hidden="true"><i /><i /><i /></div>
+          <div className="st-browser-page cs-mock-screen" style={{ aspectRatio: '1440 / 1024' }}><MockScreens {...browser} hold={hold} /></div>
+        </div>
+        <figcaption>{browser.label}</figcaption>
+      </figure>
     </div>
   )
 }
