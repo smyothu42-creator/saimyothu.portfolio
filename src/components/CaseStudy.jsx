@@ -134,7 +134,7 @@ function Section({ sec }) {
   const lead = opensWithLead ? sec.blocks[0].p : null
   const body = opensWithLead ? sec.blocks.slice(1) : sec.blocks
   return (
-    <Card className={'sv-sec' + (sec.illo ? ' has-illo' : '')} id={sec.id}>
+    <Card className={'sv-sec' + (sec.illo ? ' has-illo' : '') + (sec.notitle ? ' no-title' : '')} id={sec.id}>
       {(!sec.notitle || lead || sec.illo) && <div className="sv-sec-head">
         <div>
           {sec.eyebrow && <p className="sv-label sv-label-left">{sec.eyebrow}</p>}
@@ -358,6 +358,12 @@ function BrandTile({ name }) {
       <svg className="cs-logo" viewBox="0 0 48 48" role="img" aria-label="Myanmar flag">
         <rect width="48" height="16" fill="#FECB00" /><rect y="16" width="48" height="16" fill="#34B233" /><rect y="32" width="48" height="16" fill="#EA2839" />
         <path fill="#fff" d="M24 11.5l3.06 9.42h9.9l-8.01 5.82 3.06 9.42L24 30.34l-8.01 5.82 3.06-9.42-8.01-5.82h9.9z" />
+        <defs>
+          <linearGradient id="mm-gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#fff" stopOpacity="0.55" /><stop offset="0.5" stopColor="#fff" stopOpacity="0.08" /><stop offset="1" stopColor="#000" stopOpacity="0.18" /></linearGradient>
+        </defs>
+        <rect width="48" height="48" fill="url(#mm-gloss)" />
+        <ellipse cx="24" cy="2" rx="30" ry="14" fill="#fff" opacity="0.18" />
+        <rect x="0.75" y="0.75" width="46.5" height="46.5" rx="11" fill="none" stroke="#fff" strokeOpacity="0.45" strokeWidth="1.5" />
       </svg>
     )
   }
@@ -368,12 +374,13 @@ function BrandTile({ name }) {
 // Product vision: the OrderFlow ecosystem. The logo sits in the middle and
 // the modules sit on a glass ring around it. The highlight moves round on its
 // own; clicking a module stops that and shows the module on the right.
+// Line icons in the site's style (Lucide shapes, ISC licence).
 const HUB_ICONS = {
-  qr: <path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2M14 18h2v2M18 18h2v2h-2" />,
-  pos: <path d="M5 3h14v18l-2.5-1.5L14 21l-2-1.5L10 21l-2.5-1.5L5 21zM9 8h6M9 12h6M9 16h3" />,
-  ai: <path d="M10 4l1.6 4.4L16 10l-4.4 1.6L10 16l-1.6-4.4L4 10l4.4-1.6zM18 14l.8 2.2L21 17l-2.2.8L18 20l-.8-2.2L15 17l2.2-.8z" />,
-  loyalty: <path d="M4 10h16v4H4zM6 14v6h12v-6M12 10v10M12 10c-1.5-3-5-4-5-1.5S10 10 12 10zM12 10c1.5-3 5-4 5-1.5S14 10 12 10z" />,
-  inventory: <path d="M3 8l9-4 9 4-9 4zM3 8v8l9 4 9-4V8M12 12v8" />,
+  qr: <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10" />,
+  pos: <><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z" /><path d="M14 8H8M16 12H8M13 16H8" /></>,
+  ai: <><path d="M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.14-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.14a.5.5 0 0 1 .96 0l1.58 6.14a2 2 0 0 0 1.44 1.44l6.14 1.58a.5.5 0 0 1 0 .96l-6.14 1.58a2 2 0 0 0-1.44 1.44l-1.58 6.14a.5.5 0 0 1-.96 0z" /><path d="M20 3v4M22 5h-4" /></>,
+  loyalty: <><rect x="3" y="8" width="18" height="4" rx="1" /><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5" /></>,
+  inventory: <><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" /><path d="M12 22V12M3.29 7 12 12l8.71-5M7.5 4.27l9 5.15" /></>,
 }
 const HUB_MS = 3800
 function Hub({ items }) {
@@ -381,23 +388,27 @@ function Hub({ items }) {
   const [on, setOn] = useState(0)
   const [auto, setAuto] = useState(true)
   const [tick, setTick] = useState(0)
+  const [hold, setHold] = useState(false)
+  const reduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const running = auto && !hold && !reduced
   useEffect(() => {
-    if (!auto || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (!running) return
     const t = setTimeout(() => { setOn((i) => (i + 1) % n); setTick((k) => k + 1) }, HUB_MS)
     return () => clearTimeout(t)
-  }, [auto, on, n])
+  }, [running, on, n])
   const pick = (i) => { setOn(i); setAuto(false) }
-  const cur = items[on]
   const at = (i) => (-90 + (360 / n) * i) * Math.PI / 180
   return (
     <div className="cs-hub">
       <div className="cs-hub-art">
         <svg className="cs-hub-spokes" viewBox="0 0 100 100" aria-hidden="true">
-          <circle cx="50" cy="50" r="38" />
+          <circle className="cs-hub-orbit" cx="50" cy="50" r="38" />
+          <circle className="cs-hub-orbit is-inner" cx="50" cy="50" r="24" />
           {items.map((it, i) => (
             <line key={it.key} className={i === on ? 'is-on' : undefined} x1={50 + 38 * Math.cos(at(i))} y1={50 + 38 * Math.sin(at(i))} x2="50" y2="50" />
           ))}
         </svg>
+        <span className="cs-hub-glow" aria-hidden="true" />
         <span className="cs-hub-core">
           <img src="/logos/orderflow-icon.png" alt="" />
         </span>
@@ -413,17 +424,16 @@ function Hub({ items }) {
           </button>
         ))}
       </div>
-      <div className="cs-hub-panel" aria-live="polite">
-        <p className="cs-hub-name">OrderFlow ecosystem</p>
-        <p className="cs-hub-step">Step {on + 1} of {n}<span className={'cs-hub-tag' + (cur.live ? ' is-live' : '')}>{cur.tag}</span></p>
-        <h3 key={'t' + on} className="cs-hub-title">{cur.t}</h3>
-        <p key={'p' + on} className="cs-hub-text">{cur.p}</p>
-        <div className="cs-hub-dots">
-          {items.map((it, i) => (
-            <button key={it.key} type="button" className={i === on ? 'is-on' : undefined} onClick={() => pick(i)} aria-label={'Show ' + it.t}>
-              {i === on && auto && <span key={tick} className="cs-hub-fill" style={{ animationDuration: HUB_MS + 'ms' }} />}
-            </button>
-          ))}
+      <div className="cs-hub-list" aria-live="polite" onPointerEnter={() => setHold(true)} onPointerLeave={() => setHold(false)}>
+        <div key={on} className="st-choice is-on cs-hub-card">
+          <span className="st-step-n">{String(on + 1).padStart(2, '0')}</span>
+          <span className="st-choice-body">
+            <span className="st-choice-h">{items[on].t}</span>
+            <span className="st-choice-p">{items[on].p}</span>
+            <span className="st-choice-bar" aria-hidden="true">
+              <i key={tick} style={auto ? { animationDuration: `${HUB_MS}ms`, animationPlayState: running ? 'running' : 'paused' } : { animation: 'none' }} />
+            </span>
+          </span>
         </div>
       </div>
     </div>
