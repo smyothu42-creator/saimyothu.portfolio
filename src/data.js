@@ -164,9 +164,9 @@ export const CASES = [
         {
           id: 'mvp',
           nav: 'MVP',
-          title: 'Build less, *go live sooner*',
+          title: 'Start with an *MVP*',
           blocks: [
-            { kind: 'lead', p: 'Every feature we added was one more thing an owner could say no to, so the first version did one job: get an order from the table to the kitchen.' },
+            { kind: 'lead', p: 'One small version to test the market.' },
             { kind: 'mockpair',
               phone: { label: 'Guest', alt: 'Guest flow: menu, options, order summary, waiting, preparing, ready', srcs: ['c-menu', 'c-item', 'c-summary', 'c-waiting', 'c-preparing', 'c-ready'].map((n) => `/case/orderflow/mvp/${n}.jpg`) },
               browser: { label: 'Shop', alt: 'Shop flow: add an item, table QR, QR stand, accept, ready, paid', srcs: ['a-item', 'a-table-qr', 'a-qr-stand', 'a-accept', 'a-ready', 'a-paid'].map((n) => `/case/orderflow/mvp/${n}.jpg`) },
