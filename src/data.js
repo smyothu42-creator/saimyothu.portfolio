@@ -82,11 +82,10 @@ export const CASES = [
       accent: '#44403c',
       tags: ['Product Strategy', 'B2B SaaS', 'F&B'],
       role: 'Co-Founder, Product Manager',
-      scope: ['Guest app', 'Admin panel', 'Order and POS flows', 'Café onboarding'],
       duration: 'Nov 2025 to Present',
-      team: ['Sai, product and design', 'Khant Lin Nyan, vision', 'Thaw Zin Tun, tech', 'Hein Htet Kyaw, brand'],
+      team: ['2 engineers', '1 brand designer'],
       gallery: [],
-      tools: 'Figma, FigJam, Notion',
+      tools: 'Claude, Figma, Trello',
       sections: [
         {
           id: 'hello',
@@ -116,7 +115,7 @@ export const CASES = [
           blocks: [
             { kind: 'notes', items: [
               { t: 'Product', p: 'QR table ordering for cafés in Myanmar: guests order from their phone at the table, and staff run every order from one admin panel.' },
-              { t: 'Team', p: 'Four co-founders, four lanes: Khant Lin Nyan on vision, me on product and design, Thaw Zin Tun on tech, Hein Htet Kyaw on brand.' },
+              { t: 'Team', p: 'Two engineers, Khant Lin Nyan and Thaw Zin Tun, and a brand designer, Hein Htet Kyaw. I lead product and design.' },
               { t: 'Timeline', p: 'Started in November 2025. The first café went live in August 2026, and four cafés run it every day as of October 2026.' },
               { t: 'My role', p: 'Co-founder and product manager.' },
               { t: 'Responsibilities', p: 'Deciding what we build and in what order, designing the guest app and the admin, delivering the front end in code, and setting up every pilot café in person.' },
