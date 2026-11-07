@@ -544,27 +544,44 @@ function DecPos() {
 function DecOffline() {
   return (
     <div className="cs-dec-off" aria-hidden="true">
-      <div className="cs-dec-desk"><span className="cs-dec-desk-screen">{WIFI_OFF}</span><span className="cs-dec-desk-foot" /><small>Set-up device only</small></div>
+      <div className="cs-dec-desk">
+        <span className="cs-dec-pill">{WIFI_OFF}Wi-Fi down, still running on mobile data</span>
+        <span className="cs-dec-desk-screen">
+          {/* Wi-Fi searching: the bars light up in turn, then the signal is cut. */}
+          <svg className="cs-dec-wifi" viewBox="0 0 24 24">
+            <path className="w0" d="M12 20h.01" /><path className="w1" d="M8.5 16.43a5 5 0 0 1 7 0" /><path className="w2" d="M5 12.86a10 10 0 0 1 14 0" /><path className="w3" d="M2 8.82a15 15 0 0 1 20 0" />
+            <path className="cut" d="M3 3l18 18" pathLength="1" />
+          </svg>
+        </span>
+        <span className="cs-dec-desk-foot" /><small>Set-up device only</small>
+      </div>
       <div className="st-device cs-dec-phone is-app">
         <div className="st-device-screen"><img src="/case/orderflow/admin-mobile.jpg" alt="" loading="lazy" /><span className="st-device-island" /></div>
       </div>
-      <span className="cs-dec-pill">{WIFI_OFF}Wi-Fi down, still running on mobile data</span>
     </div>
   )
 }
 function DecEco() {
-  const ring = ['pos', 'ai', 'loyalty', 'inventory']
+  const ring = [['qr', 'QR'], ['pos', 'POS'], ['ai', 'AI'], ['loyalty', 'Loyalty'], ['inventory', 'Inventory']]
   return (
     <div className="cs-dec-eco" aria-hidden="true">
       <div className="cs-dec-copies">{[0, 1, 2].map((i) => <span key={i}><svg viewBox="0 0 24 24">{HUB_ICONS.qr}</svg>QR menu</span>)}<small>Easy to copy</small></div>
       <svg className="cs-dec-arrow" viewBox="0 0 40 12"><path d="M0 6h36M31 1l5 5-5 5" /></svg>
-      <div className="cs-dec-ring">
-        <span className="cs-dec-ring-core"><img src="/logos/orderflow-icon.png" alt="" loading="lazy" /></span>
-        <span className="cs-dec-ring-qr"><svg viewBox="0 0 24 24">{HUB_ICONS.qr}</svg></span>
-        {ring.map((k, i) => {
-          const a = (-45 + 90 * i) * Math.PI / 180
-          return <span key={k} style={{ left: `${50 + 40 * Math.cos(a)}%`, top: `${50 + 40 * Math.sin(a)}%` }}><svg viewBox="0 0 24 24">{HUB_ICONS[k]}</svg></span>
-        })}
+      <div className="cs-dec-ringwrap">
+        <div className="cs-dec-ring">
+          <span className="cs-dec-ring-core"><img src="/logos/orderflow-icon.png" alt="" loading="lazy" /></span>
+          <div className="cs-orbit cs-dec-orbit">
+            <OrbitRing r={40} count={ring.length} start={-90} gap={17} />
+            {ring.map(([k, t], i) => {
+              const a = (-90 + (360 / ring.length) * i) * Math.PI / 180
+              return (
+                <span key={k} className="cs-orbit-item" style={{ left: `${50 + 40 * Math.cos(a)}%`, top: `${50 + 40 * Math.sin(a)}%` }}>
+                  <span className="cs-orbit-up"><span className={'cs-dec-node' + (k === 'qr' ? ' is-on' : '')}><svg viewBox="0 0 24 24">{HUB_ICONS[k]}</svg><small>{t}</small></span></span>
+                </span>
+              )
+            })}
+          </div>
+        </div>
         <small>Hard to copy</small>
       </div>
     </div>
