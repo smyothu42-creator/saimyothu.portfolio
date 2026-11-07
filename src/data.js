@@ -93,10 +93,9 @@ export const CASES = [
           nav: 'Impact',
           blocks: [
             { kind: 'impact', items: [
-              { num: '4', label: 'Cafés live, October 2026' },
+              { num: '4', label: 'Cafés in 6 months' },
               { num: '1,000+', label: 'Orders at RAW in its first 42 days' },
               { num: '42 / 42', label: 'Days RAW used it' },
-              { num: '1 day', label: 'To put a new café live' },
             ] },
           ],
         },
