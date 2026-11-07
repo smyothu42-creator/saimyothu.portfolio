@@ -378,7 +378,7 @@ function BrandTile({ name }) {
 const HUB_ICONS = {
   qr: <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10" />,
   pos: <><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z" /><path d="M14 8H8M16 12H8M13 16H8" /></>,
-  ai: <><path d="M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.14-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.14a.5.5 0 0 1 .96 0l1.58 6.14a2 2 0 0 0 1.44 1.44l6.14 1.58a.5.5 0 0 1 0 .96l-6.14 1.58a2 2 0 0 0-1.44 1.44l-1.58 6.14a.5.5 0 0 1-.96 0z" /><path d="M20 3v4M22 5h-4" /></>,
+  ai: <><path d="M12 8V4H8" /><rect x="4" y="8" width="16" height="12" rx="2" /><path d="M2 14h2M20 14h2M15 13v2M9 13v2" /></>,
   loyalty: <><rect x="3" y="8" width="18" height="4" rx="1" /><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5" /></>,
   inventory: <><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" /><path d="M12 22V12M3.29 7 12 12l8.71-5M7.5 4.27l9 5.15" /></>,
 }
@@ -404,12 +404,10 @@ function Hub({ items }) {
       <div className="cs-hub-art">
         <svg className="cs-hub-spokes" viewBox="0 0 100 100" aria-hidden="true">
           <circle className="cs-hub-orbit" cx="50" cy="50" r="38" />
-          <circle className="cs-hub-orbit is-inner" cx="50" cy="50" r="24" />
           {items.map((it, i) => (
             <line key={it.key} className={i === on ? 'is-on' : undefined} x1={50 + 38 * Math.cos(at(i))} y1={50 + 38 * Math.sin(at(i))} x2="50" y2="50" />
           ))}
         </svg>
-        <span className="cs-hub-glow" aria-hidden="true" />
         <span className="cs-hub-core">
           <img src="/logos/orderflow-icon.png" alt="" />
         </span>

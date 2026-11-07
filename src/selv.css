@@ -1475,10 +1475,14 @@ button.sv-pill:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(
 .cs-logo { display: block; overflow: hidden; width: 64px; height: 64px; border-radius: 15px; box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.55); }
 /* Rows with icons: the paired icons need a wider first column and slightly smaller numbers. */
 @media (min-width: 641px) {
-  .sv-card .cs-stats:has(.has-logos) { grid-template-columns: 1.25fr 1fr 1fr; }
+  .sv-card .cs-stats:has(.has-logos) { grid-template-columns: 1.25fr 1.05fr 0.9fr; }
+  .sv-card .cs-stats:has(.has-logos) > div { padding: 0 16px; }
+  .sv-card .cs-stats:has(.has-logos) > div:first-child { padding-left: 0; }
+  .sv-card .cs-stats > div.has-logos .cs-stat-txt > span:last-child { white-space: nowrap; }
   .sv-card .cs-stats > div.has-logos { gap: 12px; }
-  .sv-card .cs-stats > div.has-logos .cs-logo:not(.is-flag) { width: 52px; height: 52px; border-radius: 13px; }
-  .sv-card .cs-stats > div.has-logos .cs-stat-num { font-size: clamp(28px, 2.8vw, 34px); white-space: nowrap; }
+  .sv-card .cs-stats > div.has-logos .cs-logo { width: 62px; height: 62px; border-radius: 15px; }
+  .sv-card .cs-stats > div.has-logos .cs-logo + .cs-logo { margin-left: -24px; }
+  .sv-card .cs-stats > div.has-logos .cs-stat-num { font-size: clamp(26px, 2.6vw, 32px); white-space: nowrap; }
 }
 .cs-logo + .cs-logo { margin-left: -18px; transform: rotate(8deg); }
 .cs-logos .cs-logo:first-child:not(:last-child) { transform: rotate(-8deg); }
@@ -2221,44 +2225,37 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .st-ba:has(.st-ba-range:focus-visible) .st-ba-knob { outline: 2px solid #fff; outline-offset: 3px; }
 @media (max-width: 720px) { .st-ba-knob { width: 38px; height: 38px; } .st-ba-tag { bottom: 8px; font-size: 13px; padding: 3px 9px; } .st-ba-tag.is-before { left: 8px; } .st-ba-tag.is-after { right: 8px; } }
 
-/* Product vision: the OrderFlow ecosystem, glass circles on the dark card.
-   The list beside it reuses the step cards (.st-choice). */
+/* Product vision: the OrderFlow ecosystem. Kept quiet: one thin ring, glass
+   circles, and only the active module's spoke drawn. The card beside it
+   reuses the step cards (.st-choice). */
 .cs-hub { display: grid; grid-template-columns: minmax(260px, 340px) 1fr; gap: 44px; align-items: center; margin-top: 12px; }
 .cs-hub-art { position: relative; aspect-ratio: 1; }
-.cs-hub-glow { position: absolute; inset: 8%; border-radius: 50%; background: radial-gradient(circle, rgba(140, 180, 255, 0.22), rgba(140, 180, 255, 0) 68%); }
 .cs-hub-spokes { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.cs-hub-orbit { fill: none; stroke: rgba(255, 255, 255, 0.16); stroke-width: 0.35; stroke-dasharray: 0.6 1.4; transform-origin: 50% 50%; animation: hub-spin 70s linear infinite; }
-.cs-hub-orbit.is-inner { stroke: rgba(255, 255, 255, 0.1); animation-duration: 40s; animation-direction: reverse; }
-.cs-hub-spokes line { stroke: rgba(255, 255, 255, 0.18); stroke-width: 0.35; stroke-dasharray: 1 1.6; animation: hub-flow 1.6s linear infinite; transition: stroke 0.4s; }
-.cs-hub-spokes line.is-on { stroke: #ffb27d; stroke-width: 0.55; }
-@keyframes hub-flow { to { stroke-dashoffset: -5.2; } }
-@keyframes hub-spin { to { transform: rotate(360deg); } }
+.cs-hub-orbit { fill: none; stroke: rgba(255, 255, 255, 0.14); stroke-width: 0.3; }
+.cs-hub-spokes line { stroke: rgba(255, 255, 255, 0); stroke-width: 0.4; stroke-linecap: round; transition: stroke 0.4s; }
+.cs-hub-spokes line.is-on { stroke: rgba(255, 255, 255, 0.55); stroke-dasharray: 0.8 1.4; animation: hub-flow 1.4s linear infinite; }
+@keyframes hub-flow { to { stroke-dashoffset: -4.4; } }
 .cs-hub-core {
-  position: absolute; left: 50%; top: 50%; width: 32%; aspect-ratio: 1; transform: translate(-50%, -50%); display: grid; place-items: center; border-radius: 50%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.06)), rgba(16, 22, 40, 0.3);
-  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.28); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 18px 40px -18px rgba(0, 0, 0, 0.7);
+  position: absolute; left: 50%; top: 50%; width: 30%; aspect-ratio: 1; transform: translate(-50%, -50%); display: grid; place-items: center; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18);
 }
-.cs-hub-core img { width: 74%; height: 74%; border-radius: 50%; animation: hub-breathe 3.6s ease-in-out infinite; filter: drop-shadow(0 8px 18px rgba(239, 122, 44, 0.45)); }
-@keyframes hub-breathe { 50% { transform: scale(1.05); } }
+.cs-hub-core img { width: 80%; height: 80%; border-radius: 50%; box-shadow: 0 12px 28px -12px rgba(0, 0, 0, 0.6); }
 .cs-hub-node {
-  position: absolute; width: 18%; aspect-ratio: 1; transform: translate(-50%, -50%); display: grid; place-items: center; padding: 0; cursor: pointer; border-radius: 50%; color: var(--sv-text);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.05)), rgba(16, 22, 40, 0.32);
+  position: absolute; width: 17%; aspect-ratio: 1; transform: translate(-50%, -50%); display: grid; place-items: center; padding: 0; cursor: pointer; border-radius: 50%; color: var(--sv-text);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06));
   -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.26); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 10px 24px -14px rgba(0, 0, 0, 0.7);
-  transition: background-color 0.4s, border-color 0.4s, box-shadow 0.4s, color 0.4s; animation: hub-float 4.2s ease-in-out infinite;
+  border: 1px solid rgba(255, 255, 255, 0.22); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: background-color 0.35s, border-color 0.35s, box-shadow 0.35s, color 0.35s, transform 0.35s;
 }
-.cs-hub-node svg { width: 38%; height: 38%; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.cs-hub-node:hover { border-color: rgba(255, 255, 255, 0.55); }
+.cs-hub-node svg { width: 40%; height: 40%; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cs-hub-node:hover { border-color: rgba(255, 255, 255, 0.5); transform: translate(-50%, -50%) scale(1.05); }
 .cs-hub-node:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
-.cs-hub-node.is-on {
-  background-color: rgba(239, 122, 44, 0.85); background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0) 60%);
-  border-color: rgba(255, 214, 180, 0.85); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 0 0 6px rgba(239, 122, 44, 0.18), 0 14px 30px -10px rgba(239, 122, 44, 0.75);
-}
-@keyframes hub-float { 50% { transform: translate(-50%, calc(-50% - 4px)); } }
-.cs-hub-label { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 7px; white-space: nowrap; font-size: 12px; color: var(--sv-dim); transition: color 0.4s; }
+.cs-hub-node.is-on { color: #ef7a2c; background: #fff; border-color: #fff; box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.12), 0 12px 28px -12px rgba(0, 0, 0, 0.55); }
+.cs-hub-label { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 8px; white-space: nowrap; font-size: 12px; color: var(--sv-dim); transition: color 0.35s; }
 .cs-hub-node.is-on .cs-hub-label { color: var(--sv-text); }
-.cs-hub-list { min-height: 170px; display: grid; align-items: center; overflow: hidden; padding: 8px 4px; margin: -8px -4px; }
+@media (prefers-reduced-motion: reduce) { .cs-hub-spokes line.is-on { animation: none; } }
+@media (max-width: 720px) { .cs-hub { grid-template-columns: 1fr; gap: 32px; } .cs-hub-art { width: min(300px, 86%); margin: 0 auto; } }
+.cs-hub-list { min-height: 170px; display: grid; align-items: center; overflow: hidden; padding: 24px 16px 56px; margin: -24px -16px -56px; }
 /* The finished card slides out to the left as the next one slides in. */
 .cs-hub-card { grid-area: 1 / 1; padding: 20px 22px; }
 .cs-hub-card.is-in { animation: hub-card-in 0.6s 0.14s cubic-bezier(0.22, 1, 0.36, 1) both; }
