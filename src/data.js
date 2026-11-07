@@ -99,7 +99,6 @@ export const CASES = [
         },
         {
           id: 'impact',
-          eyebrow: '01',
           nav: 'Impact',
           blocks: [
             { kind: 'impact', headline: 'Seven months in, four cafés use OrderFlow every day, and every pilot is still running.', items: [
@@ -112,7 +111,6 @@ export const CASES = [
         },
         {
           id: 'overview',
-          eyebrow: '02',
           nav: 'Project Overview',
           illo: 'shipping',
           blocks: [
@@ -127,7 +125,6 @@ export const CASES = [
         },
         {
           id: 'opportunity',
-          eyebrow: '03',
           nav: 'The Opportunity',
           title: 'A big market, *one gap*',
           illo: 'table',
@@ -143,7 +140,6 @@ export const CASES = [
         },
         {
           id: 'discovery',
-          eyebrow: '04',
           nav: 'Problem Discovery',
           illo: 'juggle',
           blocks: [
@@ -157,7 +153,6 @@ export const CASES = [
         },
         {
           id: 'vision',
-          eyebrow: '05',
           nav: 'Product Vision & Strategy',
           title: 'More orders, *less chaos*',
           blocks: [
@@ -172,7 +167,6 @@ export const CASES = [
         },
         {
           id: 'mvp',
-          eyebrow: '06',
           nav: 'MVP & Prioritization',
           title: 'Build less, *go live sooner*',
           blocks: [
@@ -187,7 +181,6 @@ export const CASES = [
         },
         {
           id: 'architecture',
-          eyebrow: '07',
           nav: 'Product Architecture',
           title: 'One order, *three places*',
           blocks: [
@@ -201,7 +194,6 @@ export const CASES = [
         },
         {
           id: 'decisions',
-          eyebrow: '08',
           nav: 'Key Product Decisions',
           title: 'What we chose, and *what it cost*',
           blocks: [
@@ -216,7 +208,6 @@ export const CASES = [
         },
         {
           id: 'execution',
-          eyebrow: '09',
           nav: 'Design Execution',
           title: 'Designed, then *delivered in code*',
           blocks: [
@@ -235,7 +226,6 @@ export const CASES = [
         },
         {
           id: 'pilot',
-          eyebrow: '10',
           nav: 'Pilot & Iteration',
           illo: 'research',
           blocks: [
@@ -249,7 +239,6 @@ export const CASES = [
         },
         {
           id: 'takeaway',
-          eyebrow: '11',
           nav: 'Takeaway',
           illo: 'idea',
           blocks: [
@@ -301,7 +290,6 @@ export const CASES = [
         },
         {
           id: 'impact',
-          eyebrow: '01',
           nav: 'Impact',
           blocks: [
             { kind: 'lead', p: 'A web app for employees on a company meal program, built from five interview findings and tested against WCAG 2.2 AA.' },
@@ -314,7 +302,6 @@ export const CASES = [
         },
         {
           id: 'overview',
-          eyebrow: '02',
           nav: 'Project Overview',
           illo: 'shipping',
           blocks: [
@@ -328,7 +315,6 @@ export const CASES = [
         },
         {
           id: 'context',
-          eyebrow: '03',
           nav: 'Product Context',
           illo: 'lunch',
           blocks: [
@@ -342,7 +328,6 @@ export const CASES = [
         },
         {
           id: 'problem',
-          eyebrow: '04',
           nav: 'The Problem',
           illo: 'juggle',
           blocks: [
@@ -356,7 +341,6 @@ export const CASES = [
         },
         {
           id: 'research',
-          eyebrow: '05',
           nav: 'Research & Insights',
           illo: 'research',
           blocks: [
@@ -372,7 +356,6 @@ export const CASES = [
         },
         {
           id: 'ai',
-          eyebrow: '06',
           nav: 'How I ship (with AI)',
           illo: 'idea',
           blocks: [
@@ -386,7 +369,6 @@ export const CASES = [
         },
         {
           id: 'final',
-          eyebrow: '07',
           nav: 'Final UI Design',
           title: 'Show the money *before the menu*',
           blocks: [
@@ -418,7 +400,6 @@ export const CASES = [
         },
         {
           id: 'usability',
-          eyebrow: '08',
           nav: 'Usability',
           title: 'Can everyone use it?',
           blocks: [
@@ -439,7 +420,6 @@ export const CASES = [
         },
         {
           id: 'takeaway',
-          eyebrow: '09',
           nav: 'Takeaway',
           illo: 'reading',
           blocks: [
@@ -790,7 +770,6 @@ export const CASES = [
         },
         {
           id: 'impact',
-          eyebrow: '01',
           nav: 'Impact',
           blocks: [
             { kind: 'lead', p: 'Users reported faster top-ups, fewer errors and more confidence using the app. The feedback was positive, and it showed how far simple, thoughtful design can go.' },
@@ -798,7 +777,6 @@ export const CASES = [
         },
         {
           id: 'overview',
-          eyebrow: '02',
           nav: 'Project Overview',
           illo: 'shipping',
           blocks: [
@@ -811,7 +789,6 @@ export const CASES = [
         },
         {
           id: 'context',
-          eyebrow: '03',
           nav: 'Product Context',
           illo: 'research',
           blocks: [
@@ -824,7 +801,6 @@ export const CASES = [
         },
         {
           id: 'challenges',
-          eyebrow: '04',
           nav: 'UX Challenges',
           blocks: [
             { kind: 'iconlist', items: [
@@ -837,7 +813,6 @@ export const CASES = [
         },
         {
           id: 'visual',
-          eyebrow: '05',
           nav: 'Visual Direction',
           blocks: [
             { kind: 'lead', p: 'Built for the counter: one strong colour, big numbers and plain words.' },
@@ -850,7 +825,6 @@ export const CASES = [
         },
         {
           id: 'system',
-          eyebrow: '06',
           nav: 'Design System',
           illo: 'juggle',
           blocks: [
@@ -865,7 +839,6 @@ export const CASES = [
         },
         {
           id: 'interface',
-          eyebrow: '07',
           nav: 'Final Interface',
           title: 'Fewer steps, *clear flows*',
           blocks: [
@@ -881,7 +854,6 @@ export const CASES = [
         },
         {
           id: 'states',
-          eyebrow: '08',
           nav: 'Interaction and Edge Cases',
           title: 'Every state says *what happens next*',
           blocks: [
@@ -895,7 +867,6 @@ export const CASES = [
         },
         {
           id: 'takeaway',
-          eyebrow: '09',
           nav: 'Takeaway',
           illo: 'idea',
           blocks: [
