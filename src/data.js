@@ -206,14 +206,12 @@ export const CASES = [
         {
           id: 'decisions',
           nav: 'Key Product Decisions',
-          title: 'What we chose, and *what it cost*',
+          title: 'Three calls that *shaped it*',
           blocks: [
-            { kind: 'table', cols: ['We chose', 'Instead of', 'The trade-off'], rows: [
-              ['A web page from a QR', 'An app to download', 'Less we can do on the phone, but no guest has to install anything'],
-              ['Running next to the café’s POS', 'Replacing it', 'We got into cafés fast, but staff typed QR orders in twice'],
-              ['The phones and printer they own', 'Our own tablets', 'No hardware to buy, so every screen has to work on older phones'],
-              ['Setting up in person', 'Self sign-up online', 'Slower to grow, but a café goes live in a day'],
-              ['A monthly plan', 'A cut of every order', 'Less income from busy cafés, but owners always know what they pay'],
+            { kind: 'decisions', items: [
+              { key: 'pos', t: 'Work next to the POS', problem: 'Cafés already had a POS and didn’t want to give it up.', decision: 'We changed the workflow so OrderFlow takes the guest’s order and the POS keeps the bill. Both run side by side.' },
+              { key: 'offline', t: 'Keep running offline', problem: 'Internet blackouts are common in Myanmar, and most café systems only work on the device they were set up on.', decision: 'We made the admin responsive, so owners keep managing orders from a phone on mobile data.' },
+              { key: 'eco', t: 'From QR ordering to an ecosystem', problem: 'Once QR ordering worked, competitors started copying it.', decision: 'We turned it into one system for the whole shop: POS, AI, loyalty and inventory around the QR order.' },
             ] },
           ],
         },

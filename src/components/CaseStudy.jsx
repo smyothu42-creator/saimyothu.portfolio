@@ -174,9 +174,9 @@ const VISUALS = {
   hmw: HMW, details: Details, achievements: Achievements, roadmap: Roadmap,
   impact: Impact, role: Role, sub: Sub, iconlist: IconList, segments: Segments, table: Table,
   iterations: Iterations, pills: Pills, walkthrough: Walkthrough, film: Film, shot: Shot, walktabs: WalkTabs, shottabs: ShotTabs,
-  reel: Reel, demo: Demo, choices: Choices, beforeafter: BeforeAfter, hub: Hub,
+  reel: Reel, demo: Demo, choices: Choices, beforeafter: BeforeAfter, hub: Hub, decisions: Decisions,
 }
-const TEXT = new Set(['hub', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'choices'])
+const TEXT = new Set(['hub', 'decisions', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'choices'])
 
 function Block({ block }) {
   const Visual = VISUALS[block.kind]
@@ -448,5 +448,91 @@ function Hub({ items }) {
         </div>
       </div>
     </div>
+  )
+}
+
+// Key product decisions: number, the problem, what we decided, and a small
+// drawn visual for each (no real POS brand is shown).
+const WIFI_OFF = <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h.01M8.5 16.43a5 5 0 0 1 7 0M5 12.86a10 10 0 0 1 5.17-2.69M19 12.86a10 10 0 0 0-2.01-1.53M2 8.82a15 15 0 0 1 4.18-2.65M22 8.82a15 15 0 0 0-11.29-3.76M2 2l20 20" /></svg>
+const SIGNAL = <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 20h.01M7 20v-4M12 20v-8M17 20V8M22 4v16" /></svg>
+
+function DecPos() {
+  return (
+    <div className="cs-dec-pos" aria-hidden="true">
+      <div className="st-device cs-dec-phone"><div className="st-device-screen"><img src="/case/orderflow/mvp/c-menu.jpg" alt="" loading="lazy" /><span className="st-device-island" /></div></div>
+      <div className="cs-dec-wire"><span className="cs-dec-chip">T-24 · Latte ×2</span></div>
+      <div className="cs-dec-till">
+        <div className="cs-dec-till-bar"><span>Café POS</span><span>Counter</span></div>
+        <div className="cs-dec-till-body">
+          <div className="cs-dec-till-grid">{['Latte', 'Espresso', 'Mocha', 'Tea', 'Pizza', 'Cake'].map((x) => <span key={x}>{x}</span>)}</div>
+          <div className="cs-dec-ticket">
+            <b>Table 24</b>
+            <span className="is-new">QR order · Latte ×2</span>
+            <span>Iced Americano ×1</span>
+            <span className="cs-dec-total">Bill <i>36,000 Ks</i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+function DecOffline() {
+  const rows = [['T-1', 'Ordering', 'is-g'], ['T-5', 'Preparing', 'is-o'], ['T-2', 'Not paid', 'is-p'], ['T-6', 'Ordering', 'is-g']]
+  return (
+    <div className="cs-dec-off" aria-hidden="true">
+      <div className="cs-dec-desk"><span className="cs-dec-desk-screen">{WIFI_OFF}</span><span className="cs-dec-desk-foot" /><small>Set-up device only</small></div>
+      <div className="st-device cs-dec-phone">
+        <div className="st-device-screen cs-dec-admin">
+          <span className="st-device-island" />
+          <div className="cs-dec-admin-top"><b>Orders</b><span className="cs-dec-net">{SIGNAL}4G</span></div>
+          {rows.map(([t, s, c]) => (
+            <div key={t} className="cs-dec-order"><b>{t}</b><span className={c}>{s}</span><i /><i /></div>
+          ))}
+          <span className="cs-dec-accept">Accept order</span>
+        </div>
+      </div>
+      <span className="cs-dec-pill">{WIFI_OFF}Wi-Fi down, still running on mobile data</span>
+    </div>
+  )
+}
+function DecEco() {
+  const ring = ['pos', 'ai', 'loyalty', 'inventory']
+  return (
+    <div className="cs-dec-eco" aria-hidden="true">
+      <div className="cs-dec-copies">{[0, 1, 2].map((i) => <span key={i}><svg viewBox="0 0 24 24">{HUB_ICONS.qr}</svg>QR menu</span>)}<small>Easy to copy</small></div>
+      <svg className="cs-dec-arrow" viewBox="0 0 40 12"><path d="M0 6h36M31 1l5 5-5 5" /></svg>
+      <div className="cs-dec-ring">
+        <span className="cs-dec-ring-core"><img src="/logos/orderflow-icon.png" alt="" loading="lazy" /></span>
+        <span className="cs-dec-ring-qr"><svg viewBox="0 0 24 24">{HUB_ICONS.qr}</svg></span>
+        {ring.map((k, i) => {
+          const a = (-45 + 90 * i) * Math.PI / 180
+          return <span key={k} style={{ left: `${50 + 40 * Math.cos(a)}%`, top: `${50 + 40 * Math.sin(a)}%` }}><svg viewBox="0 0 24 24">{HUB_ICONS[k]}</svg></span>
+        })}
+        <small>Hard to copy</small>
+      </div>
+    </div>
+  )
+}
+const DEC_ART = { pos: DecPos, offline: DecOffline, eco: DecEco }
+function Decisions({ items }) {
+  return (
+    <ol className="cs-dec">
+      {items.map((it, i) => {
+        const Art = DEC_ART[it.key]
+        return (
+          <li key={it.key} className="cs-dec-row">
+            <div className="cs-dec-text">
+              <span className="cs-dec-n">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{it.t}</h3>
+              <div className="cs-dec-pd">
+                <p><b>Problem</b>{it.problem}</p>
+                <p><b>Decision</b>{it.decision}</p>
+              </div>
+            </div>
+            <div className="cs-dec-art">{Art && <Art />}</div>
+          </li>
+        )
+      })}
+    </ol>
   )
 }
