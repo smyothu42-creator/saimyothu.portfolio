@@ -509,25 +509,29 @@ function DecPos() {
   return (
     <div className="cs-dec-pos" aria-hidden="true">
       <div className="st-device cs-dec-phone is-app"><div className="st-device-screen"><img src="/case/orderflow/guest-latest.jpg" alt="" loading="lazy" /><span className="st-device-island" /></div></div>
-      <div className="cs-dec-wire"><span className="cs-dec-chip">T-24 · Latte ×2</span></div>
+      <div className="cs-dec-wire">
+        <span className="cs-dec-chip">
+          <span className="cs-dec-chip-ic"><svg viewBox="0 0 24 24">{HUB_ICONS.qr}</svg></span>
+          <span className="cs-dec-chip-t"><b>New order · T-24</b><small>Latte ×2</small></span>
+        </span>
+      </div>
       <div className="cs-dec-terminal">
         <div className="cs-dec-bezel">
-          <span className="cs-dec-msr" />
           <span className="cs-dec-glare" />
           <div className="cs-dec-pos-ui">
-            <div className="cs-dec-ticket">
-              <b>Table 24</b>
-              <span className="is-new">QR · Latte ×2<i>24,000</i></span>
-              <span>Americano ×1<i>12,000</i></span>
-              <span className="cs-dec-total">Total<i>36,000</i></span>
-              <span className="cs-dec-pay">Pay</span>
+            <div className="cs-dec-bar">
+              <span>☰ All items ▾</span><span className="cs-dec-bar-r">Ticket · Table 24</span>
             </div>
-            <div className="cs-dec-menu">
-              <div className="cs-dec-tabs"><span className="is-on">Coffee</span><span>Tea</span><span>Food</span><span>Cake</span></div>
-              <div className="cs-dec-keys">
-                {['Latte', 'Mocha', 'Flat W', 'Espresso', 'Americano', 'Cappu', 'Iced Latte', 'Matcha', 'Thai Tea', 'Lemon', 'Croissant', 'Toast'].map((x, i) => <span key={x} className={'is-' + (i % 4)}>{x}</span>)}
-              </div>
-              <div className="cs-dec-fn">{['Hold', 'Split', 'Disc', 'Void', 'Print'].map((x) => <span key={x}>{x}</span>)}</div>
+            <div className="cs-dec-grid">
+              {[['latte', 'Latte', '12,000'], ['americano', 'Americano', '12,000'], ['matcha', 'Iced Matcha', '9,500'], ['black', 'Black Coffee', '9,500'], ['espresso', 'Espresso', '8,000'], ['iced-latte', 'Iced Latte', '10,000']].map(([k, t, p]) => (
+                <span key={k} className="cs-dec-tile"><img src={`/case/orderflow/pos/${k}.jpg`} alt="" loading="lazy" /><b>{t}</b><i>{p}</i></span>
+              ))}
+            </div>
+            <div className="cs-dec-ticket">
+              <span className="is-new"><em>QR</em>Latte ×2<i>24,000</i></span>
+              <span>Americano ×1<i>12,000</i></span>
+              <span className="cs-dec-total">Total<i>36,000 Ks</i></span>
+              <span className="cs-dec-pay">Charge 36,000 Ks</span>
             </div>
           </div>
         </div>
