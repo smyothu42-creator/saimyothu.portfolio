@@ -659,21 +659,19 @@ function Arch({ items }) {
 }
 
 // MVP: the guest flow on a phone and the shop flow in a browser, side by
-// side, each playing through its screens like a short video (cross-fade and a
-// thin progress bar). Hovering pauses it.
+// side, each playing through its screens like a short video (cross-fade).
+// Hovering pauses it.
 const MOCK_MS = 2600
 function MockScreens({ srcs, alt, hold }) {
   const [i, setI] = useState(0)
-  const [tick, setTick] = useState(0)
   useEffect(() => {
     if (hold || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const t = setTimeout(() => { setI((x) => (x + 1) % srcs.length); setTick((k) => k + 1) }, MOCK_MS)
+    const t = setTimeout(() => setI((x) => (x + 1) % srcs.length), MOCK_MS)
     return () => clearTimeout(t)
   }, [i, hold, srcs.length])
   return (
     <>
       {srcs.map((src, k) => <img key={src} src={src} alt={k === 0 ? alt : ''} className={k === i ? 'is-on' : undefined} loading="lazy" />)}
-      <span className="cs-mock-bar" aria-hidden="true"><i key={tick} style={{ animationDuration: MOCK_MS + 'ms', animationPlayState: hold ? 'paused' : 'running' }} /></span>
     </>
   )
 }
