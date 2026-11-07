@@ -90,7 +90,7 @@ export const CASES = [
           bare: true,
           immersive: true,
           blocks: [
-            { kind: 'reel', src: '/case/orderflow/intro.mp4', audio: '/case/orderflow/intro.m4a', poster: '/case/orderflow/intro.jpg', alt: 'Intro: rush hour in a Yangon café, then OrderFlow: guests scan the table QR and order on their phone, staff see every order live, owners run the menu. Four cafés live by October 2026.' },
+            { kind: 'reel', src: '/case/orderflow/intro.mp4?v=2', audio: '/case/orderflow/intro.m4a', poster: '/case/orderflow/intro.jpg', alt: 'Intro: rush hour in a Yangon café, then OrderFlow: guests scan the table QR and order on their phone, staff see every order live, owners run the menu. Four cafés live by October 2026.' },
           ],
         },
         {
@@ -327,7 +327,7 @@ export const CASES = [
           nav: 'Admin walkthrough',
           title: 'Every order, then the menu behind it',
           blocks: [
-            { kind: 'reel', ratio: '7 / 5', src: '/case/orderflow/admin.mp4', poster: '/case/orderflow/admin.jpg', alt: 'The admin panel: the live order board, the table map, adding a menu item in English and Burmese, and the menu list', caption: 'The order board, the table map and the menu, from our launch film.' },
+            { kind: 'reel', ratio: '7 / 5', src: '/case/orderflow/admin.mp4?v=2', poster: '/case/orderflow/admin.jpg', alt: 'The admin panel: the live order board, the table map, adding a menu item in English and Burmese, and the menu list', caption: 'The order board, the table map and the menu, from our launch film.' },
           ],
         },
         {
@@ -406,7 +406,7 @@ export const CASES = [
           bare: true,
           immersive: true,
           blocks: [
-            { kind: 'reel', src: '/case/superfine-employee/intro.mp4?v=2', audio: '/case/superfine-employee/intro.m4a', poster: '/case/superfine-employee/intro.jpg', alt: 'Intro: employees could not see their allowance, the cut-off or their lunch. Then the app: sign in, allowance in view, choices first, a cart that splits the cost, and the same flow on a phone.' },
+            { kind: 'reel', src: '/case/superfine-employee/intro.mp4?v=3', audio: '/case/superfine-employee/intro.m4a', poster: '/case/superfine-employee/intro.jpg', alt: 'Intro: employees could not see their allowance, the cut-off or their lunch. Then the app: sign in, allowance in view, choices first, a cart that splits the cost, and the same flow on a phone.' },
           ],
         },
         {
@@ -599,7 +599,7 @@ export const CASES = [
           nav: 'Web app',
           title: 'Design walkthrough: web',
           blocks: [
-            { kind: 'demo', device: 'browser', src: '/case/superfine-employee/web.mp4', poster: '/case/superfine-employee/web.jpg', alt: 'Screen recording of the employee web app, one lunch order from sign-in to tracking', steps: [
+            { kind: 'demo', device: 'browser', src: '/case/superfine-employee/web.mp4?v=2', poster: '/case/superfine-employee/web.jpg', alt: 'Screen recording of the employee web app, one lunch order from sign-in to tracking', steps: [
               { t: 0, text: 'Sign in with work email' },
               { t: 5.17, text: 'Allowance in the header' },
               { t: 6.91, text: 'Required choices first' },
@@ -690,7 +690,7 @@ export const CASES = [
           bare: true,
           immersive: true,
           blocks: [
-            { kind: 'reel', src: '/case/superfine/sf-intro.mp4?v=2', audio: '/case/superfine/sf-intro.m4a', poster: '/case/superfine/sf-intro.jpg', alt: 'Intro: hot food, one free hand and a 60 minute clock. Then a driver run: go on duty, scan each slip, slide to confirm, navigate, follow the steps at the door and send a proof photo.' },
+            { kind: 'reel', src: '/case/superfine/sf-intro.mp4?v=3', audio: '/case/superfine/sf-intro.m4a', poster: '/case/superfine/sf-intro.jpg', alt: 'Intro: hot food, one free hand and a 60 minute clock. Then a driver run: go on duty, scan each slip, slide to confirm, navigate, follow the steps at the door and send a proof photo.' },
           ],
         },
         {
@@ -982,7 +982,7 @@ export const CASES = [
           nav: 'Intro',
           bare: true,
           blocks: [
-            { kind: 'reel', src: '/case/mtb-pay-merchant/intro.mp4?v=3', audio: '/case/mtb-pay-merchant/intro.m4a?v=3', poster: '/case/mtb-pay-merchant/intro.jpg?v=2', alt: 'Intro: slow transactions and frequent errors for small shops in Myanmar. Then a day at one shop counter with MTB Pay Merchant: a morning phone top-up, a QR payment in the lunch rush, a refund in the afternoon, and the day on one screen at closing time.' },
+            { kind: 'reel', src: '/case/mtb-pay-merchant/intro.mp4?v=4', audio: '/case/mtb-pay-merchant/intro.m4a?v=3', poster: '/case/mtb-pay-merchant/intro.jpg?v=2', alt: 'Intro: slow transactions and frequent errors for small shops in Myanmar. Then a day at one shop counter with MTB Pay Merchant: a morning phone top-up, a QR payment in the lunch rush, a refund in the afternoon, and the day on one screen at closing time.' },
           ],
         },
         {

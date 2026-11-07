@@ -54,7 +54,7 @@ export default function CaseStudy({ slug }) {
     <div className="sv-case" style={s?.accent ? { '--acc': s.accent } : undefined}>
       {s?.sections?.length > 1 && <CaseNav sections={s.sections} />}
       <Card className="sv-cover" id="cs-top">
-        <Media art={c.art} title={c.title} />
+        <Media art={c.art} title={c.title} eager />
         <BackButton href="/" label="Back to home" />
         <h1 className="sv-cover-title">{c.title}</h1>
       </Card>

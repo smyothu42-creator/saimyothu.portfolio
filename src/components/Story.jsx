@@ -473,7 +473,7 @@ export function Reel({ src, poster, audio, label, title, ratio = '16 / 9', alt }
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           aria-label={alt || title}
           onPlay={() => { setPlaying(true); follow() }}
           onPause={() => { setPlaying(false); song.current?.pause() }}
@@ -588,7 +588,7 @@ export function Demo({ src, poster, steps = [], alt, device = 'phone' }) {
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="none"
             aria-label={alt}
             onTimeUpdate={onTime}
             onPlay={() => setPlaying(true)}
