@@ -2303,9 +2303,9 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .st-choices .st-choices-label { grid-column: 1 / -1; justify-self: start; order: -2; margin-bottom: 0; }
 
 /* Key product decisions: text on the left, a small drawn scene on the right. */
-.cs-dec { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
-.cs-dec-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; padding: 28px; border-radius: 24px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)); border: 1px solid rgba(255, 255, 255, 0.12); }
+.cs-dec { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 24px; }
+.cs-dec-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; padding: 32px 0 8px; border-top: 1px solid var(--sv-line); }
+.cs-dec-row:first-child { border-top: 0; padding-top: 8px; }
 .cs-dec-n { display: block; font-size: 13px; color: var(--sv-dim); margin-bottom: 8px; }
 .cs-dec-text h3 { margin: 0 0 14px; font-size: 22px; font-weight: 500; color: var(--sv-text); letter-spacing: -0.01em; }
 .cs-dec-pd { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -2317,21 +2317,33 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 
 /* 1 · POS: the guest's phone, an order chip travelling, the café's till. */
 .cs-dec-pos { display: flex; align-items: center; gap: 0; width: 100%; justify-content: center; }
-.cs-dec-wire { position: relative; flex: 1; max-width: 120px; height: 2px; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.35) 0 4px, transparent 4px 8px); }
+.cs-dec-wire { position: relative; z-index: 2; flex: 1; max-width: 120px; height: 2px; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.35) 0 4px, transparent 4px 8px); }
 .cs-dec-chip { position: absolute; top: 50%; left: 0; transform: translate(-30%, -50%); white-space: nowrap; padding: 4px 8px; border-radius: 999px; font-size: 10px; color: #fff; background: #ef7a2c; box-shadow: 0 6px 14px -6px rgba(239, 122, 44, 0.8); animation: dec-chip 3.2s ease-in-out infinite; }
 @keyframes dec-chip { 0% { left: 0; opacity: 0; } 15% { opacity: 1; } 70% { left: 100%; opacity: 1; transform: translate(-70%, -50%); } 85%, 100% { left: 100%; opacity: 0; transform: translate(-70%, -50%); } }
-.cs-dec-till { flex: none; width: 250px; border-radius: 10px; overflow: hidden; background: #e9eaee; color: #2b2f38; box-shadow: 0 18px 36px -18px rgba(0, 0, 0, 0.8); font-size: 9px; }
-.cs-dec-till-bar { display: flex; justify-content: space-between; padding: 6px 9px; background: #2f3542; color: #dfe3ea; font-weight: 600; }
-.cs-dec-till-body { display: grid; grid-template-columns: 1fr 86px; gap: 6px; padding: 7px; }
-.cs-dec-till-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; align-content: start; }
-.cs-dec-till-grid span { padding: 9px 4px; border-radius: 4px; background: #fff; text-align: center; color: #59606d; }
-.cs-dec-ticket { display: flex; flex-direction: column; gap: 4px; padding: 6px; border-radius: 4px; background: #fff; }
-.cs-dec-ticket b { font-size: 10px; }
-.cs-dec-ticket span { color: #59606d; }
-.cs-dec-ticket .is-new { padding: 3px 4px; margin: 0 -2px; border-radius: 3px; background: rgba(239, 122, 44, 0.16); color: #b8561a; animation: dec-new 3.2s ease-in-out infinite; }
+/* A countertop POS terminal: a dark bezel on a silver stand, with a classic
+   till screen (ticket on the left, coloured keys, function row). Generic. */
+.cs-dec-terminal { flex: none; display: flex; flex-direction: column; align-items: center; filter: drop-shadow(0 24px 30px rgba(0, 0, 0, 0.55)); }
+.cs-dec-bezel { width: 280px; padding: 9px; border-radius: 12px; background: linear-gradient(160deg, #3a3d44, #16171b 55%, #2a2c31); border: 1px solid #55585f; }
+.cs-dec-pos-ui { display: grid; grid-template-columns: 82px 1fr; gap: 4px; aspect-ratio: 16 / 10.4; padding: 4px; border-radius: 4px; background: #dde3ec; font-size: 6.5px; color: #2b2f38; overflow: hidden; }
+.cs-dec-ticket { display: flex; flex-direction: column; gap: 3px; padding: 5px; border-radius: 3px; background: #fff; }
+.cs-dec-ticket b { font-size: 8px; margin-bottom: 1px; }
+.cs-dec-ticket span { display: flex; justify-content: space-between; color: #59606d; }
+.cs-dec-ticket i { font-style: normal; }
+.cs-dec-ticket .is-new { padding: 2px 3px; margin: 0 -3px; border-radius: 2px; background: rgba(239, 122, 44, 0.18); color: #b8561a; animation: dec-new 3.2s ease-in-out infinite; }
 @keyframes dec-new { 0%, 65% { opacity: 0.25; } 75%, 100% { opacity: 1; } }
-.cs-dec-total { display: flex; justify-content: space-between; margin-top: 4px; padding-top: 4px; border-top: 1px dashed #c9ccd3; font-weight: 600; color: #2b2f38 !important; }
-.cs-dec-total i { font-style: normal; }
+.cs-dec-total { margin-top: auto; padding-top: 3px; border-top: 1px dashed #c9ccd3; font-weight: 700; color: #2b2f38 !important; }
+.cs-dec-pay { justify-content: center !important; padding: 5px; border-radius: 3px; background: #2fa35a; color: #fff !important; font-weight: 700; font-size: 8px; }
+.cs-dec-menu { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.cs-dec-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+.cs-dec-tabs span { padding: 3px 0; text-align: center; border-radius: 2px; background: #b9c7dc; color: #2e3d57; }
+.cs-dec-tabs .is-on { background: #3b6fb6; color: #fff; }
+.cs-dec-keys { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 1fr; gap: 2px; }
+.cs-dec-keys span { display: grid; place-items: center; border-radius: 2px; text-align: center; line-height: 1.1; }
+.cs-dec-keys .is-0 { background: #f6d6a8; } .cs-dec-keys .is-1 { background: #cfe8c6; } .cs-dec-keys .is-2 { background: #cddcf3; } .cs-dec-keys .is-3 { background: #f3cdd2; }
+.cs-dec-fn { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; }
+.cs-dec-fn span { padding: 3px 0; text-align: center; border-radius: 2px; background: #3a3f4a; color: #e8ebf0; }
+.cs-dec-neck { width: 46px; height: 34px; background: linear-gradient(90deg, #8e9198, #d9dbdf 45%, #9a9da4); clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%); }
+.cs-dec-base { width: 150px; height: 14px; border-radius: 6px 6px 10px 10px; background: linear-gradient(180deg, #e6e7ea, #a7aab0); }
 
 /* 2 · Offline: a dimmed desk computer, the admin on a phone with 4G. */
 .cs-dec-off { position: relative; display: flex; align-items: center; justify-content: center; gap: 36px; width: 100%; padding-top: 30px; }
@@ -2372,7 +2384,7 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) { .cs-dec-chip, .cs-dec-ticket .is-new { animation: none; } }
 @media (max-width: 760px) {
-  .cs-dec-row { padding: 22px; gap: 18px; }
+  .cs-dec-row { gap: 18px; }
   .cs-dec-pd { grid-template-columns: 1fr; gap: 12px; }
   .cs-dec-art { padding: 18px 8px; min-height: 0; }
   .cs-dec-pos { zoom: 0.72; }

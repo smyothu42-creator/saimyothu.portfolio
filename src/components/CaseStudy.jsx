@@ -523,17 +523,27 @@ function DecPos() {
     <div className="cs-dec-pos" aria-hidden="true">
       <div className="st-device cs-dec-phone"><div className="st-device-screen"><img src="/case/orderflow/mvp/c-menu.jpg" alt="" loading="lazy" /><span className="st-device-island" /></div></div>
       <div className="cs-dec-wire"><span className="cs-dec-chip">T-24 · Latte ×2</span></div>
-      <div className="cs-dec-till">
-        <div className="cs-dec-till-bar"><span>Café POS</span><span>Counter</span></div>
-        <div className="cs-dec-till-body">
-          <div className="cs-dec-till-grid">{['Latte', 'Espresso', 'Mocha', 'Tea', 'Pizza', 'Cake'].map((x) => <span key={x}>{x}</span>)}</div>
-          <div className="cs-dec-ticket">
-            <b>Table 24</b>
-            <span className="is-new">QR order · Latte ×2</span>
-            <span>Iced Americano ×1</span>
-            <span className="cs-dec-total">Bill <i>36,000 Ks</i></span>
+      <div className="cs-dec-terminal">
+        <div className="cs-dec-bezel">
+          <div className="cs-dec-pos-ui">
+            <div className="cs-dec-ticket">
+              <b>Table 24</b>
+              <span className="is-new">QR · Latte ×2<i>24,000</i></span>
+              <span>Americano ×1<i>12,000</i></span>
+              <span className="cs-dec-total">Total<i>36,000</i></span>
+              <span className="cs-dec-pay">Pay</span>
+            </div>
+            <div className="cs-dec-menu">
+              <div className="cs-dec-tabs"><span className="is-on">Coffee</span><span>Tea</span><span>Food</span><span>Cake</span></div>
+              <div className="cs-dec-keys">
+                {['Latte', 'Mocha', 'Flat W', 'Espresso', 'Americano', 'Cappu', 'Iced Latte', 'Matcha', 'Thai Tea', 'Lemon', 'Croissant', 'Toast'].map((x, i) => <span key={x} className={'is-' + (i % 4)}>{x}</span>)}
+              </div>
+              <div className="cs-dec-fn">{['Hold', 'Split', 'Disc', 'Void', 'Print'].map((x) => <span key={x}>{x}</span>)}</div>
+            </div>
           </div>
         </div>
+        <span className="cs-dec-neck" />
+        <span className="cs-dec-base" />
       </div>
     </div>
   )

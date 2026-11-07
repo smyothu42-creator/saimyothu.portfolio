@@ -154,7 +154,7 @@ export const CASES = [
         {
           id: 'vision',
           nav: 'Product Vision & Strategy',
-          title: 'One *ecosystem*, starting with QR',
+          title: 'An *ecosystem*, starting with QR',
           blocks: [
             { kind: 'lead', p: 'Busy owner-run cafés in Yangon order from the table QR first. Then we grow the rest of the shop around it.' },
             { kind: 'hub', items: [
