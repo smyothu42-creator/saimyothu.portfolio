@@ -2282,8 +2282,14 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .cs-hub-card.is-in { animation: hub-card-in 0.6s 0.14s cubic-bezier(0.22, 1, 0.36, 1) both; }
 .cs-hub-card.is-out { pointer-events: none; animation: hub-card-out 0.32s cubic-bezier(0.3, 0, 0.8, 0.6) both; }
 .cs-hub-card.is-out .st-choice-bar i { transform: none; }
-@keyframes hub-card-in { from { opacity: 0; transform: translateX(48px) scale(0.97); filter: blur(4px); } }
-@keyframes hub-card-out { to { opacity: 0; transform: translateX(-48px) scale(0.97); filter: blur(4px); } }
+/* Up and down: forward, the card rises out and the next rises in from
+   below; back, the reverse. */
+@keyframes hub-card-in { from { opacity: 0; transform: translateY(36px) scale(0.97); filter: blur(4px); } }
+@keyframes hub-card-out { to { opacity: 0; transform: translateY(-36px) scale(0.97); filter: blur(4px); } }
+@keyframes hub-card-in-back { from { opacity: 0; transform: translateY(-36px) scale(0.97); filter: blur(4px); } }
+@keyframes hub-card-out-back { to { opacity: 0; transform: translateY(36px) scale(0.97); filter: blur(4px); } }
+.cs-hub-list.is-back .cs-hub-card.is-in { animation-name: hub-card-in-back; }
+.cs-hub-list.is-back .cs-hub-card.is-out { animation-name: hub-card-out-back; }
 @media (prefers-reduced-motion: reduce) { .cs-hub-card.is-in, .cs-hub-card.is-out { animation-duration: 0.01s; } }
 .cs-hub-list .st-choice-h { font-size: 19px; }
 .cs-hub-list .st-choice-p { font-size: 16px; }
@@ -2314,6 +2320,9 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .cs-dec-art { position: relative; min-height: 250px; display: grid; place-items: center; border-radius: 18px; background: rgba(0, 0, 0, 0.16); overflow: hidden; padding: 20px; }
 .cs-dec-phone.st-device { --w: 124px; flex: none; }
 .cs-dec-phone .st-device-screen img { object-position: top; }
+/* app screenshots without a status bar: leave room for the island */
+.is-app .st-device-screen { background: #f6f6f9; }
+.is-app .st-device-screen img { height: 93%; margin-top: 7%; border-radius: 0 0 calc(var(--w) * 0.13) calc(var(--w) * 0.13); }
 
 /* 1 · POS: the guest's phone, an order chip travelling, the café's till. */
 .cs-dec-pos { display: flex; align-items: center; gap: 0; width: 100%; justify-content: center; }
@@ -2322,8 +2331,13 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 @keyframes dec-chip { 0% { left: 0; opacity: 0; } 15% { opacity: 1; } 70% { left: 100%; opacity: 1; transform: translate(-70%, -50%); } 85%, 100% { left: 100%; opacity: 0; transform: translate(-70%, -50%); } }
 /* A countertop POS terminal: a dark bezel on a silver stand, with a classic
    till screen (ticket on the left, coloured keys, function row). Generic. */
-.cs-dec-terminal { flex: none; display: flex; flex-direction: column; align-items: center; filter: drop-shadow(0 24px 30px rgba(0, 0, 0, 0.55)); }
-.cs-dec-bezel { width: 280px; padding: 9px; border-radius: 12px; background: linear-gradient(160deg, #3a3d44, #16171b 55%, #2a2c31); border: 1px solid #55585f; }
+.cs-dec-terminal { flex: none; display: flex; flex-direction: column; align-items: center; perspective: 900px; filter: drop-shadow(0 26px 30px rgba(0, 0, 0, 0.6)); }
+.cs-dec-bezel { position: relative; z-index: 1; width: 280px; padding: 10px 10px 16px; border-radius: 14px; transform: rotateY(-14deg) rotateX(6deg); transform-origin: 50% 100%;
+  background: linear-gradient(165deg, #2c2e33, #0d0e10 50%, #1e1f23); box-shadow: inset 0 0 0 1px #4d5057, inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 0 0 2px #b9bcc2, 0 0 0 3px #7c7f85; }
+/* the screen's glass catches a soft diagonal reflection */
+.cs-dec-glare { position: absolute; inset: 10px 10px 16px; z-index: 2; border-radius: 3px; pointer-events: none; background: linear-gradient(118deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.05) 32%, rgba(255, 255, 255, 0) 33%); }
+/* a card reader clipped to the right side, like a real terminal */
+.cs-dec-msr { position: absolute; right: -14px; top: 22%; width: 12px; height: 46%; border-radius: 0 4px 4px 0; background: linear-gradient(90deg, #111, #2e3036 60%, #18191c); box-shadow: inset 2px 0 0 #000; }
 .cs-dec-pos-ui { display: grid; grid-template-columns: 82px 1fr; gap: 4px; aspect-ratio: 16 / 10.4; padding: 4px; border-radius: 4px; background: #dde3ec; font-size: 6.5px; color: #2b2f38; overflow: hidden; }
 .cs-dec-ticket { display: flex; flex-direction: column; gap: 3px; padding: 5px; border-radius: 3px; background: #fff; }
 .cs-dec-ticket b { font-size: 8px; margin-bottom: 1px; }
@@ -2342,8 +2356,11 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .cs-dec-keys .is-0 { background: #f6d6a8; } .cs-dec-keys .is-1 { background: #cfe8c6; } .cs-dec-keys .is-2 { background: #cddcf3; } .cs-dec-keys .is-3 { background: #f3cdd2; }
 .cs-dec-fn { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; }
 .cs-dec-fn span { padding: 3px 0; text-align: center; border-radius: 2px; background: #3a3f4a; color: #e8ebf0; }
-.cs-dec-neck { width: 46px; height: 34px; background: linear-gradient(90deg, #8e9198, #d9dbdf 45%, #9a9da4); clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%); }
-.cs-dec-base { width: 150px; height: 14px; border-radius: 6px 6px 10px 10px; background: linear-gradient(180deg, #e6e7ea, #a7aab0); }
+/* a curved silver arm and a low base, as on countertop POS stands */
+.cs-dec-arm { position: relative; width: 70px; height: 46px; margin-top: -6px; border-radius: 0 0 18px 18px / 0 0 30px 30px;
+  background: linear-gradient(90deg, #6f7278, #e4e6ea 40%, #c3c6cb 60%, #7d8086); clip-path: polygon(30% 0, 70% 0, 82% 100%, 18% 100%); }
+.cs-dec-base { width: 168px; height: 18px; margin-top: -2px; border-radius: 40% 40% 12px 12px / 100% 100% 12px 12px;
+  background: linear-gradient(180deg, #f4f5f7, #c9ccd1 55%, #8f9298); box-shadow: inset 0 -3px 0 #2a2c30; }
 
 /* 2 · Offline: a dimmed desk computer, the admin on a phone with 4G. */
 .cs-dec-off { position: relative; display: flex; align-items: center; justify-content: center; gap: 36px; width: 100%; padding-top: 30px; }
@@ -2369,7 +2386,9 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 /* 3 · Competitors: easy-to-copy QR menus, then the ecosystem ring. */
 .cs-dec-eco { display: flex; align-items: center; justify-content: center; gap: 36px; width: 100%; }
 .cs-dec-copies { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.cs-dec-copies span { white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 10px; font-size: 12px; color: var(--sv-dim); background: rgba(255, 255, 255, 0.06); border: 1px dashed rgba(255, 255, 255, 0.22); }
+.cs-dec-copies { gap: 10px !important; }
+.cs-dec-copies span { white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 14px; font-size: 15px; color: var(--sv-dim); background: rgba(255, 255, 255, 0.06); border: 1px dashed rgba(255, 255, 255, 0.22); }
+.cs-dec-copies svg { width: 20px !important; height: 20px !important; }
 .cs-dec-copies svg, .cs-dec-ring svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .cs-dec-arrow { width: 40px; height: 12px; fill: none; stroke: rgba(255, 255, 255, 0.5); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .cs-dec-ring { position: relative; width: 170px; aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; }

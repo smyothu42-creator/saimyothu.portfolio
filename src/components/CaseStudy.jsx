@@ -425,18 +425,19 @@ function Hub({ items, outer = [] }) {
   const [tick, setTick] = useState(0)
   const [hold, setHold] = useState(false)
   const [prev, setPrev] = useState(null)
+  const [back, setBack] = useState(false)
   const reduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const running = auto && !hold && !reduced
   useEffect(() => {
     if (!running) return
-    const t = setTimeout(() => { setPrev(on); setOn((on + 1) % n); setTick((k) => k + 1) }, HUB_MS)
+    const t = setTimeout(() => { setBack(false); setPrev(on); setOn((on + 1) % n); setTick((k) => k + 1) }, HUB_MS)
     // The slideshow only steps through the five main modules.
     return () => clearTimeout(t)
   }, [running, on, n])
-  const pick = (i) => { if (i !== on) setPrev(on); setOn(i); setAuto(false) }
+  const pick = (i, dir) => { if (i === on) return; setBack(dir ? dir < 0 : i < on); setPrev(on); setOn(i); setAuto(false) }
   // Up and down step through the five main modules (from an outer feature,
   // they go back into them).
-  const go = (d) => pick(on < n ? (on + d + n) % n : d > 0 ? 0 : n - 1)
+  const go = (d) => pick(on < n ? (on + d + n) % n : d > 0 ? 0 : n - 1, d)
   const at = (i) => (-90 + (360 / n) * i) * Math.PI / 180
   // One list for the card: the main modules first, then the outer features.
   const all = [...items, ...outer]
@@ -481,7 +482,7 @@ function Hub({ items, outer = [] }) {
       <button type="button" className="sv-take-nav is-up cs-hub-arrow" aria-label="Previous module" onClick={() => go(-1)}>
         <Icon name="chevronUp" size={28} stroke={1.8} />
       </button>
-      <div className="cs-hub-list" aria-live="polite">
+      <div className={'cs-hub-list' + (back ? ' is-back' : '')} aria-live="polite">
         {prev !== null && prev !== on && (
           <div key={'out' + tick + '-' + prev} className="st-choice is-on cs-hub-card is-out" aria-hidden="true">
             <span className="st-step-n">{badge(prev)}</span>
@@ -521,10 +522,12 @@ const SIGNAL = <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 20h.01M7 
 function DecPos() {
   return (
     <div className="cs-dec-pos" aria-hidden="true">
-      <div className="st-device cs-dec-phone"><div className="st-device-screen"><img src="/case/orderflow/mvp/c-menu.jpg" alt="" loading="lazy" /><span className="st-device-island" /></div></div>
+      <div className="st-device cs-dec-phone is-app"><div className="st-device-screen"><img src="/case/orderflow/guest-latest.jpg" alt="" loading="lazy" /><span className="st-device-island" /></div></div>
       <div className="cs-dec-wire"><span className="cs-dec-chip">T-24 · Latte ×2</span></div>
       <div className="cs-dec-terminal">
         <div className="cs-dec-bezel">
+          <span className="cs-dec-msr" />
+          <span className="cs-dec-glare" />
           <div className="cs-dec-pos-ui">
             <div className="cs-dec-ticket">
               <b>Table 24</b>
@@ -542,7 +545,7 @@ function DecPos() {
             </div>
           </div>
         </div>
-        <span className="cs-dec-neck" />
+        <span className="cs-dec-arm" />
         <span className="cs-dec-base" />
       </div>
     </div>
@@ -612,7 +615,7 @@ function Decisions({ items }) {
 // Product architecture: the three surfaces layered as one scene (owner's
 // dashboard at the back, the staff board, the guest's phone in front), and a
 // short line for each. The highlight moves from guest to staff to owner.
-const ARCH_SHOTS = { owner: '/case/orderflow/mvp/a-metrics.jpg', staff: '/case/orderflow/mvp/a-accept.jpg', guest: '/case/orderflow/mvp/c-menu.jpg' }
+const ARCH_SHOTS = { owner: '/case/orderflow/mvp/a-metrics.jpg', staff: '/case/orderflow/mvp/a-accept.jpg', guest: '/case/orderflow/guest-latest.jpg' }
 function ArchBrowser({ who, on }) {
   return (
     <div className={'st-browser cs-arch-' + who + (on ? ' is-on' : '')}>
@@ -635,7 +638,7 @@ function Arch({ items }) {
       <div className="cs-arch-stage" aria-hidden="true">
         <ArchBrowser who="owner" on={key === 'owner'} />
         <ArchBrowser who="staff" on={key === 'staff'} />
-        <div className={'st-device cs-arch-guest' + (key === 'guest' ? ' is-on' : '')}>
+        <div className={'st-device cs-arch-guest is-app' + (key === 'guest' ? ' is-on' : '')}>
           <div className="st-device-screen"><img src={ARCH_SHOTS.guest} alt="" loading="lazy" /><span className="st-device-island" /></div>
         </div>
       </div>
