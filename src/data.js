@@ -140,18 +140,6 @@ export const CASES = [
           ],
         },
         {
-          id: 'goals',
-          nav: 'Goals',
-          toc: false,
-          blocks: [
-            { kind: 'notes', items: [
-              { t: 'Owners', illo: 'owner', p: 'More orders with the same staff, and prices they change any time.' },
-              { t: 'Staff', illo: 'staff', p: 'Fewer mistakes and calmer shifts.' },
-              { t: 'Guests', illo: 'guest', p: 'No waiting, no app, in Burmese or English.' },
-            ] },
-          ],
-        },
-        {
           id: 'vision',
           nav: 'Product Vision & Strategy',
           title: 'An *ecosystem*, starting with QR',
