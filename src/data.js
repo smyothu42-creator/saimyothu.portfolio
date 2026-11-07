@@ -141,7 +141,7 @@ export const CASES = [
         },
         {
           id: 'vision',
-          nav: 'Product Vision & Strategy',
+          nav: 'Product Vision',
           title: 'An *ecosystem*, starting with QR',
           blocks: [
             { kind: 'lead', p: 'Busy owner-run cafés in Yangon order from the table QR first. Then we grow the rest of the shop around it.' },
@@ -187,7 +187,7 @@ export const CASES = [
         },
         {
           id: 'architecture',
-          nav: 'Scope and Architecture',
+          nav: 'Scope & Architecture',
           title: 'One order, *three places*',
           blocks: [
             { kind: 'lead', p: 'An order starts on a guest’s phone, lands on the staff board and ends up in the owner’s numbers.' },
