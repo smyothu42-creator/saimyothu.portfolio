@@ -545,7 +545,6 @@ function DecOffline() {
   return (
     <div className="cs-dec-off" aria-hidden="true">
       <div className="cs-dec-desk">
-        <span className="cs-dec-pill">{WIFI_OFF}Wi-Fi down, still running on mobile data</span>
         <span className="cs-dec-desk-screen">
           {/* Wi-Fi searching: the bars light up in turn, then the signal is cut. */}
           <svg className="cs-dec-wifi" viewBox="0 0 24 24">
@@ -555,8 +554,11 @@ function DecOffline() {
         </span>
         <span className="cs-dec-desk-foot" /><small>Set-up device only</small>
       </div>
-      <div className="st-device cs-dec-phone is-app">
-        <div className="st-device-screen"><img src="/case/orderflow/admin-mobile.jpg" alt="" loading="lazy" /><span className="st-device-island" /></div>
+      <div className="cs-dec-mobile">
+        <span className="cs-dec-pill">{WIFI_OFF}Wi-Fi down, still running on mobile data</span>
+        <div className="st-device cs-dec-phone is-app">
+          <div className="st-device-screen"><img src="/case/orderflow/admin-mobile.jpg" alt="" loading="lazy" /><span className="st-device-island" /></div>
+        </div>
       </div>
     </div>
   )

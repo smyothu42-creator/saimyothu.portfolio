@@ -2358,8 +2358,9 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 /* 2 · Offline: a dimmed desk computer, the admin on a phone with 4G. */
 .cs-dec-off { position: relative; display: flex; align-items: center; justify-content: center; gap: 72px; width: 100%; }
 .cs-dec-desk { display: flex; flex-direction: column; align-items: center; gap: 0; }
-.cs-dec-desk > :not(.cs-dec-pill) { opacity: 0.8; }
-.cs-dec-desk-screen { width: 100%; aspect-ratio: 16 / 10; height: auto; border-radius: 8px; display: grid; place-items: center; border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.06); color: var(--sv-text); }
+.cs-dec-desk > * { opacity: 0.8; }
+.cs-dec-mobile { display: flex; flex-direction: column; align-items: center; }
+.cs-dec-desk-screen { width: 256px; aspect-ratio: 16 / 10; height: auto; border-radius: 8px; display: grid; place-items: center; border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.06); color: var(--sv-text); }
 .cs-dec-desk-screen svg, .cs-dec-pill svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .cs-dec-desk-foot { width: 52px; height: 18px; border: 1px solid rgba(255, 255, 255, 0.3); border-top: 0; }
 .cs-dec-desk small, .cs-dec-copies small { margin-top: 8px; font-size: 11px; color: var(--sv-dim); }
@@ -2433,4 +2434,4 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .cs-dec-wifi .cut { stroke: #ff8a7a; stroke-width: 2; stroke-dasharray: 1; stroke-dashoffset: 1; animation: dec-cut 3s ease-in-out infinite; }
 @keyframes dec-cut { 0%, 45% { stroke-dashoffset: 1; opacity: 1; } 60%, 88% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .cs-dec-wifi path { animation: none !important; } .cs-dec-wifi .cut { stroke-dashoffset: 0; } }
-@media (max-width: 760px) { .cs-dec-off { gap: 28px; } .cs-dec-pill { white-space: normal; text-align: center; max-width: 150px; font-size: 11px; } }
+@media (max-width: 760px) { .cs-dec-off { gap: 28px; } .cs-dec-desk-screen { width: 180px; } .cs-dec-pill { white-space: normal; text-align: center; max-width: 150px; font-size: 11px; } }
