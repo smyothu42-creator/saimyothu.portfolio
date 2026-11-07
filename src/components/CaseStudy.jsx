@@ -389,14 +389,15 @@ function Hub({ items }) {
   const [auto, setAuto] = useState(true)
   const [tick, setTick] = useState(0)
   const [hold, setHold] = useState(false)
+  const [prev, setPrev] = useState(null)
   const reduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const running = auto && !hold && !reduced
   useEffect(() => {
     if (!running) return
-    const t = setTimeout(() => { setOn((i) => (i + 1) % n); setTick((k) => k + 1) }, HUB_MS)
+    const t = setTimeout(() => { setPrev(on); setOn((on + 1) % n); setTick((k) => k + 1) }, HUB_MS)
     return () => clearTimeout(t)
   }, [running, on, n])
-  const pick = (i) => { setOn(i); setAuto(false) }
+  const pick = (i) => { if (i !== on) setPrev(on); setOn(i); setAuto(false) }
   const at = (i) => (-90 + (360 / n) * i) * Math.PI / 180
   return (
     <div className="cs-hub">
@@ -425,7 +426,19 @@ function Hub({ items }) {
         ))}
       </div>
       <div className="cs-hub-list" aria-live="polite" onPointerEnter={() => setHold(true)} onPointerLeave={() => setHold(false)}>
-        <div key={on} className="st-choice is-on cs-hub-card">
+        {prev !== null && prev !== on && (
+          <div key={'out' + tick + '-' + prev} className="st-choice is-on cs-hub-card is-out" aria-hidden="true">
+            <span className="st-step-n">{String(prev + 1).padStart(2, '0')}</span>
+            <span className="st-choice-body">
+              <span className="st-choice-h">{items[prev].t}</span>
+              <span className="st-choice-p">{items[prev].p}</span>
+              <span className="st-choice-bar" aria-hidden="true">
+                <i style={{ animation: 'none' }} />
+              </span>
+            </span>
+          </div>
+        )}
+        <div key={'in' + tick + '-' + on} className="st-choice is-on cs-hub-card is-in">
           <span className="st-step-n">{String(on + 1).padStart(2, '0')}</span>
           <span className="st-choice-body">
             <span className="st-choice-h">{items[on].t}</span>

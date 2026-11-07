@@ -140,6 +140,18 @@ export const CASES = [
           ],
         },
         {
+          id: 'goals',
+          nav: 'Goals',
+          toc: false,
+          blocks: [
+            { kind: 'notes', items: [
+              { t: 'Owners', illo: 'owner', p: 'More orders with the same staff, and prices they change any time.' },
+              { t: 'Staff', illo: 'staff', p: 'Fewer mistakes and calmer shifts.' },
+              { t: 'Guests', illo: 'guest', p: 'No waiting, no app, in Burmese or English.' },
+            ] },
+          ],
+        },
+        {
           id: 'vision',
           nav: 'Product Vision & Strategy',
           title: 'One *ecosystem*, starting with QR',
@@ -151,11 +163,6 @@ export const CASES = [
               { key: 'ai', t: 'Flowy AI', tag: 'Pro plan', p: 'Every order is data. Flowy AI turns it into answers for the owner.' },
               { key: 'loyalty', t: 'Loyalty', tag: 'From Q3 2027', p: 'Points and rewards that bring guests back, as an add-on to any plan.' },
               { key: 'inventory', t: 'Inventory', tag: 'Next', p: 'Stock that counts down as orders come in, so owners know what to restock.' },
-            ] },
-            { kind: 'notes', items: [
-              { t: 'Owners', illo: 'owner', p: 'More orders with the same staff, and prices they change any time.' },
-              { t: 'Staff', illo: 'staff', p: 'Fewer mistakes and calmer shifts.' },
-              { t: 'Guests', illo: 'guest', p: 'No waiting, no app, in Burmese or English.' },
             ] },
           ],
         },

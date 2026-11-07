@@ -2258,9 +2258,15 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 @keyframes hub-float { 50% { transform: translate(-50%, calc(-50% - 4px)); } }
 .cs-hub-label { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 7px; white-space: nowrap; font-size: 12px; color: var(--sv-dim); transition: color 0.4s; }
 .cs-hub-node.is-on .cs-hub-label { color: var(--sv-text); }
-.cs-hub-list { min-height: 170px; display: flex; align-items: center; }
-.cs-hub-card { padding: 20px 22px; animation: hub-in 0.5s var(--ease, ease) both; }
-@keyframes hub-in { from { opacity: 0; transform: translateY(10px); } }
+.cs-hub-list { min-height: 170px; display: grid; align-items: center; overflow: hidden; padding: 8px 4px; margin: -8px -4px; }
+/* The finished card slides out to the left as the next one slides in. */
+.cs-hub-card { grid-area: 1 / 1; padding: 20px 22px; }
+.cs-hub-card.is-in { animation: hub-card-in 0.6s 0.14s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.cs-hub-card.is-out { pointer-events: none; animation: hub-card-out 0.32s cubic-bezier(0.3, 0, 0.8, 0.6) both; }
+.cs-hub-card.is-out .st-choice-bar i { transform: none; }
+@keyframes hub-card-in { from { opacity: 0; transform: translateX(48px) scale(0.97); filter: blur(4px); } }
+@keyframes hub-card-out { to { opacity: 0; transform: translateX(-48px) scale(0.97); filter: blur(4px); } }
+@media (prefers-reduced-motion: reduce) { .cs-hub-card.is-in, .cs-hub-card.is-out { animation-duration: 0.01s; } }
 .cs-hub-list .st-choice-h { font-size: 19px; }
 .cs-hub-list .st-choice-p { font-size: 16px; }
 @media (prefers-reduced-motion: reduce) { .cs-hub-orbit, .cs-hub-spokes line, .cs-hub-core img, .cs-hub-node { animation: none; } }
