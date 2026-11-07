@@ -376,12 +376,27 @@ export function FlowSwitch({ items, device, label }) {
   const [cur, setCur] = useState(0)
   const [dir, setDir] = useState(1)
   const n = items.length
-  const go = (d) => { setDir(d); setCur((c) => (c + d + n) % n) }
-  const pick = (i) => { if (i !== cur) { setDir(i > cur ? 1 : -1); setCur(i) } }
+  // flows already shown keep their video, so coming back doesn't load it again
+  const [seen, setSeen] = useState(() => new Set([0]))
+  const show = (i, d) => { setDir(d); setCur(i); setSeen((s) => (s.has(i) ? s : new Set(s).add(i))) }
+  const go = (d) => show((cur + d + n) % n, d)
+  const pick = (i) => { if (i !== cur) show(i, i > cur ? 1 : -1) }
   const it = items[cur]
   const prev = items[(cur - 1 + n) % n], next = items[(cur + 1) % n]
+  // Start loading once the section is within a screen or so of the viewport:
+  // the flow on screen and the one after it, so moving on starts at once.
+  const root = useRef(null)
+  const [near, setNear] = useState(false)
+  useEffect(() => {
+    const el = root.current
+    if (!el || near) return
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) setNear(true) }, { rootMargin: '900px 0px' })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [near])
+  const wants = (i) => near && (i === cur || i === (cur + 1) % n || seen.has(i))
   return (
-    <div className="st-flows" role="region" aria-roledescription="carousel" aria-label={label ? label + ' flows' : 'Flows'}>
+    <div className="st-flows" ref={root} role="region" aria-roledescription="carousel" aria-label={label ? label + ' flows' : 'Flows'}>
       <div className="st-flows-head">
         <button type="button" className="st-flows-arrow" onClick={() => go(-1)} aria-label={'Previous flow: ' + prev.title}>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
@@ -402,7 +417,7 @@ export function FlowSwitch({ items, device, label }) {
       <div className="st-panels" data-dir={dir > 0 ? 'next' : 'prev'}>
         {items.map((x, i) => (
           <div key={x.title} className={'st-panel' + (i === cur ? ' is-active' : '')} aria-hidden={i !== cur} inert={i !== cur}>
-            <Demo device={device} {...x} active={i === cur} onEnd={() => go(1)} />
+            <Demo device={device} {...x} active={i === cur} onEnd={() => go(1)} load={wants(i)} />
           </div>
         ))}
       </div>
@@ -566,7 +581,9 @@ const stepNo = (i) => String(i + 1).padStart(2, '0')
 // `active` false (a hidden flow) keeps it paused, and it starts over each
 // time it comes back. With `onEnd` it plays once and calls it at the end
 // (FlowSwitch moves on to the next flow) instead of looping.
-export function Demo({ src, poster, steps = [], alt, device = 'phone', active = true, onEnd }) {
+// `load` false holds back the video and its poster (FlowSwitch only loads the
+// flow on screen and the next one, once the section is close).
+export function Demo({ src, poster, steps = [], alt, device = 'phone', active = true, onEnd, load = true }) {
   const ref = useRef(null)
   const [at, setAt] = useState(0)
   const [playing, setPlaying] = useState(false)
@@ -574,7 +591,7 @@ export function Demo({ src, poster, steps = [], alt, device = 'phone', active = 
   useEffect(() => {
     const v = ref.current
     if (!v || prefersReduced()) return
-    if (!active) { v.pause(); return }
+    if (!active || !load) { v.pause(); return }
     if (onEnd) v.currentTime = 0 // timeupdate then moves the step list back to the first step
     const io = new IntersectionObserver(([e]) => {
       if (e.isIntersecting && !userPaused) v.play().catch(() => {})
@@ -583,7 +600,7 @@ export function Demo({ src, poster, steps = [], alt, device = 'phone', active = 
     io.observe(v)
     return () => io.disconnect()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userPaused, active])
+  }, [userPaused, active, load])
   const onTime = () => {
     const t = ref.current.currentTime
     let k = 0
@@ -632,12 +649,12 @@ export function Demo({ src, poster, steps = [], alt, device = 'phone', active = 
         <div className={device === 'browser' ? 'st-browser-page' : 'st-device-screen'}>
           <video
             ref={ref}
-            src={src}
-            poster={poster}
+            src={load ? src : undefined}
+            poster={load ? poster : undefined}
             muted
             loop={!onEnd}
             playsInline
-            preload="none"
+            preload={load && onEnd ? 'auto' : 'none'}
             aria-label={alt}
             onTimeUpdate={onTime}
             onEnded={onEnd}
