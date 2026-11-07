@@ -180,9 +180,9 @@ const VISUALS = {
   hmw: HMW, details: Details, achievements: Achievements, roadmap: Roadmap,
   impact: Impact, role: Role, sub: Sub, iconlist: IconList, segments: Segments, table: Table,
   iterations: Iterations, pills: Pills, walkthrough: Walkthrough, film: Film, shot: Shot, walktabs: WalkTabs, shottabs: ShotTabs,
-  reel: Reel, demo: Demo, choices: Choices, beforeafter: BeforeAfter, hub: Hub, decisions: Decisions, arch: Arch, mockpair: MockPair,
+  reel: Reel, demo: Demo, choices: Choices, beforeafter: BeforeAfter, hub: Hub, decisions: Decisions, arch: Arch, mockpair: MockPair, ship: Ship,
 }
-const TEXT = new Set(['hub', 'decisions', 'arch', 'mockpair', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'choices'])
+const TEXT = new Set(['hub', 'decisions', 'arch', 'mockpair', 'ship', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'choices'])
 
 function Block({ block }) {
   const Visual = VISUALS[block.kind]
@@ -690,6 +690,40 @@ function MockPair({ phone, browser }) {
         </div>
         <figcaption>{browser.label}</figcaption>
       </figure>
+    </div>
+  )
+}
+
+// Design execution: how the front end shipped. A few real numbers, the path
+// every change took, and a terminal with real commits from the two repos.
+function Ship({ h, p, stats, steps, log }) {
+  return (
+    <div className="cs-ship">
+      <h3 className="cs-stat-h">{h}</h3>
+      <p className="cs-ship-p">{p}</p>
+      <div className="cs-stats">
+        {stats.map((it) => <div key={it.label}><span className="cs-stat-num">{it.num}</span><span>{it.label}</span></div>)}
+      </div>
+      <div className="cs-ship-steps" role="list">
+        {steps.map((t, i) => (
+          <span key={t} className="cs-ship-step" role="listitem">
+            {i > 0 && <span className="cs-ship-arrow" aria-hidden="true">→</span>}
+            <span className="cs-ship-chip" style={{ animationDelay: `${i * 0.35}s` }}>{t}</span>
+          </span>
+        ))}
+      </div>
+      <div className="cs-term" aria-label="Recent commits">
+        <div className="cs-term-bar" aria-hidden="true"><i /><i /><i /><span>orderflow · zsh</span></div>
+        <pre className="cs-term-body">
+          <span className="cs-term-cmd"><b>$</b> git log --oneline --author=sai397</span>
+          {log.map(([hash, repo, msg], i) => (
+            <span key={hash} className="cs-term-line" style={{ animationDelay: `${0.4 + i * 0.22}s` }}>
+              <b>{hash}</b> <em>{repo}</em> {msg}
+            </span>
+          ))}
+          <span className="cs-term-cmd is-cursor"><b>$</b> <i /></span>
+        </pre>
+      </div>
     </div>
   )
 }
