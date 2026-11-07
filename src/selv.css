@@ -2307,7 +2307,8 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .cs-dec-pd { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .cs-dec-text p { margin: 0; font-size: 15px; line-height: 1.5; color: var(--sv-soft); }
 .cs-dec-text p b { display: block; margin-bottom: 2px; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sv-dim); }
-.cs-dec-art { position: relative; min-height: 250px; display: grid; place-items: center; border-radius: 18px; background: rgba(0, 0, 0, 0.16); overflow: hidden; padding: 20px; }
+/* All three scenes share one height, so the boxes line up. */
+.cs-dec-art { position: relative; height: 420px; min-height: 0; display: grid; place-items: center; border-radius: 18px; background: rgba(0, 0, 0, 0.16); overflow: hidden; padding: 20px; }
 .cs-dec-phone.st-device { --w: 124px; flex: none; }
 .cs-dec-phone .st-device-screen img { object-position: top; }
 /* app screenshots without a status bar: leave room for the island */
@@ -2396,14 +2397,14 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 @media (max-width: 760px) {
   .cs-dec-row { gap: 18px; }
   .cs-dec-pd { grid-template-columns: 1fr; gap: 12px; }
-  .cs-dec-art { padding: 18px 8px; min-height: 0; }
+  .cs-dec-art { padding: 18px 8px; height: 300px; }
   .cs-dec-pos { zoom: 0.72; }
   .cs-dec-eco { zoom: 0.85; }
 }
 @media (max-width: 480px) {
-  .cs-dec-pos { zoom: 0.52; }
-  .cs-dec-eco { zoom: 0.66; }
-  .cs-dec-off { zoom: 0.85; }
+  .cs-dec-pos { zoom: 0.56; }
+  .cs-dec-eco { zoom: 0.7; }
+  .cs-dec-off { zoom: 0.72; }
 }
 
 /* Product architecture: one layered scene and three short steps. */
