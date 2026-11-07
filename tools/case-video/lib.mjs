@@ -1,4 +1,4 @@
-import puppeteer from '/Users/saimyothu/claude-workspace/superfine/node_modules/.pnpm/puppeteer-core@24.37.5/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js'
+import puppeteer from '/Users/saimyothu/claude-workspace/orderflow-pitch-deck/_svg-tool/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js'
 export async function launch(w = 390, h = 844, dpr = 2) {
   const browser = await puppeteer.launch({
     executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',

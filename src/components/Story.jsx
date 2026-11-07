@@ -353,7 +353,7 @@ function Tabbed({ items, label, render, scrub }) {
             aria-hidden={i !== cur}
             inert={i !== cur}
           >
-            {render(x, i)}
+            {render(x, i, i === cur)}
           </div>
         ))}
       </div>
@@ -365,6 +365,49 @@ function Tabbed({ items, label, render, scrub }) {
 // Each flow is { name, lead, screens, note }.
 export function WalkTabs({ flows }) {
   return <Tabbed items={flows} label="Flows" render={(f) => <Walkthrough screens={f.screens} note={f.note} />} />
+}
+
+// Flows one at a time (OrderFlow's Design Execution): the flow's title and a
+// short line in the middle, arrows either side to move between flows, and its
+// step-by-step Demo below. When a flow's recording ends it moves on to the
+// next one by itself, wrapping round. Each item is { title, p, ...Demo props };
+// `label` names the carousel for screen readers.
+export function FlowSwitch({ items, device, label }) {
+  const [cur, setCur] = useState(0)
+  const [dir, setDir] = useState(1)
+  const n = items.length
+  const go = (d) => { setDir(d); setCur((c) => (c + d + n) % n) }
+  const pick = (i) => { if (i !== cur) { setDir(i > cur ? 1 : -1); setCur(i) } }
+  const it = items[cur]
+  const prev = items[(cur - 1 + n) % n], next = items[(cur + 1) % n]
+  return (
+    <div className="st-flows" role="region" aria-roledescription="carousel" aria-label={label ? label + ' flows' : 'Flows'}>
+      <div className="st-flows-head">
+        <button type="button" className="st-flows-arrow" onClick={() => go(-1)} aria-label={'Previous flow: ' + prev.title}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+        </button>
+        <div className="st-flows-text" key={cur} data-dir={dir > 0 ? 'next' : 'prev'} aria-live="polite">
+          <h2 className="sv-h2 st-flows-title">{it.title}</h2>
+          {it.p && <p className="st-flows-p">{it.p}</p>}
+        </div>
+        <button type="button" className="st-flows-arrow" onClick={() => go(1)} aria-label={'Next flow: ' + next.title}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+        </button>
+      </div>
+      <div className="st-flows-dots">
+        {items.map((x, i) => (
+          <button key={x.title} type="button" className={i === cur ? 'is-on' : undefined} onClick={() => pick(i)} aria-label={x.title} aria-current={i === cur ? 'true' : undefined} />
+        ))}
+      </div>
+      <div className="st-panels" data-dir={dir > 0 ? 'next' : 'prev'}>
+        {items.map((x, i) => (
+          <div key={x.title} className={'st-panel' + (i === cur ? ' is-active' : '')} aria-hidden={i !== cur} inert={i !== cur}>
+            <Demo device={device} {...x} active={i === cur} onEnd={() => go(1)} />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 // Screenshots behind tabs (e.g. Today / Proposed). Each item is
@@ -520,7 +563,10 @@ const stepNo = (i) => String(i + 1).padStart(2, '0')
 // plain text beside it. No panel behind either, so only the text and the
 // mockup show. The step in view follows the video; picking a step seeks
 // there. `steps` are { t: seconds, text }.
-export function Demo({ src, poster, steps = [], alt, device = 'phone' }) {
+// `active` false (a hidden flow) keeps it paused, and it starts over each
+// time it comes back. With `onEnd` it plays once and calls it at the end
+// (FlowSwitch moves on to the next flow) instead of looping.
+export function Demo({ src, poster, steps = [], alt, device = 'phone', active = true, onEnd }) {
   const ref = useRef(null)
   const [at, setAt] = useState(0)
   const [playing, setPlaying] = useState(false)
@@ -528,13 +574,16 @@ export function Demo({ src, poster, steps = [], alt, device = 'phone' }) {
   useEffect(() => {
     const v = ref.current
     if (!v || prefersReduced()) return
+    if (!active) { v.pause(); return }
+    if (onEnd) v.currentTime = 0 // timeupdate then moves the step list back to the first step
     const io = new IntersectionObserver(([e]) => {
       if (e.isIntersecting && !userPaused) v.play().catch(() => {})
       else v.pause()
     }, { threshold: 0.3 })
     io.observe(v)
     return () => io.disconnect()
-  }, [userPaused])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userPaused, active])
   const onTime = () => {
     const t = ref.current.currentTime
     let k = 0
@@ -586,11 +635,12 @@ export function Demo({ src, poster, steps = [], alt, device = 'phone' }) {
             src={src}
             poster={poster}
             muted
-            loop
+            loop={!onEnd}
             playsInline
             preload="none"
             aria-label={alt}
             onTimeUpdate={onTime}
+            onEnded={onEnd}
             onPlay={() => setPlaying(true)}
             onPause={() => setPlaying(false)}
           />

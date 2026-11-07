@@ -77,8 +77,9 @@ export const CASES = [
     study: {
       navTop: false,
       overviewNav: 'Project Overview',
+      overviewPart: 'About Project',
       layout: 'story',
-      heading: 'An operation management ecosystem for F&B businesses',
+      heading: 'F&B Operation Management Tool',
       summary: 'OrderFlow runs a café’s whole operation in one system: guests order from the table QR, staff manage orders, tables and kitchen slips, and owners run the menu, prices and reports.',
       accent: '#44403c',
       tags: ['Product Strategy', 'B2B SaaS', 'F&B'],
@@ -95,8 +96,9 @@ export const CASES = [
           blocks: [
             { kind: 'impact', items: [
               { num: '4', label: 'Cafés in 6 months' },
-              { num: '1,000+', label: 'Orders at RAW in its first 42 days' },
-              { num: '42 / 42', label: 'Days RAW used it' },
+              { num: '1,300+', label: 'Orders at one shop in its first 42 days' },
+              { num: '60 / 60', label: 'Days in use at that shop' },
+              { num: '35.7M', label: 'MMK in revenue through OrderFlow' },
             ] },
           ],
         },
@@ -112,6 +114,7 @@ export const CASES = [
         {
           id: 'opportunity',
           nav: 'The Opportunity',
+          part: 'How we think',
           title: 'Big market, *one gap*',
           blocks: [
             { kind: 'lead', p: 'Most of Myanmar’s 23,741 cafés still take orders on paper, and none let the guest order.' },
@@ -164,9 +167,10 @@ export const CASES = [
         {
           id: 'mvp',
           nav: 'MVP',
-          title: 'Start with an *MVP*',
+          part: 'How we execute',
+          title: 'Start with *assumptions* (MVP)',
           blocks: [
-            { kind: 'lead', p: 'One small version to test the market.' },
+            { kind: 'lead', p: 'Assumptions and limited information were all we had, so we built one small version to test them in the market.' },
             { kind: 'mockpair',
               phone: { label: 'Guest', alt: 'Guest flow: menu, options, order summary, waiting, preparing, ready', srcs: ['c-menu', 'c-item', 'c-summary', 'c-waiting', 'c-preparing', 'c-ready'].map((n) => `/case/orderflow/mvp/${n}.jpg`) },
               browser: { label: 'Shop', alt: 'Shop flow: add an item, table QR, QR stand, accept, ready, paid', srcs: ['a-item', 'a-table-qr', 'a-qr-stand', 'a-accept', 'a-ready', 'a-paid'].map((n) => `/case/orderflow/mvp/${n}.jpg`) },
@@ -192,14 +196,14 @@ export const CASES = [
         },
         {
           id: 'architecture',
-          nav: 'Scope & Architecture',
-          title: 'One order, *three places*',
+          nav: 'Architecture',
+          title: 'The product *architecture*',
           blocks: [
             { kind: 'lead', p: 'An order starts on a guest’s phone, lands on the staff board and ends up in the owner’s numbers.' },
             { kind: 'arch', items: [
               { key: 'guest', t: 'Guest', p: 'Orders from the table QR. No app.' },
               { key: 'staff', t: 'Staff', p: 'A live board by table, with printed slips.' },
-              { key: 'owner', t: 'Owner', p: 'Menu, prices, tables and sales.' },
+              { key: 'owner', t: 'Owner', p: 'Reports, sales, menu and prices.' },
             ] },
           ],
         },
@@ -240,20 +244,30 @@ export const CASES = [
         },
         {
           id: 'execution',
-          nav: 'Design Execution',
-          title: 'Designed, then *delivered in code*',
+          nav: 'Client Side',
+          group: 'Design Execution',
+          notitle: true,
           blocks: [
-            { kind: 'lead', p: 'I mapped the flows in FigJam, designed both apps on one design system in Figma, and delivered their front end in code, so what we tested in cafés was what I designed.' },
-            { kind: 'demo', src: '/case/orderflow/guest.mp4', poster: '/case/orderflow/guest.jpg', alt: 'Screen recording of the guest app: the menu, switching to Burmese, browsing, adding two items, the basket, placing the order and following it', steps: [
-              { t: 0, text: 'Scan the QR, no app' },
-              { t: 0.77, text: 'Burmese or English' },
-              { t: 7.91, text: 'Browse by category' },
-              { t: 12.06, text: 'Tap an item' },
-              { t: 16.81, text: 'Basket in thumb reach' },
-              { t: 21.92, text: 'Review and place' },
-              { t: 28.38, text: 'Track until ready' },
+            { kind: 'flows', label: 'Guest app', items: [
+              { title: 'Normal Ordering Flow', p: 'Scan the table QR and order. No app, no sign-in.', src: '/case/orderflow/feat/g-order.mp4?v=2', poster: '/case/orderflow/feat/g-order.jpg?v=2', alt: 'Guest app: scanning the table QR, switching to Burmese, adding two items and placing the order', steps: [{ t: 0, text: 'Scan the table QR, no app' }, { t: 1.35, text: 'Burmese or English' }, { t: 9.45, text: 'Browse by category' }, { t: 13.81, text: 'Tap an item' }, { t: 18.55, text: 'Basket in thumb reach' }, { t: 23.66, text: 'Review and place' }, { t: 29.15, text: 'Track until ready' }] },
+              { title: 'Online Order Flow', p: 'Order ahead from the shop’s link, then pick it up.', src: '/case/orderflow/feat/g-pickup.mp4?v=2', poster: '/case/orderflow/feat/g-pickup.jpg?v=2', alt: 'Guest app: an online pickup order from the shop link, with name and phone, to the order number', steps: [{ t: 0, text: 'Order ahead from the shop’s link' }, { t: 1.52, text: 'Add what you want' }, { t: 9.83, text: 'Pickup or delivery, with a ready time' }, { t: 12.68, text: 'Name and phone, saved for next time' }, { t: 18.17, text: 'Place it, with a moment to cancel' }, { t: 23.7, text: 'An order number for the counter' }] },
+              { title: 'Loyalty Flow', p: 'Points, stamps and member perks in one tab.', src: '/case/orderflow/feat/g-loyalty.mp4?v=2', poster: '/case/orderflow/feat/g-loyalty.jpg?v=2', alt: 'Guest app: the Rewards tab with points, the stamp card and the membership card', steps: [{ t: 0, text: 'Every perk in one tab' }, { t: 2.97, text: 'Points turn into free treats' }, { t: 8.44, text: 'A stamp with every order' }, { t: 13.77, text: 'A member level and its perks' }] },
+              { title: 'Account Login Flow', p: 'Sign in with email or Google to earn rewards.', src: '/case/orderflow/feat/g-account.mp4?v=2', poster: '/case/orderflow/feat/g-account.jpg?v=2', alt: 'Guest app: signing in with email or Google, and creating an account', steps: [{ t: 0, text: 'Order without an account' }, { t: 2.51, text: 'Sign in to earn points' }, { t: 4.5, text: 'Email and password' }, { t: 7.69, text: 'Or one tap with Google' }, { t: 10.06, text: 'New here? Create an account' }] },
             ] },
-            { kind: 'reel', ratio: '7 / 5', src: '/case/orderflow/admin.mp4?v=2', poster: '/case/orderflow/admin.jpg', alt: 'The admin panel: the live order board, the table map, adding a menu item in English and Burmese, and the menu list', caption: 'The order board, the table map and the menu, from our launch film.' },
+          ],
+        },
+        {
+          id: 'execution-admin',
+          nav: 'Admin Side',
+          group: 'Design Execution',
+          notitle: true,
+          blocks: [
+            { kind: 'flows', device: 'browser', label: 'Admin panel', items: [
+              { title: 'QR Order Flow', p: 'A guest’s QR order, from the board to payment.', src: '/case/orderflow/feat/a-qr.mp4?v=2', poster: '/case/orderflow/feat/a-qr.jpg?v=2', alt: 'Admin: a QR order on the board, opened, its kitchen slips printed and its payment recorded', steps: [{ t: 0, text: 'A QR order lands on its table' }, { t: 2.63, text: 'Open it to see what the guest ordered' }, { t: 5.87, text: 'Print slips for the kitchen' }, { t: 10.52, text: 'Payment done, the table clears' }] },
+              { title: 'Manual Order Flow', p: 'A counter order, from table to kitchen to payment.', src: '/case/orderflow/feat/a-manual.mp4?v=2', poster: '/case/orderflow/feat/a-manual.jpg?v=2', alt: 'Admin: a counter order for table 6, three items, cash with change and printed slips', steps: [{ t: 0, text: 'Take an order at the counter' }, { t: 4.09, text: 'Pick the table' }, { t: 7.29, text: 'Tap items to add them' }, { t: 12.52, text: 'Send it to the kitchen' }, { t: 15.33, text: 'Take payment, with change' }, { t: 20.5, text: 'Print slips; table 6 is on the board' }] },
+              { title: 'Report & Metrics Walkthrough', p: 'The day’s sales, busy hours and top items.', src: '/case/orderflow/feat/a-reports.mp4?v=2', poster: '/case/orderflow/feat/a-reports.jpg?v=2', alt: 'Admin: metrics for the day, the daily close, orders by channel and sales per item', steps: [{ t: 0, text: 'Today’s sales at a glance' }, { t: 3.18, text: 'Busy hours and top items' }, { t: 6.72, text: 'Daily close, ready to print' }, { t: 10.52, text: 'Every order, by channel' }, { t: 13.34, text: 'Sales per item' }] },
+              { title: 'Adding New Menu Flow', p: 'A new item, from photo to price.', src: '/case/orderflow/feat/a-newmenu.mp4?v=2', poster: '/case/orderflow/feat/a-newmenu.jpg?v=2', alt: 'Admin: adding an espresso with a photo, English and Burmese names, a price and prep time', steps: [{ t: 0, text: 'Add an item from the menu list' }, { t: 3.87, text: 'Upload its photo' }, { t: 5.97, text: 'Name it in English and Burmese' }, { t: 8.23, text: 'Description, price and prep time' }, { t: 14.61, text: 'Count its stock, or skip it' }, { t: 19.04, text: 'It’s on the menu, ready to order' }] },
+            ] },
           ],
         },
         {

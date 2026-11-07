@@ -1236,6 +1236,8 @@ button.sv-pill:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(
 .sv-toc-dot { flex: none; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.45; transition: opacity 0.2s, transform 0.3s var(--ease); }
 .sv-toc-item.is-active .sv-toc-dot { opacity: 1; transform: scale(1.35); }
 /* Long section names wrap to a second line rather than being cut off. */
+.sv-toc-part { margin: 0; padding: 16px 10px 8px; font-size: 14px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sv-text); }
+li:first-child > .sv-toc-part { padding-top: 0; }
 .sv-toc-label { min-width: 0; overflow-wrap: break-word; line-height: 1.3; }
 
 /* Room for the panel: the case column narrows a little on wide screens,
@@ -1353,6 +1355,8 @@ button.sv-pill:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(
 
 .sv-sec { padding: 56px; }
 .sv-sec-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 32px; }
+/* With an illustration beside it, the illustration sits centred on the title and text. */
+.has-illo > .sv-sec-head { align-items: center; }
 .sv-sec-head .sv-label { margin-bottom: 14px; color: var(--sv-dim); font-weight: 400; }
 .sv-sec-lead { margin-top: 18px; max-width: 32em; font-size: clamp(20px, 2vw, 23px); line-height: 1.45; color: var(--sv-text); }
 .sv-sec-body { margin-top: 40px; display: flex; flex-direction: column; gap: 32px; }
@@ -1404,12 +1408,12 @@ button.sv-pill:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(
 .sv-plate .st-walk-note, .sv-plate .st-walk-count { color: var(--sv-dim); }
 
 /* tabs: dark track, blue glass pill like the menu */
-.sv-plate .st-tabs-lead { color: var(--sv-soft); }
-.sv-plate .st-tablist { background: rgba(255, 255, 255, 0.06); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1); }
-.sv-plate .st-tab { color: var(--sv-dim); }
-.sv-plate .st-tab:hover, .sv-plate .st-tab.is-active { color: #fff; }
-.sv-plate .st-tab:focus-visible { outline-color: #fff; }
-.sv-plate .st-tab-pill {
+.sv-plate .st-tabs-lead, .sv-sec .st-tabs-lead { color: var(--sv-soft); }
+.sv-plate .st-tablist, .sv-sec .st-tablist { background: rgba(255, 255, 255, 0.06); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1); }
+.sv-plate .st-tab, .sv-sec .st-tab { color: var(--sv-dim); }
+.sv-plate .st-tab:hover, .sv-plate .st-tab.is-active, .sv-sec .st-tab:hover, .sv-sec .st-tab.is-active { color: #fff; }
+.sv-plate .st-tab:focus-visible, .sv-sec .st-tab:focus-visible { outline-color: #fff; }
+.sv-plate .st-tab-pill, .sv-sec .st-tab-pill {
   background: linear-gradient(170deg, rgba(150, 190, 255, 0.32), rgba(90, 140, 230, 0.12));
   box-shadow: inset 0 0 0 1px rgba(190, 214, 255, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 8px 20px -8px rgba(4, 20, 60, 0.6);
 }
@@ -1466,7 +1470,12 @@ button.sv-pill:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(
 .sv-card .cs-stats { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 24px 0; margin-top: 4px; }
 .sv-card .cs-stats > div { padding: 0 24px; border: 0; border-left: 1px solid var(--sv-line); color: var(--sv-dim); font-size: 14px; line-height: 1.4; }
 .sv-card .cs-stats > div:first-child { padding-left: 0; border-left: 0; }
-.sv-card .cs-stat-num { display: block; margin-bottom: 6px; font-size: clamp(32px, 3.6vw, 42px); letter-spacing: -0.02em; color: var(--sv-text); }
+/* Plain rows (no brand tiles): equal columns with the same content width, the rule centred in the gap. */
+.sv-card .cs-stats:not(:has(.has-logos)) { column-gap: 48px; }
+.sv-card .cs-stats:not(:has(.has-logos)) > div { position: relative; padding: 0; border-left: 0; }
+.sv-card .cs-stats:not(:has(.has-logos)) > div + div::before { content: ''; position: absolute; top: 0; bottom: 0; left: -24px; border-left: 1px solid var(--sv-line); }
+@media (max-width: 640px) { .sv-card .cs-stats:not(:has(.has-logos)) > div:nth-child(odd)::before { display: none; } }
+.sv-card .cs-stat-num { display: block; margin-bottom: 6px; white-space: nowrap; font-size: clamp(32px, 3.6vw, 42px); letter-spacing: -0.02em; color: var(--sv-text); }
 /* Stat rows with a title, brand tiles and a source line (The Opportunity). */
 .cs-statrow + .cs-statrow { margin-top: 36px; }
 .cs-stat-h { margin: 0 0 16px; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sv-dim); }
@@ -2505,3 +2514,75 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .cs-arch-stage [role='button']:focus-visible { box-shadow: 0 0 0 2px #fff, 0 30px 60px -30px rgba(0, 0, 0, 0.85); }
 .cs-arch-owner.is-on, .cs-arch-staff.is-on { z-index: 3 !important; }
 .cs-arch-guest.st-device.is-on { z-index: 4; }
+
+
+/* Accent words in titles (*word*) stay upright: no italics in case study titles. */
+.acc-i { font-style: normal; }
+
+/* FlowSwitch (OrderFlow Design Execution): the flow's title and line in the
+   middle, round glass arrows either side, dots under it, the demo below. */
+.st-flows { display: flex; flex-direction: column; gap: 18px; }
+.st-flows-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 16px; }
+.st-flows-text { text-align: center; animation: st-flows-in 0.5s var(--ease, ease) both; }
+.st-flows-text[data-dir='prev'] { animation-name: st-flows-in-prev; }
+@keyframes st-flows-in { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: none; } }
+@keyframes st-flows-in-prev { from { opacity: 0; transform: translateX(-18px); } to { opacity: 1; transform: none; } }
+.st-flows-title { margin: 0; }
+.st-flows-p { margin: 10px auto 0; max-width: 34em; font-size: 17px; line-height: 1.5; color: var(--sv-soft); }
+.st-flows-arrow { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 50%; color: #fff;
+  background: linear-gradient(170deg, rgba(150, 190, 255, 0.26), rgba(90, 140, 230, 0.1));
+  box-shadow: inset 0 0 0 1px rgba(190, 214, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 8px 20px -8px rgba(4, 20, 60, 0.6);
+  transition: transform 0.25s, background-color 0.25s; }
+.st-flows-arrow:hover { transform: scale(1.06); }
+.st-flows-arrow:active { transform: scale(0.96); }
+.st-flows-arrow:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.st-flows-arrow svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.st-flows-dots { display: flex; justify-content: center; gap: 8px; }
+.st-flows-dots button { width: 8px; height: 8px; padding: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.3); transition: width 0.35s var(--ease, ease), background-color 0.35s; }
+.st-flows-dots button.is-on { width: 26px; background: #fff; }
+.st-flows-dots button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.st-flows .st-panels { margin-top: 6px; }
+@media (prefers-reduced-motion: reduce) { .st-flows-text { animation: none; } .st-flows-arrow, .st-flows-dots button { transition: none; } }
+@media (max-width: 640px) { .st-flows-head { gap: 8px; } .st-flows-arrow { width: 42px; height: 42px; } .st-flows-p { font-size: 15px; } }
+
+/* Step numbers (01, 02…) everywhere sit on a small glass tile, the back button's shape
+   (rounded square): demo steps, choice and hub cards, Decisions and Architecture. */
+.st-demo-step { grid-template-columns: 54px minmax(0, 1fr); align-items: center; }
+.st-choice { grid-template-columns: 54px minmax(0, 1fr); align-items: start; }
+.st-step-n, .cs-dec-n, .cs-arch-n {
+  width: 40px; height: 40px; display: grid; place-items: center; border-radius: 13px; font-size: 14px; line-height: 1;
+  font-variant-numeric: tabular-nums;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(170deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 8px 18px -8px rgba(0, 0, 0, 0.45);
+  transition: color 0.4s var(--ease), background 0.4s var(--ease), border-color 0.4s var(--ease);
+}
+.st-choice .st-step-n { margin-top: -6px; }
+.cs-dec-n, .cs-arch-n { margin-bottom: 10px; }
+.is-on > .st-step-n, .is-on > .cs-arch-n { color: #fff; border-color: rgba(255, 255, 255, 0.32); background: linear-gradient(170deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.06)); }
+@media (max-width: 640px) {
+  .st-demo-step, .st-choice { grid-template-columns: 46px minmax(0, 1fr); }
+  .st-step-n, .cs-dec-n, .cs-arch-n { width: 34px; height: 34px; border-radius: 11px; font-size: 13px; }
+}
+
+/* Vision hub card: the icon and the name on one row, the line and the timer bar full width under them. */
+.cs-hub-card { align-items: center; row-gap: 12px; }
+.cs-hub-card .st-step-n { margin-top: 0; }
+.cs-hub-card .st-choice-body { display: contents; }
+.cs-hub-card .st-choice-h { grid-column: 2; }
+.cs-hub-card .st-choice-p, .cs-hub-card .st-choice-bar { grid-column: 1 / -1; }
+.cs-hub-card .st-choice-bar { margin-top: 0; }
+
+/* Decisions, "From QR ordering to an ecosystem": a bigger orbit and copy chips. */
+.cs-dec-eco { gap: 28px; }
+.cs-dec-copies { gap: 12px !important; }
+.cs-dec-copies span { padding: 13px 22px; border-radius: 16px; font-size: 17px; gap: 10px; }
+.cs-dec-copies svg { width: 22px !important; height: 22px !important; }
+.cs-dec-copies small, .cs-dec-ringwrap > small { font-size: 14px; }
+.cs-dec-copies small { margin-top: 6px; }
+.cs-dec-ring { width: 260px; }
+.cs-dec-ring > .cs-dec-ring-core { width: 80px; height: 80px; }
+.cs-dec-node { width: 54px; height: 54px; }
+.cs-dec-node svg { width: 22px; height: 22px; }
+.cs-dec-node small { margin-top: 6px; font-size: 13px; }
+.cs-dec-ringwrap > small { margin-top: 40px; }

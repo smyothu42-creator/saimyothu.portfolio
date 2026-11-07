@@ -23,6 +23,7 @@ const TARGETS = [
   '.sv-intro-note a',      // OrderFlow / Heizen links in the intro card
   '.sv-services .sv-pill', // core values on the About page
   '.sv-track-step',        // About page workflow steps (absorbed into the dot)
+  '.st-flows-arrow',       // OrderFlow flow arrows
 ].join(', ')
 
 // The element the cursor wraps and pulls: usually the hit itself, but a

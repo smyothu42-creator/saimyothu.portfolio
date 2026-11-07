@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>html,body{background:#04091c}</style>
+    <style>html,body{background:#04091c}
+      /* hide the system cursor from the first paint; Cursor.jsx draws its own on mouse and trackpad */
+      @media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){html,html *{cursor:none}}</style>
     <title>Sai Myo Thu, Product Designer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

@@ -1,0 +1,7 @@
+["CSS:nextjs-portal{display:none!important}", "CSS:.of-card-grid > div:has(button[aria-label=\"Add Test\"]),.of-card-grid > div:has(button[aria-label=\"Add coffee\"]){display:none!important}", "@7000", "REC",
+ "#Order ahead from the shop's link", "@2400",
+ "#Add what you want", "Add Iced Americano", "@1400", "Add to Basket", "@1200", "Add Black Coffee", "@1400", "Add to Basket", "@1500",
+ "#Pickup or delivery, with a ready time", "Review order", "@2600",
+ "#Name and phone, saved for next time", "Add your name and phone", "@600", "TYPE:#name|Aye Chan", "TYPE:#phone|09777123456", "@500", "Save", "@1600",
+ "#Place it, with a moment to cancel", "Place order", "@5200",
+ "#An order number to show at the counter", "@4500", "!300", "@3500"]

@@ -33,13 +33,18 @@ async function prepClip(sc) {
   const fr = idx.frames.filter((f) => f.t >= (sc.from ?? 0) && f.t <= (sc.to ?? 1e9))
   const speed = sc.speed ?? 1, maxHold = sc.maxHold ?? 1.6
   const map = []; let out = 0, prev = fr[0].t
+  out = sc.lead ?? 0 // hold the first frame this long (a still opening the recording skipped)
   for (const f of fr) { out += Math.min(f.t - prev, maxHold) / speed; prev = f.t; map.push({ t: out, file: f.file, src: f.t }) }
   const toOut = (srcT) => { let best = map[0]; for (const m of map) { if (m.src <= srcT) best = m; else break } return best.t + Math.max(0, Math.min(srcT - best.src, maxHold)) / speed }
   const marks = (sc.captions || idx.marks.filter((m) => m.t >= (sc.from ?? 0) - 0.5 && m.t <= (sc.to ?? 1e9)).map((m) => m.cap))
   const capT = idx.marks.filter((m) => m.t >= (sc.from ?? 0) - 0.5 && m.t <= (sc.to ?? 1e9)).map((m) => Math.max(0, toOut(m.t)))
+  if (sc.lead && capT.length) capT[0] = 0
   const caps = marks.map((cap, i) => ({ cap, t: capT[i] ?? 0 }))
   const dur = sc.dur ?? map.at(-1).t + (sc.tail ?? 1.2)
-  return { ...sc, map, caps, dur, w: idx.w, h: idx.h, cache: new Map() }
+  // clicks from record.mjs, on the output clock, as fractions of the viewport
+  const css = idx.css || [idx.w, idx.h]
+  const taps = (idx.taps || []).filter((p) => p.t >= (sc.from ?? 0) && p.t <= (sc.to ?? 1e9)).map((p) => ({ t: toOut(p.t), x: p.x / css[0], y: p.y / css[1] }))
+  return { ...sc, map, caps, dur, taps, w: idx.w, h: idx.h, cache: new Map() }
 }
 async function frameAt(clip, t) {
   let lo = 0, hi = clip.map.length - 1
@@ -144,10 +149,58 @@ function screenOnly(frame) {
   rrect(gx + u * 13.8, sy - u * 1.4, u * 6.5, u * 2.8, u * 0.8); X.fill()
 }
 
+
+// The pointer (cfg.cursor): on a desk recording an arrow that glides to each
+// click and pulses a ring as it presses; on a phone a fingertip dot that comes
+// down on each tap and lifts away. (rx, ry, rw, rh) is where the app is drawn.
+function pointer(sc, t, rx, ry, rw, rh, touch) {
+  const taps = sc.taps || []
+  if (!taps.length) return
+  const sm = (a) => a * a * (3 - 2 * a)
+  let i = taps.findIndex((p) => p.t > t) // next tap
+  if (i < 0) i = taps.length
+  const prev = taps[i - 1], next = taps[i]
+  const S = rw / (touch ? 402 : 1440) // CSS px to canvas px
+  const ring = (p, k) => { const a = clamp((t - p.t) / 0.55); if (a <= 0 || a >= 1) return; X.save(); X.globalAlpha = (1 - a) * k; X.strokeStyle = 'rgba(239,122,44,1)'; X.lineWidth = (touch ? 3 : 4) * S; X.beginPath(); X.arc(rx + p.x * rw, ry + p.y * rh, (touch ? 8 + 26 * sm(a) : 12 + 40 * sm(a)) * S, 0, Math.PI * 2); X.stroke(); X.restore() }
+  if (touch) {
+    for (const p of [prev, next]) {
+      if (!p) continue
+      const d = t - p.t // < 0 before the tap
+      if (d < -0.45 || d > 0.5) continue
+      const a = d < 0 ? sm(clamp((d + 0.45) / 0.3)) : 1 - sm(clamp((d - 0.15) / 0.35))
+      const press = d < 0 ? 1 - 0.15 * sm(clamp((d + 0.12) / 0.12)) : 0.85 + 0.15 * sm(clamp(d / 0.2))
+      const x = rx + p.x * rw, y = ry + p.y * rh, r = 22 * S * press
+      X.save(); X.globalAlpha = a * 0.9
+      X.shadowColor = 'rgba(0,0,0,0.35)'; X.shadowBlur = 10 * S
+      X.fillStyle = 'rgba(25,25,25,0.32)'; X.beginPath(); X.arc(x, y, r, 0, Math.PI * 2); X.fill()
+      X.shadowBlur = 0; X.lineWidth = 3 * S; X.strokeStyle = 'rgba(255,255,255,0.95)'; X.stroke(); X.restore()
+      ring(p, 0.8)
+    }
+    return
+  }
+  // arrow: rests where it last clicked, then glides to the next click
+  let px, py
+  if (!prev) { px = next.x; py = Math.min(0.92, next.y + 0.18) }
+  else { px = prev.x; py = prev.y }
+  if (next) {
+    const dur = Math.min(0.7, Math.max(0.3, next.t - (prev ? prev.t + 0.2 : 0)))
+    const a = sm(clamp((t - (next.t - 0.08 - dur)) / dur))
+    px += (next.x - px) * a; py += (next.y - py) * a
+  }
+  if (prev) ring(prev, 0.9)
+  const down = prev && t - prev.t < 0.18 ? 0.86 : 1
+  const x = rx + px * rw, y = ry + py * rh, k = 2.3 * S * down
+  X.save(); X.translate(x, y); X.scale(k, k)
+  X.beginPath(); X.moveTo(0, 0); X.lineTo(0, 17); X.lineTo(4.2, 13); X.lineTo(7, 19.5); X.lineTo(9.6, 18.4); X.lineTo(6.9, 12.2); X.lineTo(12.4, 12.2); X.closePath()
+  X.shadowColor = 'rgba(0,0,0,0.3)'; X.shadowBlur = 4; X.shadowOffsetY = 1
+  X.fillStyle = '#111'; X.fill(); X.shadowColor = 'transparent'; X.lineJoin = 'round'; X.lineWidth = 1.4; X.strokeStyle = '#fff'; X.stroke()
+  X.restore()
+}
+
 async function drawScene(sc, t, cfg) {
   const W = C.width, H = C.height
-  if (cfg.raw && sc.kind === 'phone') { screenOnly(await frameAt(sc, t)); return }
-  if (cfg.raw && sc.kind === 'desk') { X.drawImage(await frameAt(sc, t), 0, 0, C.width, C.height); return }
+  if (cfg.raw && sc.kind === 'phone') { const f = await frameAt(sc, t); screenOnly(f); if (cfg.cursor) { const appH = W * (f.height / f.width); pointer(sc, t, 0, H - appH, W, appH, true) } return }
+  if (cfg.raw && sc.kind === 'desk') { X.drawImage(await frameAt(sc, t), 0, 0, C.width, C.height); if (cfg.cursor) pointer(sc, t, 0, 0, W, H, false); return }
   bg(cfg)
   if (sc.kind === 'phone') {
     const f = await frameAt(sc, t)

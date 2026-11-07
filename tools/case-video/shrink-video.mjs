@@ -1,7 +1,7 @@
 // Re-encodes a site video at a lower bitrate with Chrome's own H.264 encoder (no ffmpeg needed):
 // plays it in real time and records the frames. usage: node shrink-video.mjs in.mp4 out.mp4 [bitsPerSecond]
 import fs from 'node:fs'; import http from 'node:http'; import path from 'node:path'
-import puppeteer from '/Users/saimyothu/claude-workspace/superfine/node_modules/.pnpm/puppeteer-core@24.37.5/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js'
+import puppeteer from '/Users/saimyothu/claude-workspace/orderflow-pitch-deck/_svg-tool/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js'
 const [src, out, bps = '1600000'] = process.argv.slice(2)
 const file = path.resolve(src)
 const srv = http.createServer((q, r) => {

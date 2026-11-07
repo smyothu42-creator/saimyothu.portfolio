@@ -1,6 +1,6 @@
 // usage (from tools/case-video): node pos3d/render.mjs pos3d/scene.json out-prefix samples
 import fs from 'node:fs'; import http from 'node:http'; import path from 'node:path'
-import puppeteer from '/Users/saimyothu/claude-workspace/superfine/node_modules/.pnpm/puppeteer-core@24.37.5/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js'
+import puppeteer from '/Users/saimyothu/claude-workspace/orderflow-pitch-deck/_svg-tool/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js'
 const [cfgFile, out, samples = '64'] = process.argv.slice(2)
 const cfg = JSON.parse(fs.readFileSync(cfgFile, 'utf8'))
 const root = path.resolve('pos3d'), types = { '.js': 'text/javascript', '.html': 'text/html', '.png': 'image/png', '.jpg': 'image/jpeg', '.wasm': 'application/wasm' }

@@ -7,7 +7,7 @@ import {
   JourneyMap, Tree, Frameworks, Wireframes, Spec, Closing,
   HMW, Details, Achievements, Roadmap,
 } from './CaseBlocks'
-import { Impact, Role, Sub, IconList, Segments, Table, Iterations, Pills, Walkthrough, Film, Shot, WalkTabs, ShotTabs, Reel, Demo, Choices, BeforeAfter } from './Story'
+import { Impact, Role, Sub, IconList, Segments, Table, Iterations, Pills, Walkthrough, Film, Shot, WalkTabs, ShotTabs, Reel, Demo, FlowSwitch, Choices, BeforeAfter } from './Story'
 import { Illo, Person } from './Illos'
 import { Card, BackButton, ConnectCard, Icon } from './ui'
 import Media from './Media'
@@ -56,7 +56,7 @@ export default function CaseStudy({ slug }) {
 
   return (
     <div className="sv-case" style={s?.accent ? { '--acc': s.accent } : undefined}>
-      {s?.sections?.length > 1 && <CaseNav sections={s.sections} top={s.navTop !== false} overview={s.overviewNav} />}
+      {s?.sections?.length > 1 && <CaseNav sections={s.sections} top={s.navTop !== false} overview={s.overviewNav} overviewPart={s.overviewPart} />}
       <Card className="sv-cover" id="cs-top">
         <Media art={c.art} title={c.title} eager />
         <BackButton href="/" label="Back to home" />
@@ -180,9 +180,9 @@ const VISUALS = {
   hmw: HMW, details: Details, achievements: Achievements, roadmap: Roadmap,
   impact: Impact, role: Role, sub: Sub, iconlist: IconList, segments: Segments, table: Table,
   iterations: Iterations, pills: Pills, walkthrough: Walkthrough, film: Film, shot: Shot, walktabs: WalkTabs, shottabs: ShotTabs,
-  reel: Reel, demo: Demo, choices: Choices, beforeafter: BeforeAfter, hub: Hub, decisions: Decisions, arch: Arch, mockpair: MockPair, ship: Ship, photos: Photos, loop: Loop,
+  reel: Reel, demo: Demo, flows: FlowSwitch, choices: Choices, beforeafter: BeforeAfter, hub: Hub, decisions: Decisions, arch: Arch, mockpair: MockPair, ship: Ship, photos: Photos, loop: Loop,
 }
-const TEXT = new Set(['hub', 'decisions', 'arch', 'mockpair', 'ship', 'photos', 'loop', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'choices'])
+const TEXT = new Set(['hub', 'decisions', 'arch', 'mockpair', 'ship', 'photos', 'loop', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'flows', 'choices'])
 
 function Block({ block }) {
   const Visual = VISUALS[block.kind]
@@ -253,18 +253,18 @@ function Block({ block }) {
 // listing the case study's sections. The section in view is highlighted
 // (the one whose top last passed a line a third of the way down the
 // screen); clicking an item scrolls there. Hidden on narrower screens.
-function CaseNav({ sections, top = true, overview }) {
+function CaseNav({ sections, top = true, overview, overviewPart }) {
   // A section with a `group` (e.g. a design phase: Understand, Define…) is
   // listed once, under its group's name, pointing at the group's first section.
   // `toc: false` keeps a section (like the intro film) out of the list, and a
   // study with `navTop: false` leaves out the cover's Overview entry, and
   // `overviewNav` lists the facts and summary at the top under that name.
   const items = top ? [{ id: 'cs-top', label: 'Overview' }] : []
-  if (overview) items.push({ id: 'cs-overview', label: overview })
+  if (overview) items.push({ id: 'cs-overview', label: overview, part: overviewPart })
   for (const x of sections) {
     if (x.toc === false) continue
     if (x.group && items.some((it) => it.group === x.group)) continue
-    items.push({ id: x.id, label: x.group || plain(x.nav), group: x.group })
+    items.push({ id: x.id, label: x.group || plain(x.nav), group: x.group, part: x.part })
   }
   const [active, setActive] = useState(items[0].id)
   const links = useRef({})
@@ -335,8 +335,10 @@ function CaseNav({ sections, top = true, overview }) {
           style={pill ? { ...drag.pillStyle(), height: pill.h } : undefined}
           aria-hidden="true"
         />
+        {/* A section's `part` (e.g. How we think) heads the list from that section on. */}
         {items.map((it) => (
           <li key={it.id}>
+            {it.part && <p className="sv-toc-part">{it.part}</p>}
             <a
               href={`#${it.id}`}
               ref={(el) => { links.current[it.id] = el }}
@@ -430,7 +432,7 @@ function Hub({ items, outer = [] }) {
   const at = (i) => (-90 + (360 / n) * i) * Math.PI / 180
   // One list for the card: the main modules first, then the outer features.
   const all = [...items, ...outer]
-  const badge = (i) => (i < n ? String(i + 1).padStart(2, '0') : <svg viewBox="0 0 24 24" className="cs-hub-badge">{HUB_ICONS[all[i].key]}</svg>)
+  const badge = (i) => <svg viewBox="0 0 24 24" className="cs-hub-badge" aria-hidden="true">{HUB_ICONS[all[i].key]}</svg>
   return (
     <div className="cs-hub">
       <div className="cs-hub-art">
@@ -593,12 +595,11 @@ const DEC_ART = { pos: DecPos, offline: DecOffline, eco: DecEco }
 function Decisions({ items }) {
   return (
     <ol className="cs-dec">
-      {items.map((it, i) => {
+      {items.map((it) => {
         const Art = DEC_ART[it.key]
         return (
           <li key={it.key} className="cs-dec-row">
             <div className="cs-dec-text">
-              <span className="cs-dec-n">{String(i + 1).padStart(2, '0')}</span>
               <h3>{it.t}</h3>
               <div className="cs-dec-pd">
                 <p><b>Problem</b>{it.problem}</p>
@@ -616,7 +617,7 @@ function Decisions({ items }) {
 // Product architecture: the three surfaces layered as one scene (owner's
 // dashboard at the back, the staff board, the guest's phone in front), and a
 // short line for each. The highlight moves from guest to staff to owner.
-const ARCH_SHOTS = { owner: '/case/orderflow/arch-owner.jpg', staff: '/case/orderflow/arch-staff.jpg', guest: '/case/orderflow/guest-latest.jpg' }
+const ARCH_SHOTS = { owner: '/case/orderflow/arch-owner.jpg?v=2', staff: '/case/orderflow/arch-staff.jpg', guest: '/case/orderflow/guest-latest.jpg' }
 // Each screen is clickable too: it picks that step and comes to the front.
 const pressable = (label, onPick) => ({ role: 'button', tabIndex: 0, 'aria-label': label, onClick: onPick, onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPick() } } })
 function ArchBrowser({ who, on, label, onPick }) {

@@ -68,3 +68,18 @@ MTB Pay Merchant (`public/case/mtb-pay-merchant/`): screens are cropped from the
 Merchant Experience (`public/case/merchant-experience/`): the thumbnail and Work card are a tablet-in-hands photo (`merch-hand/source.png`) with the real Fund Settlement screen on it: `python3 merch-hand.py ../../public/case/merchant-experience/thumb.jpg ../../public/case/merchant-experience/card.jpg ../../public/case/merchant-experience/cover.jpg` (needs `out-portal/fund-done-clean.png`). 1440 wide screens cropped from the Figma board PDFs in Merchant Portal.zip into `out-portal/`, prototype lines repainted (`*-clean.png`). Stills: `cfg-card-portal.json`, `cfg-cover-portal.json`.
 
 Web weight: before deploying new media, run `python3 tools/optimize-images.py` (progressive JPEGs at quality 80, max 2000 px for backgrounds and 1600 px otherwise; skips files it can't shrink by 10%) and re-encode heavy videos with `node shrink-video.mjs in.mp4 out.mp4 1600000` (Chrome's H.264 encoder; about 1.4 Mbps for screen recordings, 1.6 Mbps for intro films). Bump the file's `?v=` in data.js when you replace it. `vercel.json` sends every route to the app (direct links work) and caches media for a week.
+
+OrderFlow feature tabs (`public/case/orderflow/feat/`, the Design Execution tabs: `g-*` guest, `a-*` admin).
+Guest: run the client with `NEXT_PUBLIC_MOCK_ORDERS=true ORDERFLOW_MOCK_ACCOUNT=true` (signed-in member screens) and record
+`of-g-order.json`, `of-g-loyalty.json` on the table QR url and `of-g-pickup.json` on `/fudo-bakery/menu/pickup` with
+`MOCKS=mocks-of-pickup.mjs` (fakes the pickup order in the browser, so nothing reaches staging). `of-g-account.json` needs
+`ORDERFLOW_MOCK_ACCOUNT=false` (signed out); it fills the form but never submits. All with `TZ_EMU=Europe/London DPR=2 ... 402 820`
+(`TZ_EMU` gives a daytime clock). Admin: `node mock-of-api.mjs` (now also menu, loyalty, reports and metrics data), the admin
+as for the Orders tabs, then `TZ_EMU=Europe/London DPR=1.25 node record.mjs out-of-a-<f> of-a-<f>.json http://localhost:3011/<page> 1440 900`
+for qr (/orders), manual (/orders), reports (/metrics) and newmenu (/menus); restart the mock before each, since the
+mock now keeps what a recording changes (items ready, payments, a manual order, a new menu item with `assets-of/espresso.jpg`). Compose `cfg-of-g-*.json` / `cfg-of-a-*.json`; the
+step times in data.js are the `caps` compose prints. Steps can also be `FILL:selector|text` (types instantly), `UPLOAD:selector|file` and `SCROLLIN:selector|px` (scrolls one element, e.g. a modal). `explore.mjs`
+runs a steps file with a screenshot after each click, for writing new ones.
+Pointer: `record.mjs` logs every click (`taps` in index.json) and `"cursor": true` in a cfg draws it: an arrow that
+glides to each click with an orange ring on desk recordings, a fingertip dot on phone ones. `lead` (seconds) on a scene
+holds its first frame, for a recording that opens on a still screen.

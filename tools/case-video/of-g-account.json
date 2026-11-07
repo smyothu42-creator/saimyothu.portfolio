@@ -1,0 +1,7 @@
+["CSS:nextjs-portal{display:none!important}", "CSS:.of-card-grid > div:has(button[aria-label=\"Add Test\"]),.of-card-grid > div:has(button[aria-label=\"Add coffee\"]){display:none!important}", "@8000", "REC",
+ "#Order without an account", "@2400",
+ "#Sign in to earn points", "Sign in", "@2400",
+ "#Email and password", "FILL:#email|ayechan@gmail.com", "@700", "FILL:#password|cafe2026", "@2000",
+ "#Or one tap with Google", "@2600",
+ "#New here? Create an account", "Create account", "@3000",
+ "#Points, stamps and level in Profile", "Back", "@1200", "Profile", "@3500"]
