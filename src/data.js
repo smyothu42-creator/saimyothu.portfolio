@@ -216,27 +216,8 @@ export const CASES = [
           ],
         },
         {
-          id: 'execution',
-          nav: 'Design Execution',
-          title: 'Designed, then *delivered in code*',
-          blocks: [
-            { kind: 'lead', p: 'I mapped the flows in FigJam, designed both apps on one design system in Figma, and delivered their front end in code, so what we tested in cafés was what I designed.' },
-            { kind: 'demo', src: '/case/orderflow/guest.mp4', poster: '/case/orderflow/guest.jpg', alt: 'Screen recording of the guest app: the menu, switching to Burmese, browsing, adding two items, the basket, placing the order and following it', steps: [
-              { t: 0, text: 'Scan the QR, no app' },
-              { t: 0.77, text: 'Burmese or English' },
-              { t: 7.91, text: 'Browse by category' },
-              { t: 12.06, text: 'Tap an item' },
-              { t: 16.81, text: 'Basket in thumb reach' },
-              { t: 21.92, text: 'Review and place' },
-              { t: 28.38, text: 'Track until ready' },
-            ] },
-            { kind: 'reel', ratio: '7 / 5', src: '/case/orderflow/admin.mp4?v=2', poster: '/case/orderflow/admin.jpg', alt: 'The admin panel: the live order board, the table map, adding a menu item in English and Burmese, and the menu list', caption: 'The order board, the table map and the menu, from our launch film.' },
-          ],
-        },
-        {
           id: 'shipping',
-          nav: 'Shipping',
-          toc: false,
+          nav: 'Workflow',
           title: 'Shipping the *front end*',
           blocks: [
             { kind: 'lead', p: 'Every change went out the same way: its own branch, type check, lint and build, a changelog note on how it was checked, then staging before production.' },
@@ -255,6 +236,24 @@ export const CASES = [
                 ['ef40d2f', 'guest', 'feat(menu): show out-of-stock items instead of hiding them'],
               ],
             },
+          ],
+        },
+        {
+          id: 'execution',
+          nav: 'Design Execution',
+          title: 'Designed, then *delivered in code*',
+          blocks: [
+            { kind: 'lead', p: 'I mapped the flows in FigJam, designed both apps on one design system in Figma, and delivered their front end in code, so what we tested in cafés was what I designed.' },
+            { kind: 'demo', src: '/case/orderflow/guest.mp4', poster: '/case/orderflow/guest.jpg', alt: 'Screen recording of the guest app: the menu, switching to Burmese, browsing, adding two items, the basket, placing the order and following it', steps: [
+              { t: 0, text: 'Scan the QR, no app' },
+              { t: 0.77, text: 'Burmese or English' },
+              { t: 7.91, text: 'Browse by category' },
+              { t: 12.06, text: 'Tap an item' },
+              { t: 16.81, text: 'Basket in thumb reach' },
+              { t: 21.92, text: 'Review and place' },
+              { t: 28.38, text: 'Track until ready' },
+            ] },
+            { kind: 'reel', ratio: '7 / 5', src: '/case/orderflow/admin.mp4?v=2', poster: '/case/orderflow/admin.jpg', alt: 'The admin panel: the live order board, the table map, adding a menu item in English and Burmese, and the menu list', caption: 'The order board, the table map and the menu, from our launch film.' },
           ],
         },
         {
