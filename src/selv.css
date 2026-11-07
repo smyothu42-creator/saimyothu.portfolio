@@ -813,21 +813,21 @@ html, body { overflow-x: clip; }
 .sv-fan-title { font-size: 23px; font-weight: 600; letter-spacing: -0.01em; color: var(--sv-text); }
 @keyframes sv-rise { from { opacity: 0; transform: translateY(8px); } }
 
-/* End of a case study: the next projects as a quiet list, a small thumbnail and a name. */
-.sv-others .sv-h2 { margin-bottom: 18px; font-size: 28px; }
-.sv-others-list { list-style: none; margin: 0; padding: 0; }
-.sv-others-list li + li { border-top: 1px solid var(--sv-line); }
-.sv-other { display: flex; align-items: center; gap: 18px; padding: 14px 0; }
-.sv-other .media { flex: none; width: 72px; aspect-ratio: 1; overflow: hidden; border-radius: 14px; }
-.sv-other .media img { width: 100%; height: 100%; object-fit: cover; }
-.sv-others-list li:last-child .sv-other { padding-bottom: 0; }
-.sv-other-name { flex: 1; min-width: 0; font-size: 19px; font-weight: 500; line-height: 1.3; color: var(--sv-soft); transition: color 0.3s var(--ease); }
+/* End of a case study: two projects side by side, a large picture, the name and one line. */
+.sv-others .sv-h2 { margin-bottom: 20px; font-size: 28px; }
+.sv-others-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.sv-other { display: flex; flex-direction: column; gap: 12px; }
+.sv-other .media { width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 18px; box-shadow: 0 18px 36px -22px rgba(0, 0, 0, 0.8); }
+.sv-other .media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
+.sv-other:hover .media img { transform: scale(1.04); }
+.sv-other-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.sv-other-name { min-width: 0; font-size: 19px; font-weight: 500; line-height: 1.3; color: var(--sv-text); }
+.sv-other-desc { font-size: 14px; line-height: 1.5; color: var(--sv-dim); }
 .sv-other-arrow { flex: none; display: grid; color: var(--sv-dim); transition: color 0.3s var(--ease), transform 0.4s var(--ease); }
-.sv-other:hover .sv-other-name { color: #fff; }
 .sv-other:hover .sv-other-arrow { color: #fff; transform: translateX(4px); }
-.sv-other:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-radius: 8px; }
-@media (max-width: 520px) { .sv-other-name { font-size: 17px; } .sv-other { gap: 14px; padding: 12px 0; } .sv-other .media { width: 60px; border-radius: 12px; } }
-@media (prefers-reduced-motion: reduce) { .sv-other-name, .sv-other-arrow { transition: none; } }
+.sv-other:focus-visible { outline: 2px solid #fff; outline-offset: 6px; border-radius: 18px; }
+@media (max-width: 520px) { .sv-others-grid { gap: 12px; } .sv-other-name { font-size: 16px; } .sv-other-desc { display: none; } .sv-other .media { border-radius: 14px; } }
+@media (prefers-reduced-motion: reduce) { .sv-other-arrow, .sv-other .media img { transition: none; } }
 
 /* ---------- Home: core values strip ---------- */
 .sv-vs { padding: 34px 0; overflow: clip; }
@@ -1328,6 +1328,11 @@ li:first-child > .sv-toc-part { padding-top: 0; }
 /* ---------- Case study ---------- */
 .sv-cover { padding: 0; }
 .sv-cover .media { aspect-ratio: 1.35; border-radius: 0; }
+/* a motion cover: the film is made in this shape (tools/case-video/hero-of.html), so nothing is cropped */
+.sv-cover .media.is-video { aspect-ratio: 1.55; }
+.media video { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* with a motion cover the title keeps its inner shadow over the film, a shorter fade so more of the film shows */
+.sv-cover:has(.media.is-video) .sv-cover-title { padding-top: 90px; }
 .sv-cover .sv-back { position: absolute; top: 32px; left: 32px; z-index: 2; }
 .sv-cover-title {
   padding: 130px var(--sv-pad) 44px;
@@ -1553,6 +1558,7 @@ li:first-child > .sv-toc-part { padding-top: 0; }
   .sv-proj .media { aspect-ratio: 1.08; border-radius: calc(var(--sv-r) - 8px); }
   .sv-proj-foot { padding: 20px 18px 20px; }
   .sv-cover .media { aspect-ratio: 0.95; }
+  .sv-cover .media.is-video { aspect-ratio: 1.55; }
   .sv-cover .sv-back { top: 20px; left: 20px; }
   .sv-photo-hero { padding: 20px 20px 28px; }
   .sv-photo-hero .sv-h1 { padding-left: 6px; }
@@ -2476,36 +2482,12 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) { .cs-term-line { animation: none; opacity: 1; } .cs-term-cmd.is-cursor i { animation: none; } }
 @media (max-width: 640px) { .cs-term-body { font-size: 11px; } }
 
-/* Validation on real usage: café photos and the test, feedback, improve loop. */
+/* Validation on real usage: café photos. */
 .cs-photos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .cs-photos figure { margin: 0; }
 .cs-photos img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 18px; box-shadow: 0 20px 40px -24px rgba(0, 0, 0, 0.8); }
 .cs-photos figcaption { margin-top: 10px; font-size: 13px; color: var(--sv-dim); }
-.cs-loop { display: flex; flex-direction: column; align-items: center; gap: 18px; }
-.cs-loop ol { width: 100%; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px; }
-.cs-loop li { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 18px; border-radius: 18px; font-size: 14px; line-height: 1.45; color: var(--sv-dim);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)); border: 1px solid rgba(255, 255, 255, 0.12);
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.6s, border-color 0.6s, box-shadow 0.6s, color 0.6s; }
-.cs-loop li.is-on { color: var(--sv-soft); background-color: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 18px 36px -20px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.25); }
-.cs-loop b { font-size: 17px; font-weight: 500; color: rgba(255, 255, 255, 0.7); transition: color 0.6s; }
-.cs-loop li.is-on b { color: #fff; }
-.cs-loop-ic { width: 36px; height: 36px; display: grid; place-items: center; margin-bottom: 4px; border-radius: 50%; color: var(--sv-text); background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.18);
-  transition: background-color 0.5s, color 0.5s, border-color 0.5s, box-shadow 0.5s; }
-.cs-loop li.is-on .cs-loop-ic { color: #ef7a2c; background: #fff; border-color: #fff; box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.12); }
-.cs-loop-ic svg, .cs-loop-again svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-/* the link to the next step: a faint line, with a dot running along it */
-.cs-loop-link { position: absolute; left: 100%; top: 50%; width: 34px; height: 1px; background: rgba(255, 255, 255, 0.2); }
-.cs-loop-link i { position: absolute; top: 50%; left: 0; width: 6px; height: 6px; margin-top: -3px; border-radius: 50%; background: #ffb27d; box-shadow: 0 0 8px rgba(255, 154, 82, 0.9); opacity: 0; }
-.cs-loop-link.is-run i { animation: loop-dot 2.2s cubic-bezier(0.45, 0, 0.25, 1) both; }
-@keyframes loop-dot { 0%, 45% { left: 0; opacity: 0; } 55% { opacity: 1; } 95% { left: calc(100% - 6px); opacity: 1; } 100% { left: calc(100% - 6px); opacity: 0; } }
-.cs-loop-again { margin: 0; transition: border-color 0.6s, background-color 0.6s, box-shadow 0.6s; }
-.cs-loop-again svg { width: 14px; height: 14px; flex: none; transition: transform 0.9s ease; }
-.cs-loop-again.is-on { border-color: rgba(255, 178, 125, 0.6); background-color: rgba(239, 122, 44, 0.18); box-shadow: 0 0 0 4px rgba(239, 122, 44, 0.1); }
-.cs-loop-again.is-on svg { transform: rotate(-360deg); }
-@media (prefers-reduced-motion: reduce) { .cs-loop li, .cs-loop-ic, .cs-loop-again svg { transition: none; } .cs-loop-link i { animation: none !important; } }
-@media (max-width: 640px) { .cs-photos { grid-template-columns: 1fr; } .cs-loop ol { grid-template-columns: 1fr; gap: 26px; } .cs-loop-link { left: 50%; top: 100%; width: 1px; height: 26px; } .cs-loop-link.is-run i { animation-name: loop-dot-v; } .cs-loop-again { white-space: normal; } }
-@keyframes loop-dot-v { 0%, 45% { top: 0; left: -2.5px; opacity: 0; } 55% { opacity: 1; } 95% { top: calc(100% - 6px); left: -2.5px; opacity: 1; } 100% { top: calc(100% - 6px); left: -2.5px; opacity: 0; } }
+@media (max-width: 640px) { .cs-photos { grid-template-columns: 1fr; } }
 
 /* Architecture screens are clickable: the picked one comes to the front. */
 .cs-arch-stage [role='button'] { cursor: pointer; outline: none; }
@@ -2586,3 +2568,56 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .cs-dec-node svg { width: 22px; height: 22px; }
 .cs-dec-node small { margin-top: 6px; font-size: 13px; }
 .cs-dec-ringwrap > small { margin-top: 40px; }
+
+
+/* Validation loop as a turning carousel: glass cards on an oval orbit, the
+   current step at the front, the other two smaller behind it. */
+.cs-loop { display: flex; flex-direction: column; align-items: center; gap: 22px; }
+.cs-loop-stage { position: relative; width: 100%; height: 240px; display: grid; place-items: center; }
+.cs-loop-orbit { position: absolute; left: 4%; right: 4%; top: 50%; width: 92%; height: 46%; transform: translateY(-38%); overflow: visible; }
+.cs-loop-orbit ellipse { fill: none; stroke: rgba(190, 214, 255, 0.35); stroke-width: 0.25; stroke-dasharray: 0.8 1.4; vector-effect: non-scaling-stroke; }
+.cs-loop-card {
+  grid-area: 1 / 1; width: min(400px, 72%); padding: 26px 28px 30px; border-radius: 26px; text-align: left;
+  display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: 12px; row-gap: 8px;
+  color: var(--sv-soft);
+  background: linear-gradient(170deg, rgba(150, 190, 255, 0.24), rgba(90, 140, 230, 0.08)), rgba(16, 32, 72, 0.55);
+  border: 1px solid rgba(190, 214, 255, 0.26);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 30px 50px -24px rgba(2, 10, 40, 0.85);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  position: relative; isolation: isolate; will-change: transform, opacity;
+}
+/* the solid face fades in as a card comes to the front (--solid, set by the orbit) */
+.cs-loop-card::before { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; opacity: var(--solid, 0);
+  background: linear-gradient(170deg, rgba(150, 190, 255, 0.34), rgba(90, 140, 230, 0.14)), rgba(18, 38, 92, 0.92); }
+.cs-loop-ic { width: 50px; height: 50px; display: grid; place-items: center; border-radius: 14px; color: #fff;
+  background: linear-gradient(170deg, rgba(150, 190, 255, 0.5), rgba(90, 140, 230, 0.22)); border: 1px solid rgba(190, 214, 255, 0.45);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4); }
+.cs-loop-ic svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cs-loop-n { justify-self: end; align-self: start; font-size: 13px; letter-spacing: 0.1em; color: var(--sv-dim); font-variant-numeric: tabular-nums; }
+.cs-loop-card b { grid-column: 1 / -1; margin-top: 8px; font-size: 24px; font-weight: 600; line-height: 1.2; color: #fff; }
+.cs-loop-card p { grid-column: 1 / -1; margin: 0; font-size: 17px; line-height: 1.5; }
+.cs-loop-foot { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.cs-loop-dots { display: flex; gap: 6px; }
+.cs-loop-dots i { width: 8px; height: 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.25); transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.5s; }
+.cs-loop-dots i.is-on { width: 26px; background: #fff; }
+@media (prefers-reduced-motion: reduce) { .cs-loop-dots i { transition: none; } }
+@media (max-width: 640px) {
+  .cs-loop-stage { height: 230px; }
+  .cs-loop-card { width: 78%; padding: 18px 18px 20px; }
+  .cs-loop-card b { font-size: 18px; }
+  .cs-loop-card p { font-size: 14px; }
+}
+
+
+/* "Back to work" at the top of the side list. Where the list shows (wide
+   screens), the cover's own back button is hidden; below 1281px the list is
+   hidden and the cover button is the way back. */
+.sv-toc-back { display: flex; align-items: center; gap: 12px; padding: 6px 10px 12px 6px; margin-bottom: 10px; font-size: 14px; font-weight: 500; color: var(--sv-text);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
+.sv-toc-back-ic { width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: 12px; color: var(--sv-text);
+  border: 1px solid rgba(255, 255, 255, 0.2); background: linear-gradient(170deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 8px 18px -8px rgba(0, 0, 0, 0.5); transition: background 0.25s, transform 0.25s var(--ease); }
+.sv-toc-back:hover .sv-toc-back-ic { background: rgba(255, 255, 255, 0.14); transform: translateX(-2px); }
+.sv-toc-back:focus-visible { outline: 2px solid #fff; outline-offset: 2px; border-radius: 12px; }
+@media (min-width: 1281px) { .sv-case:has(.sv-toc) .sv-cover .sv-back { display: none; } }
+@media (prefers-reduced-motion: reduce) { .sv-toc-back-ic { transition: none; } }

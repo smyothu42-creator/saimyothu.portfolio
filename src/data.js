@@ -11,10 +11,9 @@ export const BACKDROP = 'calm'
 // Floating dock (right edge on desktop, bottom bar on phones). `icon` keys
 // live in Dock.jsx.
 export const NAV = [
-  { label: 'Home', href: '/', icon: 'home' },
+  { label: 'Work', href: '/', icon: 'work' },
   { label: 'About', href: '/about', icon: 'about' },
   { label: 'Contact', href: '/contact', icon: 'contact' },
-  { label: 'Resume', href: '/Sai-Myo-Thu-Resume.pdf', icon: 'resume', external: true },
 ]
 
 // Home hero copy.
@@ -57,6 +56,7 @@ export const CASES = [
   {
     title: 'OrderFlow for\u00a0F&B\u00a0Business', // non-breaking, so the second line reads "for F&B Business",
     name: 'OrderFlow',
+    coverTitle: 'OrderFlow', // the case cover's heading; cards keep the full title
     domain: 'F&B',
     slug: 'orderflow',
     result: '4 cafés live, 1,000+ orders at RAW',
@@ -64,7 +64,7 @@ export const CASES = [
     featured: true,
     tags: ['Product Design'],
     desc: 'QR table ordering for cafés in Myanmar: a guest app on the phone, and an admin that runs every order.',
-    art: { img: '/case/orderflow/cover.jpg?v=24', thumb: '/case/orderflow/thumb-pos.jpg?v=10', card: '/case/orderflow/thumb.jpg', text: 'OrderFlow', color: '#1f3a5f', bg: 'linear-gradient(160deg,#cfe4f7,#dfe7fb 55%,#eef1fb)' },
+    art: { img: '/case/orderflow/cover.jpg?v=24', video: '/case/orderflow/hero.mp4?v=3', poster: '/case/orderflow/hero.jpg?v=3', thumb: '/case/orderflow/thumb-pos.jpg?v=10', card: '/case/orderflow/thumb.jpg', text: 'OrderFlow', color: '#1f3a5f', bg: 'linear-gradient(160deg,#cfe4f7,#dfe7fb 55%,#eef1fb)' },
     // One case for both products: the guest app (orderflow-client) and the admin
     // panel (orderflow-admin-panel). Told as a product manager's case: Impact,
     // Project Overview, The Opportunity, Problem Discovery, Product Vision &
@@ -72,8 +72,8 @@ export const CASES = [
     // Design Execution, Pilot & Iteration, Takeaway (eyebrows number them; `group`
     // keeps one side-list entry per section). Numbers come from the Startup World Cup pitch deck (Oct
     // 2026); the deck's unconfirmed and [example] figures are left out on purpose.
-    // The intro is a re-cut of the Pilot Launch film in the product's own theme
-    // (tools/case-video/film-of.html).
+    // The cover is a short motion loop of the real screens (art.video, tools/case-video/hero-of.html):
+    // a guest's QR order reaching the staff board, then the owner's numbers.
     study: {
       navTop: false,
       overviewNav: 'Project Overview',
@@ -100,15 +100,6 @@ export const CASES = [
               { num: '60 / 60', label: 'Days in use at that shop' },
               { num: '35.7M', label: 'MMK in revenue through OrderFlow' },
             ] },
-          ],
-        },
-        {
-          id: 'hello',
-          nav: 'Intro',
-          bare: true,
-          toc: false,
-          blocks: [
-            { kind: 'reel', eager: true, src: '/case/orderflow/intro.mp4?v=4', audio: '/case/orderflow/intro.m4a?v=2', poster: '/case/orderflow/intro.jpg', alt: 'Intro: rush hour in a Yangon café, then OrderFlow: guests scan the table QR and order on their phone, staff see every order live, owners run the menu. Four cafés live by October 2026.' },
           ],
         },
         {

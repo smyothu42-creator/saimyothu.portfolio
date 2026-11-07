@@ -58,13 +58,21 @@ export default function CaseStudy({ slug }) {
     <div className="sv-case" style={s?.accent ? { '--acc': s.accent } : undefined}>
       {s?.sections?.length > 1 && <CaseNav sections={s.sections} top={s.navTop !== false} overview={s.overviewNav} overviewPart={s.overviewPart} />}
       <Card className="sv-cover" id="cs-top">
-        <Media art={c.art} title={c.title} eager />
+        <Media art={c.art} title={c.title} eager video={c.art.video} />
         <BackButton href="/" label="Back to home" />
-        <h1 className="sv-cover-title">{c.title}</h1>
+        <h1 className="sv-cover-title">{c.coverTitle || c.title}</h1>
       </Card>
 
+      {/* what it is first, then the impact, then role, timeline, team and tools */}
+      <Card className="sv-text" id="cs-overview">
+        {s?.heading && <p className="sv-statement">{plain(s.heading)}</p>}
+        <p>{s?.summary ?? c.desc}</p>
+      </Card>
+
+      {impactTop && <Section sec={impactTop} />}
+
       {facts.length > 0 && (
-        <Card className={'sv-facts' + (facts.length % 2 ? ' is-odd' : '')} id="cs-overview">
+        <Card className={'sv-facts' + (facts.length % 2 ? ' is-odd' : '')}>
           {facts.map(([k, v]) => (
             <div className="sv-fact" key={k}>
               <dt>{k}</dt>
@@ -74,16 +82,9 @@ export default function CaseStudy({ slug }) {
         </Card>
       )}
 
-      {impactTop && <Section sec={impactTop} />}
-
-      <Card className="sv-text">
-        {s?.heading && <p className="sv-statement">{plain(s.heading)}</p>}
-        <p>{s?.summary ?? c.desc}</p>
-      </Card>
-
       {s?.sections.filter((sec) => sec !== impactTop).map((sec) => <Section key={sec.id} sec={sec} />)}
 
-      <OtherWork current={c.slug} />
+      <OtherWork key={c.slug} current={c.slug} />
 
       {s?.gallery?.length > 0 && <Gallery images={s.gallery} />}
       {!s && <ConnectCard />}
@@ -91,23 +92,38 @@ export default function CaseStudy({ slug }) {
   )
 }
 
-// The end of a case study: the next four projects from the home page, starting
-// after this one and wrapping round, so each page points somewhere different.
+// The end of a case study: two projects side by side. The main projects (the
+// home page's) come first, the ones not opened yet before the rest; once the
+// main ones have been seen, the More Work three follow. Opened case studies are
+// remembered in this browser only (localStorage), so it falls back to the
+// plain order when that isn't available.
+const SEEN_KEY = 'sv-seen-work'
+const readSeen = () => { try { return JSON.parse(localStorage.getItem(SEEN_KEY)) || [] } catch { return [] } }
 function OtherWork({ current }) {
-  const order = [...HOME_WORK, ...MORE_WORK]
-  const from = order.indexOf(current) + 1
-  const next = [...order.slice(from), ...order.slice(0, from)].filter((slug) => slug !== current).slice(0, 4)
-  const items = next.map((slug) => CASES.find((c) => c.slug === slug)).filter(Boolean)
+  const [items] = useState(() => {
+    const seen = readSeen()
+    // 0 unseen main, 1 unseen more, 2 seen main, 3 seen more
+    const rank = (slug) => (seen.includes(slug) ? 2 : 0) + (HOME_WORK.includes(slug) ? 0 : 1)
+    const order = [...HOME_WORK, ...MORE_WORK].filter((slug) => slug !== current)
+    const sorted = order.map((slug, i) => [slug, rank(slug), i]).sort((x, y) => x[1] - y[1] || x[2] - y[2]).map(([slug]) => slug)
+    return sorted.slice(0, 2).map((slug) => CASES.find((c) => c.slug === slug)).filter(Boolean)
+  })
+  useEffect(() => {
+    try { const seen = readSeen(); if (!seen.includes(current)) localStorage.setItem(SEEN_KEY, JSON.stringify([...seen, current])) } catch { /* private mode */ }
+  }, [current])
   return (
     <Card className="sv-others">
       <h2 className="sv-h2">More Work</h2>
-      <ul className="sv-others-list">
+      <ul className="sv-others-grid">
         {items.map((c) => (
           <li key={c.slug}>
             <a className="sv-other" href={`/work/${c.slug}`}>
-              <Media art={c.art.thumb ? { ...c.art, img: c.art.thumb } : c.art} title="" />
-              <span className="sv-other-name">{c.title}</span>
-              <span className="sv-other-arrow"><Icon name="arrowRight" size={20} stroke={1.8} /></span>
+              <Media art={c.art.card ? { ...c.art, img: c.art.card } : c.art.thumb ? { ...c.art, img: c.art.thumb } : c.art} title="" />
+              <span className="sv-other-row">
+                <span className="sv-other-name">{c.name || c.title.replace(/\u00a0/g, ' ')}</span>
+                <span className="sv-other-arrow"><Icon name="arrowRight" size={20} stroke={1.8} /></span>
+              </span>
+              {c.desc && <span className="sv-other-desc">{c.desc}</span>}
             </a>
           </li>
         ))}
@@ -115,6 +131,7 @@ function OtherWork({ current }) {
     </Card>
   )
 }
+
 
 // `*words*` in a title render as a light italic accent; plain() strips the
 // markers for labels.
@@ -329,6 +346,11 @@ function CaseNav({ sections, top = true, overview, overviewPart }) {
 
   return (
     <nav className="sv-toc" aria-label="On this page">
+      {/* the way back sits here; the cover's back button only shows where this list is hidden */}
+      <a className="sv-toc-back" href="/">
+        <span className="sv-toc-back-ic"><Icon name="arrowLeft" size={18} /></span>
+        Back to work
+      </a>
       <ol ref={list} className={drag.dragging ? 'is-dragging' : undefined} {...drag.handlers}>
         <span
           className={'sv-toc-glass' + (pill ? '' : ' is-hidden')}
@@ -737,27 +759,76 @@ function Photos({ items }) {
 // from step to step (a dot runs along the link to the next one), and after the
 // last step the "again" pill lights up before it starts over.
 const LOOP_MS = 2200
+// The test, feedback, improve loop as a turning carousel: glass cards on an
+// oval orbit. One angle turns the whole orbit (eased, a step every LOOP_MS) and
+// every card's place, size, depth, blur and how solid it is follow from where
+// it sits on the oval, so a card going back travels round behind the others.
 function Loop({ steps }) {
   const n = steps.length
   const [on, setOn] = useState(0)
+  const cards = useRef([])
+  const angle = useRef(0) // where the orbit is now, in steps
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const t = setTimeout(() => setOn((i) => (i + 1) % (n + 1)), LOOP_MS)
+    const t = setTimeout(() => setOn((i) => i + 1), LOOP_MS)
     return () => clearTimeout(t)
-  }, [on, n])
+  }, [on])
+  // place every card for the orbit angle `a` (in steps; card i is at the front when a = i)
+  const place = (a) => {
+    const narrow = window.matchMedia('(max-width: 640px)').matches
+    cards.current.forEach((el, i) => {
+      if (!el) return
+      const phi = ((i - a) / n) * Math.PI * 2
+      const x = Math.sin(phi), depth = (Math.cos(phi) + 1) / 2 // 1 front, 0 straight behind
+      const near = depth * depth * (3 - 2 * depth)
+      el.style.transform = `translate3d(${x * (narrow ? 36 : 62)}%, ${-(1 - depth) * 9}%, 0) scale(${0.68 + 0.32 * near})`
+      el.style.opacity = String(0.25 + 0.75 * near)
+      el.style.zIndex = String(Math.round(depth * 100))
+      el.style.setProperty('--solid', String(near))
+      el.style.filter = `blur(${(1 - near) * 1.6}px)`
+    })
+  }
+  useEffect(() => {
+    const from = angle.current, t0 = performance.now(), dur = 1100
+    let raf = 0
+    const tick = (now) => {
+      const k = Math.min(1, (now - t0) / dur)
+      const e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2
+      angle.current = from + (on - from) * e
+      place(angle.current)
+      if (k < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [on])
+  useEffect(() => {
+    const onResize = () => place(angle.current)
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const cur = ((on % n) + n) % n
   return (
     <div className="cs-loop">
-      <ol>
+      <div className="cs-loop-stage">
+        <svg className="cs-loop-orbit" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="50" cy="15" rx="48" ry="13" /></svg>
         {steps.map((st, i) => (
-          <li key={st.t} className={(i === on ? 'is-on' : '') + (i < on ? ' is-done' : '')}>
+          <article key={st.t} ref={(el) => { cards.current[i] = el }} className="cs-loop-card" aria-hidden={i !== cur} aria-current={i === cur ? 'step' : undefined}>
             <span className="cs-loop-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{HUB_ICONS[st.icon]}</svg></span>
+            <span className="cs-loop-n">{String(i + 1).padStart(2, '0')}</span>
             <b>{st.t}</b>
-            <span>{st.p}</span>
-            {i < n - 1 && <span className={'cs-loop-link' + (i === on ? ' is-run' : '')} aria-hidden="true"><i /></span>}
-          </li>
+            <p>{st.p}</p>
+          </article>
         ))}
-      </ol>
-      <span className={'cs-dec-pill cs-loop-again' + (on === n ? ' is-on' : '')}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5" /></svg>Then again, with the next change</span>
+      </div>
+      <div className="cs-loop-foot">
+        <span className="cs-loop-dots" aria-hidden="true">{steps.map((st, i) => <i key={st.t} className={i === cur ? 'is-on' : undefined} />)}</span>
+      </div>
     </div>
   )
 }
+
+
+
+

@@ -1,0 +1,217 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600;700&display=swap" rel="stylesheet">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c"></canvas>
+<script>
+// OrderFlow hero loop: a product film of the real screens. A camera moves through one scene
+// (phone + admin in a browser on the product's cream): it pushes in on each tap or click, the
+// rest of the scene dims and the target gets a glowing outline, screens change the way the app
+// does (sheet up, page push, side panel, page up), and the order flies from the phone to the
+// board. window.run(cfg) records one loop to MP4; window.still(t) draws one frame.
+const C = document.getElementById('c'), X = C.getContext('2d')
+const W = 1600, H = 1032, T = 16 // 1.55 : 1, the case cover's shape
+C.width = W; C.height = H
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v))
+const sm = (a) => { a = clamp(a); return a * a * (3 - 2 * a) }
+const io = (a) => { a = clamp(a); return a < 0.5 ? 4 * a * a * a : 1 - Math.pow(-2 * a + 2, 3) / 2 }
+const out = (a) => 1 - Math.pow(1 - clamp(a), 3)
+const img = (src) => new Promise((ok) => { const i = new Image(); i.onload = () => ok(i); i.src = src })
+// rpath adds a rounded rectangle to the current path; rrect starts a new one
+function rrect(x, y, w, h, r) { X.beginPath(); rpath(x, y, w, h, r) }
+function rpath(x, y, w, h, r) { X.moveTo(x + r, y); X.arcTo(x + w, y, x + w, y + h, r); X.arcTo(x + w, y + h, x, y + h, r); X.arcTo(x, y + h, x, y, r); X.arcTo(x, y, x + w, y, r); X.closePath() }
+
+// ---- scene layout (world px) ----
+const B = { x: 452, y: 98, w: 1070 }; B.bar = 36; B.k = B.w / 1440; B.ph = 900 * B.k; B.h = B.bar + B.ph
+const P = { w: 340 }; P.k = P.w / 402; P.band = 54 * P.k; P.app = 820 * P.k; P.h = P.band + P.app; P.bez = 11; P.x = 168; P.y = (900 - P.h) / 2
+// app CSS px -> world
+const pw = (x, y) => [P.x + x * P.k, P.y + P.band + y * P.k]
+const bw = (x, y) => [B.x + x * B.k, B.y + B.bar + y * B.k]
+
+// ---- what happens when ----
+// screens: [name, start, transition]; transitions: fade, push (from the right), sheet (up over),
+// panel (the order panel slides in from the right), up (a new page slides up)
+const PHONE = [['g-menu', 0], ['g-item', 2.35, 'sheet'], ['g-review', 3.62, 'push'], ['g-track', 4.95, 'push'], ['g-menu', 14.55, 'fade']]
+const DESK = [['a-board', 0], ['a-open', 8.38, 'panel'], ['a-ready', 10.05, 'fade'], ['a-cleared', 11.05, 'fade'], ['a-metrics', 12.0, 'up'], ['a-board', 14.55, 'fade']]
+// taps and clicks: [time, app css rect (x, y, w, h), corner radius] on the phone / desk
+const PTAPS = [[2.3, [295, 376, 91, 39], 10], [3.55, [176, 648, 186, 40], 12], [4.75, [16, 742, 370, 54], 10]]
+const DTAPS = [[8.3, [463, 174, 299, 229], 14], [10.0, [1021, 837, 419, 63], 0], [11.0, [1021, 837, 419, 63], 0]]
+// camera: [time, centre x, centre y, zoom]; eased between keys
+const CAM = [[0, 800, 450, 1], [0.9, 800, 450, 1], [2.0, 360, 470, 1.8], [3.0, 360, 560, 1.8], [4.3, 330, 640, 1.8], [5.25, 330, 640, 1.8],
+  [6.5, 800, 450, 1.02], [7.25, 800, 450, 1.02], [8.1, 960, 360, 1.55], [9.2, 1120, 470, 1.4], [9.75, 1210, 640, 1.65], [11.45, 1210, 640, 1.65],
+  [12.3, 980, 420, 1.22], [13.7, 930, 400, 1.22], [14.7, 800, 450, 1], [16, 800, 450, 1]]
+
+const S = {}
+function cam(t) {
+  let i = CAM.findIndex((k) => k[0] > t); if (i < 0) i = CAM.length - 1; if (i === 0) i = 1
+  const a = CAM[i - 1], b = CAM[i], f = io((t - a[0]) / (b[0] - a[0] || 1))
+  return { x: a[1] + (b[1] - a[1]) * f, y: a[2] + (b[2] - a[2]) * f, z: a[3] + (b[3] - a[3]) * f }
+}
+function bg() {
+  X.fillStyle = '#fbf4ea'; X.fillRect(0, 0, W, H)
+  let g = X.createRadialGradient(260, H - 140, 0, 260, H - 140, 820); g.addColorStop(0, 'rgba(255,170,95,0.42)'); g.addColorStop(1, 'rgba(255,170,95,0)'); X.fillStyle = g; X.fillRect(0, 0, W, H)
+  g = X.createRadialGradient(1380, 120, 0, 1380, 120, 700); g.addColorStop(0, 'rgba(255,214,160,0.55)'); g.addColorStop(1, 'rgba(255,214,160,0)'); X.fillStyle = g; X.fillRect(0, 0, W, H)
+}
+// draw a screen list at time t into the box (x, y, w, h)
+function screens(list, t, x, y, w, h, panelX) {
+  let k = 0; list.forEach((s, i) => { if (s[1] <= t) k = i })
+  const [name, t0, kind] = list[k]
+  const f = k ? out((t - t0) / (kind === 'fade' ? 0.35 : 0.45)) : 1
+  const cur = S[name], prev = k ? S[list[k - 1][0]] : null
+  if (f >= 1 || !prev) { X.drawImage(cur, x, y, w, h); return }
+  if (kind === 'fade') { X.drawImage(prev, x, y, w, h); X.globalAlpha = f; X.drawImage(cur, x, y, w, h); X.globalAlpha = 1; return }
+  if (kind === 'push') {
+    X.drawImage(prev, x - w * 0.3 * f, y, w, h); X.fillStyle = `rgba(0,0,0,${0.18 * f})`; X.fillRect(x, y, w, h)
+    X.save(); X.shadowColor = 'rgba(0,0,0,0.25)'; X.shadowBlur = 30; X.drawImage(cur, x + w * (1 - f), y, w, h); X.restore(); return
+  }
+  if (kind === 'sheet' || kind === 'up') {
+    X.drawImage(prev, x, y, w, h)
+    if (kind === 'sheet') { X.fillStyle = `rgba(0,0,0,${0.25 * f})`; X.fillRect(x, y, w, h) }
+    X.save(); X.beginPath(); X.rect(x, y, w, h); X.clip(); X.drawImage(cur, x, y + h * (1 - f) * (kind === 'up' ? 0.35 : 1), w, h); X.restore()
+    if (kind === 'up') { X.globalAlpha = 1 - f; X.drawImage(prev, x, y, w, h); X.globalAlpha = 1 }
+    return
+  }
+  if (kind === 'panel') {
+    // the board, then the order panel sliding in from the right edge
+    const px = x + panelX * w
+    X.save(); X.beginPath(); X.rect(x, y, w, h); X.clip()
+    X.drawImage(prev, x, y, w, h)
+    const sx = px + (x + w - px) * (1 - f)
+    X.beginPath(); X.rect(sx, y, x + w - sx, h); X.clip()
+    X.shadowColor = 'rgba(0,0,0,0.18)'; X.shadowBlur = 24
+    X.drawImage(cur, panelX * cur.width, 0, cur.width * (1 - panelX), cur.height, sx, y, w * (1 - panelX), h)
+    X.restore()
+  }
+}
+function browser(t) {
+  const { x, y } = B
+  X.save(); X.shadowColor = 'rgba(120,60,10,0.22)'; X.shadowBlur = 70; X.shadowOffsetY = 30
+  rrect(x, y, B.w, B.h, 16); X.fillStyle = '#fff'; X.fill(); X.restore()
+  X.save(); rrect(x, y, B.w, B.h, 16); X.clip()
+  X.fillStyle = '#f1efec'; X.fillRect(x, y, B.w, B.bar)
+  ;['#ff5f57', '#febc2e', '#28c840'].forEach((c, i) => { X.fillStyle = c; X.beginPath(); X.arc(x + 22 + i * 20, y + B.bar / 2, 6, 0, Math.PI * 2); X.fill() })
+  screens(DESK, t, x, y + B.bar, B.w, B.ph, 1015 / 1440)
+  X.restore()
+  rrect(x + 0.5, y + 0.5, B.w - 1, B.h - 1, 16); X.strokeStyle = 'rgba(0,0,0,0.08)'; X.lineWidth = 1; X.stroke()
+}
+function phone(t) {
+  const { x, y } = P, bz = P.bez
+  X.save(); X.shadowColor = 'rgba(120,60,10,0.28)'; X.shadowBlur = 60; X.shadowOffsetY = 28
+  rrect(x - bz, y - bz, P.w + bz * 2, P.h + bz * 2, 54); X.fillStyle = '#17181b'; X.fill(); X.restore()
+  rrect(x - bz, y - bz, P.w + bz * 2, P.h + bz * 2, 54); X.strokeStyle = 'rgba(255,255,255,0.12)'; X.lineWidth = 1.5; X.stroke()
+  X.save(); rrect(x, y, P.w, P.h, 44); X.clip()
+  let k = 0; PHONE.forEach((s, i) => { if (s[1] <= t) k = i })
+  X.fillStyle = S._tops[PHONE[k][0]]; X.fillRect(x, y, P.w, P.band + 2)
+  screens(PHONE, t, x, y + P.band, P.w, P.app)
+  X.fillStyle = '#111'; X.font = '600 14px Figtree, sans-serif'; X.textBaseline = 'middle'; X.fillText('11:12', x + 34, y + P.band * 0.56)
+  for (let i = 0; i < 4; i++) X.fillRect(x + P.w - 82 + i * 5, y + P.band * 0.56 + 4 - i * 2, 3.4, 3 + i * 2)
+  rrect(x + P.w - 56, y + P.band * 0.56 - 6, 24, 12, 4); X.lineWidth = 1.2; X.strokeStyle = 'rgba(0,0,0,0.5)'; X.stroke(); rrect(x + P.w - 54, y + P.band * 0.56 - 4, 17, 8, 2.5); X.fill()
+  X.restore()
+  rrect(x + P.w / 2 - 50, y + 10, 100, 28, 14); X.fillStyle = '#000'; X.fill()
+}
+// Focus on what is about to be pressed: the scene dims around the target, the target gets a
+// soft orange outline that presses in on the click, then a ripple.
+function focus(t, taps, toWorld, scale) {
+  for (const [t0, [cx, cy, cw, ch], r] of taps) {
+    const d = t - t0; if (d < -0.6 || d > 0.6) continue
+    const a = d < 0 ? sm((d + 0.6) / 0.3) : 1 - sm((d - 0.08) / 0.25)
+    const [x, y] = toWorld(cx, cy), w = cw * scale, h = ch * scale, pad = 5
+    X.save()
+    X.beginPath(); X.rect(-4000, -4000, 9600, 9000)
+    rpath(x - pad, y - pad, w + pad * 2, h + pad * 2, r + pad)
+    X.fillStyle = `rgba(28,18,8,${0.32 * a})`; X.fill('evenodd')
+    const p = d > 0 && d < 0.18 ? 1 - 0.04 * Math.sin((d / 0.18) * Math.PI) : 1
+    X.translate(x + w / 2, y + h / 2); X.scale(p, p)
+    X.globalAlpha = a; X.shadowColor = 'rgba(239,122,44,0.7)'; X.shadowBlur = 18
+    rrect(-w / 2 - pad, -h / 2 - pad, w + pad * 2, h + pad * 2, r + pad); X.strokeStyle = '#ef7a2c'; X.lineWidth = 2.5; X.stroke()
+    X.restore()
+    const q = clamp(d / 0.6)
+    if (d > 0 && q < 1) { X.save(); X.globalAlpha = (1 - q) * 0.9; X.strokeStyle = '#ef7a2c'; X.lineWidth = 3; X.beginPath(); X.arc(x + w / 2, y + h / 2, 10 + 46 * out(q), 0, Math.PI * 2); X.stroke(); X.restore() }
+  }
+}
+// fingertip on the phone
+function finger(t) {
+  for (const [t0, [cx, cy, cw, ch]] of PTAPS) {
+    const d = t - t0; if (d < -0.45 || d > 0.5) continue
+    const a = d < 0 ? sm((d + 0.45) / 0.25) : 1 - sm((d - 0.15) / 0.35)
+    const r = 17 * (d < 0 ? 1 - 0.15 * sm((d + 0.12) / 0.12) : 0.85 + 0.15 * sm(d / 0.2))
+    const [x, y] = pw(cx + cw / 2, cy + ch / 2)
+    X.save(); X.globalAlpha = a * 0.9; X.fillStyle = 'rgba(25,25,25,0.3)'; X.beginPath(); X.arc(x, y, r, 0, Math.PI * 2); X.fill()
+    X.lineWidth = 2.5; X.strokeStyle = 'rgba(255,255,255,0.95)'; X.stroke(); X.restore()
+  }
+}
+// the staff's pointer on the board: in after the order lands, out after the payment
+function cursor(t) {
+  const a = sm((t - 7.35) / 0.3) * (1 - sm((t - 11.6) / 0.3)); if (a <= 0) return
+  const c = ([tt, [x, y, w, h]]) => [tt, x + w / 2, y + h / 2]
+  const pts = [[7.2, 760, 640], ...DTAPS.map(c), [12, 1300, 700]]
+  let i = pts.findIndex((p) => p[0] > t); if (i < 0) i = pts.length - 1; if (i === 0) i = 1
+  const [t0, x0, y0] = pts[i - 1], [t1, x1, y1] = pts[i]
+  const m = io((t - Math.max(t0 + 0.15, t1 - 0.8)) / Math.min(0.65, t1 - t0 - 0.15))
+  const [px, py] = bw(x0 + (x1 - x0) * m, y0 + (y1 - y0) * m)
+  const down = DTAPS.some(([tt]) => t >= tt && t - tt < 0.16) ? 0.85 : 1
+  X.save(); X.globalAlpha = a; X.translate(px, py); X.scale(1.25 * down, 1.25 * down)
+  X.beginPath(); X.moveTo(0, 0); X.lineTo(0, 17); X.lineTo(4.2, 13); X.lineTo(7, 19.5); X.lineTo(9.6, 18.4); X.lineTo(6.9, 12.2); X.lineTo(12.4, 12.2); X.closePath()
+  X.shadowColor = 'rgba(0,0,0,0.3)'; X.shadowBlur = 4; X.shadowOffsetY = 1; X.fillStyle = '#111'; X.fill(); X.shadowColor = 'transparent'; X.lineJoin = 'round'; X.lineWidth = 1.4; X.strokeStyle = '#fff'; X.stroke(); X.restore()
+}
+// "New QR order": leaves the phone as the order is placed and lands on the board
+function chip(t) {
+  const t0 = 5.3, t1 = 6.55, gone = 7.9
+  if (t < t0 || t > gone + 0.4) return
+  const f = io((t - t0) / (t1 - t0))
+  const [sx, sy] = pw(201, 760)
+  const ex = B.x + B.w / 2 - 20, ey = B.y + B.bar + 30
+  const x = sx + (ex - sx) * f, y = sy + (ey - sy) * f - Math.sin(f * Math.PI) * 190
+  const sc = 0.55 + 0.45 * out(f / 0.5) + (t > t1 ? 0.07 * Math.sin(Math.min(1, (t - t1) / 0.3) * Math.PI) : 0)
+  const a = sm((t - t0) / 0.2) * (1 - sm((t - gone) / 0.4))
+  const w = 282, h = 62
+  X.save(); X.globalAlpha = a; X.translate(x, y); X.rotate(-0.08 * Math.sin(f * Math.PI)); X.scale(sc, sc)
+  X.shadowColor = 'rgba(120,60,10,0.32)'; X.shadowBlur = 34; X.shadowOffsetY = 14
+  rrect(-w / 2, -h / 2, w, h, 18); X.fillStyle = '#fff'; X.fill(); X.shadowColor = 'transparent'
+  const g = X.createLinearGradient(0, -20, 0, 20); g.addColorStop(0, '#ff9b55'); g.addColorStop(1, '#ee6f1e')
+  rrect(-w / 2 + 12, -19, 38, 38, 11); X.fillStyle = g; X.fill()
+  X.strokeStyle = '#fff'; X.lineWidth = 2.2; X.lineCap = 'round'; const qx = -w / 2 + 31, q = 9
+  X.beginPath(); X.moveTo(qx - q, -q + 4); X.lineTo(qx - q, -q); X.lineTo(qx - q + 4, -q); X.moveTo(qx + q - 4, -q); X.lineTo(qx + q, -q); X.lineTo(qx + q, -q + 4)
+  X.moveTo(qx + q, q - 4); X.lineTo(qx + q, q); X.lineTo(qx + q - 4, q); X.moveTo(qx - q + 4, q); X.lineTo(qx - q, q); X.lineTo(qx - q, q - 4); X.moveTo(qx - 5, 0); X.lineTo(qx + 5, 0); X.stroke()
+  X.textBaseline = 'middle'; X.fillStyle = '#1c1917'; X.font = '700 19px Figtree, sans-serif'; X.fillText('New QR order', -w / 2 + 64, -9)
+  X.fillStyle = '#78716c'; X.font = '500 15px Figtree, sans-serif'; X.fillText('Table 1 · 2 items · 19,000 Ks', -w / 2 + 64, 13)
+  X.restore()
+}
+function frame(t) {
+  bg()
+  const c = cam(t)
+  X.save(); X.translate(W / 2, H / 2); X.scale(c.z, c.z); X.translate(-c.x, -c.y)
+  browser(t)
+  focus(t, DTAPS, bw, B.k)
+  cursor(t)
+  phone(t)
+  focus(t, PTAPS, pw, P.k)
+  finger(t)
+  chip(t)
+  X.restore()
+}
+window.prep = async (srcs) => {
+  await document.fonts.load('700 19px Figtree'); await document.fonts.ready
+  for (const [k, src] of Object.entries(srcs)) S[k] = await img(src)
+  S._tops = {}; const c = document.createElement('canvas').getContext('2d'); c.canvas.width = 4; c.canvas.height = 2
+  for (const k of Object.keys(srcs)) if (k.startsWith('g-')) { c.drawImage(S[k], 0, 0, S[k].width, 6, 0, 0, 4, 2); const p = c.getImageData(1, 0, 1, 1).data; S._tops[k] = `rgb(${p[0]},${p[1]},${p[2]})` }
+}
+window.still = (t) => { frame(t); return C.toDataURL('image/jpeg', 0.88) }
+window.run = async (cfg) => {
+  const fps = cfg.fps || 30, n = Math.round(T * fps)
+  const stream = C.captureStream(0), track = stream.getVideoTracks()[0]
+  const rec = new MediaRecorder(stream, { mimeType: 'video/mp4;codecs=avc1.640028', videoBitsPerSecond: cfg.bitrate || 900000 })
+  const done = new Promise((r) => (rec.onstop = r))
+  // chunks are saved in order, and the run waits for the last one (otherwise the end of the loop is lost)
+  let chain = Promise.resolve()
+  rec.ondataavailable = (e) => { if (e.data.size) chain = chain.then(async () => { const b = new Uint8Array(await e.data.arrayBuffer()); let s = ''; for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000)); await window.saveChunk(btoa(s)) }) }
+  rec.start(1000)
+  const start = performance.now()
+  for (let i = 0; i < n; i++) {
+    frame(i / fps); track.requestFrame()
+    const wait = start + ((i + 1) / fps) * 1000 - performance.now(); if (wait > 0) await new Promise((r) => setTimeout(r, wait))
+  }
+  await new Promise((r) => setTimeout(r, 300)); rec.stop(); await done; await chain
+  return { frames: n, late: Math.round(performance.now() - start - T * 1000) }
+}
+</script></body></html>

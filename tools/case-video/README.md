@@ -83,3 +83,10 @@ runs a steps file with a screenshot after each click, for writing new ones.
 Pointer: `record.mjs` logs every click (`taps` in index.json) and `"cursor": true` in a cfg draws it: an arrow that
 glides to each click with an orange ring on desk recordings, a fingertip dot on phone ones. `lead` (seconds) on a scene
 holds its first frame, for a recording that opens on a still screen.
+
+OrderFlow hero loop (`public/case/orderflow/hero.mp4`, in place of the intro film): a 16 s product film of the real
+screens on the product's cream, drawn on a canvas in `hero-of.html` from stills in `hero-of/` (frames picked from the
+out-of-g-order, out-of-a-qr and out-of-a-reports recordings). `node hero-of.mjs out.mp4 600000` records it (camera moves, focus on each tap, app-style screen changes);
+`node hero-of.mjs --stills dir 0 6.2 ...` saves frames to check. Chrome's encoder spends the whole bitrate whatever the
+picture, so the bitrate sets the size: 600 kbps is about 1.3 MB for the 16 s loop and keeps the UI text clean. Keep the devices still: only
+what changes should move.
