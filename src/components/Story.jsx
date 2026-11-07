@@ -77,10 +77,57 @@ export function Sub({ h, p, items, strong }) {
 }
 
 // Problem spaces as plain term / explanation rows.
+// Small object illustrations (no people) for list rows, drawn like the site's
+// Open Doodles: black ink outlines, flat fills from the same palette, and the
+// white sticker edge around the whole shape (each drawing is laid twice: a
+// thick white copy underneath, then the coloured one).
+const SPOTS = {
+  // a wallet, and what's in it is a question
+  wallet: <><path d="M10 14.5 30 8q3.2-1 4.2 2.2l1.4 4.3" fill="#F7D9BF" /><rect x="7" y="14" width="34" height="24" rx="5" fill="#E8A17A" /><rect x="29" y="21" width="12" height="9" rx="3" fill="#FBF3E4" /><circle cx="33.5" cy="25.5" r="1.4" fill="#1b1b1b" stroke="none" /><circle cx="38" cy="10" r="6.5" fill="#9CC1EE" /><path d="M35.8 8.6q.3-2.3 2.4-2.2 2.2.2 2 2.3-.2 1.4-1.9 1.9-.3.1-.3 1.4" fill="none" /><path d="M38 13.6v.1" /></>,
+  // an alarm clock
+  clock: <><circle cx="13.5" cy="12" r="5.5" fill="#F2C14E" /><circle cx="34.5" cy="12" r="5.5" fill="#F2C14E" /><path d="M13.5 39.5 10 44M34.5 39.5 38 44" /><circle cx="24" cy="27" r="14.5" fill="#F2C14E" /><circle cx="24" cy="27" r="10.5" fill="#FBF3E4" /><path d="M24 27v-7.5M24 27l5.5 3.2" /><path d="M24 7.5v4" /></>,
+  // a delivery box with a question on its side
+  box: <><path d="M8 18 24 11l16 7-16 7z" fill="#F2CF9C" /><path d="M8 18l16 7v17L8 35z" fill="#E6B980" /><path d="M40 18 24 25v17l16-7z" fill="#D29B5E" /><path d="M16 14.5 32 21.5" /><path d="M13.6 26.4q.4-2.4 2.7-1.9 2.2.6 1.6 2.7-.4 1.3-2 1.5-.4.1-.6 1.4" fill="none" /><path d="M15.2 33.4v.1" /></>,
+  // a card, and a charge nobody expected
+  // a little shop with a striped awning
+  store: <><path d="M9 21h30v19H9z" fill="#FBF3E4" /><path d="M7 12h34l-2 9H9z" fill="#E8A17A" /><path d="M14.5 12l-1.2 9M22 12v9M26 12v9M33.5 12l1.2 9" /><path d="M20 40V29h8v11" fill="#9CC1EE" /><path d="M7 21q4 4 8 0 4 4 8 0 4 4 8 0 4 4 8 0" fill="none" /></>,
+  // a folded map with a pin
+  map: <><path d="M6 12l11-4 14 4 11-4v28l-11 4-14-4-11 4z" fill="#BFE3C9" /><path d="M17 8v28M31 12v28" /><path d="M30 6.5q-5.5 0-5.5 5.5 0 4 5.5 10 5.5-6 5.5-10 0-5.5-5.5-5.5z" fill="#E76F51" /><circle cx="30" cy="12" r="2" fill="#FBF3E4" /></>,
+  // a target with an arrow in the bullseye
+  target: <><circle cx="22" cy="26" r="15" fill="#FBF3E4" /><circle cx="22" cy="26" r="10" fill="#E76F51" /><circle cx="22" cy="26" r="5" fill="#FBF3E4" /><path d="M22 26 38 10" /><path d="M35 7l1 4 4 1-3 3-4-1-1-4z" fill="#F2C14E" /></>,
+  // two speech bubbles
+  chat: <><path d="M6 10h24a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H15l-6 5v-5H6a3 3 0 0 1-3-3V13a3 3 0 0 1 3-3z" fill="#9CC1EE" /><path d="M36 20h6a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2v5l-6-5h-9a3 3 0 0 1-3-3v-2" fill="#F2C14E" /><path d="M10 17h16M10 22h10" /></>,
+  // a lightbulb
+  bulb: <><path d="M24 6a12 12 0 0 0-7 21.8c1.4 1 2 2.6 2 4.2v1h10v-1c0-1.6.6-3.2 2-4.2A12 12 0 0 0 24 6z" fill="#F2C14E" /><path d="M19 33h10v4a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3z" fill="#9CC1EE" /><path d="M20.5 22l3.5 3 3.5-3M24 25v8" /><path d="M5 18h3M40 18h3M9.5 6.5l2 2M38.5 6.5l-2 2" /></>,
+  // a winding route between two stops
+  route: <><path className="nf" d="M12 38c0-8 24-4 24-14S12 18 12 10" fill="none" strokeDasharray="3 4" /><circle cx="12" cy="10" r="5" fill="#9CC1EE" /><path d="M36 24q-5.5 0-5.5 5.5 0 4 5.5 10 5.5-6 5.5-10 0-5.5-5.5-5.5z" fill="#E76F51" transform="translate(0 -10)" /><circle cx="36" cy="19.5" r="2" fill="#FBF3E4" /><path d="M8 38h8" /></>,
+  // OrderFlow's products and modules
+  qr: <><rect x="13" y="4" width="22" height="40" rx="5" fill="#9CC1EE" /><rect x="16.5" y="10" width="15" height="24" rx="1.5" fill="#FBF3E4" /><path d="M19.5 13h4v4h-4zM24.5 13h4v4h-4zM19.5 23h4v4h-4z" fill="#1b1b1b" stroke="none" /><path d="M25 23.5h3M26.5 26.5h2M25 29h1.5M20 30h3" /><path d="M21 39h6" /></>,
+  pos: <><path d="M11 5h26v36l-4.3-2.6-4.4 2.6-4.3-2.6-4.4 2.6-4.3-2.6L11 41z" fill="#FBF3E4" /><path d="M16 12h16M16 18h16M16 24h10" /><path d="M16 31h7M27 31h5" stroke="#E76F51" /></>,
+  ai: <><path d="M24 7v6" /><circle cx="24" cy="6" r="2.6" fill="#F2C14E" /><rect x="9" y="13" width="30" height="24" rx="7" fill="#9CC1EE" /><path d="M9 22H5.5v8H9M39 22h3.5v8H39" /><circle cx="18" cy="24" r="3" fill="#1b1b1b" stroke="none" /><circle cx="30" cy="24" r="3" fill="#1b1b1b" stroke="none" /><path d="M19 31q5 3 10 0" /></>,
+  loyalty: <><rect x="9" y="21" width="30" height="20" rx="2" fill="#E76F51" /><rect x="7" y="14" width="34" height="8" rx="2" fill="#F2C14E" /><path d="M24 14v27" strokeWidth="5" stroke="#F2C14E" /><path d="M24 14v27" /><path d="M24 14q-9-10-11-2 0 3 11 2zM24 14q9-10 11-2 0 3-11 2z" fill="#F2C14E" /></>,
+  inventory: <><path d="M8 18 24 11l16 7-16 7z" fill="#F2CF9C" /><path d="M8 18l16 7v17L8 35z" fill="#E6B980" /><path d="M40 18 24 25v17l16-7z" fill="#D29B5E" /><path d="M16 14.5 32 21.5M12.5 31.5l5 2.3" /></>,
+  menu: <><path d="M24 11Q15 6 6 9v29q9-3 18 2 9-5 18-2V9q-9-3-18 2z" fill="#FBF3E4" /><path d="M24 11v29" /><path d="M10.5 16h9M10.5 21h9M10.5 26h6M28.5 16h9M28.5 21h9M28.5 26h6" /></>,
+  tables: <><ellipse cx="24" cy="22" rx="17" ry="6" fill="#E8A17A" /><path d="M10 25v15M38 25v15M24 28v13" /><ellipse cx="24" cy="20.5" rx="6" ry="2.2" fill="#FBF3E4" /></>,
+  slips: <><path d="M14 4h20v14H14z" fill="#FBF3E4" /><path d="M18 9h12M18 13h8" /><rect x="6" y="16" width="36" height="17" rx="4" fill="#9CC1EE" /><path d="M13 29h22v14H13z" fill="#FBF3E4" /><path d="M17 34h14M17 38h9" /><circle cx="35" cy="22" r="1.6" fill="#E76F51" stroke="none" /></>,
+  staff: <><rect x="10" y="10" width="28" height="33" rx="4" fill="#F2C14E" /><rect x="19" y="5" width="10" height="8" rx="2" fill="#9CC1EE" /><path d="M24 19l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.6-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z" fill="#FBF3E4" /><path d="M16 38h16" /></>,
+  reports: <><path d="M7 41h34" /><rect x="10" y="26" width="7" height="15" rx="1" fill="#9CC1EE" /><rect x="20.5" y="17" width="7" height="24" rx="1" fill="#F2C14E" /><rect x="31" y="9" width="7" height="32" rx="1" fill="#E76F51" /></>,
+  alerts: <><path d="M24 7a11 11 0 0 0-11 11v9l-4 6h30l-4-6v-9A11 11 0 0 0 24 7z" fill="#F2C14E" /><path d="M20 37a4 4 0 0 0 8 0" fill="#FBF3E4" /><path d="M24 4v3" /><path d="M5 14q1.5-4 5-6.5M43 14q-1.5-4-5-6.5" /></>,
+  // OrderFlow's test, feedback, improve loop
+  clipboard: <><rect x="9" y="8" width="30" height="35" rx="4" fill="#E8A17A" /><rect x="13" y="13" width="22" height="26" rx="1.5" fill="#FBF3E4" /><rect x="18" y="5" width="12" height="7" rx="2" fill="#9CC1EE" /><path d="M17 21l2.5 2.5L24 19M17 30l2.5 2.5L24 28M27 21.5h5M27 30.5h5" /></>,
+  chartup: <><rect x="6" y="8" width="36" height="32" rx="4" fill="#BFE3C9" /><path d="M11 33l8-8 6 5 11-12" /><path d="M30 17.5h6.5V24" /><path d="M11 13.5h9" /></>,
+  card: <><rect x="6" y="12" width="32" height="22" rx="4" fill="#9CC1EE" /><path d="M6 18.5h32" strokeWidth="4" /><rect x="11" y="25" width="8" height="5.5" rx="1.2" fill="#F2C14E" /><circle cx="36.5" cy="34" r="7.5" fill="#E76F51" /><path d="M36.5 30.2v4.4M36.5 37.6v.1" stroke="#fff" /></>,
+}
 export function IconList({ items }) {
+  const spots = items.some((it) => it.spot)
   return (
-    <dl className="cs-notes">
-      {items.map((it) => <div key={it.h}><dt>{it.h}</dt><dd>{it.p}</dd></div>)}
+    <dl className={'cs-notes' + (spots ? ' has-spots' : '')}>
+      {items.map((it) => (
+        <div key={it.h}>
+          <dt>{it.spot && SPOTS[it.spot] && <span className="cs-spot" aria-hidden="true"><svg viewBox="0 0 48 48"><g className="cs-spot-edge">{SPOTS[it.spot]}</g><g>{SPOTS[it.spot]}</g></svg></span>}{it.h}</dt>
+          <dd>{it.p}</dd>
+        </div>
+      ))}
     </dl>
   )
 }
@@ -129,7 +176,9 @@ export function Shot({ src, alt, crop, ratio }) {
 // Before / after: drag the handle (or use the arrow keys) to wipe between two
 // screens of the same size. The range input carries the keyboard and screen
 // reader support; the handle on top is only what you see.
-export function BeforeAfter({ before, after, alt, ratio = '1920 / 992' }) {
+// `frame` puts the slider in a device on a pale stage, with BEFORE / AFTER at
+// the stage's corners and the divider running the stage's full height.
+export function BeforeAfter({ before, after, alt, ratio = '1920 / 992', frame = false, beforeLabel = 'Before', afterLabel = 'After' }) {
   const [pos, setPos] = useState(50)
   const root = useRef(null)
   const drag = useRef(false)
@@ -137,7 +186,7 @@ export function BeforeAfter({ before, after, alt, ratio = '1920 / 992' }) {
     const r = root.current.getBoundingClientRect()
     setPos(Math.min(100, Math.max(0, ((e.clientX - r.left) / r.width) * 100)))
   }
-  return (
+  const slider = (
     <div
       className="st-ba"
       ref={root}
@@ -155,7 +204,17 @@ export function BeforeAfter({ before, after, alt, ratio = '1920 / 992' }) {
       <input className="st-ba-range" type="range" min="0" max="100" value={Math.round(pos)} aria-label="Compare before and after" onChange={(e) => setPos(+e.target.value)} />
     </div>
   )
+  if (!frame) return slider
+  return (
+    <div className="st-ba-stage" style={{ '--p': pos }}>
+      <span className="st-ba-stag is-before" aria-hidden="true">{beforeLabel}</span>
+      <span className="st-ba-stag is-after" aria-hidden="true">{afterLabel}</span>
+      <div className="st-ba-device">{slider}</div>
+    </div>
+  )
 }
+// The framed comparison (data kind `compare`).
+export const Compare2 = (props) => <BeforeAfter frame {...props} />
 
 // Problem → what we changed, one row per iteration.
 export function Iterations({ items }) {
@@ -395,15 +454,18 @@ export function FlowSwitch({ items, device, label }) {
     return () => io.disconnect()
   }, [near])
   const wants = (i) => near && (i === cur || i === (cur + 1) % n || seen.has(i))
-  return (
-    <div className="st-flows" ref={root} role="region" aria-roledescription="carousel" aria-label={label ? label + ' flows' : 'Flows'}>
+  // Phone flows with a description: arrows, title and description on the
+  // left, the phone on the right.
+  const side = device !== 'browser' && items.some((x) => x.desc)
+  const head = (
+    <>
       <div className="st-flows-head">
         <button type="button" className="st-flows-arrow" onClick={() => go(-1)} aria-label={'Previous flow: ' + prev.title}>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
         </button>
         <div className="st-flows-text" key={cur} data-dir={dir > 0 ? 'next' : 'prev'} aria-live="polite">
           <h2 className="sv-h2 st-flows-title">{it.title}</h2>
-          {it.p && <p className="st-flows-p">{it.p}</p>}
+          {it.p && !side && <p className="st-flows-p">{it.p}</p>}
         </div>
         <button type="button" className="st-flows-arrow" onClick={() => go(1)} aria-label={'Next flow: ' + next.title}>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
@@ -414,13 +476,28 @@ export function FlowSwitch({ items, device, label }) {
           <button key={x.title} type="button" className={i === cur ? 'is-on' : undefined} onClick={() => pick(i)} aria-label={x.title} aria-current={i === cur ? 'true' : undefined} />
         ))}
       </div>
-      <div className="st-panels" data-dir={dir > 0 ? 'next' : 'prev'}>
-        {items.map((x, i) => (
-          <div key={x.title} className={'st-panel' + (i === cur ? ' is-active' : '')} aria-hidden={i !== cur} inert={i !== cur}>
-            <Demo device={device} {...x} active={i === cur} onEnd={() => go(1)} load={wants(i)} />
+    </>
+  )
+  const panels = (
+    <div className="st-panels" data-dir={dir > 0 ? 'next' : 'prev'}>
+      {items.map((x, i) => (
+        <div key={x.title} className={'st-panel' + (i === cur ? ' is-active' : '')} aria-hidden={i !== cur} inert={i !== cur}>
+          <Demo device={device} {...x} desc={side ? undefined : x.desc} bare={side} active={i === cur} onEnd={() => go(1)} load={wants(i)} />
+        </div>
+      ))}
+    </div>
+  )
+  return (
+    <div className={'st-flows' + (side ? ' is-side' : '')} ref={root} role="region" aria-roledescription="carousel" aria-label={label ? label + ' flows' : 'Flows'}>
+      {side ? (
+        <>
+          <div className="st-flows-side">
+            {head}
+            <p className="st-demo-desc st-flows-desc" key={cur} data-dir={dir > 0 ? 'next' : 'prev'}>{it.desc}</p>
           </div>
-        ))}
-      </div>
+          {panels}
+        </>
+      ) : <>{head}{panels}</>}
     </div>
   )
 }
@@ -585,15 +662,19 @@ const stepNo = (i) => String(i + 1).padStart(2, '0')
 // (FlowSwitch moves on to the next flow) instead of looping.
 // `load` false holds back the video and its poster (FlowSwitch only loads the
 // flow on screen and the next one, once the section is close).
-export function Demo({ src, poster, steps = [], alt, device = 'phone', active = true, onEnd, load = true }) {
+export function Demo({ src, poster, steps = [], desc, bare, alt, device = 'phone', active = true, onEnd, load = true }) {
   const ref = useRef(null)
   const [at, setAt] = useState(0)
   const [playing, setPlaying] = useState(false)
   const [userPaused, setUserPaused] = useState(false)
+  // In a flow, move on as the recording's held last frame begins (compose adds
+  // a ~2.5 s tail), keeping only a beat of the final screen.
+  const ended = useRef(false)
   useEffect(() => {
     const v = ref.current
     if (!v || prefersReduced()) return
     if (!active || !load) { v.pause(); return }
+    ended.current = false
     if (onEnd) v.currentTime = 0 // timeupdate then moves the step list back to the first step
     const io = new IntersectionObserver(([e]) => {
       if (e.isIntersecting && !userPaused) v.play().catch(() => {})
@@ -604,7 +685,8 @@ export function Demo({ src, poster, steps = [], alt, device = 'phone', active = 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userPaused, active, load])
   const onTime = () => {
-    const t = ref.current.currentTime
+    const v = ref.current, t = v.currentTime
+    if (onEnd && !ended.current && v.duration && t >= v.duration - 1.6) { ended.current = true; onEnd() }
     let k = 0
     steps.forEach((s, i) => { if (s.t <= t + 0.05) k = i })
     setAt(k)
@@ -636,7 +718,10 @@ export function Demo({ src, poster, steps = [], alt, device = 'phone', active = 
   }, [])
   return (
     <div className={'st-demo is-' + device}>
-      <ol className="st-demo-steps">
+      {/* web recordings show the screen alone; a phone shows its description
+          (`desc`) beside it, or else its step list */}
+      {!bare && device !== 'browser' && desc && <p className="st-demo-desc">{desc}</p>}
+      {!bare && device !== 'browser' && !desc && <ol className="st-demo-steps">
         {steps.map((s, i) => (
           <li key={s.t}>
             <button type="button" className={'st-demo-step' + (i === at ? ' is-on' : i < at ? ' is-done' : '')} onClick={() => seek(i)} aria-current={i === at ? 'step' : undefined}>
@@ -645,7 +730,7 @@ export function Demo({ src, poster, steps = [], alt, device = 'phone', active = 
             </button>
           </li>
         ))}
-      </ol>
+      </ol>}
       <div className={device === 'browser' ? 'st-browser' : 'st-device'}>
         {device === 'browser' && <div className="st-browser-bar" aria-hidden="true"><i /><i /><i /></div>}
         <div className={device === 'browser' ? 'st-browser-page' : 'st-device-screen'}>
@@ -659,18 +744,21 @@ export function Demo({ src, poster, steps = [], alt, device = 'phone', active = 
             preload={load && onEnd ? 'auto' : 'none'}
             aria-label={alt}
             onTimeUpdate={onTime}
-            onEnded={onEnd}
+            onEnded={() => { if (onEnd && !ended.current) { ended.current = true; onEnd() } }}
             onPlay={() => setPlaying(true)}
             onPause={() => setPlaying(false)}
           />
           {device !== 'browser' && <span className="st-device-island" aria-hidden="true" />}
         </div>
-        <button type="button" className={'st-reel-btn st-demo-btn' + (playing ? ' is-playing' : '')} onClick={toggle} aria-label={playing ? 'Pause video' : 'Play video'}>
-          {playing ? ICONS.pause : ICONS.play}
-        </button>
-        <button type="button" className="st-reel-btn st-demo-btn st-demo-full is-aux" onClick={toggleFull} aria-label="Full screen">
-          {ICONS.expand}
-        </button>
+        {/* flows play through on their own, with no buttons over the screen */}
+        {!onEnd && <>
+          <button type="button" className={'st-reel-btn st-demo-btn' + (playing ? ' is-playing' : '')} onClick={toggle} aria-label={playing ? 'Pause video' : 'Play video'}>
+            {playing ? ICONS.pause : ICONS.play}
+          </button>
+          <button type="button" className="st-reel-btn st-demo-btn st-demo-full is-aux" onClick={toggleFull} aria-label="Full screen">
+            {ICONS.expand}
+          </button>
+        </>}
       </div>
     </div>
   )
@@ -987,4 +1075,44 @@ const ICONS = {
   shrink: svg(<path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" />),
   play: <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 001.5.86l10.5-6.5a1 1 0 000-1.72L9.5 4.64A1 1 0 008 5.5z" /></svg>,
   pause: <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.2" /><rect x="13.5" y="5" width="4" height="14" rx="1.2" /></svg>,
+}
+
+// A process as numbered glass cards (e.g. how the research ran), in order.
+// Each item is { t, p }.
+export function Steps({ items }) {
+  return (
+    <ol className="cs-steps">
+      {items.map((it, i) => (
+        <li key={it.t} className="cs-step">
+          {it.spot && SPOTS[it.spot]
+            ? <span className="cs-spot cs-step-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><g className="cs-spot-edge">{SPOTS[it.spot]}</g><g>{SPOTS[it.spot]}</g></svg></span>
+            : <span className="cs-step-n">{String(i + 1).padStart(2, '0')}</span>}
+          <b>{it.t}</b>
+          <p>{it.p}</p>
+        </li>
+      ))}
+    </ol>
+  )
+}
+
+// Information architecture as glass columns: each area with its route and the
+// pages or features under it, hung off a thin line. Each item is { t, route, items }.
+export function IaTree({ items }) {
+  return (
+    <div className="cs-ia">
+      {items.map((it) => (
+        <section key={it.t} className="cs-ia-col">
+          <header><b>{it.t}</b>{it.route && <code>{it.route}</code>}</header>
+          <ul>{it.items.map((x) => <li key={x}>{x}</li>)}</ul>
+        </section>
+      ))}
+    </div>
+  )
+}
+
+// One doodle icon from SPOTS, with its white sticker edge (see .cs-doodle).
+export function Doodle({ name, className = '' }) {
+  const d = SPOTS[name]
+  if (!d) return null
+  return <svg viewBox="0 0 48 48" className={'cs-doodle ' + className} aria-hidden="true"><g className="cs-spot-edge">{d}</g><g>{d}</g></svg>
 }

@@ -64,7 +64,8 @@ export const CASES = [
     featured: true,
     tags: ['Product Design'],
     desc: 'QR table ordering for cafés in Myanmar: a guest app on the phone, and an admin that runs every order.',
-    art: { img: '/case/orderflow/cover.jpg?v=24', video: '/case/orderflow/hero.mp4?v=3', poster: '/case/orderflow/hero.jpg?v=3', thumb: '/case/orderflow/thumb-pos.jpg?v=10', card: '/case/orderflow/thumb.jpg', text: 'OrderFlow', color: '#1f3a5f', bg: 'linear-gradient(160deg,#cfe4f7,#dfe7fb 55%,#eef1fb)' },
+    short: 'QR ordering and a café admin.', // one line for More Work
+    art: { img: '/case/orderflow/cover.jpg?v=24', video: '/case/orderflow/hero.mp4?v=5', poster: '/case/orderflow/hero.jpg?v=3', thumb: '/case/orderflow/thumb-pos.jpg?v=10', card: '/case/orderflow/thumb.jpg', text: 'OrderFlow', color: '#1f3a5f', bg: 'linear-gradient(160deg,#cfe4f7,#dfe7fb 55%,#eef1fb)' },
     // One case for both products: the guest app (orderflow-client) and the admin
     // panel (orderflow-admin-panel). Told as a product manager's case: Impact,
     // Project Overview, The Opportunity, Problem Discovery, Product Vision &
@@ -87,7 +88,7 @@ export const CASES = [
       duration: 'Nov 2025 to Present',
       team: ['2 engineers', '1 brand designer'],
       gallery: [],
-      tools: 'Claude, Figma, Trello',
+      tools: 'Claude Code, Figma, Trello',
       sections: [
         {
           id: 'impact',
@@ -240,10 +241,10 @@ export const CASES = [
           notitle: true,
           blocks: [
             { kind: 'flows', label: 'Guest app', items: [
-              { title: 'Normal Ordering Flow', p: 'Scan the table QR and order. No app, no sign-in.', src: '/case/orderflow/feat/g-order.mp4?v=3', poster: '/case/orderflow/feat/g-order.jpg?v=3', alt: 'Guest app: scanning the table QR, switching to Burmese, adding two items and placing the order', steps: [{ t: 0, text: 'Scan the table QR, no app' }, { t: 1.35, text: 'Burmese or English' }, { t: 9.45, text: 'Browse by category' }, { t: 13.81, text: 'Tap an item' }, { t: 18.55, text: 'Basket in thumb reach' }, { t: 23.66, text: 'Review and place' }, { t: 29.15, text: 'Track until ready' }] },
-              { title: 'Online Order Flow', p: 'Order ahead from the shop’s link, then pick it up.', src: '/case/orderflow/feat/g-pickup.mp4?v=3', poster: '/case/orderflow/feat/g-pickup.jpg?v=3', alt: 'Guest app: an online pickup order from the shop link, with name and phone, to the order number', steps: [{ t: 0, text: 'Order ahead from the shop’s link' }, { t: 1.52, text: 'Add what you want' }, { t: 9.83, text: 'Pickup or delivery, with a ready time' }, { t: 12.68, text: 'Name and phone, saved for next time' }, { t: 18.17, text: 'Place it, with a moment to cancel' }, { t: 23.7, text: 'An order number for the counter' }] },
-              { title: 'Loyalty Flow', p: 'Points, stamps and member perks in one tab.', src: '/case/orderflow/feat/g-loyalty.mp4?v=3', poster: '/case/orderflow/feat/g-loyalty.jpg?v=3', alt: 'Guest app: the Rewards tab with points, the stamp card and the membership card', steps: [{ t: 0, text: 'Every perk in one tab' }, { t: 2.97, text: 'Points turn into free treats' }, { t: 8.44, text: 'A stamp with every order' }, { t: 13.77, text: 'A member level and its perks' }] },
-              { title: 'Account Login Flow', p: 'Sign in with email or Google to earn rewards.', src: '/case/orderflow/feat/g-account.mp4?v=3', poster: '/case/orderflow/feat/g-account.jpg?v=3', alt: 'Guest app: signing in with email or Google, and creating an account', steps: [{ t: 0, text: 'Order without an account' }, { t: 2.51, text: 'Sign in to earn points' }, { t: 4.5, text: 'Email and password' }, { t: 7.69, text: 'Or one tap with Google' }, { t: 10.06, text: 'New here? Create an account' }] },
+              { title: 'Normal Ordering Flow', p: 'Scan the table QR and order. No app, no sign-in.', desc: 'Guests scan the QR on their table and the menu opens in the browser, with no app and no sign-in. They switch to Burmese or English, browse by category, and tap an item to add it. The basket stays in thumb reach, so they review and place the order in a few taps, then follow it until it’s ready.', src: '/case/orderflow/feat/g-order.mp4?v=3', poster: '/case/orderflow/feat/g-order.jpg?v=3', alt: 'Guest app: scanning the table QR, switching to Burmese, adding two items and placing the order', steps: [{ t: 0, text: 'Scan the table QR, no app' }, { t: 1.35, text: 'Burmese or English' }, { t: 9.45, text: 'Browse by category' }, { t: 13.81, text: 'Tap an item' }, { t: 18.55, text: 'Basket in thumb reach' }, { t: 23.66, text: 'Review and place' }, { t: 29.15, text: 'Track until ready' }] },
+              { title: 'Online Order Flow', p: 'Order ahead from the shop’s link, then pick it up.', desc: 'Guests order ahead from the shop’s own link. They add what they want, choose pickup or delivery with a ready time, and leave a name and phone number that’s saved for next time. After placing it there’s a moment to cancel, then an order number to show at the counter.', src: '/case/orderflow/feat/g-pickup.mp4?v=3', poster: '/case/orderflow/feat/g-pickup.jpg?v=3', alt: 'Guest app: an online pickup order from the shop link, with name and phone, to the order number', steps: [{ t: 0, text: 'Order ahead from the shop’s link' }, { t: 1.52, text: 'Add what you want' }, { t: 9.83, text: 'Pickup or delivery, with a ready time' }, { t: 12.68, text: 'Name and phone, saved for next time' }, { t: 18.17, text: 'Place it, with a moment to cancel' }, { t: 23.7, text: 'An order number for the counter' }] },
+              { title: 'Loyalty Flow', p: 'Points, stamps and member perks in one tab.', desc: 'Every perk lives in one Rewards tab. Points turn into free treats, each order adds a stamp to the card, and a member level shows the perks that come with it, so guests can see why it’s worth coming back.', src: '/case/orderflow/feat/g-loyalty.mp4?v=3', poster: '/case/orderflow/feat/g-loyalty.jpg?v=3', alt: 'Guest app: the Rewards tab with points, the stamp card and the membership card', steps: [{ t: 0, text: 'Every perk in one tab' }, { t: 2.97, text: 'Points turn into free treats' }, { t: 8.44, text: 'A stamp with every order' }, { t: 13.77, text: 'A member level and its perks' }] },
+              { title: 'Account Login Flow', p: 'Sign in with email or Google to earn rewards.', desc: 'Guests can order without an account. Signing in is only there to earn points: with email and password, or in one tap with Google, and anyone new can create an account in the same place.', src: '/case/orderflow/feat/g-account.mp4?v=3', poster: '/case/orderflow/feat/g-account.jpg?v=3', alt: 'Guest app: signing in with email or Google, and creating an account', steps: [{ t: 0, text: 'Order without an account' }, { t: 2.51, text: 'Sign in to earn points' }, { t: 4.5, text: 'Email and password' }, { t: 7.69, text: 'Or one tap with Google' }, { t: 10.06, text: 'New here? Create an account' }] },
             ] },
           ],
         },
@@ -294,7 +295,8 @@ export const CASES = [
     featured: true,
     tags: ['Product Design'],
     desc: 'Lunch ordering for employees on a company meal program, on the web and on a phone.',
-    art: { img: '/case/superfine-employee/cover.jpg?v=5', thumb: '/case/superfine-employee/thumb.jpg?v=3', card: '/case/superfine-employee/thumb.jpg?v=3', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
+    short: 'Lunch ordering for office teams.', // one line for More Work
+    art: { video: '/case/superfine-employee/hero.mp4?v=2', poster: '/case/superfine-employee/hero.jpg?v=2', img: '/case/superfine-employee/cover.jpg?v=5', thumb: '/case/superfine-employee/thumb.jpg?v=3', card: '/case/superfine-employee/thumb.jpg?v=3', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
     // Told as a product designer's case: Impact, Project Overview, Product Context,
     // The Problem, Research & Insights, How I ship (with AI), Final UI Design,
     // Usability, Takeaway. Facts come from the
@@ -304,14 +306,15 @@ export const CASES = [
     study: {
       navTop: false,
       overviewNav: 'Project Overview',
+      overviewPart: 'Case Study',
       layout: 'story',
       heading: 'Designing lunch ordering that says what it costs, before you ask',
       // TODO(Sai): confirm your part and the dates.
       summary: 'Superfine Kitchen cooks in San Francisco and delivers lunch to Bay Area offices. Employees on a company meal program order through this app. At Heizen I designed it web first, made it work on a phone, and tested it against WCAG 2.2 AA.',
       accent: '#44403c',
       tags: ['Web app', 'Responsive', 'Accessibility'],
-      role: 'Product Designer, Heizen',
-      scope: ['Web app', 'Mobile responsive', 'Checkout & payments', 'Accessibility audit'],
+      role: 'Product Designer',
+      scope: ['Responsive Web Platform'],
       duration: 'Jun to Sep 2026',
       team: [],
       gallery: [],
@@ -323,20 +326,12 @@ export const CASES = [
           notitle: true,
           blocks: [
             { kind: 'impact', items: [
-              { num: '16', label: 'Accessibility problems found and fixed' },
-              { num: '0', label: 'Automated violations in 36 runs' },
-              { num: '5', label: 'Interview findings built in' },
-              { num: '17', label: 'Routes checked, desktop and phone' },
+              // live results, 6 weeks after the first customer was onboarded (8 Nov 2026)
+              { num: '$173K', label: 'In orders in the first 6 weeks' },
+              { num: '1,738', label: 'Orders placed' },
+              { num: '49', label: 'Companies ordering, 334 employees' },
+              { num: '0', label: 'Downtime since launch' },
             ] },
-          ],
-        },
-        {
-          id: 'hello',
-          nav: 'Intro',
-          bare: true,
-          toc: false,
-          blocks: [
-            { kind: 'reel', src: '/case/superfine-employee/intro.mp4?v=3', audio: '/case/superfine-employee/intro.m4a', poster: '/case/superfine-employee/intro.jpg', alt: 'Intro: employees could not see their allowance, the cut-off or their lunch. Then the app: sign in, allowance in view, choices first, a cart that splits the cost, and the same flow on a phone.' },
           ],
         },
         {
@@ -353,31 +348,59 @@ export const CASES = [
           ],
         },
         {
-          id: 'problem',
-          nav: 'The Problem',
-          illo: 'juggle',
-          blocks: [
-            { kind: 'iconlist', items: [
-              { h: 'Hidden allowance', p: 'People found out what was covered at checkout, if at all.' },
-              { h: 'Missed cut-offs', p: 'Each order type closes at a different time before delivery.' },
-              { h: 'No status', p: 'Nothing said whether lunch was actually coming.' },
-              { h: 'Surprise charges', p: 'Unclear when the card is charged, and by how much.' },
-            ] },
-          ],
-        },
-        {
           id: 'research',
           nav: 'Research & Insights',
           illo: 'research',
           blocks: [
-            { kind: 'lead', p: 'We talked to employees about how they order lunch today. Five findings shaped the app.' },
-            { kind: 'notes', items: [
-              { t: 'One front door', p: 'Sign in with the company email and land on the right menu, with the right allowance.' },
-              { t: 'Phone first', p: 'Some employees only have a phone, so the app has to work fully on one.' },
-              { t: 'Is food coming?', p: 'A clear status: Draft, Placed, Confirmed, Delivered.' },
-              { t: 'No false promises', p: 'Say plainly when an order locks. No “confirmed” after the cut-off.' },
-              { t: 'Easy feedback', p: 'One tap on a smiley, tied to the order. Not a survey.' },
+            { kind: 'lead', p: 'I started with the business, then the people ordering. Three steps took us from Superfine’s side of the meal program to what the app had to do.' },
+            { kind: 'steps', items: [
+              { spot: 'store', t: 'Understand Business', p: 'With the Superfine team: how company meal programs, allowances, cut-offs and delivery days work.' },
+              { spot: 'map', t: 'Map the problems', p: 'What goes wrong for Superfine, and what goes wrong for the employees who order.' },
+              { spot: 'target', t: 'Pick and Try to solve', p: 'Rank the problems by how often they happen and how much they hurt, and solve the top ones first.' },
             ] },
+          ],
+        },
+        {
+          id: 'problem',
+          nav: 'The Problem',
+          blocks: [
+            { kind: 'lead', p: 'Employees ordered on a third-party catering platform, a shop built for one-off party orders. It knew nothing about a company lunch: no allowance, no cut-offs and no order status.' },
+            { kind: 'compare2', ratio: '1600 / 1000', beforeLabel: 'Before · Third-party platform', afterLabel: 'After · Superfine Web-app', before: '/case/superfine-employee/platform-before.jpg', after: '/case/superfine-employee/platform-after.jpg', alt: 'the third-party catering platform employees used before, and the new Superfine menu with the allowance in the header' },
+            { kind: 'iconlist', items: [
+              { spot: 'wallet', h: 'Hidden allowance', p: 'People found out what was covered at checkout, if at all.' },
+              { spot: 'clock', h: 'Missed cut-offs', p: 'Each order type closes at a different time before delivery.' },
+              { spot: 'box', h: 'No status', p: 'Nothing said whether lunch was actually coming.' },
+              { spot: 'card', h: 'Surprise charges', p: 'Unclear when the card is charged, and by how much.' },
+            ] },
+          ],
+        },
+        {
+          id: 'journey',
+          nav: 'User Journey',
+          title: 'Ordering lunch, *before the app*',
+          blocks: [
+            { kind: 'lead', p: 'One lunch order on the third-party platform, for the two kinds of employee we talked to. The lowest points are what the app had to fix.' },
+            // Built from the interview findings above. TODO(Sai): check the moods against what employees told you.
+            { kind: 'journeymap', rows: ['emotion', 'pain'],
+              stages: ['Find the menu', 'Pick a meal', 'Check the allowance', 'Beat the cut-off', 'Get charged', 'Wait for lunch'],
+              users: [
+                { name: 'Office employee', illo: 'employee', cells: [
+                  { emotion: -1, mood: 'Lost', pain: 'Which link is our company’s?' },
+                  { emotion: 0, mood: 'Fine', pain: 'A menu built for party trays' },
+                  { emotion: -2, mood: 'Unsure', pain: 'What does the company cover?' },
+                  { emotion: -1, mood: 'Rushed', pain: 'When does today close?' },
+                  { emotion: -2, mood: 'Surprised', pain: 'Charged more, and when?' },
+                  { emotion: -1, mood: 'Worried', pain: 'Is lunch actually coming?' },
+                ] },
+                { name: 'Floor employee', illo: 'staff', cells: [
+                  { emotion: -2, mood: 'Stuck', pain: 'Hard to use on a phone' },
+                  { emotion: -1, mood: 'Squinting', pain: 'Small text, small buttons' },
+                  { emotion: -1, mood: 'Unsure', pain: 'Covered or not?' },
+                  { emotion: -2, mood: 'Missed it', pain: 'Shift ran past the cut-off' },
+                  { emotion: -1, mood: 'Unsure', pain: 'No idea what was charged' },
+                  { emotion: -1, mood: 'Worried', pain: 'No status on the floor' },
+                ] },
+              ] },
           ],
         },
         {
@@ -385,42 +408,43 @@ export const CASES = [
           nav: 'How I ship (with AI)',
           illo: 'idea',
           blocks: [
-            { kind: 'lead', p: 'I built the app as a working prototype with Claude Code, so reviews and the accessibility audit ran on a real app, not on frames.' },
-            { kind: 'notes', items: [
-              { t: 'Real, not drawn', p: 'Real menu data, real allowance maths, the Superfine design system.' },
-              { t: 'Testable', p: 'A working app could be driven by keyboard, screen reader and an automated checker.' },
-              { t: 'These demos', p: 'Recorded from the prototype by a script, not mocked up.' },
+            { kind: 'lead', p: 'Instead of static frames, I shipped a clickable prototype built with AI (Claude Code). It was fast enough to run 10 rounds of feedback in 6 weeks, and still leave time to test it with customers.' },
+            { kind: 'impact', items: [
+              { num: '10', label: 'Feedback rounds in 6 weeks' },
+              { num: 'GitHub', label: 'Developers built from the prototype’s code as their UI reference' },
+              { num: 'Tested', label: 'With customers before launch, in the time saved' },
             ] },
           ],
         },
         {
           id: 'final',
-          nav: 'Final UI Design',
-          title: 'Show the money *before the menu*',
+          nav: 'Web',
+          group: 'Final UI Design',
+          notitle: true,
           blocks: [
-            { kind: 'lead', p: 'The allowance sits in the header, the cart splits who pays what, and checkout says when the card is charged.' },
-            { kind: 'choices', device: 'browser', items: [
-              { h: 'Allowance in view', p: '“$15.00 left today” stays in the header while you browse.', src: '/case/superfine-employee/money-menu.jpg', alt: 'Employee web app menu with “$15.00 left today” in the header' },
-              { h: 'The cart splits it', p: 'Company pays, you pay, line by line.', src: '/case/superfine-employee/money-cart.jpg', alt: 'Cart drawer: Paneer Tikka Bowl, company pays $15.00, you pay $1.63' },
-              { h: 'No surprise charge', p: 'The cut-off, and “charged 24 hours before delivery, never before”.', src: '/case/superfine-employee/money-checkout.jpg', alt: 'Checkout with the cut-off check, delivery details and payment charged 24 hours before delivery' },
+            // web first; recorded from the app (tools/case-video/sf-f-*.json, cfg-sf-f-*.json)
+            { kind: 'flows', device: 'browser', label: 'Employee web app', items: [
+              { title: 'Ordering Flow', p: 'Lunch with the allowance in view, from the menu to confirmed.', src: '/case/superfine-employee/flows/order.mp4', poster: '/case/superfine-employee/flows/order.jpg', alt: 'Employee web app: the allowance in the header, a meal with options, the over-budget header, the cart split, company invoice and the confirmation', steps: [{ t: 0, text: 'The allowance, in the header' }, { t: 2.27, text: 'Pick a meal and its options' }, { t: 6.7, text: 'See what you’ll pay' }, { t: 10.58, text: 'The cart splits who pays' }, { t: 12.33, text: 'Pay by company invoice' }, { t: 17.18, text: 'Placed and confirmed' }] },
+              { title: 'Previous Orders', p: 'Every order’s status, past orders, re-order and rating.', src: '/case/superfine-employee/flows/orders.mp4', poster: '/case/superfine-employee/flows/orders.jpg', alt: 'Employee web app: My Orders with live status, the Past tab, re-order and rating a meal', steps: [{ t: 0, text: 'Every order and its status' }, { t: 2.7, text: 'Past orders, in one tab' }, { t: 4.23, text: 'Re-order in one tap' }, { t: 6.67, text: 'Rate a meal' }] },
+              { title: 'Edit Order', p: 'Change a placed order before the cut-off, and save.', src: '/case/superfine-employee/flows/edit.mp4', poster: '/case/superfine-employee/flows/edit.jpg', alt: 'Employee web app: editing a placed order from My Orders, swapping the meal, reviewing the changes and saving them', steps: [{ t: 0, text: 'Edit before the cut-off' }, { t: 1.64, text: 'Swap the meal' }, { t: 8.98, text: 'Review the changes' }, { t: 13.62, text: 'Save, and the order updates' }] },
+              { title: 'Auto-Ordering', p: 'Pick meals once, choose the days, and lunch orders itself.', src: '/case/superfine-employee/flows/auto.mp4', poster: '/case/superfine-employee/flows/auto.jpg', alt: 'Employee web app: setting up Auto-Order, picking a meal with its options, choosing days and turning it on', steps: [{ t: 0, text: 'Set it and forget it' }, { t: 1.94, text: 'Pick the meals to repeat' }, { t: 7.89, text: 'Choose the days' }, { t: 9.51, text: 'Turn it on' }] },
+              { title: 'Allergens & Dietary', p: 'Filter out allergens and keep only what fits your diet.', src: '/case/superfine-employee/flows/diet.mp4', poster: '/case/superfine-employee/flows/diet.jpg', alt: 'Employee web app: filtering out tree nuts and dairy, then keeping vegan meals only', steps: [{ t: 0, text: 'Filter out allergens' }, { t: 5.22, text: 'Only what fits your diet' }, { t: 9.06, text: 'The menu updates' }] },
             ] },
-            { kind: 'demo', device: 'browser', src: '/case/superfine-employee/web.mp4?v=2', poster: '/case/superfine-employee/web.jpg', alt: 'Screen recording of the employee web app, one lunch order from sign-in to tracking', steps: [
-              { t: 0, text: 'Sign in with work email' },
-              { t: 5.17, text: 'Allowance in the header' },
-              { t: 6.91, text: 'Required choices first' },
-              { t: 11.33, text: 'Header shows $1.50 over' },
-              { t: 14.71, text: 'Cut-off at checkout' },
-              { t: 19.2, text: 'One confirmation email' },
-              { t: 20.71, text: 'Track every order' },
-            ] },
-            { kind: 'demo', src: '/case/superfine-employee/mobile.mp4', poster: '/case/superfine-employee/mobile.jpg', alt: 'Screen recording of the employee app on a phone, the same lunch order', steps: [
-              { t: 0, text: 'Same email sign in' },
-              { t: 5.26, text: 'Allowance in a pill' },
-              { t: 7.09, text: 'Choices in a bottom sheet' },
-              { t: 11.42, text: 'Cart splits who pays' },
-              { t: 14.68, text: 'Total above the thumb' },
-              { t: 20.67, text: 'One confirmation email' },
-              { t: 22.3, text: 'Draft to Confirmed' },
+          ],
+        },
+        {
+          id: 'final-mobile',
+          nav: 'Mobile',
+          group: 'Final UI Design',
+          notitle: true,
+          blocks: [
+            // the same flows on a phone (tools/case-video/sf-m-*.json, cfg-sf-m-*.json)
+            { kind: 'flows', label: 'Employee mobile web', items: [
+              { title: 'Ordering Flow', desc: 'The allowance sits in the header, so you always know what’s left. Pick a meal and its options, and the header shows what you’ll pay. The cart splits what the company covers from what’s yours, then you pay by company invoice and the order is confirmed.', src: '/case/superfine-employee/flows/m-order.mp4', poster: '/case/superfine-employee/flows/m-order.jpg', alt: 'Employee app on a phone: the allowance in the header, a meal with options, the cart split, company invoice and the confirmation' },
+              { title: 'Previous Orders', desc: 'My Orders shows every order and where it is. Past orders sit in their own tab, any of them can be re-ordered in one tap, and a meal can be rated once it’s eaten.', src: '/case/superfine-employee/flows/m-orders.mp4', poster: '/case/superfine-employee/flows/m-orders.jpg', alt: 'Employee app on a phone: My Orders with status, the Past tab, re-order and rating a meal' },
+              { title: 'Edit Order', desc: 'Until the cut-off, a placed order can still change. Open it from My Orders, swap the meal on the menu, review the changes at checkout and save, and the same order updates.', src: '/case/superfine-employee/flows/m-edit.mp4', poster: '/case/superfine-employee/flows/m-edit.jpg', alt: 'Employee app on a phone: editing a placed order, swapping the meal, reviewing and saving the changes' },
+              { title: 'Auto-Ordering', desc: 'Pick the meals to repeat once, choose the days, and turn it on. From then on lunch orders itself, so nobody has to remember the cut-off every week.', src: '/case/superfine-employee/flows/m-auto.mp4', poster: '/case/superfine-employee/flows/m-auto.jpg', alt: 'Employee app on a phone: setting up Auto-Order, picking a meal, choosing days and turning it on' },
+              { title: 'Allergens & Dietary', desc: 'Filter out the allergens to avoid, then keep only what fits your diet. The menu updates as you go, so every meal left is one you can eat.', src: '/case/superfine-employee/flows/m-diet.mp4', poster: '/case/superfine-employee/flows/m-diet.jpg', alt: 'Employee app on a phone: filtering out tree nuts and dairy, then keeping vegan meals only' },
             ] },
           ],
         },
@@ -429,18 +453,11 @@ export const CASES = [
           nav: 'Usability',
           title: 'Can everyone use it?',
           blocks: [
-            { kind: 'lead', p: 'We tested against WCAG 2.2 AA: first by hand with a keyboard and a screen reader, then with an automated checker on every screen.' },
-            { kind: 'table', cols: ['What we found', 'What it meant for a person'], rows: [
-              ['The delivery-area box held the keyboard', 'Anyone outside the area was stuck, with no way out but closing the tab.'],
-              ['Password errors were only on screen', 'A blind person couldn’t learn why sign-up failed.'],
-              ['Meal photos were the only link label', 'When a photo failed, a screen reader said “link, link, link”.'],
-              ['Faint outlines on 99 buttons', 'With poor eyesight, the buttons had no visible shape.'],
-            ] },
-            { kind: 'notes', items: [
-              { t: 'By hand', p: '15 problems found by driving the app with a keyboard and a screen reader. All fixed.' },
-              { t: 'By machine', p: 'axe-core on all 17 routes and 11 states, at desktop and phone width. Zero violations in 36 runs.' },
-              { t: 'Checking the checker', p: 'Five broken elements were planted first. All five were caught.' },
-              { t: 'One more', p: 'The checker found a 16th problem, caused by one of our own fixes. Fixed too.' },
+            { kind: 'lead', p: 'Tested against WCAG 2.2 AA, by hand with a keyboard and screen reader, then with an automated checker.' },
+            { kind: 'impact', items: [
+              { num: '16', label: 'Problems found and fixed' },
+              { num: '0', label: 'Violations in 36 automated runs' },
+              { num: '17', label: 'Screens checked, desktop and phone' },
             ] },
           ],
         },
@@ -468,6 +485,7 @@ export const CASES = [
     logo: '/logos/superfine-kitchen.png',
     tags: ['Product Design'],
     desc: 'The driver app for a Bay Area office meal service, from the kitchen to the door.',
+    short: 'A delivery driver app.', // one line for More Work
     art: { img: '/case/superfine/cover.jpg?v=2', thumb: '/case/superfine/thumb.jpg', card: '/case/superfine/thumb.jpg', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
     // Story layout in six phases (Understand → Improve, the same track as the
     // About page). Facts come from the driver prototype (sfk-driver-app: its
@@ -480,7 +498,7 @@ export const CASES = [
       summary: 'Superfine Kitchen cooks in San Francisco and delivers lunch to offices around the Bay Area with its own drivers. At Heizen I designed and prototyped their driver app: the shift from the kitchen to the door, and the hand-offs with dispatch.',
       accent: '#44403c',
       tags: ['Mobile', 'Logistics', 'AI prototyping'],
-      role: 'Product Designer, Heizen',
+      role: 'Product Designer',
       scope: ['Driver app', 'Kitchen loading', 'Proof of delivery', 'Dispatch hand-offs'],
       // TODO(Sai): confirm the dates (driver sprints ran Oct 13–30 2026, updates into Nov).
       duration: 'Oct to Nov 2026',
@@ -764,6 +782,7 @@ export const CASES = [
     domain: 'Fintech',
     tags: ['Product Design', 'Payments'],
     desc: 'A merchant wallet for small businesses in Myanmar, built to be fast and clear for shopkeepers who aren’t tech-savvy.',
+    short: 'A wallet for small shops.', // one line for More Work
     art: { img: '/case/mtb-pay-merchant/cover.jpg', thumb: '/case/mtb-pay-merchant/thumb.jpg?v=6', card: '/case/mtb-pay-merchant/thumb.jpg?v=6', text: 'MTB Pay', color: '#fff', bg: '#c8121a' },
     // Told as a UI/UX designer's case: Impact, Project Overview, Product Context, UX
     // Challenges, Visual Direction, Design System, Final Interface, Interaction &
@@ -898,6 +917,7 @@ export const CASES = [
     domain: 'AI',
     tags: ['Product Design', 'Food Data'],
     desc: 'End to end product design for Compass Group: the review workspaces where nutritionists and article experts turn AI label data into profiles they can stand behind.',
+    short: 'Reviewing AI food label data.', // one line for More Work
     art: { img: '/case/retina-ai/cover.jpg', thumb: '/case/retina-ai/thumb.jpg', card: '/case/retina-ai/card.jpg', text: 'Retina AI', color: '#fff', bg: '#b67d17' },
     // Facts come from the prototype in compass-ui-ux-designs/retina: its screens,
     // routes and mock data. No research, results or team roles are claimed
@@ -1016,6 +1036,7 @@ export const CASES = [
     domain: 'Fintech',
     tags: ['Product Design', 'Fintech'],
     desc: 'A secure portal for one large MTB Bank partner: live transactions, refunds, settlements and API access in one place.',
+    short: 'A bank partner’s merchant portal.', // one line for More Work
     art: { img: '/case/merchant-experience/cover.jpg?v=2', thumb: '/case/merchant-experience/thumb.jpg?v=3', card: '/case/merchant-experience/card.jpg?v=3', text: 'Merchant Experience', color: '#fff', bg: '#7c0a10' },
     // Facts come from Sai's page (smyothu.framer.website/work/merchant-portal-copy-copy);
     // screens are from the Figma boards in Merchant Portal.zip (tools/case-video/out-portal).
@@ -1179,22 +1200,22 @@ export const CASES = [
     domain: 'AI',
     tags: ['Product Design', 'AI', 'SaaS'],
     desc: 'Bringing meetings into Heizen’s delivery platform, so calls stop living in a separate tool.',
+    short: 'Meetings inside a delivery platform.', // one line for More Work
     art: { img: '/case/heizen-studio/cover.jpg', thumb: '/case/heizen-studio/thumb.jpg', card: '/case/heizen-studio/card.jpg', text: 'Heizen Studio', color: '#fff', bg: '#3a4196' },
-    // Screens are built with shadcn/ui in tools/heizen-studio-ui, from Sai's
-    // screenshots of the platform. TODO(Sai): check this copy, add dates, team,
-    // real results, and a screenshot of a single meeting's page.
+    // Screens are Sai's Figma designs (~/Downloads/Meeting.pdf). TODO(Sai): check
+    // this copy, add dates, team and real results.
     study: {
       layout: 'story',
       heading: 'Bringing meetings into the platform where the work happens',
       summary: 'Heizen Studio is the workspace Heizen uses to deliver client software, from the first meeting to the last test case. It had no meetings feature, so we ran our calls through Granola, outside the platform. I designed Meetings to bring them in.',
       accent: '#44403c',
       tags: ['B2B', 'Internal tool', 'AI'],
-      role: 'Product Designer, Heizen',
+      role: 'Product Designer',
       scope: ['Meetings'],
       duration: '',
       team: [],
       gallery: [],
-      tools: 'shadcn/ui',
+      tools: 'Figma',
       sections: [
         {
           id: 'problem',
@@ -1210,39 +1231,32 @@ export const CASES = [
           ],
         },
         {
-          id: 'screen',
-          eyebrow: 'The feature',
-          nav: 'The feature',
-          title: 'One place for every call on a project',
+          id: 'run',
+          nav: 'Running a call',
+          group: 'Design Execution',
+          notitle: true,
           blocks: [
-            { kind: 'lead', p: 'Meetings sits under Delivery, next to the Sprint Board and Backlog, so it is part of running a project and not a separate app. Drag the handle to compare the screen in the platform with the redesign.' },
-            { kind: 'beforeafter', wide: true, ratio: '1664 / 992', before: '/case/heizen-studio/before-meetings.jpg', after: '/case/heizen-studio/meetings.jpg', alt: 'The Meetings screen, with past calls grouped by day' },
-          ],
-        },
-        {
-          id: 'past',
-          eyebrow: 'After a call',
-          nav: 'After a call',
-          title: 'Finding what was said',
-          blocks: [
-            { kind: 'shot', wide: true, src: '/case/heizen-studio/meetings-past.jpg', alt: 'Past meetings grouped by day, with search, a date filter and a tag filter above them' },
-            { kind: 'notes', items: [
-              { t: 'Grouped by day', p: 'Projects run many similar syncs, so the date is what tells them apart.' },
-              { t: 'Tagged by type', p: 'Standup, Design Review, Requirement Workshop: you can see what kind of call it was before opening it.' },
-              { t: 'Search the summary', p: 'You can search by what was discussed, not only by the title.' },
+            // screens from Sai's Figma file (Meeting.pdf), see tools/case-video/meet-flows.py
+            { kind: 'flows', device: 'browser', label: 'Running a call', items: [
+              { title: 'Meetings at a Glance', p: 'Open the Meeting List from the dashboard, and step through today, yesterday and tomorrow.', src: '/case/heizen-studio/flows/dash.mp4', poster: '/case/heizen-studio/flows/dash.jpg', alt: 'The projects dashboard with the Meeting List open, moving from today to yesterday and tomorrow' },
+              { title: 'Start a Meeting', p: 'Start a call from the list. The bot joins, you keep private notes, and AI writes the meeting notes at the end.', src: '/case/heizen-studio/flows/start.mp4', poster: '/case/heizen-studio/flows/start.jpg', alt: 'Starting a meeting from the dashboard, recording it, generating insights and the AI notes' },
+              { title: 'Review a Past Meeting', p: 'Open a meeting record for its notes, the full transcript and the recording.', src: '/case/heizen-studio/flows/review.mp4', poster: '/case/heizen-studio/flows/review.jpg', alt: 'Opening a completed meeting from the Meeting List, its notes, then its transcript and recording' },
+              { title: 'Meeting from a Link', p: 'Paste a meeting link from the dashboard, then send the bot, record audio only, or upload it later.', src: '/case/heizen-studio/flows/anywhere.mp4', poster: '/case/heizen-studio/flows/anywhere.jpg', alt: 'Starting a new meeting from a pasted link, recording it and getting the notes and transcript' },
             ] },
           ],
         },
         {
-          id: 'next',
-          eyebrow: 'Before a call',
-          nav: 'Before a call',
-          title: 'Ready before it starts',
+          id: 'projects',
+          nav: 'Inside projects',
+          group: 'Design Execution',
+          notitle: true,
           blocks: [
-            { kind: 'shot', wide: true, src: '/case/heizen-studio/meetings-next.jpg', alt: 'Tomorrow’s meetings on the right of the screen, each with a bot switch and a record button' },
-            { kind: 'notes', items: [
-              { t: 'What’s next, alongside', p: 'Upcoming meetings stay in view next to past ones.' },
-              { t: 'One control per call', p: 'Each meeting has its own switch for the bot and a button to start recording.' },
+            { kind: 'flows', device: 'browser', label: 'Meetings inside projects', items: [
+              { title: 'Start from a Project', p: 'Every project has its own Meetings page. A call started there is already filed under it, with a live transcript.', src: '/case/heizen-studio/flows/project.mp4', poster: '/case/heizen-studio/flows/project.jpg', alt: 'A project’s Meetings page, starting a call with a live transcript, then the notes and recording' },
+              { title: 'Auto-Assign by Email', p: 'Add a client’s email once, and every meeting with them lands in the project.', src: '/case/heizen-studio/flows/assign.mp4', poster: '/case/heizen-studio/flows/assign.jpg', alt: 'Adding a client email on a project’s Meetings page and confirming it' },
+              { title: 'Move to a Project', p: 'Filed in the wrong place? Move it to another project from its menu.', src: '/case/heizen-studio/flows/move.mp4', poster: '/case/heizen-studio/flows/move.jpg', alt: 'Moving a meeting to another project from its menu' },
+              { title: 'Save Notes as a Wiki', p: 'Turn a meeting’s notes into a wiki page in one click.', src: '/case/heizen-studio/flows/wiki.mp4', poster: '/case/heizen-studio/flows/wiki.jpg', alt: 'Saving a meeting’s notes as a wiki page' },
+              { title: 'Tag a Meeting', p: 'Tag a call by type, like sprint meeting or requirement gathering, and give each tag its own colour.', src: '/case/heizen-studio/flows/tag.mp4', poster: '/case/heizen-studio/flows/tag.jpg', alt: 'Adding and editing tags on a meeting, with a colour for each' },
             ] },
           ],
         },
@@ -1265,6 +1279,7 @@ export const CASES = [
     domain: 'Supply Chain',
     tags: ['Product Design', 'Supply Chain'],
     desc: 'A discovery tool that gets a Heizen consultant ready for a first client call, in minutes.',
+    short: 'Prep for a first client call.', // one line for More Work
     art: { img: '/case/heizen-supply-chain/cover.jpg', thumb: '/case/heizen-supply-chain/thumb.jpg', card: '/case/heizen-supply-chain/card.jpg', text: 'Heizen Discovery Tool', color: '#2A2A2A', bg: 'linear-gradient(160deg,#f8f6ef,#efebe2)' },
     // Same six-phase structure as the Superfine cases. Facts come from the
     // heizen-supply-chain repo: CLAUDE.md, DECISIONS.md, REDESIGN.md (17 Aug
@@ -1276,7 +1291,7 @@ export const CASES = [
       summary: 'Heizen sells supply chain software to Indian manufacturers. Before a first call, a consultant has a company name and very little time. The Heizen Discovery Tool turns research into what we would build, a thirty-second brief, an operation map, gaps and the questions to ask. I designed it, and Jeet built it.',
       accent: '#44403c',
       tags: ['B2B', 'Sales tool', 'Supply Chain'],
-      role: 'Product Designer, Heizen',
+      role: 'Product Designer',
       scope: ['What to build', 'Research brief', 'Operations map', 'Gaps, Questions, Atlas'],
       // TODO(Sai): confirm the start date (audit 8 Aug, redesign 17 Aug, target end of Aug 2026).
       duration: 'Jul to Aug 2026',
@@ -1488,7 +1503,7 @@ export const CASES = [
 // The three main projects, shown as large cards at the top of the home page.
 export const HOME_WORK = ['orderflow', 'superfine-employee', 'mtb-pay-merchant']
 // The fan of cards in the home page's More Work card; the middle one sits in front.
-export const MORE_WORK = ['retina-ai', 'sfk-driver-app', 'merchant-experience']
+export const MORE_WORK = ['heizen-studio', 'sfk-driver-app', 'merchant-experience']
 
 // Testimonials on the home page. Use real quotes only, with the person's
 // permission. `photo` is optional (initials show otherwise), e.g.

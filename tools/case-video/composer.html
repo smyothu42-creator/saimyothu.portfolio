@@ -366,10 +366,13 @@ window.run = async (cfg) => {
   }
   const total = scenes.reduce((s, x) => s + x.dur, 0)
   const stream = C.captureStream(0), track = stream.getVideoTracks()[0]
-  const rec = new MediaRecorder(stream, { mimeType: cfg.mime || 'video/mp4;codecs=avc1.640028', videoBitsPerSecond: cfg.bitrate || 3_000_000 })
+  // a keyframe every half second in quarter-second pieces, so the site can start playing after the first few KB
+  const rec = new MediaRecorder(stream, { mimeType: cfg.mime || 'video/mp4;codecs=avc1.640028', videoBitsPerSecond: cfg.bitrate || 3_000_000, videoKeyFrameIntervalDuration: 500 })
   const done = new Promise((r) => (rec.onstop = r))
-  rec.ondataavailable = async (e) => { if (e.data.size) { const b = new Uint8Array(await e.data.arrayBuffer()); let s = ''; for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000)); await window.saveChunk(btoa(s)) } }
-  rec.start(1000)
+  // chunks are saved in order, and the run waits for the last one (otherwise the end is lost)
+  let chain = Promise.resolve()
+  rec.ondataavailable = (e) => { if (e.data.size) chain = chain.then(async () => { const b = new Uint8Array(await e.data.arrayBuffer()); let s = ''; for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000)); await window.saveChunk(btoa(s)) }) }
+  rec.start(250)
   const fps = cfg.fps || 30, n = Math.ceil(total * fps), start = performance.now(), fade = cfg.fade ?? 0.35
   let base = 0, si = 0
   for (let i = 0; i < n; i++) {
@@ -384,7 +387,7 @@ window.run = async (cfg) => {
     const due = start + ((i + 1) / fps) * 1000
     const wait = due - performance.now(); if (wait > 0) await sleep(wait)
   }
-  await sleep(300); rec.stop(); await done
+  await sleep(300); rec.stop(); await done; await chain
   return { total, frames: n, late: performance.now() - start - total * 1000, caps: scenes.flatMap((s) => (s.caps || []).map((c) => ({ t: +c.t.toFixed(2), cap: c.cap }))) }
 }
 </script></body></html>

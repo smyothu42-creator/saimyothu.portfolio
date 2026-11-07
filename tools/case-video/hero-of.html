@@ -37,7 +37,7 @@ const DESK = [['a-board', 0], ['a-open', 8.38, 'panel'], ['a-ready', 10.05, 'fad
 const PTAPS = [[2.3, [295, 376, 91, 39], 10], [3.55, [176, 648, 186, 40], 12], [4.75, [16, 742, 370, 54], 10]]
 const DTAPS = [[8.3, [463, 174, 299, 229], 14], [10.0, [1021, 837, 419, 63], 0], [11.0, [1021, 837, 419, 63], 0]]
 // camera: [time, centre x, centre y, zoom]; eased between keys
-const CAM = [[0, 800, 450, 1], [0.9, 800, 450, 1], [2.0, 360, 470, 1.8], [3.0, 360, 560, 1.8], [4.3, 330, 640, 1.8], [5.25, 330, 640, 1.8],
+const CAM = [[0, 800, 450, 1], [2.0, 360, 470, 1.8], [3.0, 360, 560, 1.8], [4.3, 330, 640, 1.8], [5.25, 330, 640, 1.8],
   [6.5, 800, 450, 1.02], [7.25, 800, 450, 1.02], [8.1, 960, 360, 1.55], [9.2, 1120, 470, 1.4], [9.75, 1210, 640, 1.65], [11.45, 1210, 640, 1.65],
   [12.3, 980, 420, 1.22], [13.7, 930, 400, 1.22], [14.7, 800, 450, 1], [16, 800, 450, 1]]
 
@@ -170,9 +170,10 @@ function chip(t) {
   rrect(-w / 2, -h / 2, w, h, 18); X.fillStyle = '#fff'; X.fill(); X.shadowColor = 'transparent'
   const g = X.createLinearGradient(0, -20, 0, 20); g.addColorStop(0, '#ff9b55'); g.addColorStop(1, '#ee6f1e')
   rrect(-w / 2 + 12, -19, 38, 38, 11); X.fillStyle = g; X.fill()
-  X.strokeStyle = '#fff'; X.lineWidth = 2.2; X.lineCap = 'round'; const qx = -w / 2 + 31, q = 9
-  X.beginPath(); X.moveTo(qx - q, -q + 4); X.lineTo(qx - q, -q); X.lineTo(qx - q + 4, -q); X.moveTo(qx + q - 4, -q); X.lineTo(qx + q, -q); X.lineTo(qx + q, -q + 4)
-  X.moveTo(qx + q, q - 4); X.lineTo(qx + q, q); X.lineTo(qx + q - 4, q); X.moveTo(qx - q + 4, q); X.lineTo(qx - q, q); X.lineTo(qx - q, q - 4); X.moveTo(qx - 5, 0); X.lineTo(qx + 5, 0); X.stroke()
+  // order slip (receipt) mark
+  X.strokeStyle = '#fff'; X.lineWidth = 2.2; X.lineCap = 'round'; X.lineJoin = 'round'; const qx = -w / 2 + 31
+  X.beginPath(); X.moveTo(qx - 7, -10); X.lineTo(qx + 7, -10); X.lineTo(qx + 7, 10); X.lineTo(qx + 3.5, 8); X.lineTo(qx, 10); X.lineTo(qx - 3.5, 8); X.lineTo(qx - 7, 10); X.closePath()
+  X.moveTo(qx - 3.5, -5); X.lineTo(qx + 3.5, -5); X.moveTo(qx - 3.5, -1); X.lineTo(qx + 3.5, -1); X.moveTo(qx - 3.5, 3); X.lineTo(qx, 3); X.stroke()
   X.textBaseline = 'middle'; X.fillStyle = '#1c1917'; X.font = '700 19px Figtree, sans-serif'; X.fillText('New QR order', -w / 2 + 64, -9)
   X.fillStyle = '#78716c'; X.font = '500 15px Figtree, sans-serif'; X.fillText('Table 1 · 2 items · 19,000 Ks', -w / 2 + 64, 13)
   X.restore()
@@ -200,12 +201,15 @@ window.still = (t) => { frame(t); return C.toDataURL('image/jpeg', 0.88) }
 window.run = async (cfg) => {
   const fps = cfg.fps || 30, n = Math.round(T * fps)
   const stream = C.captureStream(0), track = stream.getVideoTracks()[0]
-  const rec = new MediaRecorder(stream, { mimeType: 'video/mp4;codecs=avc1.640028', videoBitsPerSecond: cfg.bitrate || 900000 })
+  const rec = new MediaRecorder(stream, { mimeType: 'video/mp4;codecs=avc1.640028', videoBitsPerSecond: cfg.bitrate || 900000,
+    // a keyframe every half second, written out in quarter-second pieces: the page can show the
+    // film after its first few KB instead of waiting for a 3 s chunk
+    videoKeyFrameIntervalDuration: 500 })
   const done = new Promise((r) => (rec.onstop = r))
   // chunks are saved in order, and the run waits for the last one (otherwise the end of the loop is lost)
   let chain = Promise.resolve()
   rec.ondataavailable = (e) => { if (e.data.size) chain = chain.then(async () => { const b = new Uint8Array(await e.data.arrayBuffer()); let s = ''; for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000)); await window.saveChunk(btoa(s)) }) }
-  rec.start(1000)
+  rec.start(250)
   const start = performance.now()
   for (let i = 0; i < n; i++) {
     frame(i / fps); track.requestFrame()

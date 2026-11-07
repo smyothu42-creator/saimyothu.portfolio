@@ -1,0 +1,208 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600;700&display=swap" rel="stylesheet">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c"></canvas>
+<script>
+// Superfine Corporate Meal Order cover loop: the same kind of product film as OrderFlow's
+// (hero-of.html), web only. An employee orders lunch while the meal subsidy is checked: the
+// allowance in the header, a dish with a paid extra, the header turning to "you pay $1.50",
+// the cart's company-pays / you-pay split, checkout, confirmed. The camera pushes in on each
+// click or each thing to look at; the rest dims and the target gets a glowing outline.
+// Screens are frames of the out-employee-web recording (hero-sf/).
+const C = document.getElementById('c'), X = C.getContext('2d')
+const W = 1600, H = 1032, T = 19 // 1.55 : 1, the case cover's shape
+C.width = W; C.height = H
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v))
+const sm = (a) => { a = clamp(a); return a * a * (3 - 2 * a) }
+const io = (a) => { a = clamp(a); return a < 0.5 ? 4 * a * a * a : 1 - Math.pow(-2 * a + 2, 3) / 2 }
+const out = (a) => 1 - Math.pow(1 - clamp(a), 3)
+const img = (src) => new Promise((ok) => { const i = new Image(); i.onload = () => ok(i); i.src = src })
+// rpath adds a rounded rectangle to the current path; rrect starts a new one
+function rrect(x, y, w, h, r) { X.beginPath(); rpath(x, y, w, h, r) }
+function rpath(x, y, w, h, r) { X.moveTo(x + r, y); X.arcTo(x + w, y, x + w, y + h, r); X.arcTo(x + w, y + h, x, y + h, r); X.arcTo(x, y + h, x, y, r); X.arcTo(x, y, x + w, y, r); X.closePath() }
+
+// ---- scene layout (world px): one browser, centred ----
+const B = { x: 150, y: 26, w: 1300 }; B.bar = 36; B.k = B.w / 1440; B.ph = 900 * B.k; B.h = B.bar + B.ph
+// app CSS px -> world
+const bw = (x, y) => [B.x + x * B.k, B.y + B.bar + y * B.k]
+
+// ---- what happens when ----
+// screens: [name, start, transition]; transitions: fade, push (from the right), sheet (up over),
+// panel (the order panel slides in from the right), up (a new page slides up)
+const DESK = [['s-menu', 0], ['s-drop', 2.3, 'fade'], ['s-menu', 4.0, 'fade'], ['s-item', 4.75, 'fade'], ['s-item2', 5.75, 'fade'],
+  ['s-item3', 6.65, 'fade'], ['s-over', 7.65, 'fade'], ['s-drop-over', 8.85, 'fade'], ['s-over', 10.3, 'fade'], ['s-cart', 10.95, 'drawer'],
+  ['s-checkout', 12.95, 'up'], ['s-pay', 14.05, 'fade'], ['s-confirm', 15.65, 'up'], ['s-menu', 17.7, 'fade']]
+// clicks and looks: [time, app css rect (x, y, w, h), corner radius, look]; a look is focused
+// and held with the pointer resting on it, but not pressed
+const DTAPS = [
+  [2.25, [1117, 15, 172, 32], 16], // open "$15.00 left today"
+  [3.2, [1026, 54, 265, 206], 14, true], // today's budget: allowance, meals, company pays
+  [4.7, [800, 658, 32, 32], 16], // add Paneer Tikka Bowl
+  [5.7, [506, 481, 416, 78], 10], // tofu, +$1.50
+  [6.6, [508, 618, 414, 66], 10], // Italian sauce
+  [7.6, [643, 788, 285, 48], 24], // add to order, $16.50
+  [8.8, [1030, 15, 236, 32], 16], // open "Budget over · you pay $1.50"
+  [9.7, [1026, 54, 265, 206], 14, true], // company pays -$15.00, you pay $1.50
+  [10.9, [1307, 14, 115, 33], 16], // cart
+  [12.0, [1040, 688, 385, 135], 10, true], // company pays / you pay
+  [12.9, [1274, 836, 154, 47], 23], // checkout
+  [14.0, [1152, 840, 256, 46], 23], // check payment
+  [14.9, [516, 380, 408, 82], 12, true], // payment method: company invoice, nothing to pay now
+  [15.6, [516, 581, 408, 40], 20], // confirm
+]
+// camera: [time, centre x, centre y, zoom]; eased between keys
+const CAM = [[0, 800, 450, 1], [1.6, 1150, 200, 1.8], [3.6, 1150, 200, 1.8], [4.4, 880, 600, 1.6], [4.9, 880, 600, 1.6],
+  [5.4, 800, 560, 1.45], [7.8, 820, 660, 1.45], [8.4, 1150, 200, 1.8], [10.2, 1150, 200, 1.8], [10.9, 1220, 520, 1.5],
+  [12.3, 1230, 640, 1.55], [13.3, 1250, 740, 1.45], [14.3, 880, 520, 1.4], [15.9, 880, 560, 1.4], [16.6, 820, 420, 1.15],
+  [17.4, 820, 420, 1.15], [18.1, 800, 450, 1], [19, 800, 450, 1]]
+const ACC = '#14806a', ACC_GLOW = 'rgba(20,128,106,0.6)' // Superfine teal
+
+const S = {}
+function cam(t) {
+  let i = CAM.findIndex((k) => k[0] > t); if (i < 0) i = CAM.length - 1; if (i === 0) i = 1
+  const a = CAM[i - 1], b = CAM[i], f = io((t - a[0]) / (b[0] - a[0] || 1))
+  return { x: a[1] + (b[1] - a[1]) * f, y: a[2] + (b[2] - a[2]) * f, z: a[3] + (b[3] - a[3]) * f }
+}
+function bg() {
+  X.fillStyle = '#eef5ef'; X.fillRect(0, 0, W, H)
+  let g = X.createRadialGradient(240, H - 120, 0, 240, H - 120, 820); g.addColorStop(0, 'rgba(70,170,140,0.38)'); g.addColorStop(1, 'rgba(70,170,140,0)'); X.fillStyle = g; X.fillRect(0, 0, W, H)
+  g = X.createRadialGradient(1400, 100, 0, 1400, 100, 720); g.addColorStop(0, 'rgba(240,214,110,0.45)'); g.addColorStop(1, 'rgba(240,214,110,0)'); X.fillStyle = g; X.fillRect(0, 0, W, H)
+}
+// draw a screen list at time t into the box (x, y, w, h)
+function screens(list, t, x, y, w, h, panelX) {
+  let k = 0; list.forEach((s, i) => { if (s[1] <= t) k = i })
+  const [name, t0, kind] = list[k]
+  const f = k ? out((t - t0) / (kind === 'fade' ? 0.35 : 0.45)) : 1
+  const cur = S[name], prev = k ? S[list[k - 1][0]] : null
+  if (f >= 1 || !prev) { X.drawImage(cur, x, y, w, h); return }
+  if (kind === 'fade') { X.drawImage(prev, x, y, w, h); X.globalAlpha = f; X.drawImage(cur, x, y, w, h); X.globalAlpha = 1; return }
+  if (kind === 'push') {
+    X.drawImage(prev, x - w * 0.3 * f, y, w, h); X.fillStyle = `rgba(0,0,0,${0.18 * f})`; X.fillRect(x, y, w, h)
+    X.save(); X.shadowColor = 'rgba(0,0,0,0.25)'; X.shadowBlur = 30; X.drawImage(cur, x + w * (1 - f), y, w, h); X.restore(); return
+  }
+  if (kind === 'sheet' || kind === 'up') {
+    X.drawImage(prev, x, y, w, h)
+    if (kind === 'sheet') { X.fillStyle = `rgba(0,0,0,${0.25 * f})`; X.fillRect(x, y, w, h) }
+    X.save(); X.beginPath(); X.rect(x, y, w, h); X.clip(); X.drawImage(cur, x, y + h * (1 - f) * (kind === 'up' ? 0.35 : 1), w, h); X.restore()
+    if (kind === 'up') { X.globalAlpha = 1 - f; X.drawImage(prev, x, y, w, h); X.globalAlpha = 1 }
+    return
+  }
+  if (kind === 'drawer') {
+    X.drawImage(prev, x, y, w, h)
+    X.globalAlpha = f; X.drawImage(cur, 0, 0, cur.width * panelX, cur.height, x, y, w * panelX, h); X.globalAlpha = 1
+    const px = x + panelX * w, sx = px + (x + w - px) * (1 - f)
+    X.save(); X.beginPath(); X.rect(x, y, w, h); X.clip(); X.shadowColor = 'rgba(0,0,0,0.18)'; X.shadowBlur = 24
+    X.drawImage(cur, panelX * cur.width, 0, cur.width * (1 - panelX), cur.height, sx, y, w * (1 - panelX), h); X.restore()
+    return
+  }
+  if (kind === 'panel') {
+    // the board, then the order panel sliding in from the right edge
+    const px = x + panelX * w
+    X.save(); X.beginPath(); X.rect(x, y, w, h); X.clip()
+    X.drawImage(prev, x, y, w, h)
+    const sx = px + (x + w - px) * (1 - f)
+    X.beginPath(); X.rect(sx, y, x + w - sx, h); X.clip()
+    X.shadowColor = 'rgba(0,0,0,0.18)'; X.shadowBlur = 24
+    X.drawImage(cur, panelX * cur.width, 0, cur.width * (1 - panelX), cur.height, sx, y, w * (1 - panelX), h)
+    X.restore()
+  }
+}
+function browser(t) {
+  const { x, y } = B
+  X.save(); X.shadowColor = 'rgba(120,60,10,0.22)'; X.shadowBlur = 70; X.shadowOffsetY = 30
+  rrect(x, y, B.w, B.h, 16); X.fillStyle = '#fff'; X.fill(); X.restore()
+  X.save(); rrect(x, y, B.w, B.h, 16); X.clip()
+  X.fillStyle = '#f1efec'; X.fillRect(x, y, B.w, B.bar)
+  ;['#ff5f57', '#febc2e', '#28c840'].forEach((c, i) => { X.fillStyle = c; X.beginPath(); X.arc(x + 22 + i * 20, y + B.bar / 2, 6, 0, Math.PI * 2); X.fill() })
+  screens(DESK, t, x, y + B.bar, B.w, B.ph, 1034 / 1440)
+  X.restore()
+  rrect(x + 0.5, y + 0.5, B.w - 1, B.h - 1, 16); X.strokeStyle = 'rgba(0,0,0,0.08)'; X.lineWidth = 1; X.stroke()
+}
+// Focus on what is about to be pressed: the scene dims around the target, the target gets a
+// soft orange outline that presses in on the click, then a ripple.
+function focus(t, taps, toWorld, scale) {
+  for (const [t0, [cx, cy, cw, ch], r, look] of taps) {
+    const hold = look ? 0.7 : 0.08
+    const d = t - t0; if (d < -0.6 || d > hold + 0.5) continue
+    const a = d < 0 ? sm((d + 0.6) / 0.3) : 1 - sm((d - hold) / 0.25)
+    const [x, y] = toWorld(cx, cy), w = cw * scale, h = ch * scale, pad = 5
+    X.save()
+    X.beginPath(); X.rect(-4000, -4000, 9600, 9000)
+    rpath(x - pad, y - pad, w + pad * 2, h + pad * 2, r + pad)
+    X.fillStyle = `rgba(28,18,8,${0.32 * a})`; X.fill('evenodd')
+    const p = !look && d > 0 && d < 0.18 ? 1 - 0.04 * Math.sin((d / 0.18) * Math.PI) : 1
+    X.translate(x + w / 2, y + h / 2); X.scale(p, p)
+    X.globalAlpha = a; X.shadowColor = ACC_GLOW; X.shadowBlur = 18
+    rrect(-w / 2 - pad, -h / 2 - pad, w + pad * 2, h + pad * 2, r + pad); X.strokeStyle = ACC; X.lineWidth = 2.5; X.stroke()
+    X.restore()
+    const q = clamp(d / 0.6)
+    if (!look && d > 0 && q < 1) { X.save(); X.globalAlpha = (1 - q) * 0.9; X.strokeStyle = ACC; X.lineWidth = 3; X.beginPath(); X.arc(x + w / 2, y + h / 2, 10 + 46 * out(q), 0, Math.PI * 2); X.stroke(); X.restore() }
+  }
+}
+// the employee's pointer: glides to each click or thing to look at
+function cursor(t) {
+  const a = sm((t - 0.9) / 0.3) * (1 - sm((t - 16.4) / 0.3)); if (a <= 0) return
+  const c = ([tt, [x, y, w, h]]) => [tt, x + w / 2, y + h / 2]
+  const pts = [[1.0, 900, 520], ...DTAPS.map(c), [16.8, 1000, 640]]
+  let i = pts.findIndex((p) => p[0] > t); if (i < 0) i = pts.length - 1; if (i === 0) i = 1
+  const [t0, x0, y0] = pts[i - 1], [t1, x1, y1] = pts[i]
+  const m = io((t - Math.max(t0 + 0.15, t1 - 0.8)) / Math.min(0.65, t1 - t0 - 0.15))
+  const [px, py] = bw(x0 + (x1 - x0) * m, y0 + (y1 - y0) * m)
+  const down = DTAPS.some(([tt, , , look]) => !look && t >= tt && t - tt < 0.16) ? 0.85 : 1
+  X.save(); X.globalAlpha = a; X.translate(px, py); X.scale(1.25 * down, 1.25 * down)
+  X.beginPath(); X.moveTo(0, 0); X.lineTo(0, 17); X.lineTo(4.2, 13); X.lineTo(7, 19.5); X.lineTo(9.6, 18.4); X.lineTo(6.9, 12.2); X.lineTo(12.4, 12.2); X.closePath()
+  X.shadowColor = 'rgba(0,0,0,0.3)'; X.shadowBlur = 4; X.shadowOffsetY = 1; X.fillStyle = '#111'; X.fill(); X.shadowColor = 'transparent'; X.lineJoin = 'round'; X.lineWidth = 1.4; X.strokeStyle = '#fff'; X.stroke(); X.restore()
+}
+function frame(t) {
+  bg()
+  const c = cam(t)
+  X.save(); X.translate(W / 2, H / 2); X.scale(c.z, c.z); X.translate(-c.x, -c.y)
+  browser(t)
+  focus(t, DTAPS, bw, B.k)
+  cursor(t)
+  X.restore()
+}
+window.prep = async (srcs) => {
+  await document.fonts.load('700 19px Figtree'); await document.fonts.ready
+  for (const [k, src] of Object.entries(srcs)) S[k] = await img(src)
+  if (S['s-confirm']) S['s-confirm'] = newIcon(S['s-confirm'])
+}
+// Order confirmed: keep the soft halo, swap the check icon for a lunch bag with a check on it
+function newIcon(im) {
+  const c = document.createElement('canvas'); c.width = im.width; c.height = im.height
+  const x = c.getContext('2d'); x.drawImage(im, 0, 0)
+  const k = im.width / 1440, cx = 848 * k, cy = 185 * k
+  const px = (dx, dy) => x.getImageData(Math.round(cx + dx * k), Math.round(cy + dy * k), 1, 1).data
+  const inner = px(0, 26), ink = px(0, -18) // the inner disc, the old icon's ring
+  x.fillStyle = `rgb(${inner[0]},${inner[1]},${inner[2]})`; x.beginPath(); x.arc(cx, cy, 23 * k, 0, Math.PI * 2); x.fill()
+  x.save(); x.translate(cx, cy); x.scale(k, k)
+  x.strokeStyle = `rgb(${ink[0]},${ink[1]},${ink[2]})`; x.lineWidth = 3.2; x.lineJoin = 'round'; x.lineCap = 'round'
+  x.beginPath(); x.moveTo(-11, -4); x.lineTo(11, -4); x.lineTo(12.5, 13); x.quadraticCurveTo(12.5, 15, 10.5, 15); x.lineTo(-10.5, 15); x.quadraticCurveTo(-12.5, 15, -12.5, 13); x.closePath(); x.stroke()
+  x.beginPath(); x.moveTo(-5.5, -4); x.lineTo(-5.5, -7); x.arc(0, -7, 5.5, Math.PI, 0); x.lineTo(5.5, -4); x.stroke()
+  x.beginPath(); x.moveTo(-5, 5.5); x.lineTo(-1.5, 9); x.lineTo(5.5, 2); x.stroke()
+  x.restore()
+  return c
+}
+window.still = (t) => { frame(t); return C.toDataURL('image/jpeg', 0.88) }
+window.run = async (cfg) => {
+  const fps = cfg.fps || 30, n = Math.round(T * fps)
+  const stream = C.captureStream(0), track = stream.getVideoTracks()[0]
+  const rec = new MediaRecorder(stream, { mimeType: 'video/mp4;codecs=avc1.640028', videoBitsPerSecond: cfg.bitrate || 900000,
+    // a keyframe every half second, written out in quarter-second pieces: the page can show the
+    // film after its first few KB instead of waiting for a 3 s chunk
+    videoKeyFrameIntervalDuration: 500 })
+  const done = new Promise((r) => (rec.onstop = r))
+  // chunks are saved in order, and the run waits for the last one (otherwise the end of the loop is lost)
+  let chain = Promise.resolve()
+  rec.ondataavailable = (e) => { if (e.data.size) chain = chain.then(async () => { const b = new Uint8Array(await e.data.arrayBuffer()); let s = ''; for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000)); await window.saveChunk(btoa(s)) }) }
+  rec.start(250)
+  const start = performance.now()
+  for (let i = 0; i < n; i++) {
+    frame(i / fps); track.requestFrame()
+    const wait = start + ((i + 1) / fps) * 1000 - performance.now(); if (wait > 0) await new Promise((r) => setTimeout(r, wait))
+  }
+  await new Promise((r) => setTimeout(r, 300)); rec.stop(); await done; await chain
+  return { frames: n, late: Math.round(performance.now() - start - T * 1000) }
+}
+</script></body></html>

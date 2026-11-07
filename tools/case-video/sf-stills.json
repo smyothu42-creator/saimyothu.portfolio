@@ -1,0 +1,8 @@
+["@5500","Demo: use a corporate email","@500","TYPE:input[type=password]|demo1234","@400","$button[type=submit]","@7000",
+ "CSS:nextjs-portal{display:none!important}",
+ "SNAP:s-menu",
+ "$button[aria-controls][aria-expanded]","@1200","SNAP:s-drop","KEY:Escape","@600",
+ "Choose options for Paneer Tikka Bowl","@1600","SNAP:s-item","Tofu","@900","SNAP:s-item2","Italian","@900","SNAP:s-item3","Add to order","@2400",
+ "SNAP:s-over",
+ "$button[aria-controls][aria-expanded]","@1200","SNAP:s-drop-over","KEY:Escape","@600",
+ "Open cart","@2400","SNAP:s-cart","Checkout","@4500","SNAP:s-checkout","Check payment","@1600","SNAP:s-pay","Confirm","@1400","SNAP:s-paid","Place order","@3500","SNAP:s-confirm"]

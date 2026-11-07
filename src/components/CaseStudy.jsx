@@ -7,7 +7,7 @@ import {
   JourneyMap, Tree, Frameworks, Wireframes, Spec, Closing,
   HMW, Details, Achievements, Roadmap,
 } from './CaseBlocks'
-import { Impact, Role, Sub, IconList, Segments, Table, Iterations, Pills, Walkthrough, Film, Shot, WalkTabs, ShotTabs, Reel, Demo, FlowSwitch, Choices, BeforeAfter } from './Story'
+import { Impact, Role, Sub, IconList, Segments, Table, Iterations, Pills, Walkthrough, Film, Shot, WalkTabs, ShotTabs, Reel, Demo, FlowSwitch, Choices, BeforeAfter, Compare2, Steps, IaTree, Doodle } from './Story'
 import { Illo, Person } from './Illos'
 import { Card, BackButton, ConnectCard, Icon } from './ui'
 import Media from './Media'
@@ -123,7 +123,7 @@ function OtherWork({ current }) {
                 <span className="sv-other-name">{c.name || c.title.replace(/\u00a0/g, ' ')}</span>
                 <span className="sv-other-arrow"><Icon name="arrowRight" size={20} stroke={1.8} /></span>
               </span>
-              {c.desc && <span className="sv-other-desc">{c.desc}</span>}
+              {(c.short || c.desc) && <span className="sv-other-desc">{c.short || c.desc}</span>}
             </a>
           </li>
         ))}
@@ -197,9 +197,9 @@ const VISUALS = {
   hmw: HMW, details: Details, achievements: Achievements, roadmap: Roadmap,
   impact: Impact, role: Role, sub: Sub, iconlist: IconList, segments: Segments, table: Table,
   iterations: Iterations, pills: Pills, walkthrough: Walkthrough, film: Film, shot: Shot, walktabs: WalkTabs, shottabs: ShotTabs,
-  reel: Reel, demo: Demo, flows: FlowSwitch, choices: Choices, beforeafter: BeforeAfter, hub: Hub, decisions: Decisions, arch: Arch, mockpair: MockPair, ship: Ship, photos: Photos, loop: Loop,
+  reel: Reel, demo: Demo, flows: FlowSwitch, choices: Choices, beforeafter: BeforeAfter, compare2: Compare2, steps: Steps, iatree: IaTree, hub: Hub, decisions: Decisions, arch: Arch, mockpair: MockPair, ship: Ship, photos: Photos, loop: Loop,
 }
-const TEXT = new Set(['hub', 'decisions', 'arch', 'mockpair', 'ship', 'photos', 'loop', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'flows', 'choices'])
+const TEXT = new Set(['hub', 'decisions', 'arch', 'mockpair', 'ship', 'photos', 'loop', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'flows', 'choices', 'compare2', 'steps', 'iatree'])
 
 function Block({ block }) {
   const Visual = VISUALS[block.kind]
@@ -454,7 +454,7 @@ function Hub({ items, outer = [] }) {
   const at = (i) => (-90 + (360 / n) * i) * Math.PI / 180
   // One list for the card: the main modules first, then the outer features.
   const all = [...items, ...outer]
-  const badge = (i) => <svg viewBox="0 0 24 24" className="cs-hub-badge" aria-hidden="true">{HUB_ICONS[all[i].key]}</svg>
+  const badge = (i) => <svg viewBox="0 0 24 24" className="cs-hub-badge cs-hub-line" aria-hidden="true">{HUB_ICONS[all[i].key]}</svg>
   return (
     <div className="cs-hub">
       <div className="cs-hub-art">
@@ -468,7 +468,7 @@ function Hub({ items, outer = [] }) {
               <span key={it.key} className="cs-orbit-item" style={{ left: `${50 + 46 * Math.cos(a)}%`, top: `${50 + 46 * Math.sin(a)}%` }}>
                 <span className="cs-orbit-up">
                   <button type="button" className={'cs-hub-node is-small' + (k === on ? ' is-on' : '')} onClick={() => pick(k)} aria-pressed={k === on} aria-label={it.t} title={it.t}>
-                    <svg viewBox="0 0 24 24" aria-hidden="true">{HUB_ICONS[it.key]}</svg>
+                    <svg viewBox="0 0 24 24" className="cs-hub-line" aria-hidden="true">{HUB_ICONS[it.key]}</svg>
                   </button>
                 </span>
               </span>
@@ -481,7 +481,7 @@ function Hub({ items, outer = [] }) {
             <span key={it.key} className="cs-orbit-item" style={{ left: `${50 + 29 * Math.cos(at(i))}%`, top: `${50 + 29 * Math.sin(at(i))}%` }}>
               <span className="cs-orbit-up">
                 <button type="button" className={'cs-hub-node' + (i === on ? ' is-on' : '')} onClick={() => pick(i)} aria-pressed={i === on} aria-label={it.t}>
-                  <svg viewBox="0 0 24 24" aria-hidden="true">{HUB_ICONS[it.key]}</svg>
+                  <svg viewBox="0 0 24 24" className="cs-hub-line" aria-hidden="true">{HUB_ICONS[it.key]}</svg>
                   <span className="cs-hub-label">{it.t}</span>
                 </button>
               </span>
@@ -535,7 +535,7 @@ function DecPos() {
       <div className="st-device cs-dec-phone is-app"><div className="st-device-screen"><img src="/case/orderflow/guest-latest.jpg" alt="" loading="lazy" /><span className="st-device-island" /></div></div>
       <div className="cs-dec-wire">
         <span className="cs-dec-chip">
-          <span className="cs-dec-chip-ic"><svg viewBox="0 0 24 24">{HUB_ICONS.qr}</svg></span>
+          <span className="cs-dec-chip-ic"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z" /><path d="M9 8h6M9 12h6M9 16h3" /></svg></span>
           <span className="cs-dec-chip-t"><b>New order · T-24</b><small>Latte ×2</small></span>
         </span>
       </div>
@@ -674,7 +674,6 @@ function Arch({ items }) {
         {items.map((it, i) => (
           <li key={it.key}>
             <button type="button" className={i === on ? 'is-on' : undefined} aria-pressed={i === on} onClick={() => { setOn(i); setAuto(false) }}>
-              <span className="cs-arch-n">{String(i + 1).padStart(2, '0')}</span>
               <b>{it.t}</b>
               <span>{it.p}</span>
             </button>
@@ -815,7 +814,7 @@ function Loop({ steps }) {
         <svg className="cs-loop-orbit" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="50" cy="15" rx="48" ry="13" /></svg>
         {steps.map((st, i) => (
           <article key={st.t} ref={(el) => { cards.current[i] = el }} className="cs-loop-card" aria-hidden={i !== cur} aria-current={i === cur ? 'step' : undefined}>
-            <span className="cs-loop-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{HUB_ICONS[st.icon]}</svg></span>
+            <span className="cs-loop-ic"><Doodle name={{ staff: 'clipboard', alerts: 'chat', reports: 'chartup' }[st.icon] || st.icon} /></span>
             <span className="cs-loop-n">{String(i + 1).padStart(2, '0')}</span>
             <b>{st.t}</b>
             <p>{st.p}</p>
