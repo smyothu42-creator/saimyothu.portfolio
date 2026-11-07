@@ -395,6 +395,29 @@ const HUB_ICONS = {
   alerts: <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0" />,
 }
 const HUB_MS = 3800
+// A ring drawn as arcs between its circles, so the line never runs through
+// them. It turns with its orbit, so the gaps stay under the circles.
+function OrbitRing({ r, count, start, gap }) {
+  const pt = (deg) => [50 + r * Math.cos(deg * Math.PI / 180), 50 + r * Math.sin(deg * Math.PI / 180)]
+  const step = 360 / count
+  const d = Array.from({ length: count }, (_, i) => {
+    const [x0, y0] = pt(start + step * i + gap)
+    const [x1, y1] = pt(start + step * (i + 1) - gap)
+    return `M${x0.toFixed(2)} ${y0.toFixed(2)}A${r} ${r} 0 0 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`
+  }).join('')
+  return <svg className="cs-orbit-ring" viewBox="0 0 100 100" aria-hidden="true"><path d={d} /></svg>
+}
+// The orange ray, masked with the same gaps, so it never runs behind a circle.
+// (Conic angles start at the top; the circles' angles start at 3 o'clock.)
+function OrbitRay({ count, start, gap, out }) {
+  const step = 360 / count
+  const m = `repeating-conic-gradient(from ${start + 90 + gap}deg, #000 0deg ${step - 2 * gap}deg, transparent ${step - 2 * gap}deg ${step}deg)`
+  return (
+    <span className="cs-ray-gaps" style={{ WebkitMaskImage: m, maskImage: m }} aria-hidden="true">
+      <span className={'cs-hub-ray ' + (out ? 'is-out' : 'is-in')} />
+    </span>
+  )
+}
 function Hub({ items, outer = [] }) {
   const n = items.length
   const [on, setOn] = useState(0)
@@ -407,30 +430,41 @@ function Hub({ items, outer = [] }) {
   useEffect(() => {
     if (!running) return
     const t = setTimeout(() => { setPrev(on); setOn((on + 1) % n); setTick((k) => k + 1) }, HUB_MS)
+    // The slideshow only steps through the five main modules.
     return () => clearTimeout(t)
   }, [running, on, n])
   const pick = (i) => { if (i !== on) setPrev(on); setOn(i); setAuto(false) }
+  // Up and down step through the five main modules (from an outer feature,
+  // they go back into them).
+  const go = (d) => pick(on < n ? (on + d + n) % n : d > 0 ? 0 : n - 1)
   const at = (i) => (-90 + (360 / n) * i) * Math.PI / 180
+  // One list for the card: the main modules first, then the outer features.
+  const all = [...items, ...outer]
+  const badge = (i) => (i < n ? String(i + 1).padStart(2, '0') : <svg viewBox="0 0 24 24" className="cs-hub-badge">{HUB_ICONS[all[i].key]}</svg>)
   return (
     <div className="cs-hub">
       <div className="cs-hub-art">
-        <svg className="cs-hub-rings" viewBox="0 0 100 100" aria-hidden="true">
-          <circle cx="50" cy="50" r="29" /><circle cx="50" cy="50" r="46" />
-          <circle className="cs-hub-arc is-in" cx="50" cy="50" r="29" pathLength="100" />
-          <circle className="cs-hub-arc is-out" cx="50" cy="50" r="46" pathLength="100" />
-        </svg>
         <span className="cs-hub-core"><img src="/logos/orderflow-icon.png" alt="" /></span>
-        <div className="cs-orbit is-out" aria-hidden="true">
+        <div className="cs-orbit is-out">
+          <OrbitRing r={46} count={outer.length} start={-60} gap={10} />
+          <OrbitRay count={outer.length} start={-60} gap={10} out />
           {outer.map((it, i) => {
             const a = (-60 + (360 / outer.length) * i) * Math.PI / 180
+            const k = n + i
             return (
-              <span key={it.key} className="cs-orbit-item cs-hub-dot" style={{ left: `${50 + 46 * Math.cos(a)}%`, top: `${50 + 46 * Math.sin(a)}%` }} title={it.t}>
-                <span className="cs-orbit-up"><svg viewBox="0 0 24 24">{HUB_ICONS[it.key]}</svg></span>
+              <span key={it.key} className="cs-orbit-item" style={{ left: `${50 + 46 * Math.cos(a)}%`, top: `${50 + 46 * Math.sin(a)}%` }}>
+                <span className="cs-orbit-up">
+                  <button type="button" className={'cs-hub-node is-small' + (k === on ? ' is-on' : '')} onClick={() => pick(k)} aria-pressed={k === on} aria-label={it.t} title={it.t}>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">{HUB_ICONS[it.key]}</svg>
+                  </button>
+                </span>
               </span>
             )
           })}
         </div>
         <div className="cs-orbit is-in">
+          <OrbitRing r={29} count={n} start={-90} gap={20} />
+          <OrbitRay count={n} start={-90} gap={20} />
           {items.map((it, i) => (
             <span key={it.key} className="cs-orbit-item" style={{ left: `${50 + 29 * Math.cos(at(i))}%`, top: `${50 + 29 * Math.sin(at(i))}%` }}>
               <span className="cs-orbit-up">
@@ -443,13 +477,17 @@ function Hub({ items, outer = [] }) {
           ))}
         </div>
       </div>
-      <div className="cs-hub-list" aria-live="polite" onPointerEnter={() => setHold(true)} onPointerLeave={() => setHold(false)}>
+      <div className="cs-hub-side" onPointerEnter={() => setHold(true)} onPointerLeave={() => setHold(false)}>
+      <button type="button" className="sv-take-nav is-up cs-hub-arrow" aria-label="Previous module" onClick={() => go(-1)}>
+        <Icon name="chevronUp" size={28} stroke={1.8} />
+      </button>
+      <div className="cs-hub-list" aria-live="polite">
         {prev !== null && prev !== on && (
           <div key={'out' + tick + '-' + prev} className="st-choice is-on cs-hub-card is-out" aria-hidden="true">
-            <span className="st-step-n">{String(prev + 1).padStart(2, '0')}</span>
+            <span className="st-step-n">{badge(prev)}</span>
             <span className="st-choice-body">
-              <span className="st-choice-h">{items[prev].t}</span>
-              <span className="st-choice-p">{items[prev].p}</span>
+              <span className="st-choice-h">{all[prev].t}</span>
+              <span className="st-choice-p">{all[prev].p}</span>
               <span className="st-choice-bar" aria-hidden="true">
                 <i style={{ animation: 'none' }} />
               </span>
@@ -457,15 +495,19 @@ function Hub({ items, outer = [] }) {
           </div>
         )}
         <div key={'in' + tick + '-' + on} className="st-choice is-on cs-hub-card is-in">
-          <span className="st-step-n">{String(on + 1).padStart(2, '0')}</span>
+          <span className="st-step-n">{badge(on)}</span>
           <span className="st-choice-body">
-            <span className="st-choice-h">{items[on].t}</span>
-            <span className="st-choice-p">{items[on].p}</span>
-            <span className="st-choice-bar" aria-hidden="true">
+            <span className="st-choice-h">{all[on].t}</span>
+            <span className="st-choice-p">{all[on].p}</span>
+            <span className="st-choice-bar" aria-hidden="true" hidden={on >= n}>
               <i key={tick} style={auto ? { animationDuration: `${HUB_MS}ms`, animationPlayState: running ? 'running' : 'paused' } : { animation: 'none' }} />
             </span>
           </span>
         </div>
+      </div>
+      <button type="button" className="sv-take-nav is-down cs-hub-arrow" aria-label="Next module" onClick={() => go(1)}>
+        <Icon name="chevron" size={28} stroke={1.8} />
+      </button>
       </div>
     </div>
   )
