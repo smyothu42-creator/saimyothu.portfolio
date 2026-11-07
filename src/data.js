@@ -172,11 +172,21 @@ export const CASES = [
           title: 'Build less, *go live sooner*',
           blocks: [
             { kind: 'lead', p: 'Every feature we added was one more thing an owner could say no to, so the first version did one job: get an order from the table to the kitchen.' },
-            { kind: 'notes', items: [
-              { t: 'In the MVP', p: 'Ordering from the table QR, a live order board with printed slips, and the menu in English and Burmese.' },
-              { t: 'Left for later', p: 'Loyalty, paying in the app (after a security review), and moving POS steps into OrderFlow.' },
-              { t: 'Business decisions', p: 'Two months free for every pilot, then a monthly plan with no commission: Starter at 59,000 MMK, Pro at 129,900 MMK, loyalty +50,000 MMK.' },
-              { t: 'Roadmap', p: '10 pilot cafés by December 2026, 80 paying shops by December 2027, 200 shops in two cities by December 2028.' },
+            { kind: 'choices', label: 'Guest: order from the table', items: [
+              { h: 'Menu', p: 'Scan the table QR and pick from the menu, in English or Burmese.', src: '/case/orderflow/mvp/c-menu.jpg', alt: 'Guest menu for Table 24 with categories, drinks and a basket at 80,000 Ks' },
+              { h: 'Options', p: 'Size and extras, priced before it goes in the basket.', src: '/case/orderflow/mvp/c-item.jpg', alt: 'Iced Americano sheet with sizes, extra sugar and ice, and Add Order' },
+              { h: 'Order summary', p: 'Add a note or mark an item takeaway, then order.', src: '/case/orderflow/mvp/c-summary.jpg', alt: 'Order summary with Add Remark, Order Takeaway and Order Now' },
+              { h: 'Waiting', p: 'The shop confirms the order first.', src: '/case/orderflow/mvp/c-waiting.jpg', alt: 'Order status: waiting for the shop to confirm, with the order total' },
+              { h: 'Preparing', p: 'Live progress and the estimated time.', src: '/case/orderflow/mvp/c-preparing.jpg', alt: 'Order status: confirmed and preparing, about 12 minutes' },
+              { h: 'Ready', p: 'Pick it up, save the receipt or order again.', src: '/case/orderflow/mvp/c-ready.jpg', alt: 'Your order is ready, with Download Receipt and Make New Order' },
+            ] },
+            { kind: 'choices', device: 'browser', ratio: '1440 / 1024', label: 'Shop: set up and run orders', items: [
+              { h: 'Add an item', p: 'Names in English and Burmese, price and prep time.', src: '/case/orderflow/mvp/a-item.jpg', alt: 'Add New Item form with English and Burmese names, price and prepare time' },
+              { h: 'Table QR', p: 'Every table gets its own QR code.', src: '/case/orderflow/mvp/a-table-qr.jpg', alt: 'Table map with table T-1 open and its QR code generated' },
+              { h: 'QR stand', p: 'A printable stand with the shop’s logo.', src: '/case/orderflow/mvp/a-qr-stand.jpg', alt: 'Export QRs: a printable stand with the shop logo, QR and table number' },
+              { h: 'Accept', p: 'New orders land here. Accept sends them to the kitchen.', src: '/case/orderflow/mvp/a-accept.jpg', alt: 'Order board with table T-1 open and Accept Order' },
+              { h: 'Ready', p: 'The guest sees it at once.', src: '/case/orderflow/mvp/a-ready.jpg', alt: 'Order board with table T-1 preparing and Order Ready' },
+              { h: 'Paid', p: 'Close the table once it’s paid.', src: '/case/orderflow/mvp/a-paid.jpg', alt: 'Order board with table T-1 not paid yet and Payment Completed' },
             ] },
           ],
         },

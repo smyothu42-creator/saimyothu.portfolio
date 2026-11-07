@@ -611,7 +611,8 @@ export function Demo({ src, poster, steps = [], alt, device = 'phone' }) {
 // its screen; while in view it moves on by itself, with a thin bar filling
 // under the current choice. Any click stops the auto-advance. `items` are
 // { h, p, src, alt }.
-export function Choices({ items, ms = 4200, device = 'phone' }) {
+// `label` titles the block; `ratio` sets the browser page shape (default 1440 / 900).
+export function Choices({ items, ms = 4200, device = 'phone', label, ratio }) {
   const ref = useRef(null)
   const seen = useInView(ref)
   const [at, setAtRaw] = useState(0)
@@ -627,6 +628,7 @@ export function Choices({ items, ms = 4200, device = 'phone' }) {
   const running = seen && auto && !hold && !prefersReduced()
   return (
     <div className={'st-choices is-' + device} ref={ref} onPointerEnter={() => setHold(true)} onPointerLeave={() => setHold(false)}>
+      {label && <h3 className="cs-stat-h st-choices-label">{label}</h3>}
       <ol className="st-choices-list">
         {items.map((it, i) => (
           <li key={it.h}>
@@ -652,7 +654,7 @@ export function Choices({ items, ms = 4200, device = 'phone' }) {
       </ol>
       <div className={device === 'browser' ? 'st-browser' : 'st-device'}>
         {device === 'browser' && <div className="st-browser-bar" aria-hidden="true"><i /><i /><i /></div>}
-        <div className={device === 'browser' ? 'st-browser-page' : 'st-device-screen'}>
+        <div className={device === 'browser' ? 'st-browser-page' : 'st-device-screen'} style={device === 'browser' && ratio ? { aspectRatio: ratio } : undefined}>
           {items.map((it, i) => (
             <img key={i === at ? `${it.src}-${at}` : it.src} src={it.src} alt={it.alt} className={i === at ? 'is-on' : i === prev ? 'is-prev' : undefined} aria-hidden={i !== at} />
           ))}

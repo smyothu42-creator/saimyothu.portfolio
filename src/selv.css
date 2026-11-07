@@ -2281,3 +2281,6 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .sv-card .cs-notes.has-people dt { display: flex; align-items: center; gap: 18px; }
 .sv-card .cs-notes.has-people .cs-notes-person { height: 104px; flex: none; }
 @media (max-width: 640px) { .sv-card .cs-notes.has-people > div { grid-template-columns: 1fr; } .sv-card .cs-notes.has-people .cs-notes-person { height: 84px; } }
+
+/* A title over a step-card block (OrderFlow MVP flows). */
+.st-choices .st-choices-label { grid-column: 1 / -1; justify-self: start; order: -2; margin-bottom: 0; }
