@@ -163,7 +163,7 @@ export const CASES = [
         },
         {
           id: 'mvp',
-          nav: 'MVP & Prioritization',
+          nav: 'MVP',
           title: 'Build less, *go live sooner*',
           blocks: [
             { kind: 'lead', p: 'Every feature we added was one more thing an owner could say no to, so the first version did one job: get an order from the table to the kitchen.' },
