@@ -617,9 +617,11 @@ function Decisions({ items }) {
 // dashboard at the back, the staff board, the guest's phone in front), and a
 // short line for each. The highlight moves from guest to staff to owner.
 const ARCH_SHOTS = { owner: '/case/orderflow/arch-owner.jpg', staff: '/case/orderflow/arch-staff.jpg', guest: '/case/orderflow/guest-latest.jpg' }
-function ArchBrowser({ who, on }) {
+// Each screen is clickable too: it picks that step and comes to the front.
+const pressable = (label, onPick) => ({ role: 'button', tabIndex: 0, 'aria-label': label, onClick: onPick, onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPick() } } })
+function ArchBrowser({ who, on, label, onPick }) {
   return (
-    <div className={'st-browser cs-arch-' + who + (on ? ' is-on' : '')}>
+    <div className={'st-browser cs-arch-' + who + (on ? ' is-on' : '')} {...pressable(label, onPick)} aria-pressed={on}>
       <div className="st-browser-bar" aria-hidden="true"><i /><i /><i /></div>
       <div className="st-browser-page" style={{ aspectRatio: '1440 / 1024' }}><img src={ARCH_SHOTS[who]} alt="" loading="lazy" /></div>
     </div>
@@ -634,12 +636,14 @@ function Arch({ items }) {
     return () => clearTimeout(t)
   }, [auto, on, items.length])
   const key = items[on].key
+  const pick = (k) => { setOn(items.findIndex((it) => it.key === k)); setAuto(false) }
+  const name = (k) => 'Show ' + (items.find((it) => it.key === k)?.t || k)
   return (
     <div className="cs-arch">
-      <div className="cs-arch-stage" aria-hidden="true">
-        <ArchBrowser who="owner" on={key === 'owner'} />
-        <ArchBrowser who="staff" on={key === 'staff'} />
-        <div className={'st-device cs-arch-guest is-app' + (key === 'guest' ? ' is-on' : '')}>
+      <div className="cs-arch-stage">
+        <ArchBrowser who="owner" on={key === 'owner'} label={name('owner')} onPick={() => pick('owner')} />
+        <ArchBrowser who="staff" on={key === 'staff'} label={name('staff')} onPick={() => pick('staff')} />
+        <div className={'st-device cs-arch-guest is-app' + (key === 'guest' ? ' is-on' : '')} {...pressable(name('guest'), () => pick('guest'))} aria-pressed={key === 'guest'}>
           <div className="st-device-screen"><img src={ARCH_SHOTS.guest} alt="" loading="lazy" /><span className="st-device-island" /></div>
         </div>
       </div>
