@@ -163,6 +163,9 @@ export const CASES = [
               { key: 'ai', t: 'Flowy AI', tag: 'Pro plan', p: 'Every order is data. Flowy AI turns it into answers for the owner.' },
               { key: 'loyalty', t: 'Loyalty', tag: 'From Q3 2027', p: 'Points and rewards that bring guests back, as an add-on to any plan.' },
               { key: 'inventory', t: 'Inventory', tag: 'Next', p: 'Stock that counts down as orders come in, so owners know what to restock.' },
+            ], outer: [
+              { key: 'menu', t: 'Menu management' }, { key: 'tables', t: 'Tables' }, { key: 'slips', t: 'Kitchen slips' },
+              { key: 'staff', t: 'Staff' }, { key: 'reports', t: 'Reports' }, { key: 'alerts', t: 'Notifications' },
             ] },
           ],
         },

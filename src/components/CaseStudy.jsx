@@ -387,9 +387,15 @@ const HUB_ICONS = {
   ai: <><path d="M12 8V4H8" /><rect x="4" y="8" width="16" height="12" rx="2" /><path d="M2 14h2M20 14h2M15 13v2M9 13v2" /></>,
   loyalty: <><rect x="3" y="8" width="18" height="4" rx="1" /><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5" /></>,
   inventory: <><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" /><path d="M12 22V12M3.29 7 12 12l8.71-5M7.5 4.27l9 5.15" /></>,
+  menu: <path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />,
+  tables: <><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /></>,
+  slips: <><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect x="6" y="14" width="12" height="8" /></>,
+  staff: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /><circle cx="9" cy="7" r="4" /></>,
+  reports: <path d="M3 3v18h18M18 17V9M13 17V5M8 17v-3" />,
+  alerts: <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0" />,
 }
 const HUB_MS = 3800
-function Hub({ items }) {
+function Hub({ items, outer = [] }) {
   const n = items.length
   const [on, setOn] = useState(0)
   const [auto, setAuto] = useState(true)
@@ -408,26 +414,34 @@ function Hub({ items }) {
   return (
     <div className="cs-hub">
       <div className="cs-hub-art">
-        <svg className="cs-hub-spokes" viewBox="0 0 100 100" aria-hidden="true">
-          <circle className="cs-hub-orbit" cx="50" cy="50" r="38" />
-          {items.map((it, i) => (
-            <line key={it.key} className={i === on ? 'is-on' : undefined} x1={50 + 38 * Math.cos(at(i))} y1={50 + 38 * Math.sin(at(i))} x2="50" y2="50" />
-          ))}
+        <svg className="cs-hub-rings" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="29" /><circle cx="50" cy="50" r="46" />
+          <circle className="cs-hub-arc is-in" cx="50" cy="50" r="29" pathLength="100" />
+          <circle className="cs-hub-arc is-out" cx="50" cy="50" r="46" pathLength="100" />
         </svg>
-        <span className="cs-hub-core">
-          <img src="/logos/orderflow-icon.png" alt="" />
-        </span>
-        {items.map((it, i) => (
-          <button
-            key={it.key} type="button"
-            className={'cs-hub-node' + (i === on ? ' is-on' : '') + (it.live ? ' is-live' : '')}
-            style={{ left: `${50 + 38 * Math.cos(at(i))}%`, top: `${50 + 38 * Math.sin(at(i))}%`, animationDelay: `${-i * 0.7}s` }}
-            onClick={() => pick(i)} aria-pressed={i === on} aria-label={it.t}
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">{HUB_ICONS[it.key]}</svg>
-            <span className="cs-hub-label">{it.t}</span>
-          </button>
-        ))}
+        <span className="cs-hub-core"><img src="/logos/orderflow-icon.png" alt="" /></span>
+        <div className="cs-orbit is-out" aria-hidden="true">
+          {outer.map((it, i) => {
+            const a = (-60 + (360 / outer.length) * i) * Math.PI / 180
+            return (
+              <span key={it.key} className="cs-orbit-item cs-hub-dot" style={{ left: `${50 + 46 * Math.cos(a)}%`, top: `${50 + 46 * Math.sin(a)}%` }} title={it.t}>
+                <span className="cs-orbit-up"><svg viewBox="0 0 24 24">{HUB_ICONS[it.key]}</svg></span>
+              </span>
+            )
+          })}
+        </div>
+        <div className="cs-orbit is-in">
+          {items.map((it, i) => (
+            <span key={it.key} className="cs-orbit-item" style={{ left: `${50 + 29 * Math.cos(at(i))}%`, top: `${50 + 29 * Math.sin(at(i))}%` }}>
+              <span className="cs-orbit-up">
+                <button type="button" className={'cs-hub-node' + (i === on ? ' is-on' : '')} onClick={() => pick(i)} aria-pressed={i === on} aria-label={it.t}>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">{HUB_ICONS[it.key]}</svg>
+                  <span className="cs-hub-label">{it.t}</span>
+                </button>
+              </span>
+            </span>
+          ))}
+        </div>
       </div>
       <div className="cs-hub-list" aria-live="polite" onPointerEnter={() => setHold(true)} onPointerLeave={() => setHold(false)}>
         {prev !== null && prev !== on && (
