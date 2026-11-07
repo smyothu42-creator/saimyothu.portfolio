@@ -718,12 +718,12 @@ function Ship({ stats, log }) {
   )
 }
 
-// Validation: photos from the café, side by side with short captions.
+// Validation: photos from the café, side by side (an optional caption each).
 function Photos({ items }) {
   return (
     <div className="cs-photos">
       {items.map((it) => (
-        <figure key={it.src}><img src={it.src} alt={it.alt} loading="lazy" /><figcaption>{it.caption}</figcaption></figure>
+        <figure key={it.src}><img src={it.src} alt={it.alt} loading="lazy" />{it.caption && <figcaption>{it.caption}</figcaption>}</figure>
       ))}
     </div>
   )

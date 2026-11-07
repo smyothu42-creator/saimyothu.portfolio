@@ -180,8 +180,8 @@ export const CASES = [
           blocks: [
             { kind: 'lead', p: 'We put the MVP in a real café, trained the staff on site, and improved the product from what we saw and heard.' },
             { kind: 'photos', items: [
-              { src: '/case/orderflow/setup.jpg', alt: 'Our team training RAW’s staff on the OrderFlow admin at a café table', caption: 'Training RAW’s staff on the admin' },
-              { src: '/case/orderflow/team-raw.jpg', alt: 'The OrderFlow team with RAW’s staff in the café', caption: 'With the RAW team after setup' },
+              { src: '/case/orderflow/setup.jpg', alt: 'Our team training RAW’s staff on the OrderFlow admin at a café table' },
+              { src: '/sai-demo.jpg', alt: 'Sai walking café staff through OrderFlow on a laptop, with QR stands on the table' },
             ] },
             { kind: 'loop', steps: [
               { icon: 'staff', t: 'Test with real users', p: 'Guests and staff use it during real shifts.' },
