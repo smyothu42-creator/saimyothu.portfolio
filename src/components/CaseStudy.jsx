@@ -728,21 +728,31 @@ function Photos({ items }) {
     </div>
   )
 }
-// The test, feedback, improve loop: three glass steps joined by arrows, with
-// a return arrow under them; the highlight moves round.
+// The test, feedback, improve loop: three glass steps. The highlight moves
+// from step to step (a dot runs along the link to the next one), and after the
+// last step the "again" pill lights up before it starts over.
+const LOOP_MS = 2200
 function Loop({ steps }) {
+  const n = steps.length
+  const [on, setOn] = useState(0)
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const t = setTimeout(() => setOn((i) => (i + 1) % (n + 1)), LOOP_MS)
+    return () => clearTimeout(t)
+  }, [on, n])
   return (
     <div className="cs-loop">
       <ol>
         {steps.map((st, i) => (
-          <li key={st.t} style={{ animationDelay: `${i * 1.2}s` }}>
+          <li key={st.t} className={(i === on ? 'is-on' : '') + (i < on ? ' is-done' : '')}>
             <span className="cs-loop-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{HUB_ICONS[st.icon]}</svg></span>
             <b>{st.t}</b>
             <span>{st.p}</span>
+            {i < n - 1 && <span className={'cs-loop-link' + (i === on ? ' is-run' : '')} aria-hidden="true"><i /></span>}
           </li>
         ))}
       </ol>
-      <span className="cs-loop-back" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5" /></svg>Then again, with the next change</span>
+      <span className={'cs-dec-pill cs-loop-again' + (on === n ? ' is-on' : '')}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5" /></svg>Then again, with the next change</span>
     </div>
   )
 }
