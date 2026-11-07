@@ -55,7 +55,7 @@ export const PROFILE = {
 // Leave `duration` / `team` empty to hide those facts.
 export const CASES = [
   {
-    title: 'Operation Management for\u00a0F&B\u00a0Business', // non-breaking, so the second line reads "for F&B Business",
+    title: 'OrderFlow for\u00a0F&B\u00a0Business', // non-breaking, so the second line reads "for F&B Business",
     name: 'OrderFlow',
     domain: 'F&B',
     slug: 'orderflow',
@@ -111,16 +111,16 @@ export const CASES = [
         {
           id: 'opportunity',
           nav: 'The Opportunity',
-          title: 'A big market, *one gap*',
+          title: 'Big market, *one gap*',
           illo: 'table',
           blocks: [
-            { kind: 'lead', p: 'Myanmar has 23,741 cafés and restaurants, and at rush hour most still take orders on pen and paper. Restaurant software grows about 17% a year worldwide, yet nothing here let the guest order.' },
+            { kind: 'lead', p: 'Most of Myanmar’s 23,741 cafés still take orders on paper, and none let the guest order.' },
             { kind: 'stats', h: 'Market size', items: [
               { num: '6.2T', label: 'MMK: restaurant software in Asia-Pacific, 2027' },
               { num: '33.2B', label: 'MMK a year across Myanmar’s 23,741 cafés and restaurants' },
               { num: '4.3B', label: 'MMK a year in Yangon, where we start (3,043 shops)' },
             ] },
-            { kind: 'stats', h: 'Why now', items: [
+            { kind: 'stats', h: 'Digital adoption', items: [
               { logos: ['foodpanda', 'grabfood'], num: '39.8M', label: 'People online in Myanmar' },
               { logos: ['kbzpay'], num: '19M', label: 'People pay by phone (KBZPay)' },
               { num: '25%', label: 'Inflation, so printed prices go stale' },
@@ -143,9 +143,16 @@ export const CASES = [
         {
           id: 'vision',
           nav: 'Product Vision & Strategy',
-          title: 'More orders, *less chaos*',
+          title: 'Start with QR, *grow into the shop*',
           blocks: [
-            { kind: 'lead', p: 'Guests order on their phone and the kitchen gets it straight away. It runs next to the POS a café already has, on the phones and printer it already owns, and we set it up in person in a day.' },
+            { kind: 'lead', p: 'We start where the pain is: guests order from the table QR. Once a café runs on it, we add the rest of the shop around it.' },
+            { kind: 'hub', items: [
+              { key: 'qr', t: 'QR ordering', p: 'Where we start. Guests order, the kitchen gets it straight away.', live: true },
+              { key: 'pos', t: 'POS', p: 'Orders, tables and bills at the counter, in the Pro plan.' },
+              { key: 'ai', t: 'Flowy AI', p: 'Every order is data. AI turns it into answers for the owner.' },
+              { key: 'loyalty', t: 'Loyalty', p: 'Points and rewards that bring guests back, from Q3 2027.' },
+              { key: 'inventory', t: 'Inventory', p: 'Stock that counts down as orders come in.' },
+            ] },
             { kind: 'notes', items: [
               { t: 'Target users', p: 'Busy, established owner-run cafés in Yangon first (3,043 cafés and restaurants), then Mandalay.' },
               { t: 'For owners', p: 'More orders with the same staff, and prices they can change any time.' },

@@ -174,9 +174,9 @@ const VISUALS = {
   hmw: HMW, details: Details, achievements: Achievements, roadmap: Roadmap,
   impact: Impact, role: Role, sub: Sub, iconlist: IconList, segments: Segments, table: Table,
   iterations: Iterations, pills: Pills, walkthrough: Walkthrough, film: Film, shot: Shot, walktabs: WalkTabs, shottabs: ShotTabs,
-  reel: Reel, demo: Demo, choices: Choices, beforeafter: BeforeAfter,
+  reel: Reel, demo: Demo, choices: Choices, beforeafter: BeforeAfter, hub: Hub,
 }
-const TEXT = new Set(['impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'choices'])
+const TEXT = new Set(['hub', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'choices'])
 
 function Block({ block }) {
   const Visual = VISUALS[block.kind]
@@ -379,5 +379,47 @@ function BrandTile({ name }) {
       <rect width="48" height="48" rx="11" fill={b.bg} />
       {b.art}
     </svg>
+  )
+}
+
+// Product vision: OrderFlow in the middle, the first module (`live`) filled
+// in, the modules that grow around it on the ring, and the same list beside.
+const HUB_ICONS = {
+  qr: <text x="12" y="16.2" textAnchor="middle" fontSize="11" fontWeight="800" fill="currentColor" stroke="none">QR</text>,
+  pos: <text x="12" y="15.8" textAnchor="middle" fontSize="9" fontWeight="800" fill="currentColor" stroke="none">POS</text>,
+  ai: <path d="M10 4l1.6 4.4L16 10l-4.4 1.6L10 16l-1.6-4.4L4 10l4.4-1.6zM18 14l.8 2.2L21 17l-2.2.8L18 20l-.8-2.2L15 17l2.2-.8z" />,
+  loyalty: <path d="M4 10h16v4H4zM6 14v6h12v-6M12 10v10M12 10c-1.5-3-5-4-5-1.5S10 10 12 10zM12 10c1.5-3 5-4 5-1.5S14 10 12 10z" />,
+  inventory: <path d="M3 8l9-4 9 4-9 4zM3 8v8l9 4 9-4V8M12 12v8" />,
+}
+function Hub({ items }) {
+  const n = items.length
+  return (
+    <div className="cs-hub">
+      <div className="cs-hub-art" aria-hidden="true">
+        <svg className="cs-hub-spokes" viewBox="0 0 100 100">
+          {items.map((it, i) => {
+            const a = (-90 + (360 / n) * i) * Math.PI / 180
+            return <line key={it.key} x1="50" y1="50" x2={50 + 36 * Math.cos(a)} y2={50 + 36 * Math.sin(a)} />
+          })}
+        </svg>
+        <span className="cs-hub-core"><img src="/logos/orderflow-icon.png" alt="" /></span>
+        {items.map((it, i) => {
+          const a = (-90 + (360 / n) * i) * Math.PI / 180
+          return (
+            <span key={it.key} className={'cs-hub-node' + (it.live ? ' is-live' : '')} style={{ left: `${50 + 36 * Math.cos(a)}%`, top: `${50 + 36 * Math.sin(a)}%` }}>
+              <svg viewBox="0 0 24 24">{HUB_ICONS[it.key]}</svg>
+            </span>
+          )
+        })}
+      </div>
+      <ol className="cs-hub-list">
+        {items.map((it) => (
+          <li key={it.key} className={it.live ? 'is-live' : undefined}>
+            <b>{it.t}{it.live && <span className="cs-hub-tag">Start</span>}</b>
+            <span>{it.p}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
   )
 }
