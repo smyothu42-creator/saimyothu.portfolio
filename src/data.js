@@ -195,11 +195,11 @@ export const CASES = [
           nav: 'Product Architecture',
           title: 'One order, *three places*',
           blocks: [
-            { kind: 'lead', p: 'An order starts on a guest’s phone, lands on the staff board and ends up in the owner’s sales.' },
-            { kind: 'notes', items: [
-              { t: 'Customer ordering', p: 'The guest app opens from the table QR: menu, basket, dine in or takeaway, and the order’s status.' },
-              { t: 'Merchant dashboard', p: 'For the owner: the menu and prices in two languages, tables and rooms, and reports.' },
-              { t: 'Order management', p: 'The live board for staff: every open order by table, printed slips, and whether it’s paid.' },
+            { kind: 'lead', p: 'An order starts on a guest’s phone, lands on the staff board and ends up in the owner’s numbers.' },
+            { kind: 'arch', items: [
+              { key: 'guest', t: 'Guest', p: 'Orders from the table QR. No app.' },
+              { key: 'staff', t: 'Staff', p: 'A live board by table, with printed slips.' },
+              { key: 'owner', t: 'Owner', p: 'Menu, prices, tables and sales.' },
             ] },
           ],
         },

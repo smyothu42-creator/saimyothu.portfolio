@@ -50,6 +50,10 @@ export default function CaseStudy({ slug }) {
     .map(([k, v]) => [k, (v || []).filter(Boolean)])
     .filter(([, v]) => v.length)
 
+  // A study that opens with its Impact shows the numbers right after the facts,
+  // before the summary.
+  const impactTop = s?.sections?.[0]?.id === 'impact' ? s.sections[0] : null
+
   return (
     <div className="sv-case" style={s?.accent ? { '--acc': s.accent } : undefined}>
       {s?.sections?.length > 1 && <CaseNav sections={s.sections} top={s.navTop !== false} overview={s.overviewNav} />}
@@ -70,12 +74,14 @@ export default function CaseStudy({ slug }) {
         </Card>
       )}
 
+      {impactTop && <Section sec={impactTop} />}
+
       <Card className="sv-text">
         {s?.heading && <p className="sv-statement">{plain(s.heading)}</p>}
         <p>{s?.summary ?? c.desc}</p>
       </Card>
 
-      {s?.sections.map((sec) => <Section key={sec.id} sec={sec} />)}
+      {s?.sections.filter((sec) => sec !== impactTop).map((sec) => <Section key={sec.id} sec={sec} />)}
 
       <OtherWork current={c.slug} />
 
@@ -174,9 +180,9 @@ const VISUALS = {
   hmw: HMW, details: Details, achievements: Achievements, roadmap: Roadmap,
   impact: Impact, role: Role, sub: Sub, iconlist: IconList, segments: Segments, table: Table,
   iterations: Iterations, pills: Pills, walkthrough: Walkthrough, film: Film, shot: Shot, walktabs: WalkTabs, shottabs: ShotTabs,
-  reel: Reel, demo: Demo, choices: Choices, beforeafter: BeforeAfter, hub: Hub, decisions: Decisions,
+  reel: Reel, demo: Demo, choices: Choices, beforeafter: BeforeAfter, hub: Hub, decisions: Decisions, arch: Arch,
 }
-const TEXT = new Set(['hub', 'decisions', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'choices'])
+const TEXT = new Set(['hub', 'decisions', 'arch', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'choices'])
 
 function Block({ block }) {
   const Visual = VISUALS[block.kind]
@@ -534,5 +540,50 @@ function Decisions({ items }) {
         )
       })}
     </ol>
+  )
+}
+
+// Product architecture: the three surfaces layered as one scene (owner's
+// dashboard at the back, the staff board, the guest's phone in front), and a
+// short line for each. The highlight moves from guest to staff to owner.
+const ARCH_SHOTS = { owner: '/case/orderflow/mvp/a-metrics.jpg', staff: '/case/orderflow/mvp/a-accept.jpg', guest: '/case/orderflow/mvp/c-menu.jpg' }
+function ArchBrowser({ who, on }) {
+  return (
+    <div className={'st-browser cs-arch-' + who + (on ? ' is-on' : '')}>
+      <div className="st-browser-bar" aria-hidden="true"><i /><i /><i /></div>
+      <div className="st-browser-page" style={{ aspectRatio: '1440 / 1024' }}><img src={ARCH_SHOTS[who]} alt="" loading="lazy" /></div>
+    </div>
+  )
+}
+function Arch({ items }) {
+  const [on, setOn] = useState(0)
+  const [auto, setAuto] = useState(true)
+  useEffect(() => {
+    if (!auto || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const t = setTimeout(() => setOn((i) => (i + 1) % items.length), 3200)
+    return () => clearTimeout(t)
+  }, [auto, on, items.length])
+  const key = items[on].key
+  return (
+    <div className="cs-arch">
+      <div className="cs-arch-stage" aria-hidden="true">
+        <ArchBrowser who="owner" on={key === 'owner'} />
+        <ArchBrowser who="staff" on={key === 'staff'} />
+        <div className={'st-device cs-arch-guest' + (key === 'guest' ? ' is-on' : '')}>
+          <div className="st-device-screen"><img src={ARCH_SHOTS.guest} alt="" loading="lazy" /><span className="st-device-island" /></div>
+        </div>
+      </div>
+      <ol className="cs-arch-steps">
+        {items.map((it, i) => (
+          <li key={it.key}>
+            <button type="button" className={i === on ? 'is-on' : undefined} aria-pressed={i === on} onClick={() => { setOn(i); setAuto(false) }}>
+              <span className="cs-arch-n">{String(i + 1).padStart(2, '0')}</span>
+              <b>{it.t}</b>
+              <span>{it.p}</span>
+            </button>
+          </li>
+        ))}
+      </ol>
+    </div>
   )
 }

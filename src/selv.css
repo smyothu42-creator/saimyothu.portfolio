@@ -2363,3 +2363,22 @@ html.is-loading, html.is-loading body { overflow: hidden; }
   .cs-dec-eco { zoom: 0.66; }
   .cs-dec-off { zoom: 0.85; }
 }
+
+/* Product architecture: one layered scene and three short steps. */
+.cs-arch { margin-top: 8px; }
+.cs-arch-stage { position: relative; container-type: inline-size; aspect-ratio: 16 / 9.6; }
+.cs-arch-stage .st-browser { position: absolute; transition: filter 0.5s; filter: brightness(0.62) saturate(0.8); }
+.cs-arch-stage .is-on { filter: none !important; }
+.cs-arch-owner { right: 0; top: 0; width: 64%; }
+.cs-arch-staff { left: 12%; top: 22%; width: 58%; z-index: 1; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.85); }
+.cs-arch-guest.st-device { --w: 21cqw; position: absolute; left: 0; bottom: 0; z-index: 2; transition: filter 0.5s; filter: brightness(0.62) saturate(0.8); }
+.cs-arch-guest .st-device-screen img { object-position: top; }
+.cs-arch-steps { list-style: none; margin: 28px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.cs-arch-steps button { width: 100%; height: 100%; display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; text-align: left; cursor: pointer; border-radius: 16px; color: var(--sv-dim);
+  border: 1px solid transparent; transition: background 0.4s, border-color 0.4s, color 0.4s; font-size: 14px; line-height: 1.45; }
+.cs-arch-steps b { font-size: 18px; font-weight: 500; color: rgba(255, 255, 255, 0.6); transition: color 0.4s; }
+.cs-arch-n { font-size: 12px; }
+.cs-arch-steps button.is-on { color: var(--sv-soft); background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04)); border-color: rgba(255, 255, 255, 0.2); }
+.cs-arch-steps button.is-on b { color: #fff; }
+.cs-arch-steps button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+@media (max-width: 640px) { .cs-arch-steps { grid-template-columns: 1fr; gap: 6px; } .cs-arch-steps button { padding: 12px 14px; } }
