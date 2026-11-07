@@ -52,7 +52,7 @@ export default function CaseStudy({ slug }) {
 
   return (
     <div className="sv-case" style={s?.accent ? { '--acc': s.accent } : undefined}>
-      {s?.sections?.length > 1 && <CaseNav sections={s.sections} />}
+      {s?.sections?.length > 1 && <CaseNav sections={s.sections} top={s.navTop !== false} />}
       <Card className="sv-cover" id="cs-top">
         <Media art={c.art} title={c.title} eager />
         <BackButton href="/" label="Back to home" />
@@ -238,11 +238,14 @@ function Block({ block }) {
 // listing the case study's sections. The section in view is highlighted
 // (the one whose top last passed a line a third of the way down the
 // screen); clicking an item scrolls there. Hidden on narrower screens.
-function CaseNav({ sections }) {
+function CaseNav({ sections, top = true }) {
   // A section with a `group` (e.g. a design phase: Understand, Define…) is
   // listed once, under its group's name, pointing at the group's first section.
-  const items = [{ id: 'cs-top', label: 'Overview' }]
+  // `toc: false` keeps a section (like the intro film) out of the list, and a
+  // study with `navTop: false` leaves out the cover's Overview entry.
+  const items = top ? [{ id: 'cs-top', label: 'Overview' }] : []
   for (const x of sections) {
+    if (x.toc === false) continue
     if (x.group && items.some((it) => it.group === x.group)) continue
     items.push({ id: x.id, label: x.group || plain(x.nav), group: x.group })
   }

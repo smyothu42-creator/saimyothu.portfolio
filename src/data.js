@@ -75,6 +75,7 @@ export const CASES = [
     // The intro is a re-cut of the Pilot Launch film in the product's own theme
     // (tools/case-video/film-of.html).
     study: {
+      navTop: false,
       layout: 'story',
       heading: 'Designing QR table ordering for cafés in Myanmar',
       summary: 'Guests scan a QR on the table and order on their own phone, and staff run every order from one admin panel. I co-founded OrderFlow and work on both sides of it.',
@@ -91,7 +92,7 @@ export const CASES = [
           id: 'hello',
           nav: 'Intro',
           bare: true,
-          immersive: true,
+          toc: false,
           blocks: [
             { kind: 'reel', src: '/case/orderflow/intro.mp4?v=2', audio: '/case/orderflow/intro.m4a', poster: '/case/orderflow/intro.jpg', alt: 'Intro: rush hour in a Yangon café, then OrderFlow: guests scan the table QR and order on their phone, staff see every order live, owners run the menu. Four cafés live by October 2026.' },
           ],
@@ -111,56 +112,27 @@ export const CASES = [
         },
         {
           id: 'overview',
-          eyebrow: '02 · Project Overview',
-          group: 'Project Overview',
-          nav: 'The project',
+          eyebrow: '02',
+          nav: 'Project Overview',
+          illo: 'shipping',
           blocks: [
             { kind: 'notes', items: [
               { t: 'Product', p: 'QR table ordering for cafés in Myanmar: guests order from their phone at the table, and staff run every order from one admin panel.' },
               { t: 'Team', p: 'Four co-founders, four lanes: Khant Lin Nyan on vision, me on product and design, Thaw Zin Tun on tech, Hein Htet Kyaw on brand.' },
               { t: 'Timeline', p: 'Started in November 2025. The first café went live in August 2026, and four cafés run it every day as of October 2026.' },
-              { t: 'My role', p: 'Co-founder and product manager: I decide what we build and in what order, design both apps, and deliver the front end in code.' },
+              { t: 'My role', p: 'Co-founder and product manager.' },
+              { t: 'Responsibilities', p: 'Deciding what we build and in what order, designing the guest app and the admin, delivering the front end in code, and setting up every pilot café in person.' },
             ] },
           ],
         },
         {
-          id: 'role',
-          eyebrow: '02 · Project Overview',
-          group: 'Project Overview',
-          nav: 'Responsibilities',
-          illo: 'shipping',
-          blocks: [
-            { kind: 'role', items: [
-              { h: 'Execution', items: ['Guest app and admin panel', 'Order and POS flows', 'Café onboarding'] },
-              { h: 'Collaboration', items: ['Product direction with Khant', 'Build with Thaw and Khant', 'Brand with Hein'] },
-              { h: 'Research', items: ['Watched cafés at busy hours', 'Tested with staff in pilots'] },
-            ] },
-          ],
-        },
-        {
-          id: 'background',
-          eyebrow: '03 · The Opportunity',
-          group: 'The Opportunity',
-          nav: 'F&B in Myanmar',
+          id: 'opportunity',
+          eyebrow: '03',
+          nav: 'The Opportunity',
+          title: 'A big market, *one gap*',
           illo: 'table',
           blocks: [
-            { kind: 'notes', items: [
-              { t: 'Overview', p: 'At rush hour, most cafés here still run on pen and paper. Guests wait, orders get shouted across the room, and drinks get remade.' },
-              { t: 'Initial focus', p: 'Owner-run cafés in Yangon, about 3,000 of Myanmar’s 23,741 cafés and restaurants.' },
-              { t: 'Objective', p: 'Get an order from the table to the kitchen without anyone writing it down or typing it twice.' },
-              { t: 'Constraint', p: 'No app for guests and no new hardware. It had to run on the phones and printer a café already has.' },
-            ] },
-          ],
-        },
-        {
-          id: 'secondary',
-          eyebrow: '03 · The Opportunity',
-          group: 'The Opportunity',
-          nav: 'The market gap',
-          title: 'Nothing let the guest order',
-          illo: 'research',
-          blocks: [
-            { kind: 'lead', p: 'Every option a café had kept a member of staff between the guest and the kitchen, and the ones that cost the most changed that the least.' },
+            { kind: 'lead', p: 'Myanmar has 23,741 cafés and restaurants, and at rush hour most still take orders on pen and paper. Restaurant software grows about 17% a year worldwide, yet nothing here let the guest order.' },
             { kind: 'table', cols: ['Option', 'Cost to start', 'Guests order themselves', 'Reaches the kitchen'], rows: [
               ['Pen and paper', 'Free', 'No', 'Someone carries it'],
               ['Traditional POS', 'About 3.5M MMK', 'No', 'Staff type it in'],
@@ -170,234 +142,60 @@ export const CASES = [
           ],
         },
         {
-          id: 'market',
-          eyebrow: '03 · The Opportunity',
-          group: 'The Opportunity',
-          nav: 'Where we start',
-          blocks: [
-            { kind: 'notes', items: [
-              { t: 'A growing category', p: 'Restaurant software grows about 17% a year worldwide, and almost none of it lets a guest order in Myanmar.' },
-              { t: 'Yangon first', p: '3,043 cafés and restaurants. We start with busy, owner-run cafés here.' },
-              { t: 'Then further', p: 'Mandalay next, then markets like Cambodia and Laos with the same gap.' },
-            ] },
-          ],
-        },
-        {
-          id: 'users',
-          eyebrow: '04 · Problem Discovery',
-          group: 'Problem Discovery',
-          nav: 'Who we heard from',
-          blocks: [
-            { kind: 'segments', items: [
-              { h: 'Guests', illo: 'guest', sub: 'Use the guest app', items: ['Won’t install an app', 'Burmese or English', 'Hate waiting'] },
-              { h: 'Floor staff', illo: 'staff', sub: 'Use the admin, all shift', items: ['Many tables at once', 'One shared device', 'No time to train'] },
-              { h: 'Owners', illo: 'owner', sub: 'Use the admin, and pay for it', items: ['Already own a POS', 'Change prices often', 'Want a daily overview'] },
-            ] },
-          ],
-        },
-        {
-          id: 'interviews',
-          eyebrow: '04 · Problem Discovery',
-          group: 'Problem Discovery',
-          nav: 'User interviews',
-          blocks: [
-            { kind: 'notes', items: [
-              { t: 'Owners', illo: 'owner', p: 'Want to keep their POS and stop reprinting menus.' },
-              { t: 'Floor staff', illo: 'staff', p: 'Hate re-typing orders at the counter.' },
-              { t: 'Guests', illo: 'guest', p: 'Hate waiting for a waiter. Won’t install an app.' },
-            ] },
-          ],
-        },
-        {
-          id: 'problems',
-          eyebrow: '04 · Problem Discovery',
-          group: 'Problem Discovery',
-          nav: 'Pain points',
+          id: 'discovery',
+          eyebrow: '04',
+          nav: 'Problem Discovery',
           illo: 'juggle',
           blocks: [
-            { kind: 'iconlist', items: [
-              { h: 'Wrong orders', p: 'Shouted orders get lost, and drinks get remade.' },
-              { h: 'Slow service', p: 'One server, too many tables, and guests wait.' },
-              { h: 'Old menus', p: 'With inflation near 25%, a printed price is soon wrong.' },
-              { h: 'Tools that stop at the counter', p: 'A POS can cost 3.5M MMK and still can’t let a guest order.' },
+            { kind: 'lead', p: 'We watched cafés at busy hours and talked to the people on each side of an order.' },
+            { kind: 'notes', items: [
+              { t: 'Owners', illo: 'owner', p: 'Want to keep their POS and stop reprinting menus. With inflation near 25%, a printed price is soon wrong.' },
+              { t: 'Floor staff', illo: 'staff', p: 'Too many tables at once, orders shouted across the room, and every order typed in again at the counter.' },
+              { t: 'Guests', illo: 'guest', p: 'Wait to be noticed, get the wrong drink, and won’t install an app to order.' },
             ] },
-          ],
-        },
-        {
-          id: 'journey',
-          eyebrow: '04 · Problem Discovery',
-          group: 'Problem Discovery',
-          nav: 'User journey',
-          blocks: [
-            { kind: 'journeymap', rows: ['emotion', 'pain'], caption: 'One busy-hour order, before OrderFlow.',
-              stages: ['Arrive', 'Order', 'Hand-off', 'Serve', 'Pay', 'After service'],
-              users: [
-                { name: 'Guest', illo: 'guest', cells: [
-                  { emotion: 0, mood: 'Neutral', pain: 'Waits to be noticed' },
-                  { emotion: -1, mood: 'Unsure', pain: 'Old prices, misheard' },
-                  { emotion: -2, mood: 'Anxious', pain: 'Did the kitchen get it?' },
-                  { emotion: -1, mood: 'Annoyed', pain: 'Wrong items' },
-                  { emotion: 1, mood: 'Fine', pain: 'Works today' },
-                  null,
-                ] },
-                { name: 'Floor staff', illo: 'staff', cells: [
-                  { emotion: 0, mood: 'Busy', pain: 'Too many tables' },
-                  { emotion: -1, mood: 'Rushed', pain: 'Messy notes' },
-                  { emotion: -2, mood: 'Stressed', pain: 'Re-typing, lost tickets' },
-                  { emotion: -1, mood: 'Unsure', pain: 'Which table?' },
-                  { emotion: 0, mood: 'OK', pain: 'Bill must match' },
-                  null,
-                ] },
-                { name: 'Owner', illo: 'owner', cells: [
-                  null, null, null, null,
-                  { emotion: -1, mood: 'Unsure', pain: 'Sales split up' },
-                  { emotion: -2, mood: 'Frustrated', pain: 'Spreadsheets, reprints' },
-                ] },
-              ] },
           ],
         },
         {
           id: 'vision',
-          eyebrow: '05 · Product Vision & Strategy',
-          group: 'Product Vision & Strategy',
-          nav: 'Vision',
+          eyebrow: '05',
+          nav: 'Product Vision & Strategy',
           title: 'More orders, *less chaos*',
           blocks: [
             { kind: 'lead', p: 'Guests order on their phone and the kitchen gets it straight away. It runs next to the POS a café already has, on the phones and printer it already owns, and we set it up in person in a day.' },
             { kind: 'notes', items: [
-              { t: 'Who we build for first', p: 'Busy, established owner-run cafés in Yangon: busy enough to feel the rush, and run by the person who pays.' },
-              { t: 'Owners', illo: 'owner', p: 'More orders with the same staff, and prices they can change any time.' },
-              { t: 'Floor staff', illo: 'staff', p: 'Fewer mistakes and calmer shifts, with no orders shouted across the room.' },
-              { t: 'Guests', illo: 'guest', p: 'No waiting to order, in Burmese or English, and no app to install.' },
+              { t: 'Target users', p: 'Busy, established owner-run cafés in Yangon first (3,043 cafés and restaurants), then Mandalay.' },
+              { t: 'For owners', p: 'More orders with the same staff, and prices they can change any time.' },
+              { t: 'For staff', p: 'Fewer mistakes and calmer shifts.' },
+              { t: 'For guests', p: 'No waiting to order, in Burmese or English, and no app to install.' },
             ] },
-          ],
-        },
-        {
-          id: 'understanding',
-          eyebrow: '05 · Product Vision & Strategy',
-          group: 'Product Vision & Strategy',
-          nav: 'Product understanding',
-          blocks: [
-            { kind: 'lead', p: 'We put the problem, solutions, value proposition, market size and revenue model on one board.' },
-            { kind: 'shot', src: '/case/orderflow/product-understanding.png', alt: 'FigJam board with sticky notes in five columns: Problem, Solutions, Value Proposition, Market Size, Revenue Model', caption: 'The board we worked from.' },
           ],
         },
         {
           id: 'mvp',
-          eyebrow: '06 · MVP & Prioritization',
-          group: 'MVP & Prioritization',
-          nav: 'The first version',
+          eyebrow: '06',
+          nav: 'MVP & Prioritization',
           title: 'Build less, *go live sooner*',
           blocks: [
             { kind: 'lead', p: 'Every feature we added was one more thing an owner could say no to, so the first version did one job: get an order from the table to the kitchen.' },
             { kind: 'notes', items: [
-              { t: 'Guests', p: 'Scan the table QR, order in Burmese or English, and follow the status.' },
-              { t: 'Staff', p: 'A live board of every order, with slips printed for the kitchen.' },
-              { t: 'Owners', p: 'The menu and prices, in two languages, editable any time.' },
-            ] },
-          ],
-        },
-        {
-          id: 'business',
-          eyebrow: '06 · MVP & Prioritization',
-          group: 'MVP & Prioritization',
-          nav: 'Business decisions',
-          blocks: [
-            { kind: 'notes', items: [
-              { t: 'Two months free', p: 'Every pilot starts free, so an owner sees it work before paying anything.' },
-              { t: 'A monthly plan, no commission', p: 'Starter at 59,000 MMK a month for tea shops and carts, Pro at 129,900 MMK for busy cafés. We never take a cut of orders.' },
-              { t: 'Loyalty as an add-on', p: 'Points and stamp cards for 50,000 MMK a month, on either plan.' },
-              { t: 'Set up in person', p: 'We visit, put QR stands on the tables and go live in a day. Winning a café costs us about 58,000 MMK.' },
-            ] },
-          ],
-        },
-        {
-          id: 'roadmap',
-          eyebrow: '06 · MVP & Prioritization',
-          group: 'MVP & Prioritization',
-          nav: 'Roadmap',
-          blocks: [
-            { kind: 'lead', p: 'The plan from here, from pilots to paying shops.' },
-            { kind: 'notes', items: [
-              { t: 'Dec 2026 · now', p: '10 pilot cafés, set up in person, two months free.' },
-              { t: 'Q1 2027', p: '7+ pilots paying, and their results become case studies.' },
-              { t: 'Dec 2027', p: '80 paying shops, and the first pilots in Mandalay.' },
-              { t: 'Dec 2028', p: '200 shops in two cities, and the first chains on Enterprise.' },
-            ] },
-          ],
-        },
-        {
-          id: 'next',
-          eyebrow: '06 · MVP & Prioritization',
-          group: 'MVP & Prioritization',
-          nav: 'Left for later',
-          blocks: [
-            { kind: 'notes', items: [
-              { t: 'Loyalty', p: 'Points, stamp cards and membership levels in the guest app, managed from the admin.' },
-              { t: 'QR-only cafés', p: 'For cafés keeping their own POS, a single “all added to POS” step. It’s still planned.' },
-              { t: 'Paying in the app', p: 'Wallet payments, after a security review. Today guests still pay the way they always have.' },
+              { t: 'In the MVP', p: 'Ordering from the table QR, a live order board with printed slips, and the menu in English and Burmese.' },
+              { t: 'Left for later', p: 'Loyalty, paying in the app (after a security review), and moving POS steps into OrderFlow.' },
+              { t: 'Business decisions', p: 'Two months free for every pilot, then a monthly plan with no commission: Starter at 59,000 MMK, Pro at 129,900 MMK, loyalty +50,000 MMK.' },
+              { t: 'Roadmap', p: '10 pilot cafés by December 2026, 80 paying shops by December 2027, 200 shops in two cities by December 2028.' },
             ] },
           ],
         },
         {
           id: 'architecture',
-          eyebrow: '07 · Product Architecture',
-          group: 'Product Architecture',
-          nav: 'Three parts',
+          eyebrow: '07',
+          nav: 'Product Architecture',
           title: 'One order, *three places*',
           blocks: [
             { kind: 'lead', p: 'An order starts on a guest’s phone, lands on the staff board and ends up in the owner’s sales.' },
             { kind: 'notes', items: [
               { t: 'Customer ordering', p: 'The guest app opens from the table QR: menu, basket, dine in or takeaway, and the order’s status.' },
-              { t: 'Order management', p: 'The live board for staff: every open order by table, printed slips, and whether it’s paid.' },
               { t: 'Merchant dashboard', p: 'For the owner: the menu and prices in two languages, tables and rooms, and reports.' },
-            ] },
-          ],
-        },
-        {
-          id: 'guest',
-          eyebrow: '07 · Product Architecture',
-          group: 'Product Architecture',
-          nav: 'Customer ordering',
-          title: 'The guest app gets one visit',
-          blocks: [
-            { kind: 'lead', p: 'A guest has no reason to learn anything here, so I designed for a thumb, on a 360 to 430 pixel phone, with the main action always at the bottom.' },
-            { kind: 'choices', items: [
-              { h: 'The table is already known', p: 'Each QR belongs to one table, so the menu opens with no typing and no sign-in.', src: '/case/orderflow/choice-menu.jpg', alt: 'Guest menu for Table 1, with item photos, prices and Add buttons' },
-              { h: 'Burmese in one tap', p: 'The menu, the item names and the buttons all change in place.', src: '/case/orderflow/choice-burmese.jpg', alt: 'The same menu with its text in Burmese' },
-              { h: 'Dine in or takeaway', p: 'One basket can hold both, and the charges stay visible before the order goes.', src: '/case/orderflow/choice-basket.jpg', alt: 'Basket with two items, a dine in or takeaway switch on each, and the charge breakdown' },
-              { h: 'Status instead of waving', p: 'After sending, each item shows where it is, so nobody has to catch a waiter’s eye.', src: '/case/orderflow/choice-status.jpg', alt: 'Your Order screen: Preparing Your Orders, with each item marked Preparing' },
-            ] },
-          ],
-        },
-        {
-          id: 'admin',
-          eyebrow: '07 · Product Architecture',
-          group: 'Product Architecture',
-          nav: 'Merchant dashboard',
-          title: 'The admin gets used all day',
-          blocks: [
-            { kind: 'lead', p: 'The admin is the opposite job: the same people on the same screen for a whole shift. It should feel like a work surface, dense and easy to scan.' },
-            { kind: 'notes', items: [
-              { t: 'Two views of one board', p: 'A card per order for the rush, or a map of the floor for seeing which table needs what.' },
-              { t: 'State you can read at a glance', p: 'Ordering, preparing, urgent and not paid yet each look different, on a card and on a table.' },
-              { t: 'Two languages per item', p: 'Every menu item is written in English and Burmese, so the guest app can switch.' },
-            ] },
-          ],
-        },
-        {
-          id: 'orders',
-          eyebrow: '07 · Product Architecture',
-          group: 'Product Architecture',
-          nav: 'Order management',
-          title: 'One Orders page for every kind of order',
-          blocks: [
-            { kind: 'lead', p: 'In November I reworked the Orders page around what really happens at the counter. Open orders sit here until they’re paid, then move to Reports, and the big button at the bottom always shows the next step.' },
-            { kind: 'shottabs', items: [
-              { name: 'Orders', lead: 'Open orders from every channel, with manual orders one button away.', src: '/case/orderflow/orders-board.jpg', alt: 'The real Orders board: filters, a search box, a Manual Order button and a card for every open table and room, each listing its items' },
-              { name: 'Manual', lead: 'For the guest at the counter: pick a table, make the order, print the slips.', src: '/case/orderflow/orders-manual.jpg', alt: 'The real manual order screen for table 6: menu categories and items on the left, the cart with three items and its total on the right' },
-              { name: 'QR', lead: 'A QR order arrives as a card. Staff print the slips, then mark it paid.', src: '/case/orderflow/orders-qr.jpg', alt: 'An open order on table 5: the board stays behind while a side panel lists the items, the total and a Print Slips button' },
-              { name: 'Rooms', lead: 'Room fee and all items end up on one bill.', src: '/case/orderflow/orders-room.jpg', alt: 'Room R-03 in a side panel: order items, room usage and one total, with a Payment Done button' },
+              { t: 'Order management', p: 'The live board for staff: every open order by table, printed slips, and whether it’s paid.' },
             ] },
           ],
         },
@@ -409,35 +207,20 @@ export const CASES = [
           blocks: [
             { kind: 'table', cols: ['We chose', 'Instead of', 'The trade-off'], rows: [
               ['A web page from a QR', 'An app to download', 'Less we can do on the phone, but no guest has to install anything'],
-              ['Running next to the café’s POS', 'Replacing it', 'We got into cafés fast, but staff typed QR orders in twice, so the POS steps are moving into OrderFlow'],
+              ['Running next to the café’s POS', 'Replacing it', 'We got into cafés fast, but staff typed QR orders in twice'],
               ['The phones and printer they own', 'Our own tablets', 'No hardware to buy, so every screen has to work on older phones'],
-              ['Setting up in person', 'Self sign-up online', 'Slower to grow, but a café goes live in a day and every pilot is still running'],
+              ['Setting up in person', 'Self sign-up online', 'Slower to grow, but a café goes live in a day'],
               ['A monthly plan', 'A cut of every order', 'Less income from busy cafés, but owners always know what they pay'],
             ] },
           ],
         },
         {
           id: 'execution',
-          eyebrow: '09 · Design Execution',
-          group: 'Design Execution',
-          nav: 'From Figma to code',
+          eyebrow: '09',
+          nav: 'Design Execution',
+          title: 'Designed, then *delivered in code*',
           blocks: [
-            { kind: 'lead', p: 'I designed both apps in Figma and delivered their front end in code, so what we tested in cafés was what I designed.' },
-            { kind: 'notes', items: [
-              { t: 'User flows', p: 'Every guest order and staff path mapped in FigJam before any screen.' },
-              { t: 'Design system', p: 'Both apps share the ODF design system: one orange, one typeface, and a different density for each.' },
-              { t: 'Two languages', p: 'Every screen and every menu item works in English and Burmese.' },
-              { t: 'Front end', p: 'The guest app and the admin, built from the designs and shipped to the pilot cafés.' },
-            ] },
-          ],
-        },
-        {
-          id: 'walkthrough',
-          eyebrow: '09 · Design Execution',
-          group: 'Design Execution',
-          nav: 'Guest app',
-          title: 'From the table QR to the kitchen',
-          blocks: [
+            { kind: 'lead', p: 'I mapped the flows in FigJam, designed both apps on one design system in Figma, and delivered their front end in code, so what we tested in cafés was what I designed.' },
             { kind: 'demo', src: '/case/orderflow/guest.mp4', poster: '/case/orderflow/guest.jpg', alt: 'Screen recording of the guest app: the menu, switching to Burmese, browsing, adding two items, the basket, placing the order and following it', steps: [
               { t: 0, text: 'Scan the QR, no app' },
               { t: 0.77, text: 'Burmese or English' },
@@ -447,45 +230,25 @@ export const CASES = [
               { t: 21.92, text: 'Review and place' },
               { t: 28.38, text: 'Track until ready' },
             ] },
-          ],
-        },
-        {
-          id: 'board',
-          eyebrow: '09 · Design Execution',
-          group: 'Design Execution',
-          nav: 'Admin panel',
-          title: 'Every order, then the menu behind it',
-          blocks: [
             { kind: 'reel', ratio: '7 / 5', src: '/case/orderflow/admin.mp4?v=2', poster: '/case/orderflow/admin.jpg', alt: 'The admin panel: the live order board, the table map, adding a menu item in English and Burmese, and the menu list', caption: 'The order board, the table map and the menu, from our launch film.' },
           ],
         },
         {
-          id: 'pilots',
-          eyebrow: '10 · Pilot & Iteration',
-          group: 'Pilot & Iteration',
-          nav: 'In the café',
-          title: 'We set up every café ourselves',
+          id: 'pilot',
+          eyebrow: '10',
+          nav: 'Pilot & Iteration',
+          illo: 'research',
           blocks: [
-            { kind: 'lead', p: 'Every pilot starts with a visit. We put QR stands on the tables and set the café up in person, usually in a day.' },
-            { kind: 'shot', src: '/case/orderflow/setup.jpg', alt: 'Two of the team at a café table with a laptop, going through the admin with café staff in aprons', caption: 'Going through the admin with café staff.' },
-          ],
-        },
-        {
-          id: 'flows',
-          eyebrow: '10 · Pilot & Iteration',
-          group: 'Pilot & Iteration',
-          nav: 'What we changed',
-          title: 'Staff were entering every order twice',
-          blocks: [
-            { kind: 'lead', p: 'Running beside a POS got us into cafés quickly. Then I watched what it cost: every QR order got typed into the POS again, then ticked off in OrderFlow. So we started moving the POS steps into the admin.' },
-            { kind: 'shottabs', items: [
-              { name: 'Before', lead: 'With QR orders, staff typed every order into the POS again, then ticked it off in OrderFlow.', src: '/case/orderflow/ordering-flows.png', crop: 'top', ratio: 3.67, alt: 'FigJam board: current manual ordering and POS + OrderFlow ordering flows' },
-              { name: 'Proposed', lead: 'Bring the POS steps into OrderFlow: one place to take, print and track every order.', src: '/case/orderflow/ordering-flows.png', crop: 'bottom', ratio: 3.67, alt: 'FigJam board: proposed manual and QR ordering flows with the POS integrated into OrderFlow' },
+            { kind: 'lead', p: 'Every pilot starts with a visit: QR stands on the tables, the café set up in person, usually in a day.' },
+            { kind: 'notes', items: [
+              { t: 'Partner feedback', p: 'Staff were entering every QR order twice: once into their POS, then ticking it off in OrderFlow.' },
+              { t: 'What we changed', p: 'We started moving the POS steps into the admin, and reworked the Orders page around what happens at the counter.' },
+              { t: 'Testing', p: 'Each change goes to the pilot cafés first, with staff during real shifts.' },
             ] },
           ],
         },
         {
-          id: 'learned',
+          id: 'takeaway',
           eyebrow: '11',
           nav: 'Takeaway',
           illo: 'idea',
@@ -513,6 +276,7 @@ export const CASES = [
     // interview findings) and ACCESSIBILITY-AUDIT.md (WCAG 2.2 AA, 23 Jul 2026).
     // Recordings: tools/case-video (web 1440 × 900 primary, phone 402 × 874 secondary).
     study: {
+      navTop: false,
       layout: 'story',
       heading: 'Designing lunch ordering that says what it costs, before you ask',
       // TODO(Sai): confirm your part and the dates.
@@ -530,7 +294,7 @@ export const CASES = [
           id: 'hello',
           nav: 'Intro',
           bare: true,
-          immersive: true,
+          toc: false,
           blocks: [
             { kind: 'reel', src: '/case/superfine-employee/intro.mp4?v=3', audio: '/case/superfine-employee/intro.m4a', poster: '/case/superfine-employee/intro.jpg', alt: 'Intro: employees could not see their allowance, the cut-off or their lunch. Then the app: sign in, allowance in view, choices first, a cart that splits the cost, and the same flow on a phone.' },
           ],
@@ -539,7 +303,6 @@ export const CASES = [
           id: 'impact',
           eyebrow: '01',
           nav: 'Impact',
-          title: 'What it costs, when it closes, where it is',
           blocks: [
             { kind: 'lead', p: 'A web app for employees on a company meal program, built from five interview findings and tested against WCAG 2.2 AA.' },
             { kind: 'notes', items: [
@@ -551,94 +314,44 @@ export const CASES = [
         },
         {
           id: 'overview',
-          eyebrow: '02 · Project Overview',
-          group: 'Project Overview',
-          nav: 'The project',
-          blocks: [
-            { kind: 'notes', items: [
-              { t: 'Product', p: 'Lunch ordering for employees on a company meal program, on the web and on a phone, for Superfine Kitchen in San Francisco.' },
-              { t: 'Team', p: 'Designed at Heizen for Superfine Kitchen, with reviews by the Superfine team and Heizen engineers building it.' },
-              { t: 'Timeline', p: 'June to September 2026.' },
-              { t: 'My role', p: 'Product designer: interviews, flows and screens, a working prototype built with AI, and the accessibility audit.' },
-            ] },
-          ],
-        },
-        {
-          id: 'role',
-          eyebrow: '02 · Project Overview',
-          group: 'Project Overview',
-          nav: 'Responsibilities',
+          eyebrow: '02',
+          nav: 'Project Overview',
           illo: 'shipping',
           blocks: [
-            { kind: 'role', items: [
-              { h: 'Execution', items: ['Web flows and screens', 'Mobile responsive layouts', 'Coded prototype with Claude'] },
-              { h: 'Collaboration', items: ['Reviews with Superfine', 'Notes for Heizen engineers'] },
-              { h: 'Research', items: ['Employee interviews', 'WCAG 2.2 AA audit'] },
+            { kind: 'notes', items: [
+              { t: 'Product', p: 'Lunch ordering for employees on a company meal program, on the web and on a phone.' },
+              { t: 'Client', p: 'Superfine Kitchen, which cooks in San Francisco and delivers lunch to Bay Area offices.' },
+              { t: 'Timeline', p: 'June to September 2026.' },
+              { t: 'My role', p: 'Product designer at Heizen: interviews, flows and screens, a working prototype built with AI, and the accessibility audit.' },
             ] },
           ],
         },
         {
-          id: 'background',
-          eyebrow: '03 · Product Context',
-          group: 'Product Context',
-          nav: 'Corporate lunch',
+          id: 'context',
+          eyebrow: '03',
+          nav: 'Product Context',
           illo: 'lunch',
           blocks: [
+            { kind: 'lead', p: 'Companies pay part of their employees’ lunch, like $15 a day at Neptune Corp. Cards are charged 24 hours before delivery.' },
             { kind: 'notes', items: [
-              { t: 'Overview', p: 'Superfine Kitchen cooks in San Francisco and delivers lunch to Bay Area offices.' },
-              { t: 'Who orders', p: 'Employees whose company pays part of lunch, like $15 a day at Neptune Corp.' },
-              { t: 'Objective', p: 'Order lunch without wondering what’s covered, when ordering closes, or whether it’s coming.' },
-              { t: 'Constraint', p: 'Cards are charged 24 hours before delivery, and some employees only have a phone.' },
+              { t: 'Office employees', illo: 'employee', p: 'Order between meetings and want to see what’s covered.' },
+              { t: 'Floor employees', illo: 'staff', p: 'Only have a phone, and need the cut-off and to know food is coming.' },
+              { t: 'Company admins', illo: 'owner', p: 'Set the allowance, add people by email and watch the spend.' },
             ] },
           ],
         },
         {
-          id: 'users',
-          eyebrow: '03 · Product Context',
-          group: 'Product Context',
-          nav: 'Who orders',
-          blocks: [
-            { kind: 'segments', items: [
-              { h: 'Office employees', illo: 'employee', sub: 'At a desk', items: ['Order between meetings', 'Plan the week ahead', 'Want to see what’s covered'] },
-              { h: 'Floor employees', illo: 'staff', sub: 'On site, not at a desk', items: ['Phone only', 'Need the cut-off time', 'Need to know food is coming'] },
-              { h: 'Company admins', illo: 'owner', sub: 'Run the program', items: ['Set the allowance', 'Add people by email', 'Watch the spend'] },
-            ] },
-          ],
-        },
-        {
-          id: 'problems',
-          eyebrow: '04 · The Problem',
-          group: 'The Problem',
-          nav: 'Pain points',
+          id: 'problem',
+          eyebrow: '04',
+          nav: 'The Problem',
           illo: 'juggle',
           blocks: [
             { kind: 'iconlist', items: [
               { h: 'Hidden allowance', p: 'People found out what was covered at checkout, if at all.' },
               { h: 'Missed cut-offs', p: 'Each order type closes at a different time before delivery.' },
               { h: 'No status', p: 'Nothing said whether lunch was actually coming.' },
-              { h: 'Too many doors', p: 'Different links and detours before reaching the right menu.' },
               { h: 'Surprise charges', p: 'Unclear when the card is charged, and by how much.' },
             ] },
-          ],
-        },
-        {
-          id: 'journey',
-          eyebrow: '04 · The Problem',
-          group: 'The Problem',
-          nav: 'User journey',
-          blocks: [
-            // TODO(Sai): check the moods against your interview notes.
-            { kind: 'journeymap', rows: ['emotion', 'pain'], caption: 'One lunch order, before the app.',
-              stages: ['Sign in', 'Browse', 'Choose', 'Check out', 'Wait'],
-              users: [
-                { name: 'Employee', illo: 'employee', cells: [
-                  { emotion: -1, mood: 'Unsure', pain: 'Which link is mine?' },
-                  { emotion: 0, mood: 'Curious', pain: 'Dietary info hidden' },
-                  { emotion: -2, mood: 'Unsure', pain: 'Is this covered?' },
-                  { emotion: -2, mood: 'Anxious', pain: 'When am I charged?' },
-                  { emotion: -1, mood: 'Unsure', pain: 'Is it coming?' },
-                ] },
-              ] },
           ],
         },
         {
@@ -649,7 +362,7 @@ export const CASES = [
           blocks: [
             { kind: 'lead', p: 'We talked to employees about how they order lunch today. Five findings shaped the app.' },
             { kind: 'notes', items: [
-              { t: 'One front door', illo: 'employee', p: 'Sign in with the company email and land on the right menu, with the right allowance.' },
+              { t: 'One front door', p: 'Sign in with the company email and land on the right menu, with the right allowance.' },
               { t: 'Phone first', p: 'Some employees only have a phone, so the app has to work fully on one.' },
               { t: 'Is food coming?', p: 'A clear status: Draft, Placed, Confirmed, Delivered.' },
               { t: 'No false promises', p: 'Say plainly when an order locks. No “confirmed” after the cut-off.' },
@@ -672,11 +385,10 @@ export const CASES = [
           ],
         },
         {
-          id: 'money',
-          eyebrow: '07 · Final UI Design',
-          group: 'Final UI Design',
-          nav: 'Show the money',
-          title: 'Show the money before the menu',
+          id: 'final',
+          eyebrow: '07',
+          nav: 'Final UI Design',
+          title: 'Show the money *before the menu*',
           blocks: [
             { kind: 'lead', p: 'The allowance sits in the header, the cart splits who pays what, and checkout says when the card is charged.' },
             { kind: 'choices', device: 'browser', items: [
@@ -684,28 +396,6 @@ export const CASES = [
               { h: 'The cart splits it', p: 'Company pays, you pay, line by line.', src: '/case/superfine-employee/money-cart.jpg', alt: 'Cart drawer: Paneer Tikka Bowl, company pays $15.00, you pay $1.63' },
               { h: 'No surprise charge', p: 'The cut-off, and “charged 24 hours before delivery, never before”.', src: '/case/superfine-employee/money-checkout.jpg', alt: 'Checkout with the cut-off check, delivery details and payment charged 24 hours before delivery' },
             ] },
-          ],
-        },
-        {
-          id: 'responsive',
-          eyebrow: '07 · Final UI Design',
-          group: 'Final UI Design',
-          nav: 'Web first, then phone',
-          blocks: [
-            { kind: 'lead', p: 'The web app came first. The phone gets the same flow, rebuilt for one hand.' },
-            { kind: 'notes', items: [
-              { t: 'Web', p: 'Sidebar navigation, the cart in a drawer beside the menu, checkout with its summary on one page.' },
-              { t: 'Phone', p: 'A menu button, bottom sheets for choices, and a sticky bar with the total.' },
-            ] },
-          ],
-        },
-        {
-          id: 'walkthrough',
-          eyebrow: '07 · Final UI Design',
-          group: 'Final UI Design',
-          nav: 'Web app',
-          title: 'Design walkthrough: web',
-          blocks: [
             { kind: 'demo', device: 'browser', src: '/case/superfine-employee/web.mp4?v=2', poster: '/case/superfine-employee/web.jpg', alt: 'Screen recording of the employee web app, one lunch order from sign-in to tracking', steps: [
               { t: 0, text: 'Sign in with work email' },
               { t: 5.17, text: 'Allowance in the header' },
@@ -715,15 +405,6 @@ export const CASES = [
               { t: 19.2, text: 'One confirmation email' },
               { t: 20.71, text: 'Track every order' },
             ] },
-          ],
-        },
-        {
-          id: 'mobile',
-          eyebrow: '07 · Final UI Design',
-          group: 'Final UI Design',
-          nav: 'Mobile',
-          title: 'Mobile responsive',
-          blocks: [
             { kind: 'demo', src: '/case/superfine-employee/mobile.mp4', poster: '/case/superfine-employee/mobile.jpg', alt: 'Screen recording of the employee app on a phone, the same lunch order', steps: [
               { t: 0, text: 'Same email sign in' },
               { t: 5.26, text: 'Allowance in a pill' },
@@ -736,7 +417,7 @@ export const CASES = [
           ],
         },
         {
-          id: 'a11y',
+          id: 'usability',
           eyebrow: '08',
           nav: 'Usability',
           title: 'Can everyone use it?',
@@ -757,21 +438,12 @@ export const CASES = [
           ],
         },
         {
-          id: 'learned',
-          eyebrow: '09 · Takeaway',
-          group: 'Takeaway',
-          nav: 'What I learned',
+          id: 'takeaway',
+          eyebrow: '09',
+          nav: 'Takeaway',
           illo: 'reading',
           blocks: [
             { kind: 'lead', p: 'A careful hand audit still needs a machine to check it, and the machine still needs a person. Our sixteenth problem came from one of our own fixes.' },
-          ],
-        },
-        {
-          id: 'next',
-          eyebrow: '09 · Takeaway',
-          group: 'Takeaway',
-          nav: 'What’s next',
-          blocks: [
             { kind: 'notes', items: [
               { t: 'Put it live', p: 'The accessibility fixes are written and tested, not yet released.' },
               { t: 'A real person', p: 'An hour with someone who uses a screen reader every day.' },
@@ -1094,6 +766,7 @@ export const CASES = [
     // screens are from the Figma flows (tools/case-video/out-mtb).
     // TODO(Sai): add the dates and where the app is now.
     study: {
+      navTop: false,
       layout: 'story',
       heading: 'A merchant wallet for shopkeepers, not tech people',
       summary: 'MTB Bank partnered with us to support small businesses in Myanmar by improving its merchant app. The goal was a faster, more intuitive system for people with limited tech skills, one that reinforced trust in MTB’s digital ecosystem.',
@@ -1110,6 +783,7 @@ export const CASES = [
           id: 'hello',
           nav: 'Intro',
           bare: true,
+          toc: false,
           blocks: [
             { kind: 'reel', src: '/case/mtb-pay-merchant/intro.mp4?v=4', audio: '/case/mtb-pay-merchant/intro.m4a?v=3', poster: '/case/mtb-pay-merchant/intro.jpg?v=2', alt: 'Intro: slow transactions and frequent errors for small shops in Myanmar. Then a day at one shop counter with MTB Pay Merchant: a morning phone top-up, a QR payment in the lunch rush, a refund in the afternoon, and the day on one screen at closing time.' },
           ],
@@ -1118,16 +792,15 @@ export const CASES = [
           id: 'impact',
           eyebrow: '01',
           nav: 'Impact',
-          title: 'Faster top-ups, fewer errors',
           blocks: [
             { kind: 'lead', p: 'Users reported faster top-ups, fewer errors and more confidence using the app. The feedback was positive, and it showed how far simple, thoughtful design can go.' },
           ],
         },
         {
           id: 'overview',
-          eyebrow: '02 · Project Overview',
-          group: 'Project Overview',
-          nav: 'The project',
+          eyebrow: '02',
+          nav: 'Project Overview',
+          illo: 'shipping',
           blocks: [
             { kind: 'notes', items: [
               { t: 'Product', p: 'A merchant wallet for small businesses in Myanmar, made with MTB Bank to replace an outdated merchant app.' },
@@ -1137,52 +810,22 @@ export const CASES = [
           ],
         },
         {
-          id: 'role',
-          eyebrow: '02 · Project Overview',
-          group: 'Project Overview',
-          nav: 'Responsibilities',
-          illo: 'shipping',
-          blocks: [
-            { kind: 'role', items: [
-              { h: 'Execution', items: ['User interface design', 'Design system', 'Iteration', 'Developer handoff'] },
-              { h: 'Collaboration', items: ['4 product designers', '11 developers', '3 stakeholders'] },
-              { h: 'Research', items: ['A survey of target users'] },
-            ] },
-          ],
-        },
-        {
           id: 'context',
-          eyebrow: '03 · Product Context',
-          group: 'Product Context',
-          nav: 'Merchants and MTB',
+          eyebrow: '03',
+          nav: 'Product Context',
+          illo: 'research',
           blocks: [
+            { kind: 'lead', p: 'MTB Bank wanted to support small businesses in Myanmar and build trust in its digital services. Its merchants are SME owners who make transactions every day, and most aren’t tech-savvy.' },
             { kind: 'notes', items: [
-              { t: 'The partner', p: 'MTB Bank wanted to support small businesses in Myanmar and build trust in its digital services.' },
-              { t: 'Who it’s for', p: 'SME owners making transactions every day. Most aren’t tech-savvy, so the tools have to be fast, reliable and quick to learn.' },
               { t: 'What they do in it', p: 'Take payments by QR, top up phones, pay bills, give refunds, and check the balance.' },
+              { t: 'What they asked for', p: 'Faster top-ups, clear transaction statuses, and navigation that suits people new to digital tools.' },
             ] },
           ],
         },
         {
-          id: 'survey',
-          eyebrow: '03 · Product Context',
-          group: 'Product Context',
-          nav: 'What merchants asked for',
-          title: 'What merchants asked for',
-          blocks: [
-            { kind: 'lead', p: 'We surveyed target users to learn what they struggled with. Three needs came up.' },
-            { kind: 'iconlist', items: [
-              { h: 'Faster top-ups', p: 'Top-ups are a daily job in a shop, so every extra step costs time.' },
-              { h: 'Clear transaction statuses', p: 'Merchants need to know exactly what happened to their money.' },
-              { h: 'Easy navigation', p: 'It has to suit people who are new to digital tools.' },
-            ] },
-          ],
-        },
-        {
-          id: 'background',
+          id: 'challenges',
           eyebrow: '04',
           nav: 'UX Challenges',
-          illo: 'research',
           blocks: [
             { kind: 'iconlist', items: [
               { h: 'Slow transactions', p: 'Outdated systems made everyday payments and top-ups slow.' },
@@ -1202,89 +845,44 @@ export const CASES = [
               { t: 'Colour', p: 'MTB red for actions and the balance, white everywhere else, green for money in and red for money out.' },
               { t: 'Typography', p: 'One clear typeface, and the amount is the biggest text on every money screen.' },
               { t: 'Hierarchy', p: 'The balance first, then money in and out, the four services, and the latest transactions.' },
-              { t: 'Icons', p: 'Big red tiles with simple line icons, one for each service.' },
             ] },
           ],
         },
         {
           id: 'system',
-          eyebrow: '06 · Design System',
-          group: 'Design System',
-          nav: 'The system',
+          eyebrow: '06',
+          nav: 'Design System',
           illo: 'juggle',
           blocks: [
-            { kind: 'notes', items: [
-              { t: 'Design system', p: 'We enhanced it with clear fonts, high contrast and consistent components.' },
-              { t: 'Built for the counter', p: 'Icons and layouts were optimised for small screens and busy shops.' },
-              { t: 'Working together', p: 'The project thrived on close teamwork with developers, stakeholders and clients, all aimed at a real solution for Myanmar’s everyday merchants.' },
-            ] },
-          ],
-        },
-        {
-          id: 'patterns',
-          eyebrow: '06 · Design System',
-          group: 'Design System',
-          nav: 'Shared patterns',
-          blocks: [
+            { kind: 'lead', p: 'We built on the design system with clear fonts, high contrast and consistent components, optimised for small screens and busy shops.' },
             { kind: 'notes', items: [
               { t: 'One result screen', p: 'Top up, payment and refund all end the same way: a check, the amount, the details and a receipt to save.' },
               { t: 'Sheets for one question', p: 'An amount or a refund reason comes up in a sheet over the screen it belongs to.' },
               { t: 'One main button', p: 'The next step is always a full-width red button at the bottom.' },
+              { t: 'Service tiles', p: 'Big red tiles with simple line icons, one for each service.' },
             ] },
           ],
         },
         {
-          id: 'topup',
-          eyebrow: '07 · Final Interface',
-          group: 'Final Interface',
-          nav: 'Top up',
-          title: 'Fewer steps, clear flows',
+          id: 'interface',
+          eyebrow: '07',
+          nav: 'Final Interface',
+          title: 'Fewer steps, *clear flows*',
           blocks: [
-            { kind: 'lead', p: 'We built a reliable system with fewer steps and clear flows, so shopkeepers make fewer errors and feel more confident.' },
             { kind: 'choices', items: [
-              { h: 'Everything on one screen', p: 'Balance, money in and out, four services and the latest transactions.', src: '/case/mtb-pay-merchant/home.jpg', alt: 'Home screen with the account balance, total in and out, four services and latest transactions' },
-              { h: 'Number, then amount', p: 'Type the number, then tap an amount or a package.', src: '/case/mtb-pay-merchant/topup-amount.jpg', alt: 'Top up screen with a phone number and a grid of amounts' },
+              { h: 'Home', p: 'Balance, money in and out, four services and the latest transactions.', src: '/case/mtb-pay-merchant/home.jpg', alt: 'Home screen with the account balance, total in and out, four services and latest transactions' },
+              { h: 'Top up', p: 'Type the number, then tap an amount or a package.', src: '/case/mtb-pay-merchant/topup-amount.jpg', alt: 'Top up screen with a phone number and a grid of amounts' },
               { h: 'Check before paying', p: 'Fees, discount and commission are listed before anything is confirmed.', src: '/case/mtb-pay-merchant/topup-summary.jpg', alt: 'Top up summary listing the provider, amount, fees and total' },
-              { h: 'A clear result', p: 'The amount and transaction ID, with a receipt to save.', src: '/case/mtb-pay-merchant/topup-done.jpg', alt: 'Successful top up with the amount, transaction ID and a Save Receipt button' },
-            ] },
-          ],
-        },
-        {
-          id: 'receive',
-          eyebrow: '07 · Final Interface',
-          group: 'Final Interface',
-          nav: 'Receive payment',
-          title: 'Always show where the money is',
-          blocks: [
-            { kind: 'lead', p: 'Merchants asked for clear transaction statuses, so a payment never leaves them guessing.' },
-            { kind: 'choices', items: [
-              { h: 'Scan the customer', p: 'Point the camera at the customer’s QR, with a flashlight and album close by.', src: '/case/mtb-pay-merchant/receive-scan.jpg', alt: 'Camera view scanning a QR code on a customer’s phone' },
-              { h: 'Or show the shop’s QR', p: 'Download it or share it, right from the tab.', src: '/case/mtb-pay-merchant/receive-qr.jpg', alt: 'The shop’s QR code with Download, Share and Specify Amount' },
+              { h: 'Receive by QR', p: 'Scan the customer, or show the shop’s QR to download or share.', src: '/case/mtb-pay-merchant/receive-qr.jpg', alt: 'The shop’s QR code with Download, Share and Specify Amount' },
               { h: 'Set an amount', p: 'Add a fixed amount to the QR when the shop needs one.', src: '/case/mtb-pay-merchant/receive-amount.jpg', alt: 'Specify Amount sheet with a number keypad' },
-              { h: 'Say what’s happening', p: 'While the customer confirms, the screen says so.', src: '/case/mtb-pay-merchant/receive-wait.jpg', alt: 'Waiting for Customer’s Confirmation screen with an hourglass' },
-              { h: 'Paid', p: 'The amount, who sent it and a receipt to save.', src: '/case/mtb-pay-merchant/receive-done.jpg', alt: 'Successful payment with the amount, sender and a Save Receipt button' },
-            ] },
-          ],
-        },
-        {
-          id: 'refund',
-          eyebrow: '07 · Final Interface',
-          group: 'Final Interface',
-          nav: 'Refund',
-          title: 'Mistakes need a clear way back',
-          blocks: [
-            { kind: 'choices', items: [
-              { h: 'Find the payment', p: 'Search by transaction number, with refunded payments on their own tab.', src: '/case/mtb-pay-merchant/refund-list.jpg', alt: 'Refund list of received payments with a search box and two tabs' },
-              { h: 'Give a reason', p: 'A refund can’t go ahead without one.', src: '/case/mtb-pay-merchant/refund-reason.jpg', alt: 'Refund Information sheet with a required reason' },
-              { h: 'Check the details', p: 'Who it’s going to, the amount and the reason, before confirming.', src: '/case/mtb-pay-merchant/refund-summary.jpg', alt: 'Refund summary with the transaction details and a Confirm button' },
-              { h: 'Refunded', p: 'The same clear result as every other flow.', src: '/case/mtb-pay-merchant/refund-done.jpg', alt: 'Successful refund with the amount and a Save Receipt button' },
+              { h: 'Refund', p: 'Find the payment by its number, then check the details before confirming.', src: '/case/mtb-pay-merchant/refund-summary.jpg', alt: 'Refund summary with the transaction details and a Confirm button' },
             ] },
           ],
         },
         {
           id: 'states',
           eyebrow: '08',
-          nav: 'Interaction & Edge Cases',
+          nav: 'Interaction and Edge Cases',
           title: 'Every state says *what happens next*',
           blocks: [
             { kind: 'choices', items: [
@@ -1296,7 +894,7 @@ export const CASES = [
           ],
         },
         {
-          id: 'learned',
+          id: 'takeaway',
           eyebrow: '09',
           nav: 'Takeaway',
           illo: 'idea',

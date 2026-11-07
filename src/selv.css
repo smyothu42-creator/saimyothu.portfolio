@@ -1235,7 +1235,8 @@ button.sv-pill:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(
 .sv-toc-item:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
 .sv-toc-dot { flex: none; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.45; transition: opacity 0.2s, transform 0.3s var(--ease); }
 .sv-toc-item.is-active .sv-toc-dot { opacity: 1; transform: scale(1.35); }
-.sv-toc-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Long section names wrap to a second line rather than being cut off. */
+.sv-toc-label { min-width: 0; overflow-wrap: break-word; line-height: 1.3; }
 
 /* Room for the panel: the case column narrows a little on wide screens,
    and the panel hides when there isn't space beside the column. */
