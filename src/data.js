@@ -200,7 +200,7 @@ export const CASES = [
         },
         {
           id: 'decisions',
-          nav: 'Key Product Decisions',
+          nav: 'Decisions',
           title: 'Three calls that *shaped it*',
           blocks: [
             { kind: 'decisions', items: [
