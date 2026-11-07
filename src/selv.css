@@ -813,21 +813,21 @@ html, body { overflow-x: clip; }
 .sv-fan-title { font-size: 23px; font-weight: 600; letter-spacing: -0.01em; color: var(--sv-text); }
 @keyframes sv-rise { from { opacity: 0; transform: translateY(8px); } }
 
-/* End of a case study: the next projects as thumbnails. */
-.sv-others .sv-h2 { margin-bottom: 26px; font-size: 28px; }
-.sv-others-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; }
-.sv-other { display: block; min-width: 0; }
-.sv-other .media { aspect-ratio: 1; overflow: hidden; border-radius: 22px; }
-.sv-other .media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s var(--ease); }
-.sv-other:hover .media img { transform: scale(1.04); }
-.sv-other-foot { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-top: 14px; }
-.sv-other-name { display: block; font-size: 19px; font-weight: 500; line-height: 1.3; color: var(--sv-text); }
-.sv-other-domain { display: block; margin-top: 3px; font-size: 15px; color: var(--sv-dim); }
-.sv-other-arrow { flex: none; display: grid; padding-top: 3px; color: var(--sv-dim); transition: color 0.3s var(--ease), transform 0.4s var(--ease); }
+/* End of a case study: the next projects as a quiet list, a small thumbnail and a name. */
+.sv-others .sv-h2 { margin-bottom: 18px; font-size: 28px; }
+.sv-others-list { list-style: none; margin: 0; padding: 0; }
+.sv-others-list li + li { border-top: 1px solid var(--sv-line); }
+.sv-other { display: flex; align-items: center; gap: 18px; padding: 14px 0; }
+.sv-other .media { flex: none; width: 72px; aspect-ratio: 1; overflow: hidden; border-radius: 14px; }
+.sv-other .media img { width: 100%; height: 100%; object-fit: cover; }
+.sv-others-list li:last-child .sv-other { padding-bottom: 0; }
+.sv-other-name { flex: 1; min-width: 0; font-size: 19px; font-weight: 500; line-height: 1.3; color: var(--sv-soft); transition: color 0.3s var(--ease); }
+.sv-other-arrow { flex: none; display: grid; color: var(--sv-dim); transition: color 0.3s var(--ease), transform 0.4s var(--ease); }
+.sv-other:hover .sv-other-name { color: #fff; }
 .sv-other:hover .sv-other-arrow { color: #fff; transform: translateX(4px); }
-.sv-other:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-radius: 22px; }
-@media (max-width: 520px) { .sv-other-name { font-size: 17px; } .sv-others-grid { gap: 22px 12px; } }
-@media (prefers-reduced-motion: reduce) { .sv-other .media img, .sv-other-arrow { transition: none; } }
+.sv-other:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-radius: 8px; }
+@media (max-width: 520px) { .sv-other-name { font-size: 17px; } .sv-other { gap: 14px; padding: 12px 0; } .sv-other .media { width: 60px; border-radius: 12px; } }
+@media (prefers-reduced-motion: reduce) { .sv-other-name, .sv-other-arrow { transition: none; } }
 
 /* ---------- Home: core values strip ---------- */
 .sv-vs { padding: 34px 0; overflow: clip; }
@@ -1029,34 +1029,32 @@ button.sv-pill:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(
 .sv-pagehead-sub { margin-top: 18px; max-width: 26em; font-size: 20px; line-height: 1.45; color: var(--sv-soft); }
 
 /* ---------- Project cards (Work page) ---------- */
-.sv-proj { padding: 0; border: 0; }
-.sv-proj::before { display: none; } /* no glass rim on image cards */
-.sv-proj .media { aspect-ratio: 1.08; border-radius: 0; }
+/* The same frosted glass as every other card: the product art sits inset as a
+   rounded plate, and the text sits on the glass under it, never over the art. */
+.sv-proj { padding: 10px; }
+.sv-proj .media {
+  aspect-ratio: 1.2;
+  border-radius: calc(var(--sv-r) - 10px);
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 18px 36px -22px rgba(0, 0, 0, 0.7);
+}
 .sv-proj .media img { transition: transform 0.9s var(--ease); }
 .sv-proj:hover .media img, .sv-proj:hover .media-mark { transform: scale(1.04); }
-/* Inner shadow: a soft dark vignette around the card's edges, over the image. */
-.sv-proj::after {
-  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit;
-  box-shadow: inset 0 0 130px 22px rgba(4, 6, 14, 0.55);
-}
-.sv-proj-foot { z-index: 2; }
-.sv-proj-foot, .sv-cover-title {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
 .sv-proj-foot {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 24px;
-  padding: 160px var(--sv-pad) 40px;
-  background: linear-gradient(180deg, transparent, rgba(8, 8, 10, 0.55) 40%, rgba(8, 8, 10, 0.92));
-  color: #fff;
+  padding: 26px 38px 30px;
+  color: var(--sv-text);
 }
-.sv-proj-tag { display: block; margin-bottom: 6px; font-size: 16px; color: rgba(255, 255, 255, 0.75); }
-.sv-proj-result { margin-top: 10px; font-size: 18px; line-height: 1.35; color: rgba(255, 255, 255, 0.82); }
+.sv-cover-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.sv-proj-result { margin-top: 10px; font-size: 18px; line-height: 1.35; color: var(--sv-soft); }
 .sv-proj-title { font-size: clamp(30px, 4.2vw, 44px); font-weight: 600; line-height: 1.22; letter-spacing: -0.022em; }
 .sv-proj-arrow { flex: none; display: grid; padding-bottom: 6px; transition: transform 0.4s var(--ease); }
 .sv-proj:hover .sv-proj-arrow { transform: translateX(6px); }
@@ -1515,8 +1513,9 @@ button.sv-pill:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(
   .sv-pill { padding: 14px 20px; border-radius: 18px; }
   .sv-pagehead .sv-h1 { margin-top: 64px; }
   .sv-pagehead-sub { font-size: 18px; }
-  .sv-proj .media { aspect-ratio: 0.95; }
-  .sv-proj-foot { padding: 100px 24px 26px; }
+  .sv-proj { padding: 8px; }
+  .sv-proj .media { aspect-ratio: 1.08; border-radius: calc(var(--sv-r) - 8px); }
+  .sv-proj-foot { padding: 20px 18px 20px; }
   .sv-cover .media { aspect-ratio: 0.95; }
   .sv-cover .sv-back { top: 20px; left: 20px; }
   .sv-photo-hero { padding: 20px 20px 28px; }
@@ -1547,6 +1546,13 @@ button.sv-pill:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(
    is hidden while it runs.
    ========================================================= */
 .has-cursor, .has-cursor * { cursor: none !important; }
+/* The custom cursor is drawn outside a full screen video, so it can't show
+   there: bring the system cursor back inside it. (Separate rules: a browser
+   that doesn't know one of these pseudo-classes drops the whole rule.) */
+.has-cursor :fullscreen, .has-cursor :fullscreen * { cursor: auto !important; }
+.has-cursor :-webkit-full-screen, .has-cursor :-webkit-full-screen * { cursor: auto !important; }
+.has-cursor :fullscreen button, .has-cursor :fullscreen input { cursor: pointer !important; }
+.has-cursor :-webkit-full-screen button, .has-cursor :-webkit-full-screen input { cursor: pointer !important; }
 .sv-pointer {
   position: fixed;
   top: 0;
@@ -1988,17 +1994,15 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .st-reel-title { font-size: 20px; font-weight: 600; color: var(--sv-text); }
 .st-reel-frame { position: relative; overflow: hidden; border-radius: 16px; background: #0a1730; box-shadow: inset 0 0 0 1px var(--sv-line); }
 .st-reel-frame video { display: block; width: 100%; height: 100%; object-fit: cover; }
-/* Set by Immersive while the video is zoomed: --reel-ui undoes the zoom so the
-   controls keep their size, --reel-x/y pull them back inside the window. */
-.st-reel-ctrls {
-  position: absolute; right: 14px; bottom: 14px; display: flex; align-items: center; gap: 8px;
-  width: calc((100% - 28px) / var(--reel-ui, 1) + 2 * var(--reel-x, 0px) / var(--reel-ui, 1));
-  transform: translate(var(--reel-x, 0), var(--reel-y, 0)) scale(var(--reel-ui, 1)); transform-origin: 100% 100%;
-}
-/* Seek bar: a dark glass capsule, so it reads on light and dark scenes alike. */
+.st-reel-ctrls { position: absolute; left: 14px; right: 14px; bottom: 14px; display: flex; align-items: center; gap: 8px; }
+/* Controls are frosted glass: a light sheen over a faint dark tint, blurred,
+   with a bright top edge, so they read on light and dark scenes alike. */
 .st-reel-seek {
-  flex: 1; min-width: 0; height: 40px; padding: 0 16px; display: flex; align-items: center;
-  border-radius: 20px; background: rgba(12, 18, 16, 0.5); backdrop-filter: blur(8px);
+  flex: 1; min-width: 0; height: 42px; padding: 0 16px; display: flex; align-items: center;
+  border-radius: 21px; background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.06)), rgba(16, 22, 30, 0.34);
+  -webkit-backdrop-filter: blur(22px) saturate(1.7); backdrop-filter: blur(22px) saturate(1.7);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(255, 255, 255, 0.06), 0 10px 28px -12px rgba(0, 0, 0, 0.55);
   opacity: 0; transition: opacity 0.25s;
 }
 .st-reel-frame:hover .st-reel-seek, .st-reel-seek:focus-within { opacity: 1; }
@@ -2014,16 +2018,29 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .st-reel-seek input::-moz-range-thumb { width: 14px; height: 14px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4); }
 .st-reel-seek input:focus-visible { outline: 2px solid #fff; outline-offset: 2px; border-radius: 4px; }
 .st-reel-btn {
-  display: grid; place-items: center;
-  width: 40px; height: 40px; border-radius: 50%; color: #1e2b27;
-  background: rgba(255, 255, 255, 0.82); backdrop-filter: blur(8px);
-  box-shadow: 0 4px 14px -6px rgba(0, 0, 0, 0.35);
-  opacity: 0; transition: opacity 0.25s;
+  flex: none; display: grid; place-items: center;
+  width: 42px; height: 42px; border-radius: 50%; color: #fff;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.06)), rgba(16, 22, 30, 0.34);
+  -webkit-backdrop-filter: blur(22px) saturate(1.7); backdrop-filter: blur(22px) saturate(1.7);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(255, 255, 255, 0.06), 0 10px 28px -12px rgba(0, 0, 0, 0.55);
+  opacity: 0; transition: opacity 0.25s, transform 0.2s, background-color 0.2s;
 }
+.st-reel-btn:hover { transform: scale(1.06); background-color: rgba(16, 22, 30, 0.2); }
+.st-reel-btn:active { transform: scale(0.96); }
 .st-demo-btn { position: absolute; right: 14px; bottom: 14px; }
 .st-reel-btn svg { width: 16px; height: 16px; }
-.st-reel-btn:not(.is-playing), .st-reel-btn.is-sound, .st-reel-frame:hover .st-reel-btn, .st-reel-btn:focus-visible { opacity: 1; }
+.st-reel-btn:not(.is-playing):not(.is-aux), .st-reel-btn.is-sound, .st-reel-frame:hover .st-reel-btn, .st-reel-btn:focus-visible { opacity: 1; }
 .sv-sec-bare .st-reel-frame { border-radius: 24px; }
+/* Full screen: the frame fills the screen, the video is letterboxed, not cut. */
+.st-reel-frame:fullscreen { width: 100vw; height: 100vh; aspect-ratio: auto !important; border-radius: 0; background: #000; }
+.st-reel-frame:-webkit-full-screen { width: 100vw; height: 100vh; aspect-ratio: auto !important; border-radius: 0; background: #000; }
+.st-reel-frame:fullscreen video { object-fit: contain; }
+.st-reel-frame:-webkit-full-screen video { object-fit: contain; }
+.st-reel-frame:fullscreen .st-reel-ctrls { left: 28px; right: 28px; bottom: 28px; }
+.st-reel-frame:-webkit-full-screen .st-reel-ctrls { left: 28px; right: 28px; bottom: 28px; }
+/* The demo's full screen button sits above its play button. */
+.st-demo-btn.st-demo-full { bottom: 64px; }
 
 
 /* ---- Step-by-step demo (Demo): steps as text, phone drawn in CSS, nothing
@@ -2072,6 +2089,7 @@ html.is-loading, html.is-loading body { overflow: hidden; }
   border-radius: 999px; background: #000; transform: translateX(-50%);
 }
 .st-device .st-demo-btn { right: -56px; bottom: 12px; }
+.st-device .st-demo-btn.st-demo-full { bottom: 62px; }
 .st-device:hover .st-demo-btn { opacity: 1; }
 
 /* Choices: stacked screens crossfade and a thin bar fills under the current choice. */
@@ -2117,6 +2135,7 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .st-browser-page { position: relative; aspect-ratio: 1440 / 900; overflow: hidden; background: #fbf7ec; }
 .st-browser-page video, .st-browser-page img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .st-browser .st-demo-btn { right: 14px; bottom: 14px; }
+.st-browser .st-demo-btn.st-demo-full { bottom: 64px; }
 .st-browser:hover .st-demo-btn { opacity: 1; }
 .st-demo.is-browser, .st-choices.is-browser { grid-template-columns: 1fr; }
 .st-demo.is-browser .st-browser, .st-choices.is-browser .st-browser { order: -1; }
@@ -2150,11 +2169,6 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .sv-btn.sv-resume:hover, .sv-btn.sv-resume:focus-visible { background: linear-gradient(170deg, rgba(150, 190, 255, 0.42), rgba(90, 140, 230, 0.18)); }
 .sv-resume svg { width: 18px; height: 18px; flex: none; transition: transform 0.4s var(--ease); }
 .sv-resume:hover svg { transform: translate(2px, -2px); }
-
-/* Immersive intro video (CaseStudy.jsx Immersive): scaled from the centre;
-   while it is growing it sits above the side list and the dock. */
-.sv-immersive { position: relative; transform-origin: 50% 50%; will-change: transform; }
-.sv-immersive.is-immersive { z-index: 1000; }
 
 /* ---------- Before / after slider ---------- */
 .sv-plate.is-beforeafter { padding: 12px; }

@@ -1,0 +1,111 @@
+{
+ "W": 1600,
+ "H": 900,
+ "fps": 30,
+ "bitrate": 3200000,
+ "label": "MTB Pay \u00b7 Merchant wallet",
+ "scenes": [
+  {
+   "kind": "title",
+   "dur": 4.4,
+   "eyebrow": "The problem",
+   "text": "Slow transactions. *Frequent errors.*",
+   "sub": "Myanmar's small shops ran their payments on outdated systems that weren't made for them."
+  },
+  {
+   "kind": "stats",
+   "dur": 3.8,
+   "eyebrow": "Who built it",
+   "items": [
+    {
+     "n": "4",
+     "l": "product designers"
+    },
+    {
+     "n": "11",
+     "l": "developers"
+    },
+    {
+     "n": "3",
+     "l": "stakeholders"
+    }
+   ]
+  },
+  {
+   "kind": "title",
+   "dur": 3.0,
+   "eyebrow": "What merchants asked for",
+   "text": "Faster top-ups. *Clear statuses.*",
+   "sub": "And navigation that suits people new to digital tools."
+  },
+  {
+   "kind": "day",
+   "dur": 4.8,
+   "src": "out-mtb-film",
+   "from": 4.2,
+   "to": 12.8,
+   "time": "9:05 AM",
+   "line": "Morning. A regular tops up their phone.",
+   "hour": 9.08,
+   "fromHour": 7.5
+  },
+  {
+   "kind": "day",
+   "dur": 4.8,
+   "src": "out-mtb-film",
+   "from": 13.2,
+   "to": 22.8,
+   "time": "12:40 PM",
+   "line": "Lunch rush. A customer pays by QR.",
+   "hour": 12.67,
+   "fromHour": 9.08
+  },
+  {
+   "kind": "day",
+   "dur": 4.8,
+   "src": "out-mtb-film",
+   "from": 23.2,
+   "to": 32.8,
+   "time": "4:15 PM",
+   "line": "A sale needs to go back.",
+   "hour": 16.25,
+   "fromHour": 12.67
+  },
+  {
+   "kind": "day",
+   "dur": 4.8,
+   "src": "out-mtb-film",
+   "from": 0.3,
+   "to": 3.8,
+   "time": "8:30 PM",
+   "line": "Closing time. The day, on one screen.",
+   "hour": 20.5,
+   "fromHour": 16.25
+  },
+  {
+   "kind": "outro",
+   "dur": 8.0,
+   "eyebrow": "Built for shopkeepers, not tech people",
+   "title": "MTB Pay Merchant",
+   "points": [
+    "Faster top-ups",
+    "Clear transaction statuses",
+    "Fewer errors"
+   ],
+   "foot": "MTB Bank \u00b7 Myanmar"
+  }
+ ],
+ "theme": {
+  "page": "#5c070d",
+  "page2": "#8f1018",
+  "ink": "#fff6f2",
+  "dim": "rgba(255,246,242,0.7)",
+  "acc": "#ffcf6b",
+  "glow1": "rgba(255,207,107,0.10)",
+  "glow2": "rgba(230,40,50,0.45)",
+  "scrim": "92,7,13",
+  "pill": "#ffcf6b",
+  "pillInk": "#5c070d",
+  "spot": "30,0,4"
+ }
+}

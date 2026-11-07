@@ -121,7 +121,6 @@ function MainWork() {
       <Media art={c.art.thumb ? { ...c.art, img: c.art.thumb } : c.art} title={c.title} />
       <div className="sv-proj-foot">
         <div>
-          {c.domain && <span className="sv-proj-tag">{c.domain}</span>}
           <h2 className="sv-proj-title">{c.title}</h2>
           {c.result && <p className="sv-proj-result">{c.result}</p>}
         </div>

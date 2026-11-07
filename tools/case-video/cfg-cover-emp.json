@@ -2,22 +2,25 @@
  "W": 1890,
  "H": 1400,
  "theme": "site",
- "bgImage": "bg-calm.jpg",
- "bgY": 0.42,
- "bgDim": 0.66,
+ "bgImage": "bg-sf-green.jpg",
+ "bgFlat": true,
+ "bgBlur": 0,
+ "bgDim": 1,
+ "bgY": 0.5,
+ "shadow": "rgba(2,30,26,0.45)",
  "phones": [
   {
    "browser": true,
    "src": "out-employee-web/f00120.jpg",
-   "x": 0.46,
-   "y": 0.09,
-   "w": 0.74
+   "x": 0.455,
+   "y": 0.1,
+   "w": 0.82
   },
   {
    "src": "out-employee/f00247.jpg",
-   "x": 0.8,
-   "y": 0.2,
-   "w": 0.2
+   "x": 0.835,
+   "y": 0.205,
+   "w": 0.225
   }
  ]
 }

@@ -431,6 +431,23 @@ export function Reel({ src, poster, audio, label, title, ratio = '16 / 9', alt }
     if (a && sound) a.currentTime = t
     paint(t)
   }
+  // Full screen: the whole frame, so these controls stay on top. iPhone Safari
+  // only lets the video itself go full screen, with its own controls.
+  const frame = useRef(null)
+  const [full, setFull] = useState(false)
+  useEffect(() => {
+    const on = () => setFull((document.fullscreenElement || document.webkitFullscreenElement) === frame.current)
+    document.addEventListener('fullscreenchange', on)
+    document.addEventListener('webkitfullscreenchange', on)
+    return () => { document.removeEventListener('fullscreenchange', on); document.removeEventListener('webkitfullscreenchange', on) }
+  }, [])
+  const toggleFull = () => {
+    const f = frame.current, v = ref.current
+    if (document.fullscreenElement || document.webkitFullscreenElement) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return }
+    if (f.requestFullscreen) f.requestFullscreen().catch(() => {})
+    else if (f.webkitRequestFullscreen) f.webkitRequestFullscreen()
+    else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen()
+  }
   const toggleSound = () => {
     const v = ref.current, a = song.current
     if (sound) { setSound(false); a.pause(); return }
@@ -448,7 +465,7 @@ export function Reel({ src, poster, audio, label, title, ratio = '16 / 9', alt }
           {title && <span className="st-reel-title">{title}</span>}
         </div>
       )}
-      <div className="st-reel-frame" style={{ aspectRatio: ratio }}>
+      <div className="st-reel-frame" ref={frame} style={{ aspectRatio: ratio }}>
         <video
           ref={ref}
           src={src}
@@ -479,14 +496,17 @@ export function Reel({ src, poster, audio, label, title, ratio = '16 / 9', alt }
               onPointerUp={(e) => { delete e.currentTarget.dataset.drag }}
             />
           </span>
+          <button type="button" className={'st-reel-btn' + (playing ? ' is-playing' : '')} onClick={toggle} aria-label={playing ? 'Pause video' : 'Play video'}>
+            {playing ? ICONS.pause : ICONS.play}
+          </button>
+          <button type="button" className="st-reel-btn is-aux" onClick={toggleFull} aria-label={full ? 'Exit full screen' : 'Full screen'}>
+            {full ? ICONS.shrink : ICONS.expand}
+          </button>
           {audio && (
             <button type="button" className="st-reel-btn is-sound" onClick={toggleSound} aria-pressed={sound} aria-label={sound ? 'Turn sound off' : 'Turn sound on'}>
               {sound ? ICONS.soundOn : ICONS.soundOff}
             </button>
           )}
-          <button type="button" className={'st-reel-btn' + (playing ? ' is-playing' : '')} onClick={toggle} aria-label={playing ? 'Pause video' : 'Play video'}>
-            {playing ? ICONS.pause : ICONS.play}
-          </button>
         </div>
       </div>
     </div>
@@ -531,6 +551,21 @@ export function Demo({ src, poster, steps = [], alt, device = 'phone' }) {
     const v = ref.current
     if (v.paused) { setUserPaused(false); v.play().catch(() => {}) } else { setUserPaused(true); v.pause() }
   }
+  // Full screen shows just the recording, with the browser's own controls.
+  const toggleFull = () => {
+    const v = ref.current
+    if (document.fullscreenElement || document.webkitFullscreenElement) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return }
+    if (v.requestFullscreen) v.requestFullscreen().catch(() => {})
+    else if (v.webkitRequestFullscreen) v.webkitRequestFullscreen()
+    else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen()
+  }
+  useEffect(() => {
+    const v = ref.current
+    const on = () => { v.controls = (document.fullscreenElement || document.webkitFullscreenElement) === v }
+    document.addEventListener('fullscreenchange', on)
+    document.addEventListener('webkitfullscreenchange', on)
+    return () => { document.removeEventListener('fullscreenchange', on); document.removeEventListener('webkitfullscreenchange', on) }
+  }, [])
   return (
     <div className={'st-demo is-' + device}>
       <ol className="st-demo-steps">
@@ -563,6 +598,9 @@ export function Demo({ src, poster, steps = [], alt, device = 'phone' }) {
         </div>
         <button type="button" className={'st-reel-btn st-demo-btn' + (playing ? ' is-playing' : '')} onClick={toggle} aria-label={playing ? 'Pause video' : 'Play video'}>
           {playing ? ICONS.pause : ICONS.play}
+        </button>
+        <button type="button" className="st-reel-btn st-demo-btn st-demo-full is-aux" onClick={toggleFull} aria-label="Full screen">
+          {ICONS.expand}
         </button>
       </div>
     </div>
@@ -874,6 +912,8 @@ const ICONS = {
   bell: svg(<><path d="M6 16V11a6 6 0 1112 0v5l2 2H4z" /><path d="M10 20a2 2 0 004 0" /></>),
   soundOn: svg(<><path d="M11 5L6.5 9H3v6h3.5L11 19V5z" /><path d="M15.5 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11" /></>),
   soundOff: svg(<><path d="M11 5L6.5 9H3v6h3.5L11 19V5z" /><path d="M16 9.5l5 5M21 9.5l-5 5" /></>),
+  expand: svg(<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />),
+  shrink: svg(<path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" />),
   play: <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 001.5.86l10.5-6.5a1 1 0 000-1.72L9.5 4.64A1 1 0 008 5.5z" /></svg>,
   pause: <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.2" /><rect x="13.5" y="5" width="4" height="14" rx="1.2" /></svg>,
 }

@@ -1,5 +1,5 @@
-# Original instrumentals for the Superfine films, written note by note here so
-# there is nothing to license. usage: python3 song.py employee|driver seconds out.wav
+# Original instrumentals for the Superfine and MTB films, written note by note here so
+# there is nothing to license. usage: python3 song.py employee|driver|mtb seconds out.wav
 # then: afconvert out.wav -f m4af -d aac -b 160000 ../../public/case/.../intro.m4a
 import sys
 import wave
@@ -140,9 +140,39 @@ def driver(total):  # moving, on the clock: 112 bpm, Am F C G
     return space(arp, 0.3) + drums
 
 
+def mtb(total):  # steady and sure, for a payments app: 96 bpm, C G Am F
+    keys, drums = np.zeros((int(total * SR), 2)), np.zeros((int(total * SR), 2))
+    beat = 60 / 96
+    bar = beat * 4
+    chords = [(36, [60, 64, 67, 72]), (31, [59, 62, 67, 71]), (33, [60, 64, 69, 72]), (29, [60, 65, 69, 72])]
+    tune = [[79, None, 76, 77], [79, None, 74, None], [76, 77, None, 72], [74, None, 72, None]]
+    for b in range(int(total / bar) + 1):
+        t0 = b * bar
+        root, notes = chords[b % 4]
+        for k in range(4):  # chords on every beat, light on the off ones
+            for j, m in enumerate(notes):
+                add(keys, epiano(m, beat * 0.7, 0.13 if k % 2 == 0 else 0.08), t0 + k * beat + j * 0.01, (j - 1.5) * 0.2)
+        if b >= 1:
+            add(drums, bass(root, beat * 1.5), t0)
+            add(drums, bass(root, beat * 0.8, 0.3), t0 + beat * 2)
+            add(drums, bass(root + 7, beat * 0.8, 0.26), t0 + beat * 3)
+        if b >= 2:
+            for k in range(4):
+                add(drums, kick(0.42), t0 + k * beat)
+            for k in (1, 3):
+                add(drums, noise_hit(0.14, 26, 0.11), t0 + k * beat)
+            for k in range(8):
+                add(drums, noise_hit(0.04, 95, 0.03 if k % 2 else 0.016), t0 + k * beat / 2, 0.25)
+        if b >= 4:
+            for j, m in enumerate(tune[b % 4]):
+                if m:
+                    add(keys, pluck(m, 0.3), t0 + j * beat, -0.2)
+    return space(keys, 0.3) + drums
+
+
 def main():
     name, total, out = sys.argv[1], float(sys.argv[2]), sys.argv[3]
-    mix = {'employee': employee, 'driver': driver}[name](total)
+    mix = {'employee': employee, 'driver': driver, 'mtb': mtb}[name](total)
     t = np.arange(len(mix)) / SR
     fade = np.clip((total - t) / 2.5, 0, 1) ** 2  # ends quietly, so the loop doesn't cut
     mix = mix * (fade * np.clip(t / 0.05, 0, 1))[:, None]

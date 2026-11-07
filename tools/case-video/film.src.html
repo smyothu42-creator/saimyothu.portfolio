@@ -6,7 +6,8 @@
 <script>
 // Motion-graphics product film. window.film(cfg) renders the scenes in real
 // time onto the canvas and records them with MediaRecorder (chunks go to
-// window.saveChunk). Scene kinds: hello, title, stats, demo, outro.
+// window.saveChunk). Scene kinds: hello, title, stats, demo, outro, and the
+// moment scenes scan, wait, paid, receipt, and day (a day at the counter).
 const C = document.getElementById('c'), X = C.getContext('2d')
 let W = 0, H = 0
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
@@ -281,22 +282,200 @@ async function outro(sc, t) {
   X.globalAlpha = 1
 }
 
-const SCENES = { hello, title, stats, demo, outro }
 
-// Brand label (top left) and a progress line with chapter ticks (bottom).
+// ---- one sale, told as a moment (MTB): a big word on the left, the thing
+// itself on the right, no chapter labels. scan → wait → paid → receipt.
+const PICS = {}
+const pic = (src) => (PICS[src] ??= img(src))
+function beatWord(sc, t, a) {
+  const x = W * 0.075, size = H * 0.15
+  const y = H * 0.5 - size * 0.7 - (1 - a) * 20
+  kinetic(sc.word, x, y, { size, weight: 800, t, delay: 0.1, a, maxW: W * 0.4 })
+  if (sc.line) kinetic(sc.line, x, y + size * 1.18, { size: H * 0.036, weight: 500, color: DIM, t, delay: 0.55, a, maxW: W * 0.36, lh: H * 0.036 * 1.35, stagger: 0.03 })
+}
+async function scan(sc, t) {
+  const a = exitA(sc, t), q = await pic(sc.img)
+  beatWord(sc, t, a)
+  const h = H * 0.74, w = h * q.width / q.height, cx = W * 0.66, cy = H * 0.5
+  const ent = out3(clamp(t / 0.7)), s = 0.94 + 0.06 * ent
+  X.save(); X.globalAlpha = a * ent; X.translate(cx, cy - (1 - a) * 20); X.scale(s, s)
+  X.shadowColor = 'rgba(30,0,4,0.45)'; X.shadowBlur = 60; X.shadowOffsetY = 24
+  X.save(); rrect(-w / 2, -h / 2, w, h, w * 0.06); X.clip(); X.drawImage(q, -w / 2, -h / 2, w, h); X.restore()
+  X.shadowColor = 'transparent'
+  // the QR square inside the card, in card fractions
+  const [qx0, qy0, qx1, qy1] = sc.qr, bx0 = -w / 2 + w * qx0, by0 = -h / 2 + h * qy0, bw = w * (qx1 - qx0), bh = h * (qy1 - qy0)
+  // viewfinder corners close in and lock onto it
+  const lock = out3(clamp((t - 0.5) / 1.0)), grow = lerp(0.42, 0.06, lock), L = bw * 0.2
+  const locked = t > 1.5, pulse = locked ? 1 + 0.03 * Math.sin((t - 1.5) * 9) * Math.exp(-(t - 1.5) * 2) : 1
+  X.strokeStyle = locked ? ACC : '#ffffff'; X.lineWidth = H * 0.008; X.lineCap = 'round'
+  const gx = bw * grow * pulse, gy = bh * grow * pulse
+  for (const [cxs, cys] of [[0, 0], [1, 0], [1, 1], [0, 1]]) {
+    const px = bx0 + bw * cxs + (cxs ? gx : -gx), py = by0 + bh * cys + (cys ? gy : -gy), dx = cxs ? -L : L, dy = cys ? -L : L
+    X.beginPath(); X.moveTo(px + dx, py); X.lineTo(px, py); X.lineTo(px, py + dy); X.stroke()
+  }
+  // one sweep of the scan line once it has locked
+  const sw = clamp((t - 1.6) / 1.1)
+  if (sw > 0 && sw < 1) {
+    const ly = by0 + bh * ease(sw)
+    const g = X.createLinearGradient(0, ly - bh * 0.12, 0, ly)
+    g.addColorStop(0, 'rgba(255,207,107,0)'); g.addColorStop(1, 'rgba(255,207,107,0.45)')
+    X.fillStyle = g; X.fillRect(bx0, ly - bh * 0.12, bw, bh * 0.12)
+    X.fillStyle = ACC; X.fillRect(bx0, ly - 1.5, bw, 3)
+  }
+  X.restore(); X.globalAlpha = 1
+}
+async function wait(sc, t) {
+  const a = exitA(sc, t)
+  beatWord(sc, t, a)
+  const cx = W * 0.66, cy = H * 0.5 - (1 - a) * 20, ent = out3(clamp(t / 0.6)), R = H * 0.24
+  X.save(); X.globalAlpha = a * ent; X.translate(cx, cy)
+  // a ring of ticks that fills round as the customer decides
+  const n = 60, fill = clamp(t / (sc.dur * 0.95))
+  for (let i = 0; i < n; i++) {
+    const ang = -Math.PI / 2 + (i / n) * Math.PI * 2, on = i / n < fill
+    X.strokeStyle = on ? ACC : 'rgba(255,246,242,0.18)'; X.lineWidth = on ? 3 : 2
+    X.beginPath(); X.moveTo(Math.cos(ang) * R * 0.92, Math.sin(ang) * R * 0.92); X.lineTo(Math.cos(ang) * R, Math.sin(ang) * R); X.stroke()
+  }
+  // hourglass: sand runs from top to bottom
+  const hw = R * 0.36, hh = R * 0.56, sand = clamp(t / (sc.dur * 0.9)), sway = Math.sin(t * 2.2) * 0.04
+  X.rotate(sway)
+  X.strokeStyle = INK; X.lineWidth = 4; X.lineJoin = 'round'
+  X.beginPath(); X.moveTo(-hw, -hh); X.lineTo(hw, -hh); X.lineTo(hw * 0.12, 0); X.lineTo(hw, hh); X.lineTo(-hw, hh); X.lineTo(-hw * 0.12, 0); X.closePath(); X.stroke()
+  X.fillStyle = INK; X.fillRect(-hw * 1.25, -hh - 8, hw * 2.5, 6); X.fillRect(-hw * 1.25, hh + 2, hw * 2.5, 6)
+  X.fillStyle = ACC
+  const top = 1 - sand, ty = -hh * top * 0.92
+  if (top > 0.02) { const k = top; X.beginPath(); X.moveTo(-hw * 0.12 - (hw * 0.88) * k * 0.92, ty); X.lineTo(hw * 0.12 + (hw * 0.88) * k * 0.92, ty); X.lineTo(hw * 0.1, -4); X.lineTo(-hw * 0.1, -4); X.closePath(); X.fill() }
+  const bh = hh * sand * 0.85
+  X.beginPath(); X.moveTo(-hw * 0.96, hh - 2); X.lineTo(hw * 0.96, hh - 2); X.lineTo(hw * 0.96 * (1 - bh / hh) + hw * 0.12 * (bh / hh), hh - bh); X.lineTo(-(hw * 0.96 * (1 - bh / hh) + hw * 0.12 * (bh / hh)), hh - bh); X.closePath(); X.fill()
+  if (top > 0.02) { X.fillRect(-1.5, 0, 3, hh - bh) }
+  X.restore(); X.globalAlpha = 1
+}
+async function paid(sc, t) {
+  const a = exitA(sc, t)
+  beatWord(sc, t, a)
+  const cx = W * 0.66, cy = H * 0.42 - (1 - a) * 20, R = H * 0.13
+  const pop = out3(clamp(t / 0.45)), ring = clamp((t - 0.1) / 0.9)
+  X.save(); X.globalAlpha = a
+  // a ring that bursts out as it lands
+  X.globalAlpha = a * (1 - ring) * 0.6; X.strokeStyle = '#33d17a'; X.lineWidth = 3
+  X.beginPath(); X.arc(cx, cy, R * (1 + ring * 1.4), 0, Math.PI * 2); X.stroke()
+  X.globalAlpha = a
+  X.fillStyle = '#33d17a'; X.beginPath(); X.arc(cx, cy, R * (0.6 + 0.4 * pop), 0, Math.PI * 2); X.fill()
+  const tick = out3(clamp((t - 0.3) / 0.45))
+  X.strokeStyle = '#fff'; X.lineWidth = R * 0.18; X.lineCap = 'round'; X.lineJoin = 'round'
+  const p1 = [cx - R * 0.42, cy + R * 0.02], p2 = [cx - R * 0.1, cy + R * 0.34], p3 = [cx + R * 0.46, cy - R * 0.3]
+  X.beginPath(); X.moveTo(...p1)
+  if (tick < 0.4) X.lineTo(lerp(p1[0], p2[0], tick / 0.4), lerp(p1[1], p2[1], tick / 0.4))
+  else { X.lineTo(...p2); const k = (tick - 0.4) / 0.6; X.lineTo(lerp(p2[0], p3[0], k), lerp(p2[1], p3[1], k)) }
+  if (tick > 0) X.stroke()
+  // the amount counts up under it
+  const c = out3(clamp((t - 0.4) / 1.1)), v = Math.round(sc.amount * c)
+  X.globalAlpha = a * clamp((t - 0.35) / 0.3); X.textAlign = 'center'; X.textBaseline = 'alphabetic'
+  X.font = `800 ${H * 0.11}px Figtree`; X.fillStyle = INK
+  X.fillText(v.toLocaleString('en-US') + ' ' + sc.unit, cx, cy + R + H * 0.17)
+  X.textAlign = 'left'; X.restore(); X.globalAlpha = 1
+}
+// The receipt is the ending: it prints out of a slot, the sale first, then
+// what the project changed, as line items.
+async function receipt(sc, t) {
+  const a = exitA({ dur: sc.dur + 10 }, t)
+  const x = W * 0.075, ty = H * 0.34
+  eyebrow(sc.eyebrow, x, ty - H * 0.07, t, a)
+  const th = kinetic(sc.title, x, ty, { size: H * 0.085, weight: 800, t, delay: 0.2, a, maxW: W * 0.42 })
+  if (sc.sub) kinetic(sc.sub, x, ty + th + H * 0.03, { size: H * 0.033, weight: 500, color: DIM, t, delay: 0.6, a, maxW: W * 0.38, lh: H * 0.033 * 1.35, stagger: 0.03 })
+  const pw = W * 0.29, px = W * 0.76 - pw / 2, slot = H * 0.07, lh = H * 0.045, pad = H * 0.04
+  const rows = sc.rows, full = pad * 2 + rows.length * lh
+  const shown = full * out3(clamp((t - 0.3) / 3.2))
+  // the printer's slot
+  X.save(); X.globalAlpha = a
+  X.fillStyle = 'rgba(30,0,4,0.55)'; rrect(px - pw * 0.08, slot - 10, pw * 1.16, 20, 10); X.fill()
+  // it unrolls from the top, so it reads in order; the torn edge travels down with it
+  const top = slot, zig = 10, edge = top + shown
+  X.save(); X.beginPath(); X.rect(px - 40, slot, pw + 80, shown + zig); X.clip()
+  X.shadowColor = 'rgba(30,0,4,0.4)'; X.shadowBlur = 30; X.shadowOffsetY = 12
+  X.fillStyle = '#fffdf7'
+  X.beginPath(); X.moveTo(px, top); X.lineTo(px + pw, top); X.lineTo(px + pw, edge)
+  for (let i = 0, n = 18; i <= n; i++) X.lineTo(px + pw - (pw * i) / n, edge + (i % 2 ? zig : 0))
+  X.closePath(); X.fill(); X.shadowColor = 'transparent'
+  X.beginPath(); X.rect(px - 40, slot, pw + 80, Math.max(0, shown - 4)); X.clip()
+  rows.forEach((r, i) => {
+    const ry = top + pad + i * lh + lh * 0.5
+    if (r.rule) { X.strokeStyle = 'rgba(60,20,24,0.3)'; X.setLineDash([5, 5]); X.lineWidth = 1.5; X.beginPath(); X.moveTo(px + pad * 0.7, ry); X.lineTo(px + pw - pad * 0.7, ry); X.stroke(); X.setLineDash([]); return }
+    X.textBaseline = 'middle'
+    if (r.c) { X.textAlign = 'center'; X.font = `${r.b ? 800 : 500} ${H * (r.b ? 0.03 : 0.024)}px Figtree`; X.fillStyle = r.b ? '#2b1215' : 'rgba(43,18,21,0.6)'; X.fillText(r.c, px + pw / 2, ry); X.textAlign = 'left'; return }
+    if (r.tick) {
+      X.strokeStyle = '#d4202b'; X.lineWidth = 3; X.lineCap = 'round'
+      const tx = px + pad * 0.8, s = H * 0.012
+      X.beginPath(); X.moveTo(tx - s, ry); X.lineTo(tx - s * 0.2, ry + s * 0.8); X.lineTo(tx + s, ry - s * 0.8); X.stroke()
+      X.font = `600 ${H * 0.026}px Figtree`; X.fillStyle = '#2b1215'; X.fillText(r.tick, tx + s * 2.2, ry); return
+    }
+    X.font = `500 ${H * 0.024}px Figtree`; X.fillStyle = 'rgba(43,18,21,0.6)'; X.fillText(r.k, px + pad * 0.7, ry)
+    X.textAlign = 'right'; X.font = `700 ${H * 0.026}px Figtree`; X.fillStyle = '#2b1215'; X.fillText(r.v, px + pw - pad * 0.7, ry); X.textAlign = 'left'
+  })
+  X.restore(); X.restore(); X.globalAlpha = 1
+}
+
+
+// ---- a day at the counter (MTB): one shopkeeper's day, opening to closing.
+// Left: the time, one line, and a small day bar with the sun moving along it;
+// right: the phone playing the real screens, soft crossfades, slow push in.
+// The light goes from a warm morning to a darker evening.
+function dayLight(p, a) {
+  const g = X.createRadialGradient(W * 0.08, H * 0.05, 0, W * 0.08, H * 0.05, W * 0.75)
+  g.addColorStop(0, `rgba(255,205,130,${0.2 * (1 - p) * a})`); g.addColorStop(1, 'rgba(255,205,130,0)')
+  X.fillStyle = g; X.fillRect(0, 0, W, H)
+  X.fillStyle = `rgba(22,0,12,${0.38 * p * p * a})`; X.fillRect(0, 0, W, H)
+}
+function dayBar(x, y, w, hour, a) {
+  const h0 = 6, h1 = 22, px = (h) => x + w * (h - h0) / (h1 - h0)
+  X.globalAlpha = a * 0.35; X.fillStyle = INK; X.fillRect(x, y, w, 2)
+  X.font = `500 ${H * 0.022}px Figtree`; X.textBaseline = 'top'
+  for (const [h, l] of [[6, '6 AM'], [12, '12 PM'], [18, '6 PM'], [22, '10 PM']]) {
+    X.globalAlpha = a * 0.35; X.fillRect(px(h) - 1, y - 5, 2, 12)
+    X.globalAlpha = a * 0.55; X.textAlign = h === 22 ? 'right' : h === 6 ? 'left' : 'center'; X.fillText(l, px(h), y + 14)
+  }
+  X.textAlign = 'left'
+  X.globalAlpha = a; X.fillStyle = ACC; X.fillRect(x, y, px(hour) - x, 2)
+  X.shadowColor = ACC; X.shadowBlur = 18
+  X.beginPath(); X.arc(px(hour), y + 1, H * 0.012, 0, Math.PI * 2); X.fill(); X.shadowBlur = 0
+  X.globalAlpha = 1
+}
+async function day(sc, t) {
+  const a = exitA(sc, t), c = await clip(sc.src)
+  const span = sc.dur * 0.9, srcT = lerp(sc.from, sc.to, clamp(t / span))
+  const fr = c.frames; let k = 0
+  while (k + 1 < fr.length && fr[k + 1].t <= srcT) k++
+  const rate = (sc.to - sc.from) / span, since = (srcT - Math.max(fr[k].t, sc.from)) / rate
+  const f1 = await frameOf(c, sc.src, srcT)
+  const f0 = k > 0 && fr[k].t > sc.from ? await frameOf(c, sc.src, fr[k - 1].t) : null
+  const xf = f0 ? clamp(since / 0.35) : 1
+  // the light and the sun move from the last moment's time to this one
+  const move = ease(clamp(t / 1.1)), hour = lerp(sc.fromHour ?? sc.hour, sc.hour, move)
+  dayLight((hour - 6) / 16, 1)
+  // left column
+  const x = W * 0.075, ty = H * 0.3 - (1 - a) * 20
+  kinetic(sc.time, x, ty, { size: H * 0.14, weight: 800, t, delay: 0.1, a, maxW: W * 0.45, stagger: 0.08 })
+  kinetic(sc.line, x, ty + H * 0.19, { size: H * 0.042, weight: 600, t, delay: 0.45, a, maxW: W * 0.4, lh: H * 0.042 * 1.3, stagger: 0.04 })
+  dayBar(x, ty + H * 0.36, W * 0.36, hour, a * out3(clamp((t - 0.3) / 0.6)))
+  // the phone
+  const ent = out3(clamp(t / 0.8)), push = 1 + 0.045 * ease(clamp(t / sc.dur))
+  const dh = H * 0.86, dw = dh / ((1 - 0.074) * SCREEN_RATIO + 0.074)
+  const cx = W * 0.7, cy = H * 0.5 + (1 - ent) * 60 - (1 - a) * 20 + Math.sin(t * 0.9) * 4
+  X.save(); X.translate(cx, cy); X.scale(push, push); X.translate(-dw / 2, -dh / 2)
+  X.globalAlpha = a * ent
+  if (f0 && xf < 1) { device(f0, 0, 0, dw); X.globalAlpha = a * ent * xf }
+  device(f1, 0, 0, dw)
+  X.restore(); X.globalAlpha = 1
+}
+
+const SCENES = { hello, title, stats, demo, outro, scan, wait, paid, receipt, day }
+
+// Brand label (top left). No progress line: the site's player has its own.
 function chrome(cfg, T, total, scenes) {
   const a = clamp((T - (scenes[0]?.dur || 0) + 0.3) / 0.6) * (1 - clamp((T - total + 1) / 0.8))
   if (a <= 0) return
   X.globalAlpha = a * 0.85; X.font = `600 ${H * 0.022}px Figtree`; X.textBaseline = 'middle'; X.fillStyle = INK
   X.fillText(cfg.label, W * 0.075, H * 0.07)
-  const x0 = W * 0.075, x1 = W * 0.925, y = H * 0.93
-  X.globalAlpha = a * 0.25; X.fillStyle = TH.track; X.fillRect(x0, y, x1 - x0, 2)
-  X.globalAlpha = a; X.fillStyle = ACC; X.fillRect(x0, y, (x1 - x0) * clamp(T / total), 2)
-  let s = 0
-  for (const sc of scenes) {
-    if (sc.kind === 'demo') { const p = s / total; X.globalAlpha = a * (T >= s ? 1 : 0.4); X.beginPath(); X.arc(x0 + (x1 - x0) * p, y + 1, 3.5, 0, Math.PI * 2); X.fill() }
-    s += sc.dur
-  }
   X.globalAlpha = 1
 }
 

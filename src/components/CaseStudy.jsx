@@ -1,7 +1,4 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGSAP } from '@gsap/react'
 import { CASES, HOME_WORK, MORE_WORK } from '../data'
 import { scrollToY } from '../scroll'
 import { useDragPill } from '../useDragPill'
@@ -98,20 +95,17 @@ function OtherWork({ current }) {
   return (
     <Card className="sv-others">
       <h2 className="sv-h2">More Work</h2>
-      <div className="sv-others-grid">
+      <ul className="sv-others-list">
         {items.map((c) => (
-          <a key={c.slug} className="sv-other" href={`/work/${c.slug}`}>
-            <Media art={c.art.thumb ? { ...c.art, img: c.art.thumb } : c.art} title={c.title} />
-            <span className="sv-other-foot">
-              <span>
-                <span className="sv-other-name">{c.title}</span>
-                <span className="sv-other-domain">{c.domain}</span>
-              </span>
+          <li key={c.slug}>
+            <a className="sv-other" href={`/work/${c.slug}`}>
+              <Media art={c.art.thumb ? { ...c.art, img: c.art.thumb } : c.art} title="" />
+              <span className="sv-other-name">{c.title}</span>
               <span className="sv-other-arrow"><Icon name="arrowRight" size={20} stroke={1.8} /></span>
-            </span>
-          </a>
+            </a>
+          </li>
         ))}
-      </div>
+      </ul>
     </Card>
   )
 }
@@ -134,7 +128,7 @@ function Section({ sec }) {
         {sec.blocks.map((b, j) => <Block key={j} block={b} />)}
       </Card>
     )
-    return sec.immersive ? <Immersive>{card}</Immersive> : card
+    return card
   }
   const opensWithLead = sec.blocks[0]?.kind === 'lead'
   const lead = opensWithLead ? sec.blocks[0].p : null
@@ -156,89 +150,6 @@ function Section({ sec }) {
       )}
     </Card>
   )
-}
-
-// Scroll-linked full screen for a bare video section (`immersive: true`):
-// when the card reaches the middle of the screen it is pinned, and as the
-// page scrolls it grows until the video fills the viewport (corners and
-// padding easing to zero), holds there for a moment, then shrinks back as
-// the scroll carries on. GSAP ScrollTrigger, scrubbed. Off for reduced motion.
-// The pin's scroll room would leave a screen-sized hole under the video going
-// in and above it coming out, so the cards around it are held still (CSS
-// `translate`, which leaves their reveal transform alone) for the whole pin.
-gsap.registerPlugin(ScrollTrigger)
-function Immersive({ children }) {
-  const wrap = useRef(null)
-  useGSAP(() => {
-    const el = wrap.current
-    const card = el?.firstElementChild
-    if (!card || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const frame = card.querySelector('.st-reel-frame')
-    const r0 = getComputedStyle(card).borderRadius
-    const p0 = getComputedStyle(card).padding
-    const f0 = frame ? getComputedStyle(frame).borderRadius : '0px'
-    // Scale at which the 16:9 video covers the whole viewport.
-    const cover = () => {
-      const w = card.offsetWidth
-      return Math.max(window.innerWidth / w, window.innerHeight / (w * 9 / 16)) * 1.002
-    }
-    const grow = { duration: 0.4, ease: 'power2.inOut' }
-    let above = []
-    let below = []
-    const hold = (st) => {
-      const room = st.end - st.start
-      above.forEach((n) => { n.style.translate = `0 ${st.progress * room}px` })
-      below.forEach((n) => { n.style.translate = `0 ${(st.progress - 1) * room}px` })
-    }
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: el,
-        start: 'center center',
-        end: '+=150%',
-        pin: true,
-        // The case column is a flex box, where GSAP turns pin spacing off by
-        // default; without it the next cards scroll up over the pinned video.
-        pinSpacing: true,
-        scrub: 0.6,
-        invalidateOnRefresh: true,
-        onUpdate: hold,
-        onRefresh: hold,
-      },
-      // Stay above the rest of the page for as long as it's enlarged, even
-      // while the scrub is still catching up after the pin lets go.
-      onUpdate: () => {
-        const scale = gsap.getProperty(el, 'scale')
-        el.classList.toggle('is-immersive', scale > 1.003)
-        // Keep the video's controls their size, and on screen: covering the
-        // window crops the video past its edges.
-        el.style.setProperty('--reel-ui', 1 / scale)
-        el.style.setProperty('--reel-x', `${-Math.max(0, (el.offsetWidth * scale - window.innerWidth) / 2) / scale}px`)
-        el.style.setProperty('--reel-y', `${-Math.max(0, (el.offsetHeight * scale - window.innerHeight) / 2) / scale}px`)
-      },
-    })
-    tl.to(el, { scale: cover, ...grow }, 0)
-      .to(card, { borderRadius: 0, padding: 0, borderColor: 'rgba(255,255,255,0)', ...grow }, 0)
-    if (frame) tl.to(frame, { borderRadius: 0, ...grow }, 0)
-    tl.to({}, { duration: 0.25 })
-    tl.to(el, { scale: 1, ...grow }, '>')
-      .to(card, { borderRadius: r0, padding: p0, borderColor: 'rgba(255,255,255,0.1)', ...grow }, '<')
-    if (frame) tl.to(frame, { borderRadius: f0, ...grow }, '<')
-    tl.to({}, { duration: 0.06 }) // settle back before the pin lets go
-
-    // Everything before and after the video on the page, bar fixed items
-    // like the side list.
-    const main = el.closest('main')
-    for (let n = tl.scrollTrigger.spacer || el; n && n !== main; n = n.parentElement) {
-      for (let s = n.previousElementSibling; s; s = s.previousElementSibling) above.push(s)
-      for (let s = n.nextElementSibling; s; s = s.nextElementSibling) below.push(s)
-    }
-    const inFlow = (n) => getComputedStyle(n).position !== 'fixed'
-    above = above.filter(inFlow)
-    below = below.filter(inFlow)
-    hold(tl.scrollTrigger)
-    return () => [...above, ...below].forEach((n) => { n.style.translate = '' })
-  }, { scope: wrap })
-  return <div className="sv-immersive" ref={wrap}>{children}</div>
 }
 
 // Auto-scrolling photo strip; the list is doubled so the loop is seamless.
@@ -376,9 +287,7 @@ function CaseNav({ sections }) {
     const target = () => {
       const el = document.getElementById(id)
       if (id === 'cs-top' || !el) return 0
-      // Immersive holds cards with `translate`; aim for where they really sit.
-      const held = parseFloat(getComputedStyle(el).translate.split(' ')[1]) || 0
-      return el.getBoundingClientRect().top + window.scrollY - held - 24
+      return el.getBoundingClientRect().top + window.scrollY - 24
     }
     scrollToY(target(), 1)
     setTimeout(() => {

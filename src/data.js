@@ -64,7 +64,7 @@ export const CASES = [
     featured: true,
     tags: ['Product Design'],
     desc: 'QR table ordering for cafés in Myanmar: a guest app on the phone, and an admin that runs every order.',
-    art: { img: '/case/orderflow/cover.jpg', thumb: '/case/orderflow/thumb.jpg', card: '/case/orderflow/thumb.jpg', text: 'OrderFlow', color: '#1f3a5f', bg: 'linear-gradient(160deg,#cfe4f7,#dfe7fb 55%,#eef1fb)' },
+    art: { img: '/case/orderflow/cover.jpg?v=24', thumb: '/case/orderflow/thumb-pos.jpg?v=10', card: '/case/orderflow/thumb.jpg', text: 'OrderFlow', color: '#1f3a5f', bg: 'linear-gradient(160deg,#cfe4f7,#dfe7fb 55%,#eef1fb)' },
     // One case for both products: the guest app (orderflow-client) and the admin
     // panel (orderflow-admin-panel). Same six-phase structure as the Superfine
     // and Heizen cases. Numbers come from the Startup World Cup pitch deck (Oct
@@ -381,7 +381,7 @@ export const CASES = [
     featured: true,
     tags: ['Product Design'],
     desc: 'Lunch ordering for employees on a company meal program, on the web and on a phone.',
-    art: { img: '/case/superfine-employee/cover.jpg', thumb: '/case/superfine-employee/thumb.jpg?v=3', card: '/case/superfine-employee/thumb.jpg?v=3', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
+    art: { img: '/case/superfine-employee/cover.jpg?v=5', thumb: '/case/superfine-employee/thumb.jpg?v=3', card: '/case/superfine-employee/thumb.jpg?v=3', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
     // Same six-phase structure as the SFK Driver App. Facts come from the
     // superfine.corporate.employee repo: its README (IA, ordering flow,
     // interview findings) and ACCESSIBILITY-AUDIT.md (WCAG 2.2 AA, 23 Jul 2026).
@@ -406,7 +406,7 @@ export const CASES = [
           bare: true,
           immersive: true,
           blocks: [
-            { kind: 'reel', src: '/case/superfine-employee/intro.mp4', audio: '/case/superfine-employee/intro.m4a', poster: '/case/superfine-employee/intro.jpg', alt: 'Intro: employees could not see their allowance, the cut-off or their lunch. Then the app: sign in, allowance in view, choices first, a cart that splits the cost, and the same flow on a phone.' },
+            { kind: 'reel', src: '/case/superfine-employee/intro.mp4?v=2', audio: '/case/superfine-employee/intro.m4a', poster: '/case/superfine-employee/intro.jpg', alt: 'Intro: employees could not see their allowance, the cut-off or their lunch. Then the app: sign in, allowance in view, choices first, a cart that splits the cost, and the same flow on a phone.' },
           ],
         },
         {
@@ -664,7 +664,7 @@ export const CASES = [
     logo: '/logos/superfine-kitchen.png',
     tags: ['Product Design'],
     desc: 'The driver app for a Bay Area office meal service, from the kitchen to the door.',
-    art: { img: '/case/superfine/cover.jpg', thumb: '/case/superfine/thumb.jpg', card: '/case/superfine/thumb.jpg', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
+    art: { img: '/case/superfine/cover.jpg?v=2', thumb: '/case/superfine/thumb.jpg', card: '/case/superfine/thumb.jpg', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
     // Story layout in six phases (Understand → Improve, the same track as the
     // About page). Facts come from the driver prototype (sfk-driver-app: its
     // README, review notes and commit history). Videos and stills are real
@@ -690,7 +690,7 @@ export const CASES = [
           bare: true,
           immersive: true,
           blocks: [
-            { kind: 'reel', src: '/case/superfine/sf-intro.mp4', audio: '/case/superfine/sf-intro.m4a', poster: '/case/superfine/sf-intro.jpg', alt: 'Intro: hot food, one free hand and a 60 minute clock. Then a driver run: go on duty, scan each slip, slide to confirm, navigate, follow the steps at the door and send a proof photo.' },
+            { kind: 'reel', src: '/case/superfine/sf-intro.mp4?v=2', audio: '/case/superfine/sf-intro.m4a', poster: '/case/superfine/sf-intro.jpg', alt: 'Intro: hot food, one free hand and a 60 minute clock. Then a driver run: go on duty, scan each slip, slide to confirm, navigate, follow the steps at the door and send a proof photo.' },
           ],
         },
         {
@@ -960,7 +960,7 @@ export const CASES = [
     domain: 'Fintech',
     tags: ['Product Design', 'Payments'],
     desc: 'A merchant wallet for small businesses in Myanmar, built to be fast and clear for shopkeepers who aren’t tech-savvy.',
-    art: { img: '/case/mtb-pay-merchant/cover.jpg', thumb: '/case/mtb-pay-merchant/thumb.jpg', card: '/case/mtb-pay-merchant/card.jpg', text: 'MTB Pay', color: '#fff', bg: '#c8121a' },
+    art: { img: '/case/mtb-pay-merchant/cover.jpg', thumb: '/case/mtb-pay-merchant/thumb.jpg?v=6', card: '/case/mtb-pay-merchant/thumb.jpg?v=6', text: 'MTB Pay', color: '#fff', bg: '#c8121a' },
     // Facts come from Sai's own case page (smyothu.framer.website/work/spark);
     // screens are from the Figma flows (tools/case-video/out-mtb).
     // TODO(Sai): add the dates and where the app is now.
@@ -977,6 +977,14 @@ export const CASES = [
       gallery: [],
       tools: 'Figma',
       sections: [
+        {
+          id: 'hello',
+          nav: 'Intro',
+          bare: true,
+          blocks: [
+            { kind: 'reel', src: '/case/mtb-pay-merchant/intro.mp4?v=3', audio: '/case/mtb-pay-merchant/intro.m4a?v=3', poster: '/case/mtb-pay-merchant/intro.jpg?v=2', alt: 'Intro: slow transactions and frequent errors for small shops in Myanmar. Then a day at one shop counter with MTB Pay Merchant: a morning phone top-up, a QR payment in the lunch rush, a refund in the afternoon, and the day on one screen at closing time.' },
+          ],
+        },
         {
           id: 'impact',
           eyebrow: 'Overview',
@@ -1230,7 +1238,7 @@ export const CASES = [
     domain: 'Fintech',
     tags: ['Product Design', 'Fintech'],
     desc: 'A secure portal for one large MTB Bank partner: live transactions, refunds, settlements and API access in one place.',
-    art: { img: '/case/merchant-experience/cover.jpg', thumb: '/case/merchant-experience/thumb.jpg', card: '/case/merchant-experience/card.jpg', text: 'Merchant Experience', color: '#fff', bg: '#7c0a10' },
+    art: { img: '/case/merchant-experience/cover.jpg?v=2', thumb: '/case/merchant-experience/thumb.jpg?v=3', card: '/case/merchant-experience/card.jpg?v=3', text: 'Merchant Experience', color: '#fff', bg: '#7c0a10' },
     // Facts come from Sai's page (smyothu.framer.website/work/merchant-portal-copy-copy);
     // screens are from the Figma boards in Merchant Portal.zip (tools/case-video/out-portal).
     // TODO(Sai): add the dates and What I learned.
@@ -1700,9 +1708,9 @@ export const CASES = [
 ]
 
 // The three main projects, shown as large cards at the top of the home page.
-export const HOME_WORK = ['orderflow', 'superfine-employee', 'sfk-driver-app']
+export const HOME_WORK = ['orderflow', 'superfine-employee', 'mtb-pay-merchant']
 // The fan of cards in the home page's More Work card; the middle one sits in front.
-export const MORE_WORK = ['retina-ai', 'mtb-pay-merchant', 'merchant-experience']
+export const MORE_WORK = ['retina-ai', 'sfk-driver-app', 'merchant-experience']
 
 // Testimonials on the home page. Use real quotes only, with the person's
 // permission. `photo` is optional (initials show otherwise), e.g.
