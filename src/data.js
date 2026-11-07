@@ -199,7 +199,7 @@ export const CASES = [
         },
         {
           id: 'architecture',
-          nav: 'Product Architecture',
+          nav: 'Scope and Architecture',
           title: 'One order, *three places*',
           blocks: [
             { kind: 'lead', p: 'An order starts on a guest’s phone, lands on the staff board and ends up in the owner’s numbers.' },

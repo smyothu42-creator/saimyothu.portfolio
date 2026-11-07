@@ -407,17 +407,6 @@ function OrbitRing({ r, count, start, gap }) {
   }).join('')
   return <svg className="cs-orbit-ring" viewBox="0 0 100 100" aria-hidden="true"><path d={d} /></svg>
 }
-// The orange ray, masked with the same gaps, so it never runs behind a circle.
-// (Conic angles start at the top; the circles' angles start at 3 o'clock.)
-function OrbitRay({ count, start, gap, out }) {
-  const step = 360 / count
-  const m = `repeating-conic-gradient(from ${start + 90 + gap}deg, #000 0deg ${step - 2 * gap}deg, transparent ${step - 2 * gap}deg ${step}deg)`
-  return (
-    <span className="cs-ray-gaps" style={{ WebkitMaskImage: m, maskImage: m }} aria-hidden="true">
-      <span className={'cs-hub-ray ' + (out ? 'is-out' : 'is-in')} />
-    </span>
-  )
-}
 function Hub({ items, outer = [] }) {
   const n = items.length
   const [on, setOn] = useState(0)
@@ -448,7 +437,6 @@ function Hub({ items, outer = [] }) {
         <span className="cs-hub-core"><img src="/logos/orderflow-icon.png" alt="" /></span>
         <div className="cs-orbit is-out">
           <OrbitRing r={46} count={outer.length} start={-60} gap={10} />
-          <OrbitRay count={outer.length} start={-60} gap={10} out />
           {outer.map((it, i) => {
             const a = (-60 + (360 / outer.length) * i) * Math.PI / 180
             const k = n + i
@@ -465,7 +453,6 @@ function Hub({ items, outer = [] }) {
         </div>
         <div className="cs-orbit is-in">
           <OrbitRing r={29} count={n} start={-90} gap={20} />
-          <OrbitRay count={n} start={-90} gap={20} />
           {items.map((it, i) => (
             <span key={it.key} className="cs-orbit-item" style={{ left: `${50 + 29 * Math.cos(at(i))}%`, top: `${50 + 29 * Math.sin(at(i))}%` }}>
               <span className="cs-orbit-up">
@@ -517,7 +504,6 @@ function Hub({ items, outer = [] }) {
 // Key product decisions: number, the problem, what we decided, and a small
 // drawn visual for each (no real POS brand is shown).
 const WIFI_OFF = <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h.01M8.5 16.43a5 5 0 0 1 7 0M5 12.86a10 10 0 0 1 5.17-2.69M19 12.86a10 10 0 0 0-2.01-1.53M2 8.82a15 15 0 0 1 4.18-2.65M22 8.82a15 15 0 0 0-11.29-3.76M2 2l20 20" /></svg>
-const SIGNAL = <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 20h.01M7 20v-4M12 20v-8M17 20V8M22 4v16" /></svg>
 
 function DecPos() {
   return (
@@ -552,19 +538,11 @@ function DecPos() {
   )
 }
 function DecOffline() {
-  const rows = [['T-1', 'Ordering', 'is-g'], ['T-5', 'Preparing', 'is-o'], ['T-2', 'Not paid', 'is-p'], ['T-6', 'Ordering', 'is-g']]
   return (
     <div className="cs-dec-off" aria-hidden="true">
       <div className="cs-dec-desk"><span className="cs-dec-desk-screen">{WIFI_OFF}</span><span className="cs-dec-desk-foot" /><small>Set-up device only</small></div>
-      <div className="st-device cs-dec-phone">
-        <div className="st-device-screen cs-dec-admin">
-          <span className="st-device-island" />
-          <div className="cs-dec-admin-top"><b>Orders</b><span className="cs-dec-net">{SIGNAL}4G</span></div>
-          {rows.map(([t, s, c]) => (
-            <div key={t} className="cs-dec-order"><b>{t}</b><span className={c}>{s}</span><i /><i /></div>
-          ))}
-          <span className="cs-dec-accept">Accept order</span>
-        </div>
+      <div className="st-device cs-dec-phone is-app">
+        <div className="st-device-screen"><img src="/case/orderflow/admin-mobile.jpg" alt="" loading="lazy" /><span className="st-device-island" /></div>
       </div>
       <span className="cs-dec-pill">{WIFI_OFF}Wi-Fi down, still running on mobile data</span>
     </div>
@@ -615,7 +593,7 @@ function Decisions({ items }) {
 // Product architecture: the three surfaces layered as one scene (owner's
 // dashboard at the back, the staff board, the guest's phone in front), and a
 // short line for each. The highlight moves from guest to staff to owner.
-const ARCH_SHOTS = { owner: '/case/orderflow/mvp/a-metrics.jpg', staff: '/case/orderflow/mvp/a-accept.jpg', guest: '/case/orderflow/guest-latest.jpg' }
+const ARCH_SHOTS = { owner: '/case/orderflow/arch-owner.jpg', staff: '/case/orderflow/arch-staff.jpg', guest: '/case/orderflow/guest-latest.jpg' }
 function ArchBrowser({ who, on }) {
   return (
     <div className={'st-browser cs-arch-' + who + (on ? ' is-on' : '')}>

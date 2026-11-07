@@ -2234,16 +2234,6 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .cs-hub-art { --spin: 90s; position: relative; aspect-ratio: 1; }
 .cs-orbit-ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .cs-orbit-ring path { fill: none; stroke: rgba(255, 255, 255, 0.18); stroke-width: 0.25; }
-/* Rays: an orange comet on each ring, a faint tail brightening to a glowing
-   head, drawn with a conic gradient masked to the ring line. */
-.cs-ray-gaps { position: absolute; inset: 0; pointer-events: none; }
-.cs-hub-ray { --r: 58%; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
-  background: conic-gradient(from 0deg, rgba(255, 154, 82, 0) 0deg, rgba(255, 154, 82, 0) 270deg, rgba(255, 154, 82, 0.15) 300deg, #ffb27d 357deg, rgba(255, 154, 82, 0) 360deg);
-  -webkit-mask: radial-gradient(circle closest-side, transparent calc(var(--r) - 1.6px), #000 calc(var(--r) - 0.8px), #000 calc(var(--r) + 0.8px), transparent calc(var(--r) + 1.6px));
-  mask: radial-gradient(circle closest-side, transparent calc(var(--r) - 1.6px), #000 calc(var(--r) - 0.8px), #000 calc(var(--r) + 0.8px), transparent calc(var(--r) + 1.6px));
-  filter: drop-shadow(0 0 3px rgba(255, 154, 82, 0.8)); animation: hub-spin 9s linear infinite; }
-.cs-hub-ray.is-out { --r: 92%; animation-duration: 15s; transform: rotate(140deg); animation-name: hub-spin-off; }
-@keyframes hub-spin-off { from { transform: rotate(140deg); } to { transform: rotate(500deg); } }
 @keyframes hub-spin { to { transform: rotate(360deg); } }
 .cs-hub-core { position: absolute; left: 50%; top: 50%; width: 24%; aspect-ratio: 1; transform: translate(-50%, -50%); display: grid; place-items: center; border-radius: 50%; background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05)); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.2); }
 .cs-hub-core img { width: 80%; height: 80%; border-radius: 50%; box-shadow: 0 12px 28px -12px rgba(0, 0, 0, 0.6); }
@@ -2253,7 +2243,7 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .cs-orbit-item { position: absolute; transform: translate(-50%, -50%); }
 .cs-orbit-up { display: block; animation: hub-spin var(--spin) linear infinite reverse; }
 .cs-orbit.is-out .cs-orbit-up { animation-duration: calc(var(--spin) * 1.4); animation-direction: normal; }
-.cs-hub-art:hover :is(.cs-orbit, .cs-orbit-up, .cs-hub-ray) { animation-play-state: paused; }
+.cs-hub-art:hover :is(.cs-orbit, .cs-orbit-up) { animation-play-state: paused; }
 
 .cs-hub-node {
   position: relative; width: 54px; height: 54px; display: grid; place-items: center; padding: 0; cursor: pointer; border-radius: 50%; color: var(--sv-text);
@@ -2270,7 +2260,7 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .cs-hub-node.is-on { color: #ef7a2c; background: #fff; border-color: #fff; box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.12), 0 12px 28px -12px rgba(0, 0, 0, 0.55); }
 .cs-hub-label { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 6px; white-space: nowrap; font-size: 11px; color: var(--sv-dim); transition: color 0.35s; }
 .cs-hub-node.is-on .cs-hub-label { color: var(--sv-text); }
-@media (prefers-reduced-motion: reduce) { .cs-orbit, .cs-orbit-up, .cs-hub-ray { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .cs-orbit, .cs-orbit-up { animation: none !important; } }
 @media (max-width: 720px) { .cs-hub { grid-template-columns: 1fr; gap: 32px; } .cs-hub-art { width: min(330px, 92%); margin: 0 auto; } .cs-hub-node { width: 46px; height: 46px; } .cs-hub-node svg { width: 19px; height: 19px; } .cs-hub-node.is-small { width: 30px; height: 30px; } }
 .cs-hub-list { min-height: 170px; display: grid; align-items: center; overflow: hidden; padding: 24px 16px 56px; margin: -24px -16px -56px; }
 /* The finished card slides out to the left as the next one slides in. */
@@ -2366,22 +2356,13 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .cs-dec-off { position: relative; display: flex; align-items: center; justify-content: center; gap: 36px; width: 100%; padding-top: 30px; }
 .cs-dec-desk { display: flex; flex-direction: column; align-items: center; gap: 0; opacity: 0.55; }
 .cs-dec-desk-screen { width: 120px; height: 78px; border-radius: 8px; display: grid; place-items: center; border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.06); color: var(--sv-text); }
-.cs-dec-desk-screen svg, .cs-dec-pill svg, .cs-dec-net svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cs-dec-desk-screen svg, .cs-dec-pill svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .cs-dec-desk-foot { width: 34px; height: 14px; border: 1px solid rgba(255, 255, 255, 0.3); border-top: 0; }
 .cs-dec-desk small, .cs-dec-copies small, .cs-dec-ring small { margin-top: 8px; font-size: 11px; color: var(--sv-dim); }
-.cs-dec-admin { background: #fbf7ef !important; color: #2b2f38; display: flex; flex-direction: column; gap: 5px; padding: 26px 7px 8px; font-size: 7.5px; }
-.cs-dec-admin-top { display: flex; justify-content: space-between; align-items: center; font-size: 10px; }
-.cs-dec-net { display: inline-flex; align-items: center; gap: 2px; font-size: 7px; color: #2f8f4e; font-weight: 600; }
-.cs-dec-net svg { width: 10px; height: 10px; }
-.cs-dec-order { display: grid; grid-template-columns: auto 1fr; gap: 3px 6px; padding: 6px; border-radius: 6px; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06); }
-.cs-dec-order span { justify-self: end; font-weight: 600; }
-.cs-dec-order .is-g { color: #2f8f4e; } .cs-dec-order .is-o { color: #d36a1f; } .cs-dec-order .is-p { color: #6a3fb5; }
-.cs-dec-order i { grid-column: 1 / -1; height: 3px; border-radius: 2px; background: #eceae4; }
-.cs-dec-order i + i { width: 60%; }
-.cs-dec-accept { margin-top: auto; padding: 6px; border-radius: 6px; text-align: center; color: #fff; background: #ef7a2c; font-weight: 600; }
 .cs-dec-pill { position: absolute; top: 0; left: 50%; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; padding: 5px 12px; border-radius: 999px; font-size: 12px; color: var(--sv-text);
   background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.18); }
 .cs-dec-pill svg { width: 14px; height: 14px; }
+.cs-dec-off .cs-dec-phone.st-device { --w: 158px; }
 
 /* 3 · Competitors: easy-to-copy QR menus, then the ecosystem ring. */
 .cs-dec-eco { display: flex; align-items: center; justify-content: center; gap: 36px; width: 100%; }
