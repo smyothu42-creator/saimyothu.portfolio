@@ -1472,21 +1472,19 @@ button.sv-pill:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(
 .cs-stat-h { margin: 0 0 16px; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sv-dim); }
 .sv-card .cs-stats > div.has-logos { display: flex; flex-direction: row; align-items: center; gap: 14px; }
 .cs-logos { display: flex; flex: none; }
-.cs-logo { display: block; width: 64px; height: 64px; border-radius: 15px; box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.55); }
-.cs-logo.is-flag { width: 54px; height: 36px; border-radius: 6px; }
+.cs-logo { display: block; overflow: hidden; width: 64px; height: 64px; border-radius: 15px; box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.55); }
 /* Rows with icons: the paired icons need a wider first column and slightly smaller numbers. */
 @media (min-width: 641px) {
   .sv-card .cs-stats:has(.has-logos) { grid-template-columns: 1.25fr 1fr 1fr; }
   .sv-card .cs-stats > div.has-logos { gap: 12px; }
   .sv-card .cs-stats > div.has-logos .cs-logo:not(.is-flag) { width: 52px; height: 52px; border-radius: 13px; }
-  .sv-card .cs-stats > div.has-logos .cs-logo.is-flag { width: 46px; height: 31px; }
   .sv-card .cs-stats > div.has-logos .cs-stat-num { font-size: clamp(28px, 2.8vw, 34px); white-space: nowrap; }
 }
 .cs-logo + .cs-logo { margin-left: -18px; transform: rotate(8deg); }
 .cs-logos .cs-logo:first-child:not(:last-child) { transform: rotate(-8deg); }
 .cs-stat-txt { min-width: 0; }
 .cs-stat-note { margin: 18px 0 0; font-size: 12px; line-height: 1.5; color: var(--sv-dim); opacity: 0.8; }
-@media (max-width: 640px) { .sv-card .cs-stats > div.has-logos { flex-direction: column; align-items: flex-start; } .cs-logo { width: 48px; height: 48px; border-radius: 12px; } .cs-logo.is-flag { width: 42px; height: 28px; } }
+@media (max-width: 640px) { .sv-card .cs-stats > div.has-logos { flex-direction: column; align-items: flex-start; } .cs-logo { width: 48px; height: 48px; border-radius: 12px; } }
 @media (max-width: 640px) { .sv-card .cs-stats { grid-template-columns: 1fr 1fr; } .sv-card .cs-stats > div { padding: 0 16px 0 0; border-left: 0; } }
 .sv-card .st-role, .sv-card .st-segments { gap: 32px; }
 .sv-card .st-sub-h, .sv-card .cs-sub h3 { color: var(--sv-text); font-size: 21px; font-weight: 500; }
@@ -2223,21 +2221,52 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .st-ba:has(.st-ba-range:focus-visible) .st-ba-knob { outline: 2px solid #fff; outline-offset: 3px; }
 @media (max-width: 720px) { .st-ba-knob { width: 38px; height: 38px; } .st-ba-tag { bottom: 8px; font-size: 13px; padding: 3px 9px; } .st-ba-tag.is-before { left: 8px; } .st-ba-tag.is-after { right: 8px; } }
 
-/* Product vision hub: cream circles with orange marks, like the OrderFlow deck. */
-.cs-hub { display: grid; grid-template-columns: minmax(220px, 300px) 1fr; gap: 40px; align-items: center; margin-top: 8px; }
+/* Product vision: the OrderFlow ecosystem, glass circles on the dark card. */
+.cs-hub { display: grid; grid-template-columns: minmax(260px, 360px) 1fr; gap: 40px; align-items: center; margin-top: 12px; }
 .cs-hub-art { position: relative; aspect-ratio: 1; }
-.cs-hub-spokes { position: absolute; inset: 0; width: 100%; height: 100%; }
-.cs-hub-spokes line { stroke: rgba(255, 233, 210, 0.35); stroke-width: 0.5; stroke-dasharray: 1.6 1.6; }
-.cs-hub-core, .cs-hub-node { position: absolute; display: grid; place-items: center; border-radius: 50%; background: #fbe8d6; transform: translate(-50%, -50%); }
-.cs-hub-core { left: 50%; top: 50%; width: 34%; aspect-ratio: 1; box-shadow: 0 10px 30px -12px rgba(240, 122, 42, 0.7); }
-.cs-hub-core img { width: 82%; height: 82%; }
-.cs-hub-node { width: 21%; aspect-ratio: 1; color: #ef7a2c; }
-.cs-hub-node svg { width: 50%; height: 50%; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; font-family: inherit; }
-.cs-hub-node.is-live { background: #ef7a2c; color: #fff; box-shadow: 0 0 0 6px rgba(239, 122, 44, 0.25); }
-.cs-hub-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; counter-reset: hub; }
-.cs-hub-list li { display: grid; gap: 2px; padding-left: 34px; position: relative; color: var(--sv-dim); font-size: 14px; line-height: 1.45; counter-increment: hub; }
-.cs-hub-list li::before { content: counter(hub); position: absolute; left: 0; top: 1px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; color: var(--sv-text); border: 1px solid var(--sv-line); }
-.cs-hub-list li.is-live::before { background: #ef7a2c; border-color: #ef7a2c; color: #fff; }
-.cs-hub-list b { color: var(--sv-text); font-weight: 500; font-size: 16px; }
-.cs-hub-tag { margin-left: 8px; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 500; vertical-align: 2px; background: rgba(239, 122, 44, 0.2); color: #ffb27d; }
-@media (max-width: 720px) { .cs-hub { grid-template-columns: 1fr; gap: 24px; } .cs-hub-art { width: min(280px, 80%); margin: 0 auto; } }
+.cs-hub-spokes { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.cs-hub-spokes circle { fill: none; stroke: rgba(255, 255, 255, 0.12); stroke-width: 0.4; stroke-dasharray: 0.8 1.6; animation: hub-spin 60s linear infinite; transform-origin: 50% 50%; }
+.cs-hub-spokes line { stroke: rgba(255, 255, 255, 0.2); stroke-width: 0.4; stroke-dasharray: 1.2 1.6; animation: hub-flow 1.6s linear infinite; transition: stroke 0.3s; }
+.cs-hub-spokes line.is-on { stroke: #ff9a52; stroke-width: 0.6; }
+@keyframes hub-flow { to { stroke-dashoffset: -5.6; } }
+@keyframes hub-spin { to { transform: rotate(360deg); } }
+.cs-hub-core { position: absolute; left: 50%; top: 50%; width: 30%; aspect-ratio: 1; transform: translate(-50%, -50%); display: grid; place-items: center; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 154, 82, 0.35), rgba(255, 154, 82, 0) 70%); animation: hub-breathe 3.2s ease-in-out infinite; }
+.cs-hub-core img { width: 84%; height: 84%; filter: drop-shadow(0 10px 24px rgba(239, 122, 44, 0.45)); }
+@keyframes hub-breathe { 50% { transform: translate(-50%, -50%) scale(1.05); } }
+.cs-hub-name { margin: 0 0 14px; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sv-dim); }
+.cs-hub-node {
+  position: absolute; width: 19%; aspect-ratio: 1; transform: translate(-50%, -50%); display: grid; place-items: center; padding: 0; cursor: pointer; border-radius: 50%; color: var(--sv-text);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05)), rgba(16, 22, 40, 0.35);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.24); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 10px 24px -14px rgba(0, 0, 0, 0.7);
+  transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s, color 0.3s; animation: hub-float 4s ease-in-out infinite;
+}
+.cs-hub-node svg { width: 44%; height: 44%; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.cs-hub-node:hover { border-color: rgba(255, 255, 255, 0.5); }
+.cs-hub-node:focus-visible { outline: 2px solid #ff9a52; outline-offset: 3px; }
+.cs-hub-node.is-on { background-color: #ef7a2c; background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0)); border-color: rgba(255, 210, 170, 0.8); box-shadow: 0 0 0 7px rgba(239, 122, 44, 0.22), 0 12px 28px -10px rgba(239, 122, 44, 0.8); }
+@keyframes hub-float { 50% { transform: translate(-50%, calc(-50% - 4px)); } }
+.cs-hub-label { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 6px; white-space: nowrap; font-size: 12px; color: var(--sv-dim); transition: color 0.3s; }
+.cs-hub-node.is-on .cs-hub-label { color: var(--sv-text); }
+.cs-hub-panel { min-height: 220px; display: flex; flex-direction: column; justify-content: center; }
+.cs-hub-step { margin: 0 0 10px; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--sv-dim); }
+.cs-hub-tag { padding: 3px 10px; border-radius: 999px; font-size: 12px; background: rgba(255, 255, 255, 0.1); color: var(--sv-soft); }
+.cs-hub-tag.is-live { background: rgba(239, 122, 44, 0.22); color: #ffb27d; }
+.cs-hub-title { margin: 0 0 8px; font-size: clamp(26px, 2.6vw, 32px); font-weight: 500; letter-spacing: -0.01em; color: var(--sv-text); animation: hub-in 0.45s ease both; }
+.cs-hub-text { margin: 0; font-size: 17px; line-height: 1.5; color: var(--sv-soft); animation: hub-in 0.45s 0.06s ease both; max-width: 30em; }
+@keyframes hub-in { from { opacity: 0; transform: translateY(8px); } }
+.cs-hub-dots { display: flex; gap: 8px; margin-top: 24px; }
+.cs-hub-dots button { position: relative; overflow: hidden; width: 28px; height: 4px; padding: 0; border-radius: 2px; background: rgba(255, 255, 255, 0.18); cursor: pointer; transition: width 0.3s, background-color 0.3s; }
+.cs-hub-dots button.is-on { width: 44px; background: rgba(255, 255, 255, 0.3); }
+.cs-hub-dots button.is-on:not(:has(.cs-hub-fill)) { background: #ef7a2c; }
+.cs-hub-fill { position: absolute; inset: 0; background: #ef7a2c; transform-origin: 0 50%; animation: hub-fill linear both; }
+@keyframes hub-fill { from { transform: scaleX(0); } }
+@media (prefers-reduced-motion: reduce) { .cs-hub-spokes circle, .cs-hub-spokes line, .cs-hub-core, .cs-hub-node, .cs-hub-title, .cs-hub-text { animation: none; } }
+@media (max-width: 720px) { .cs-hub { grid-template-columns: 1fr; gap: 36px; } .cs-hub-art { width: min(300px, 86%); margin: 0 auto; } .cs-hub-panel { min-height: 180px; } }
+
+/* Notes with people: a bigger bust beside the name, rows centred. */
+.sv-card .cs-notes.has-people > div { grid-template-columns: minmax(0, 13em) minmax(0, 1fr); align-items: center; padding: 18px 0; }
+.sv-card .cs-notes.has-people dt { display: flex; align-items: center; gap: 18px; }
+.sv-card .cs-notes.has-people .cs-notes-person { height: 104px; flex: none; }
+@media (max-width: 640px) { .sv-card .cs-notes.has-people > div { grid-template-columns: 1fr; } .sv-card .cs-notes.has-people .cs-notes-person { height: 84px; } }

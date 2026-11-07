@@ -116,21 +116,20 @@ export const CASES = [
           blocks: [
             { kind: 'lead', p: 'Most of Myanmar’s 23,741 cafés still take orders on paper, and none let the guest order.' },
             { kind: 'stats', h: 'Market size', items: [
-              { num: '6.2T', label: 'MMK: restaurant software in Asia-Pacific, 2027' },
-              { num: '33.2B', label: 'MMK a year across Myanmar’s 23,741 cafés and restaurants' },
-              { num: '4.3B', label: 'MMK a year in Yangon, where we start (3,043 shops)' },
+              { num: '6.2T', label: 'MMK, Asia-Pacific market' },
+              { num: '33.2B', label: 'MMK a year, Myanmar' },
+              { num: '4.3B', label: 'MMK a year, Yangon first' },
             ] },
             { kind: 'stats', h: 'Digital adoption', items: [
-              { logos: ['foodpanda', 'grab'], num: '39.8M', label: 'People online in Myanmar' },
-              { logos: ['kbzpay'], num: '19M', label: 'People pay with KBZPay' },
-              { logos: ['myanmar'], num: '25%', label: 'Inflation in Myanmar' },
+              { logos: ['foodpanda', 'grab'], num: '39.8M', label: 'People online' },
+              { logos: ['kbzpay'], num: '19M', label: 'Use KBZPay' },
+              { logos: ['myanmar'], num: '25%', label: 'Inflation' },
             ] },
           ],
         },
         {
           id: 'discovery',
           nav: 'Problem Discovery',
-          illo: 'juggle',
           blocks: [
             { kind: 'lead', p: 'We watched cafés at busy hours and talked to the people on each side of an order.' },
             { kind: 'notes', items: [
@@ -143,21 +142,20 @@ export const CASES = [
         {
           id: 'vision',
           nav: 'Product Vision & Strategy',
-          title: 'Start with QR, *grow into the shop*',
+          title: 'One *ecosystem*, starting with QR',
           blocks: [
-            { kind: 'lead', p: 'We start where the pain is: guests order from the table QR. Once a café runs on it, we add the rest of the shop around it.' },
+            { kind: 'lead', p: 'Busy owner-run cafés in Yangon order from the table QR first. Then we grow the rest of the shop around it.' },
             { kind: 'hub', items: [
-              { key: 'qr', t: 'QR ordering', p: 'Where we start. Guests order, the kitchen gets it straight away.', live: true },
-              { key: 'pos', t: 'POS', p: 'Orders, tables and bills at the counter, in the Pro plan.' },
-              { key: 'ai', t: 'Flowy AI', p: 'Every order is data. AI turns it into answers for the owner.' },
-              { key: 'loyalty', t: 'Loyalty', p: 'Points and rewards that bring guests back, from Q3 2027.' },
-              { key: 'inventory', t: 'Inventory', p: 'Stock that counts down as orders come in.' },
+              { key: 'qr', t: 'QR ordering', tag: 'Live now', p: 'Guests scan the table QR and order in Burmese or English, with no app. The kitchen gets it straight away.', live: true },
+              { key: 'pos', t: 'POS', tag: 'Pro plan', p: 'Counter orders, tables and bills in the same system as the QR orders.' },
+              { key: 'ai', t: 'Flowy AI', tag: 'Pro plan', p: 'Every order is data. Flowy AI turns it into answers for the owner.' },
+              { key: 'loyalty', t: 'Loyalty', tag: 'From Q3 2027', p: 'Points and rewards that bring guests back, as an add-on to any plan.' },
+              { key: 'inventory', t: 'Inventory', tag: 'Next', p: 'Stock that counts down as orders come in, so owners know what to restock.' },
             ] },
             { kind: 'notes', items: [
-              { t: 'Target users', p: 'Busy, established owner-run cafés in Yangon first (3,043 cafés and restaurants), then Mandalay.' },
-              { t: 'For owners', p: 'More orders with the same staff, and prices they can change any time.' },
-              { t: 'For staff', p: 'Fewer mistakes and calmer shifts.' },
-              { t: 'For guests', p: 'No waiting to order, in Burmese or English, and no app to install.' },
+              { t: 'Owners', illo: 'owner', p: 'More orders with the same staff, and prices they change any time.' },
+              { t: 'Staff', illo: 'staff', p: 'Fewer mistakes and calmer shifts.' },
+              { t: 'Guests', illo: 'guest', p: 'No waiting, no app, in Burmese or English.' },
             ] },
           ],
         },

@@ -195,7 +195,7 @@ function Block({ block }) {
   // front of the term.
   if (block.kind === 'notes') {
     return (
-      <dl className="cs-notes">
+      <dl className={'cs-notes' + (block.items.some((it) => it.illo) ? ' has-people' : '')}>
         {block.items.map((it) => (
           <div key={it.t}>
             <dt>{it.illo && <Person name={it.illo} className="cs-notes-person" />}{it.t}</dt>
@@ -355,9 +355,9 @@ const BRANDS = { foodpanda: 'foodpanda', grab: 'Grab', kbzpay: 'KBZPay' }
 function BrandTile({ name }) {
   if (name === 'myanmar') {
     return (
-      <svg className="cs-logo is-flag" viewBox="0 0 18 12" role="img" aria-label="Myanmar flag">
-        <rect width="18" height="4" fill="#FECB00" /><rect y="4" width="18" height="4" fill="#34B233" /><rect y="8" width="18" height="4" fill="#EA2839" />
-        <path fill="#fff" d="M9 1.6l1.18 3.63h3.82l-3.09 2.24 1.18 3.63L9 8.86l-3.09 2.24 1.18-3.63L4 5.23h3.82z" />
+      <svg className="cs-logo" viewBox="0 0 48 48" role="img" aria-label="Myanmar flag">
+        <rect width="48" height="16" fill="#FECB00" /><rect y="16" width="48" height="16" fill="#34B233" /><rect y="32" width="48" height="16" fill="#EA2839" />
+        <path fill="#fff" d="M24 11.5l3.06 9.42h9.9l-8.01 5.82 3.06 9.42L24 30.34l-8.01 5.82 3.06-9.42-8.01-5.82h9.9z" />
       </svg>
     )
   }
@@ -365,44 +365,67 @@ function BrandTile({ name }) {
   return <img className="cs-logo" src={`/logos/apps/${name}.png`} alt={BRANDS[name]} width="64" height="64" loading="lazy" />
 }
 
-// Product vision: OrderFlow in the middle, the first module (`live`) filled
-// in, the modules that grow around it on the ring, and the same list beside.
+// Product vision: the OrderFlow ecosystem. The logo sits in the middle and
+// the modules sit on a glass ring around it. The highlight moves round on its
+// own; clicking a module stops that and shows the module on the right.
 const HUB_ICONS = {
-  qr: <text x="12" y="16.2" textAnchor="middle" fontSize="11" fontWeight="800" fill="currentColor" stroke="none">QR</text>,
-  pos: <text x="12" y="15.8" textAnchor="middle" fontSize="9" fontWeight="800" fill="currentColor" stroke="none">POS</text>,
+  qr: <path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2M14 18h2v2M18 18h2v2h-2" />,
+  pos: <path d="M5 3h14v18l-2.5-1.5L14 21l-2-1.5L10 21l-2.5-1.5L5 21zM9 8h6M9 12h6M9 16h3" />,
   ai: <path d="M10 4l1.6 4.4L16 10l-4.4 1.6L10 16l-1.6-4.4L4 10l4.4-1.6zM18 14l.8 2.2L21 17l-2.2.8L18 20l-.8-2.2L15 17l2.2-.8z" />,
   loyalty: <path d="M4 10h16v4H4zM6 14v6h12v-6M12 10v10M12 10c-1.5-3-5-4-5-1.5S10 10 12 10zM12 10c1.5-3 5-4 5-1.5S14 10 12 10z" />,
   inventory: <path d="M3 8l9-4 9 4-9 4zM3 8v8l9 4 9-4V8M12 12v8" />,
 }
+const HUB_MS = 3800
 function Hub({ items }) {
   const n = items.length
+  const [on, setOn] = useState(0)
+  const [auto, setAuto] = useState(true)
+  const [tick, setTick] = useState(0)
+  useEffect(() => {
+    if (!auto || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const t = setTimeout(() => { setOn((i) => (i + 1) % n); setTick((k) => k + 1) }, HUB_MS)
+    return () => clearTimeout(t)
+  }, [auto, on, n])
+  const pick = (i) => { setOn(i); setAuto(false) }
+  const cur = items[on]
+  const at = (i) => (-90 + (360 / n) * i) * Math.PI / 180
   return (
     <div className="cs-hub">
-      <div className="cs-hub-art" aria-hidden="true">
-        <svg className="cs-hub-spokes" viewBox="0 0 100 100">
-          {items.map((it, i) => {
-            const a = (-90 + (360 / n) * i) * Math.PI / 180
-            return <line key={it.key} x1="50" y1="50" x2={50 + 36 * Math.cos(a)} y2={50 + 36 * Math.sin(a)} />
-          })}
+      <div className="cs-hub-art">
+        <svg className="cs-hub-spokes" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="38" />
+          {items.map((it, i) => (
+            <line key={it.key} className={i === on ? 'is-on' : undefined} x1={50 + 38 * Math.cos(at(i))} y1={50 + 38 * Math.sin(at(i))} x2="50" y2="50" />
+          ))}
         </svg>
-        <span className="cs-hub-core"><img src="/logos/orderflow-icon.png" alt="" /></span>
-        {items.map((it, i) => {
-          const a = (-90 + (360 / n) * i) * Math.PI / 180
-          return (
-            <span key={it.key} className={'cs-hub-node' + (it.live ? ' is-live' : '')} style={{ left: `${50 + 36 * Math.cos(a)}%`, top: `${50 + 36 * Math.sin(a)}%` }}>
-              <svg viewBox="0 0 24 24">{HUB_ICONS[it.key]}</svg>
-            </span>
-          )
-        })}
-      </div>
-      <ol className="cs-hub-list">
-        {items.map((it) => (
-          <li key={it.key} className={it.live ? 'is-live' : undefined}>
-            <b>{it.t}{it.live && <span className="cs-hub-tag">Start</span>}</b>
-            <span>{it.p}</span>
-          </li>
+        <span className="cs-hub-core">
+          <img src="/logos/orderflow-icon.png" alt="" />
+        </span>
+        {items.map((it, i) => (
+          <button
+            key={it.key} type="button"
+            className={'cs-hub-node' + (i === on ? ' is-on' : '') + (it.live ? ' is-live' : '')}
+            style={{ left: `${50 + 38 * Math.cos(at(i))}%`, top: `${50 + 38 * Math.sin(at(i))}%`, animationDelay: `${-i * 0.7}s` }}
+            onClick={() => pick(i)} aria-pressed={i === on} aria-label={it.t}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">{HUB_ICONS[it.key]}</svg>
+            <span className="cs-hub-label">{it.t}</span>
+          </button>
         ))}
-      </ol>
+      </div>
+      <div className="cs-hub-panel" aria-live="polite">
+        <p className="cs-hub-name">OrderFlow ecosystem</p>
+        <p className="cs-hub-step">Step {on + 1} of {n}<span className={'cs-hub-tag' + (cur.live ? ' is-live' : '')}>{cur.tag}</span></p>
+        <h3 key={'t' + on} className="cs-hub-title">{cur.t}</h3>
+        <p key={'p' + on} className="cs-hub-text">{cur.p}</p>
+        <div className="cs-hub-dots">
+          {items.map((it, i) => (
+            <button key={it.key} type="button" className={i === on ? 'is-on' : undefined} onClick={() => pick(i)} aria-label={'Show ' + it.t}>
+              {i === on && auto && <span key={tick} className="cs-hub-fill" style={{ animationDuration: HUB_MS + 'ms' }} />}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
