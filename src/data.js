@@ -174,6 +174,23 @@ export const CASES = [
           ],
         },
         {
+          id: 'validation',
+          nav: 'Validation',
+          title: 'Validated on *real usage*',
+          blocks: [
+            { kind: 'lead', p: 'We put the MVP in a real café, trained the staff on site, and improved the product from what we saw and heard.' },
+            { kind: 'photos', items: [
+              { src: '/case/orderflow/setup.jpg', alt: 'Our team training RAW’s staff on the OrderFlow admin at a café table', caption: 'Training RAW’s staff on the admin' },
+              { src: '/case/orderflow/team-raw.jpg', alt: 'The OrderFlow team with RAW’s staff in the café', caption: 'With the RAW team after setup' },
+            ] },
+            { kind: 'loop', steps: [
+              { icon: 'staff', t: 'Test with real users', p: 'Guests and staff use it during real shifts.' },
+              { icon: 'alerts', t: 'Get feedback', p: 'We watch at the counter and ask staff what slows them down.' },
+              { icon: 'reports', t: 'Improve', p: 'Fix it, ship it to the pilot cafés, and test again.' },
+            ] },
+          ],
+        },
+        {
           id: 'architecture',
           nav: 'Scope & Architecture',
           title: 'One order, *three places*',

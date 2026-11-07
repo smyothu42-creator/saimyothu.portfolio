@@ -2466,3 +2466,20 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 @keyframes term-blink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .cs-term-line { animation: none; opacity: 1; } .cs-term-cmd.is-cursor i { animation: none; } }
 @media (max-width: 640px) { .cs-term-body { font-size: 11px; } }
+
+/* Validation on real usage: café photos and the test, feedback, improve loop. */
+.cs-photos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cs-photos figure { margin: 0; }
+.cs-photos img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 18px; box-shadow: 0 20px 40px -24px rgba(0, 0, 0, 0.8); }
+.cs-photos figcaption { margin-top: 10px; font-size: 13px; color: var(--sv-dim); }
+.cs-loop ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px; }
+.cs-loop li { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 18px; border-radius: 18px; font-size: 14px; line-height: 1.45; color: var(--sv-dim);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)); border: 1px solid rgba(255, 255, 255, 0.14); animation: loop-on 3.6s ease-in-out infinite; }
+.cs-loop li:not(:last-child)::after { content: '→'; position: absolute; right: -24px; top: 50%; transform: translateY(-50%); color: var(--sv-dim); font-size: 16px; }
+.cs-loop b { font-size: 17px; font-weight: 500; color: var(--sv-text); }
+.cs-loop-ic { width: 36px; height: 36px; display: grid; place-items: center; margin-bottom: 4px; border-radius: 50%; color: var(--sv-text); background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.18); }
+.cs-loop-ic svg, .cs-loop-back svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+@keyframes loop-on { 0%, 26% { border-color: rgba(255, 178, 125, 0.8); box-shadow: 0 0 0 4px rgba(239, 122, 44, 0.14); } 34%, 100% { border-color: rgba(255, 255, 255, 0.14); box-shadow: none; } }
+.cs-loop-back { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; font-size: 13px; color: var(--sv-dim); }
+@media (prefers-reduced-motion: reduce) { .cs-loop li { animation: none; } }
+@media (max-width: 640px) { .cs-photos { grid-template-columns: 1fr; } .cs-loop ol { grid-template-columns: 1fr; gap: 26px; } .cs-loop li:not(:last-child)::after { content: '↓'; right: auto; left: 50%; top: auto; bottom: -22px; transform: translateX(-50%); } }

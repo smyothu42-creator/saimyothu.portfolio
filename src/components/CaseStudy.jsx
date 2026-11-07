@@ -180,9 +180,9 @@ const VISUALS = {
   hmw: HMW, details: Details, achievements: Achievements, roadmap: Roadmap,
   impact: Impact, role: Role, sub: Sub, iconlist: IconList, segments: Segments, table: Table,
   iterations: Iterations, pills: Pills, walkthrough: Walkthrough, film: Film, shot: Shot, walktabs: WalkTabs, shottabs: ShotTabs,
-  reel: Reel, demo: Demo, choices: Choices, beforeafter: BeforeAfter, hub: Hub, decisions: Decisions, arch: Arch, mockpair: MockPair, ship: Ship,
+  reel: Reel, demo: Demo, choices: Choices, beforeafter: BeforeAfter, hub: Hub, decisions: Decisions, arch: Arch, mockpair: MockPair, ship: Ship, photos: Photos, loop: Loop,
 }
-const TEXT = new Set(['hub', 'decisions', 'arch', 'mockpair', 'ship', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'choices'])
+const TEXT = new Set(['hub', 'decisions', 'arch', 'mockpair', 'ship', 'photos', 'loop', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'choices'])
 
 function Block({ block }) {
   const Visual = VISUALS[block.kind]
@@ -714,6 +714,35 @@ function Ship({ stats, log }) {
           <span className="cs-term-cmd is-cursor"><b>$</b> <i /></span>
         </pre>
       </div>
+    </div>
+  )
+}
+
+// Validation: photos from the café, side by side with short captions.
+function Photos({ items }) {
+  return (
+    <div className="cs-photos">
+      {items.map((it) => (
+        <figure key={it.src}><img src={it.src} alt={it.alt} loading="lazy" /><figcaption>{it.caption}</figcaption></figure>
+      ))}
+    </div>
+  )
+}
+// The test, feedback, improve loop: three glass steps joined by arrows, with
+// a return arrow under them; the highlight moves round.
+function Loop({ steps }) {
+  return (
+    <div className="cs-loop">
+      <ol>
+        {steps.map((st, i) => (
+          <li key={st.t} style={{ animationDelay: `${i * 1.2}s` }}>
+            <span className="cs-loop-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{HUB_ICONS[st.icon]}</svg></span>
+            <b>{st.t}</b>
+            <span>{st.p}</span>
+          </li>
+        ))}
+      </ol>
+      <span className="cs-loop-back" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5" /></svg>Then again, with the next change</span>
     </div>
   )
 }
