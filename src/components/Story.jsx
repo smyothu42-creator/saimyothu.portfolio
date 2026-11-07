@@ -39,7 +39,7 @@ function useTicker(n, ms, on) {
 export function Impact({ headline, items }) {
   return (
     <>
-      <p className="cs-lead">{headline}</p>
+      {headline && <p className="cs-lead">{headline}</p>}
       <div className="cs-stats">
         {items.map((it) => (
           <div key={it.label}><span className="cs-stat-num">{it.num}</span><span>{it.label}</span></div>

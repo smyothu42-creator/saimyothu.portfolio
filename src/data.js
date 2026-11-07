@@ -92,7 +92,7 @@ export const CASES = [
           id: 'impact',
           nav: 'Impact',
           blocks: [
-            { kind: 'impact', headline: 'Seven months in, four cafés use OrderFlow every day, and every pilot is still running.', items: [
+            { kind: 'impact', items: [
               { num: '4', label: 'Cafés live, October 2026' },
               { num: '1,000+', label: 'Orders at RAW in its first 42 days' },
               { num: '42 / 42', label: 'Days RAW used it' },
@@ -270,11 +270,11 @@ export const CASES = [
           id: 'impact',
           nav: 'Impact',
           blocks: [
-            { kind: 'lead', p: 'A web app for employees on a company meal program, built from five interview findings and tested against WCAG 2.2 AA.' },
-            { kind: 'notes', items: [
-              { t: 'Employees', p: 'See the allowance, the cut-off and the order status at every step.' },
-              { t: 'Companies', p: 'One front door: sign in with the work email and land on the right menu and subsidy.' },
-              { t: 'Accessibility', p: '16 problems found and fixed. Zero automated violations across 36 screen runs.' },
+            { kind: 'impact', items: [
+              { num: '16', label: 'Accessibility problems found and fixed' },
+              { num: '0', label: 'Automated violations in 36 runs' },
+              { num: '5', label: 'Interview findings built in' },
+              { num: '17', label: 'Routes checked, desktop and phone' },
             ] },
           ],
         },
@@ -738,7 +738,7 @@ export const CASES = [
           id: 'impact',
           nav: 'Impact',
           blocks: [
-            { kind: 'lead', p: 'Users reported faster top-ups, fewer errors and more confidence using the app. The feedback was positive, and it showed how far simple, thoughtful design can go.' },
+            { kind: 'lead', p: 'Merchants reported faster top-ups, fewer errors and more confidence using the app.' },
           ],
         },
         {
