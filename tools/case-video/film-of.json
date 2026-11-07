@@ -1,8 +1,8 @@
 {
- "W": 1600,
- "H": 900,
+ "W": 1280,
+ "H": 720,
  "fps": 30,
- "bitrate": 3400000,
+ "bitrate": 850000,
  "src": "file:///Users/saimyothu/claude-workspace/saimyothu-portfolio/tools/case-video/of-launch.mp4",
  "scenes": [
   {
@@ -13,7 +13,7 @@
    "em": "brown",
    "lines": [
     {
-     "t": "Rush hour at a café in Yangon."
+     "t": "Rush hour at a caf\u00e9 in Yangon."
     }
    ]
   },
@@ -45,7 +45,7 @@
    "gap": 100,
    "lines": [
     {
-     "t": "Most cafés still run on"
+     "t": "Most caf\u00e9s still run on"
     },
     {
      "t": "*pen and paper.*"
@@ -132,7 +132,7 @@
     {
      "at": 0,
      "h": "Owners run\nthe menu\nthemselves.",
-     "p": "Items, prices, what’s sold out."
+     "p": "Items, prices, what\u2019s sold out."
     }
    ]
   },
@@ -143,7 +143,7 @@
    "items": [
     {
      "n": "4",
-     "l": "cafés live"
+     "l": "caf\u00e9s live"
     },
     {
      "n": "1,000+",

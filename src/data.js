@@ -108,7 +108,7 @@ export const CASES = [
           bare: true,
           toc: false,
           blocks: [
-            { kind: 'reel', src: '/case/orderflow/intro.mp4?v=2', audio: '/case/orderflow/intro.m4a', poster: '/case/orderflow/intro.jpg', alt: 'Intro: rush hour in a Yangon café, then OrderFlow: guests scan the table QR and order on their phone, staff see every order live, owners run the menu. Four cafés live by October 2026.' },
+            { kind: 'reel', src: '/case/orderflow/intro.mp4?v=3', audio: '/case/orderflow/intro.m4a?v=2', poster: '/case/orderflow/intro.jpg', alt: 'Intro: rush hour in a Yangon café, then OrderFlow: guests scan the table QR and order on their phone, staff see every order live, owners run the menu. Four cafés live by October 2026.' },
           ],
         },
         {
