@@ -31,7 +31,7 @@ export default function AboutPage() {
       </Card>
 
 
-      <Craft />
+      {ABOUT.craft.show !== false && <Craft />}
 
       <Card>
         <div className="sv-exp-head-row">

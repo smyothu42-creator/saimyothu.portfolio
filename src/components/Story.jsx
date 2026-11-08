@@ -116,6 +116,31 @@ const SPOTS = {
   // OrderFlow's test, feedback, improve loop
   clipboard: <><rect x="9" y="8" width="30" height="35" rx="4" fill="#E8A17A" /><rect x="13" y="13" width="22" height="26" rx="1.5" fill="#FBF3E4" /><rect x="18" y="5" width="12" height="7" rx="2" fill="#9CC1EE" /><path d="M17 21l2.5 2.5L24 19M17 30l2.5 2.5L24 28M27 21.5h5M27 30.5h5" /></>,
   chartup: <><rect x="6" y="8" width="36" height="32" rx="4" fill="#BFE3C9" /><path d="M11 33l8-8 6 5 11-12" /><path d="M30 17.5h6.5V24" /><path d="M11 13.5h9" /></>,
+  // MTB Pay Merchant's design system
+  // one result screen: a big check
+  done: <><rect x="9" y="5" width="30" height="38" rx="5" fill="#FBF3E4" /><circle cx="24" cy="19" r="8" fill="#BFE3C9" /><path d="M20.3 19l2.6 2.6 4.8-5" /><path d="M16 31h16M19 36h10" /></>,
+  // a sheet over the screen, for one question
+  sheet: <><rect x="11" y="4" width="26" height="40" rx="5" fill="#9CC1EE" /><path d="M11 24h26v15a5 5 0 0 1-5 5H16a5 5 0 0 1-5-5z" fill="#FBF3E4" /><path d="M21 28h6M16 34h16" /><path d="M16 11h10" /></>,
+  // one main button, and a tap on it
+  button: <><rect x="4" y="15" width="40" height="14" rx="5" fill="#E76F51" /><path d="M16 22h16" stroke="#fff" /><circle cx="33" cy="34" r="6" fill="#F2C14E" /><path d="M33 26v2M26 34h-2M38.5 28.5l-1.4 1.4" /></>,
+  // four service tiles
+  tiles: <><rect x="6" y="6" width="16" height="16" rx="4" fill="#E76F51" /><rect x="26" y="6" width="16" height="16" rx="4" fill="#E76F51" /><rect x="6" y="26" width="16" height="16" rx="4" fill="#E76F51" /><rect x="26" y="26" width="16" height="16" rx="4" fill="#F2C14E" /><path d="M11 14h6M31 11v6M34 14h-6M14 31v6M11 34h6M31 31l6 6M37 31l-6 6" stroke="#fff" /></>,
+  // MTB Pay Merchant's visual direction
+  // a paint palette: MTB red, money-in green, white
+  palette: <><path d="M24 6C13 6 5 13.5 5 23s8 17 17 17c3 0 4-2 3-4.5s0-4.5 3-4.5h5c5.5 0 10-3.5 10-9C43 13 34.5 6 24 6z" fill="#FBF3E4" /><circle cx="15" cy="20" r="3.4" fill="#E76F51" /><circle cx="23" cy="14" r="3.4" fill="#BFE3C9" /><circle cx="32" cy="16" r="3.4" fill="#F2C14E" /><circle cx="35" cy="25" r="3.4" fill="#9CC1EE" /></>,
+  // a type specimen card: Aa
+  type: <><rect x="5" y="8" width="38" height="32" rx="4" fill="#9CC1EE" /><path d="M11 33l7-18 7 18M13.6 27h8.8" /><circle cx="32" cy="28.5" r="4.5" fill="#FBF3E4" /><path d="M36.5 23.5V33" /></>,
+  // layers, the most important on top
+  layers: <><path d="M24 26 6 33l18 7 18-7z" fill="#9CC1EE" /><path d="M24 18 6 25l18 7 18-7z" fill="#F2C14E" /><path d="M24 8 6 15l18 7 18-7z" fill="#E76F51" /></>,
+  // MTB Pay Merchant's UX challenges
+  // an hourglass, for slow payments
+  hourglass: <><path d="M15 8h18v5q0 6.5-6.5 11 6.5 4.5 6.5 11v5H15v-5q0-6.5 6.5-11Q15 19.5 15 13z" fill="#9CC1EE" /><path d="M18.5 12.5h11q-1 4.5-5.5 8-4.5-3.5-5.5-8z" fill="#F2C14E" /><path d="M17.5 39.5q1-5.5 6.5-7.5 5.5 2 6.5 7.5z" fill="#F2C14E" /><rect x="11" y="4.5" width="26" height="4.5" rx="1.5" fill="#E8A17A" /><rect x="11" y="39" width="26" height="4.5" rx="1.5" fill="#E8A17A" /></>,
+  // a receipt that went wrong
+  receipt: <><path d="M10 5h24v36l-4-2.4-4 2.4-4-2.4-4 2.4-4-2.4-4 2.4z" fill="#FBF3E4" /><path d="M15 12h14M15 18h14M15 24h9" /><circle cx="35.5" cy="34.5" r="7.5" fill="#E76F51" /><path d="M33 32l5 5M38 32l-5 5" stroke="#fff" /></>,
+  // money, and where it went is a question
+  money: <><rect x="5" y="17" width="32" height="20" rx="3" fill="#BFE3C9" /><circle cx="21" cy="27" r="5" fill="#FBF3E4" /><path d="M9.5 22v.1M32.5 32v.1" /><circle cx="38" cy="13" r="6.5" fill="#F2C14E" /><path d="M35.8 11.6q.3-2.3 2.4-2.2 2.2.2 2 2.3-.2 1.4-1.9 1.9-.3.1-.3 1.4" fill="none" /><path d="M38 16.6v.1" /></>,
+  // a phone, new and shiny
+  phone: <><rect x="12" y="6" width="21" height="37" rx="4.5" fill="#9CC1EE" /><rect x="15.5" y="11" width="14" height="24" rx="1.5" fill="#FBF3E4" /><path d="M20 39.5h5" /><circle cx="22.5" cy="23" r="3.2" fill="#E76F51" /><path d="M40 5l1.7 4.3L46 11l-4.3 1.7L40 17l-1.7-4.3L34 11l4.3-1.7z" fill="#F2C14E" /></>,
   card: <><rect x="6" y="12" width="32" height="22" rx="4" fill="#9CC1EE" /><path d="M6 18.5h32" strokeWidth="4" /><rect x="11" y="25" width="8" height="5.5" rx="1.2" fill="#F2C14E" /><circle cx="36.5" cy="34" r="7.5" fill="#E76F51" /><path d="M36.5 30.2v4.4M36.5 37.6v.1" stroke="#fff" /></>,
 }
 export function IconList({ items }) {
@@ -177,21 +202,30 @@ export function Shot({ src, alt, crop, ratio }) {
 // screens of the same size. The range input carries the keyboard and screen
 // reader support; the handle on top is only what you see.
 // `frame` puts the slider in a device on a pale stage, with BEFORE / AFTER at
-// the stage's corners and the divider running the stage's full height.
+// the stage's corners.
 export function BeforeAfter({ before, after, alt, ratio = '1920 / 992', frame = false, beforeLabel = 'Before', afterLabel = 'After' }) {
   const [pos, setPos] = useState(50)
+  const [touched, setTouched] = useState(false)
   const root = useRef(null)
   const drag = useRef(false)
+  const seen = useInView(root)
+  // Once in view, nudge the divider left and right so it reads as draggable.
+  useEffect(() => {
+    if (!seen || touched || prefersReduced()) return
+    const keys = [[0, 50], [450, 36], [1050, 64], [1600, 50]]
+    const timers = keys.map(([t, p]) => setTimeout(() => setPos(p), 400 + t))
+    return () => timers.forEach(clearTimeout)
+  }, [seen, touched])
   const move = (e) => {
     const r = root.current.getBoundingClientRect()
     setPos(Math.min(100, Math.max(0, ((e.clientX - r.left) / r.width) * 100)))
   }
   const slider = (
     <div
-      className="st-ba"
+      className={'st-ba' + (touched ? ' is-touched' : '') + (seen && !touched ? ' is-nudging' : '')}
       ref={root}
       style={{ aspectRatio: ratio, '--pos': `${pos}%` }}
-      onPointerDown={(e) => { drag.current = true; e.currentTarget.setPointerCapture(e.pointerId); move(e) }}
+      onPointerDown={(e) => { setTouched(true); drag.current = true; e.currentTarget.setPointerCapture(e.pointerId); move(e) }}
       onPointerMove={(e) => { if (drag.current) move(e) }}
       onPointerUp={() => { drag.current = false }}
       onPointerCancel={() => { drag.current = false }}
@@ -200,13 +234,13 @@ export function BeforeAfter({ before, after, alt, ratio = '1920 / 992', frame = 
       <img className="st-ba-before" src={before} alt={`Before: ${alt}`} loading="lazy" draggable="false" />
       <span className={'st-ba-tag is-before' + (pos < 14 ? ' is-off' : '')} aria-hidden="true">Before</span>
       <span className={'st-ba-tag is-after' + (pos > 86 ? ' is-off' : '')} aria-hidden="true">After</span>
-      <span className="st-ba-line" aria-hidden="true"><span className="st-ba-knob"><Icon name="arrowRight" size={16} stroke={2} /><Icon name="arrowRight" size={16} stroke={2} /></span></span>
-      <input className="st-ba-range" type="range" min="0" max="100" value={Math.round(pos)} aria-label="Compare before and after" onChange={(e) => setPos(+e.target.value)} />
+      <span className="st-ba-line" aria-hidden="true"><span className="st-ba-knob"><Icon name="arrowRight" size={16} stroke={2} /><Icon name="arrowRight" size={16} stroke={2} /><span className="st-ba-hint">Drag</span></span></span>
+      <input className="st-ba-range" type="range" min="0" max="100" value={Math.round(pos)} aria-label="Compare before and after" onChange={(e) => { setTouched(true); setPos(+e.target.value) }} />
     </div>
   )
   if (!frame) return slider
   return (
-    <div className="st-ba-stage" style={{ '--p': pos }}>
+    <div className="st-ba-stage">
       <span className="st-ba-stag is-before" aria-hidden="true">{beforeLabel}</span>
       <span className="st-ba-stag is-after" aria-hidden="true">{afterLabel}</span>
       <div className="st-ba-device">{slider}</div>
@@ -459,30 +493,32 @@ export function FlowSwitch({ items, device, label }) {
   const side = device !== 'browser' && items.some((x) => x.desc)
   const head = (
     <>
+      {/* a green live light with the playing flow's short name (`tag`), above the title */}
+      <span className="st-rec" aria-hidden="true"><i /><span key={cur}>{it.tag || it.title}</span></span>
       <div className="st-flows-head">
-        <button type="button" className="st-flows-arrow" onClick={() => go(-1)} aria-label={'Previous flow: ' + prev.title}>
+        {n > 1 && <button type="button" className="st-flows-arrow" onClick={() => go(-1)} aria-label={'Previous flow: ' + prev.title}>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
-        </button>
+        </button>}
         <div className="st-flows-text" key={cur} data-dir={dir > 0 ? 'next' : 'prev'} aria-live="polite">
           <h2 className="sv-h2 st-flows-title">{it.title}</h2>
           {it.p && !side && <p className="st-flows-p">{it.p}</p>}
         </div>
-        <button type="button" className="st-flows-arrow" onClick={() => go(1)} aria-label={'Next flow: ' + next.title}>
+        {n > 1 && <button type="button" className="st-flows-arrow" onClick={() => go(1)} aria-label={'Next flow: ' + next.title}>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
-        </button>
+        </button>}
       </div>
-      <div className="st-flows-dots">
+      {n > 1 && <div className="st-flows-dots">
         {items.map((x, i) => (
           <button key={x.title} type="button" className={i === cur ? 'is-on' : undefined} onClick={() => pick(i)} aria-label={x.title} aria-current={i === cur ? 'true' : undefined} />
         ))}
-      </div>
+      </div>}
     </>
   )
   const panels = (
     <div className="st-panels" data-dir={dir > 0 ? 'next' : 'prev'}>
       {items.map((x, i) => (
         <div key={x.title} className={'st-panel' + (i === cur ? ' is-active' : '')} aria-hidden={i !== cur} inert={i !== cur}>
-          <Demo device={device} {...x} desc={side ? undefined : x.desc} bare={side} active={i === cur} onEnd={() => go(1)} load={wants(i)} />
+          <Demo device={device} {...x} desc={side ? undefined : x.desc} bare={side} active={i === cur} onEnd={n > 1 ? () => go(1) : undefined} load={wants(i)} />
         </div>
       ))}
     </div>
@@ -1084,11 +1120,17 @@ export function Steps({ items }) {
     <ol className="cs-steps">
       {items.map((it, i) => (
         <li key={it.t} className="cs-step">
-          {it.spot && SPOTS[it.spot]
-            ? <span className="cs-spot cs-step-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><g className="cs-spot-edge">{SPOTS[it.spot]}</g><g>{SPOTS[it.spot]}</g></svg></span>
-            : <span className="cs-step-n">{String(i + 1).padStart(2, '0')}</span>}
+          {it.count != null
+            ? <span className="cs-step-count">{it.count}</span>
+            : it.spot && SPOTS[it.spot]
+              ? <span className="cs-spot cs-step-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><g className="cs-spot-edge">{SPOTS[it.spot]}</g><g>{SPOTS[it.spot]}</g></svg></span>
+              : <span className="cs-step-n">{String(i + 1).padStart(2, '0')}</span>}
           <b>{it.t}</b>
-          <p>{it.p}</p>
+          {it.p && <p>{it.p}</p>}
+          {/* optional samples from the design system: colour swatches, a type scale, chips */}
+          {it.swatches && <span className="cs-step-swatches" aria-hidden="true">{it.swatches.map(([c, n]) => <i key={c} style={{ background: c }} title={n} />)}</span>}
+          {it.scale && <span className="cs-step-scale" aria-hidden="true">{it.scale.map((z) => <i key={z} style={{ fontSize: Math.round(z * 1.15) }}>Aa<small>{z}</small></i>)}</span>}
+          {it.chips && <span className="cs-step-chips" aria-hidden="true">{it.chips.map((x) => <i key={x}>{x}</i>)}</span>}
         </li>
       ))}
     </ol>

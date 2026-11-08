@@ -2535,6 +2535,21 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 /* FlowSwitch (OrderFlow Design Execution): the flow's title and line in the
    middle, round glass arrows either side, dots under it, the demo below. */
 .st-flows { display: flex; flex-direction: column; gap: 18px; }
+/* a green live light and the playing flow's short name, just above the flow's title */
+.st-rec { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 10px; border-radius: 999px;
+  font: 500 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.14em; text-transform: uppercase; color: #fff; pointer-events: none;
+  background: linear-gradient(170deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04)); border: 1px solid rgba(255, 255, 255, 0.22); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2); }
+.st-rec i { position: relative; width: 10px; height: 10px; border-radius: 50%; background: #4cff7a; box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 12px 2px rgba(76, 255, 122, 0.95); animation: st-rec-blink 1.2s ease-in-out infinite; }
+.st-rec i::after { content: ''; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid rgba(76, 255, 122, 0.95); animation: st-rec-ring 1.2s ease-out infinite; }
+/* browser flows have a centred title: the light sits centred above it */
+.st-flows:not(.is-side) > .st-rec { align-self: center; margin-bottom: 2px; }
+.st-flows-side > .st-rec { grid-row: 1; grid-column: 1 / -1; justify-self: start; margin-bottom: -6px; }
+.st-rec > span { animation: st-rec-in 0.35s ease-out; }
+@keyframes st-rec-in { from { opacity: 0; transform: translateY(3px); } }
+@keyframes st-rec-blink { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.82); } }
+@keyframes st-rec-ring { 0% { transform: scale(0.7); opacity: 1; } 100% { transform: scale(2.1); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .st-rec i, .st-rec i::after { animation: none; } }
+@media (max-width: 640px) { .st-rec { font-size: 10px; padding: 5px 10px 5px 8px; } }
 .st-flows-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 16px; }
 .st-flows-text { text-align: center; animation: st-flows-in 0.5s var(--ease, ease) both; }
 .st-flows-text[data-dir='prev'] { animation-name: st-flows-in-prev; }
@@ -2559,12 +2574,12 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 .st-flows.is-side { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: clamp(28px, 5vw, 64px); }
 .st-flows-side { display: grid; grid-template-columns: auto auto auto minmax(0, 1fr); align-items: center; gap: 18px 10px; min-width: 0; }
 .st-flows.is-side .st-flows-head { display: contents; }
-.st-flows.is-side .st-flows-text { grid-row: 1; grid-column: 1 / -1; text-align: left; }
+.st-flows.is-side .st-flows-text { grid-row: 2; grid-column: 1 / -1; text-align: left; }
 .st-flows.is-side .st-flows-title { font-size: clamp(32px, 3.6vw, 46px); }
-.st-flows.is-side .st-flows-arrow { grid-row: 2; grid-column: 1; width: 46px; height: 46px; }
+.st-flows.is-side .st-flows-arrow { grid-row: 3; grid-column: 1; width: 46px; height: 46px; }
 .st-flows.is-side .st-flows-arrow:last-child { grid-column: 3; }
-.st-flows.is-side .st-flows-dots { grid-row: 2; grid-column: 2; justify-content: center; padding: 0 6px; }
-.st-flows.is-side .st-flows-desc { grid-row: 3; grid-column: 1 / -1; font-size: 20px; }
+.st-flows.is-side .st-flows-dots { grid-row: 3; grid-column: 2; justify-content: center; padding: 0 6px; }
+.st-flows.is-side .st-flows-desc { grid-row: 4; grid-column: 1 / -1; font-size: 20px; }
 .st-flows.is-side .st-panels { margin-top: 0; width: min(300px, 36vw); }
 .st-flows.is-side .st-demo .st-device { --w: min(300px, 36vw); }
 .st-flows.is-side .st-demo { grid-template-columns: auto; }
@@ -2625,7 +2640,8 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 /* Validation loop as a turning carousel: glass cards on an oval orbit, the
    current step at the front, the other two smaller behind it. */
 .cs-loop { display: flex; flex-direction: column; align-items: center; gap: 22px; }
-.cs-loop-stage { position: relative; width: 100%; height: 240px; display: grid; place-items: center; }
+.cs-loop-stage { position: relative; width: 100%; height: 240px; display: grid; place-items: center; cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.cs-loop-stage.is-held { cursor: grabbing; }
 .cs-loop-orbit { position: absolute; left: 4%; right: 4%; top: 50%; width: 92%; height: 46%; transform: translateY(-38%); overflow: visible; }
 .cs-loop-orbit ellipse { fill: none; stroke: rgba(190, 214, 255, 0.35); stroke-width: 0.25; stroke-dasharray: 0.8 1.4; vector-effect: non-scaling-stroke; }
 .cs-loop-card {
@@ -2643,7 +2659,9 @@ html.is-loading, html.is-loading body { overflow: hidden; }
   background: linear-gradient(170deg, rgba(150, 190, 255, 0.34), rgba(90, 140, 230, 0.14)), rgba(18, 38, 92, 0.92); }
 .cs-loop-ic { width: 56px; height: 56px; display: grid; place-items: center; }
 .cs-loop-ic svg { width: 54px; height: 54px; }
-.cs-loop-n { justify-self: end; align-self: start; font-size: 13px; letter-spacing: 0.1em; color: var(--sv-dim); font-variant-numeric: tabular-nums; }
+/* the step number as a large, fading figure behind the card's content */
+.cs-loop-n { position: absolute; z-index: -1; top: 14px; right: 22px; font-size: 128px; font-weight: 600; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; pointer-events: none;
+  color: transparent; background: linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.02)); -webkit-background-clip: text; background-clip: text; }
 .cs-loop-card b { grid-column: 1 / -1; margin-top: 8px; font-size: 24px; font-weight: 600; line-height: 1.2; color: #fff; }
 .cs-loop-card p { grid-column: 1 / -1; margin: 0; font-size: 17px; line-height: 1.5; }
 .cs-loop-foot { display: flex; flex-direction: column; align-items: center; gap: 12px; }
@@ -2656,6 +2674,7 @@ html.is-loading, html.is-loading body { overflow: hidden; }
   .cs-loop-card { width: 78%; padding: 18px 18px 20px; }
   .cs-loop-card b { font-size: 18px; }
   .cs-loop-card p { font-size: 14px; }
+  .cs-loop-n { font-size: 88px; top: 10px; right: 14px; }
 }
 
 
@@ -2685,10 +2704,9 @@ html.is-loading, html.is-loading body { overflow: hidden; }
 @media (max-width: 640px) { .sv-card .cs-notes.has-spots > div { grid-template-columns: 1fr; gap: 8px; } .cs-spot { width: 46px; height: 46px; } .cs-spot svg { width: 42px; height: 42px; } }
 
 /* Framed before / after (kind compare2): the slider inside a dark device on a
-   pale stage, BEFORE / AFTER in the stage's top corners, a full-height divider
+   pale stage, BEFORE / AFTER in the stage's top corners and a divider
    with a round white handle. */
 .st-ba-stage { position: relative; margin-bottom: 26px; padding: 46px 0 0; container-type: inline-size; }
-.st-ba-stage::after { content: ''; position: absolute; top: 0; bottom: 0; left: calc(10px + (100% - 20px) * var(--p) / 100); width: 1px; background: rgba(255, 255, 255, 0.3); pointer-events: none; }
 .st-ba-stag { position: absolute; top: 14px; z-index: 2; padding: 6px 11px; border-radius: 9px; font: 500 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.14em; text-transform: uppercase; color: #fff;
   background: linear-gradient(170deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04)); border: 1px solid rgba(255, 255, 255, 0.22); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2); }
 .st-ba-stag.is-before { left: 0; top: 0; }
@@ -2701,7 +2719,31 @@ html.is-loading, html.is-loading body { overflow: hidden; }
   box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.28), 0 0 0 7px rgba(15, 23, 42, 0.12), 0 12px 28px -6px rgba(0, 0, 0, 0.55); }
 .st-ba-device .st-ba-knob svg { width: 20px; height: 20px; stroke-width: 2.4; }
 .st-ba-device .st-ba-line { width: 3px; margin-left: -1.5px; }
-@media (max-width: 640px) { .st-ba-stage { padding-top: 36px; } .st-ba-stag { font-size: 11px; padding: 4px 8px; } .st-ba-device .st-ba-knob { width: 46px; height: 46px; } .st-ba-device { padding: 7px; border-radius: 16px; } .st-ba-device .st-ba { border-radius: 9px; } }
+/* Make the handle unmistakable in the site's own look: a white line with a soft
+   shadow (reads on light and dark screens), a frosted-glass knob like the
+   BEFORE / AFTER tags with a pulsing white ring, a "Drag" tag, and a smooth
+   nudge on first view. Ring and tag go once the reader has used it. */
+.st-ba-device .st-ba-line { width: 3px; margin-left: -1.5px; background: #fff; box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.18), 0 0 16px rgba(0, 0, 0, 0.35); }
+.st-ba-device .st-ba-knob { width: 64px; height: 64px; color: #fff; border: 1.5px solid rgba(255, 255, 255, 0.85);
+  background: linear-gradient(170deg, rgba(40, 40, 46, 0.62), rgba(20, 20, 24, 0.5)); -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 0 5px rgba(255, 255, 255, 0.22), 0 14px 30px -6px rgba(0, 0, 0, 0.55); }
+.st-ba-device .st-ba-knob svg { width: 22px; height: 22px; stroke-width: 2.4; }
+.st-ba-knob::before { content: ''; position: absolute; inset: -2px; border-radius: 50%; border: 2px solid #fff; opacity: 0; pointer-events: none; animation: st-ba-pulse 1.8s ease-out infinite; }
+.st-ba.is-touched .st-ba-knob::before { animation: none; }
+@keyframes st-ba-pulse { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.7); opacity: 0; } }
+.st-ba-hint { position: absolute; top: calc(100% + 12px); left: 50%; transform: translateX(-50%); padding: 6px 10px; border-radius: 9px; color: #fff;
+  background: linear-gradient(170deg, rgba(40, 40, 46, 0.62), rgba(20, 20, 24, 0.5)); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  font: 500 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; transition: opacity 0.3s; }
+.st-ba.is-touched .st-ba-hint { opacity: 0; }
+.st-ba-hint { display: none; }
+.st-ba-device .st-ba-hint { display: block; }
+.st-ba.is-nudging .st-ba-before { transition: clip-path 0.55s cubic-bezier(0.65, 0, 0.35, 1); }
+.st-ba.is-nudging .st-ba-line { transition: left 0.55s cubic-bezier(0.65, 0, 0.35, 1); }
+.st-ba:hover .st-ba-knob { transform: translate(-50%, -50%) scale(1.06); }
+.st-ba-knob { transition: transform 0.2s; }
+@media (prefers-reduced-motion: reduce) { .st-ba-knob::before { animation: none; } }
+@media (max-width: 640px) { .st-ba-stage { padding-top: 36px; } .st-ba-stag { font-size: 11px; padding: 4px 8px; } .st-ba-device .st-ba-knob { width: 52px; height: 52px; } .st-ba-device { padding: 7px; border-radius: 16px; } .st-ba-device .st-ba { border-radius: 9px; } }
 
 /* Process steps as numbered glass cards (kind steps), three across. */
 .cs-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; counter-reset: none; }
@@ -2710,9 +2752,21 @@ html.is-loading, html.is-loading body { overflow: hidden; }
   border: 1px solid rgba(190, 214, 255, 0.22); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2); }
 .cs-step .cs-step-n { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 12px; font-size: 13px; color: #fff; font-variant-numeric: tabular-nums;
   border: 1px solid rgba(255, 255, 255, 0.22); background: linear-gradient(170deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.03)); }
+.cs-step-swatches { display: flex; gap: 6px; margin-top: auto; padding-top: 10px; }
+.cs-step-swatches i { width: 26px; height: 26px; border-radius: 8px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35); }
+.cs-step-scale { display: flex; align-items: baseline; gap: 10px; margin-top: auto; padding-top: 10px; font-family: Poppins, var(--font); color: #fff; }
+.cs-step-scale i { font-style: normal; font-weight: 500; line-height: 1; }
+.cs-step-scale small { display: block; margin-top: 4px; font: 500 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace; color: rgba(255, 255, 255, 0.55); }
+.cs-step-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 10px; }
+.cs-step-chips i { font: 500 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace; font-style: normal; padding: 6px 9px; border-radius: 8px; color: rgba(255, 255, 255, 0.85); background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16); }
 .cs-step b { margin-top: 4px; font-size: 17px; font-weight: 600; line-height: 1.25; color: #fff; }
 .cs-step p { margin: 0; font-size: 14px; line-height: 1.5; color: var(--sv-dim); }
+/* A count instead of an icon: big number, quiet label, then the samples. */
+.cs-step-count { font-size: 56px; font-weight: 500; line-height: 1; letter-spacing: -0.02em; color: #fff; font-variant-numeric: tabular-nums; }
+.cs-step-count + b { margin-top: 0; font-size: 15px; font-weight: 500; color: var(--sv-dim); }
+.cs-step-swatches, .cs-step-scale { flex-wrap: wrap; }
 .cs-steps + * { margin-top: 8px; }
+.cs-steps:has(> li:nth-child(4):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); } /* four cards: two by two */
 @media (max-width: 760px) { .cs-steps { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 480px) { .cs-steps { grid-template-columns: 1fr; } }
 

@@ -1,0 +1,223 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c"></canvas>
+<script>
+// MTB Pay Merchant cover loop, the same kind of product film as OrderFlow's and Superfine's
+// (hero-of.html, hero-sf.html): one payment told from both sides, shown close.
+// The customer (MTB Pay, blue) shows their QR; the merchant (MTB Pay Merchant, red) scans it,
+// picks an amount, types a remark and confirms; the customer checks the summary, confirms
+// and enters their PIN; the merchant sees it paid, saves and shares the receipt.
+// The camera pans between the two phones and pushes in on each tap or thing to look at; the
+// rest dims and the target gets a glowing outline. The backdrop turns from the merchant's red
+// to the customer's blue with the camera.
+// Screens are the cleaned Figma frames from mtb-flows.py (hero-mtb/: s* merchant, c* customer).
+const C = document.getElementById('c'), X = C.getContext('2d')
+const W = 1600, H = 1032, T = 26 // the case cover's shape
+C.width = W; C.height = H
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v))
+const sm = (a) => { a = clamp(a); return a * a * (3 - 2 * a) }
+const io = (a) => { a = clamp(a); return a < 0.5 ? 4 * a * a * a : 1 - Math.pow(-2 * a + 2, 3) / 2 }
+const out = (a) => 1 - Math.pow(1 - clamp(a), 3)
+const img = (src) => new Promise((ok) => { const i = new Image(); i.onload = () => ok(i); i.src = src })
+function rrect(x, y, w, h, r) { X.beginPath(); rpath(x, y, w, h, r) }
+function rpath(x, y, w, h, r) { X.moveTo(x + r, y); X.arcTo(x + w, y, x + w, y + h, r); X.arcTo(x + w, y + h, x, y + h, r); X.arcTo(x, y + h, x, y, r); X.arcTo(x, y, x + w, y, r); X.closePath() }
+
+// ---- phones (world px); app pt are the Figma frame's 390 wide body, below the status bar ----
+const AW = 390, AH = 797
+const mk = (cx, top, w) => { const p = { w, k: w / AW }; p.band = 54 * w / 402; p.app = AH * p.k; p.h = p.band + p.app; p.x = cx - w / 2; p.y = top; p.bez = w * 0.03; return p }
+const M = mk(800, 70, 390), CU = mk(1680, 70, 390) // merchant, customer
+const MX = 800, CX = 1680
+const at = (p, x, y) => [p.x + x * p.k, p.y + p.band + y * p.k] // app pt -> world
+
+// ---- what happens when: [screen, start, transition] ----
+const MFLOW = [['s0', 0], ['s1', 4.85, 'push'], ['chip', 6.3, 'fade'], ['blank', 7.4, 'fade'], ['s2', 8.85, 'fade'],
+  ['s3', 9.85, 'push'], ['s4', 11.85, 'push'], ['s5', 18.0, 'fade'], ['s6', 19.65, 'push'], ['s7', 21.05, 'fade'],
+  ['s8', 22.25, 'share'], ['s0', 25.0, 'fade']]
+const CFLOW = [['c0', 0], ['c1', 11.9, 'fade'], ['c2', 13.1, 'push'], ['c3', 14.95, 'fade'], ['c4', 16.6, 'fade'], ['c0', 21, 'fade']]
+// taps and looks: [time, phone, app rect (x, y, w, h), radius, look]
+const TAPS = [
+  [0.7, 'c', [33, 141, 321, 355], 10, true], // the customer's QR
+  [3.2, 'm', [87, 288, 220, 210], 6, true], // the QR in the merchant's viewfinder
+  [6.2, 'm', [16, 323, 110, 44], 6], // 50,000
+  [7.3, 'm', [16, 552, 358, 46], 6], // remark
+  [9.75, 'm', [16, 718, 358, 50], 6], // next
+  [10.6, 'm', [16, 85, 358, 453], 10, true], // the summary
+  [11.75, 'm', [16, 718, 358, 50], 6], // confirm, then wait for the customer
+  [13.8, 'c', [16, 85, 358, 443], 10, true], // the customer's summary
+  [14.85, 'c', [16, 718, 358, 50], 6], // confirm
+  [15.75, 'c', [48, 216, 293, 35], 6, true], // PIN
+  [17.05, 'c', [60, 145, 270, 230], 12, true], // payment successful
+  [18.45, 'm', [60, 70, 270, 205], 12, true], // successful, 50,000.00 MMK
+  [19.55, 'm', [250, 421, 100, 26], 8], // view details
+  [20.95, 'm', [16, 658, 358, 46], 6], // save receipt
+  [22.15, 'm', [343, 15, 28, 28], 14], // share
+]
+// camera: [time, centre x, centre y, zoom]
+const CAM = [[0, CX, 420, 1.5], [0.5, CX, 330, 1.8], [1.9, CX, 330, 1.8], [2.9, MX, 400, 1.95], [4.6, MX, 420, 1.9],
+  [5.7, 760, 420, 2.05], [6.9, MX, 560, 1.9], [9.2, MX, 760, 1.85], [10.2, MX, 470, 1.6], [11.3, MX, 640, 1.75],
+  [12.4, MX, 400, 1.85], [13.3, CX, 470, 1.6], [14.3, CX, 520, 1.6], [14.9, CX, 600, 1.7], [15.5, CX, 330, 1.85],
+  [16.4, CX, 330, 1.85], [17.1, CX, 330, 1.8], [17.6, CX, 330, 1.8], [18.5, MX, 300, 1.95], [19.5, MX, 620, 1.7],
+  [21.2, 840, 220, 1.95], [22.5, MX, 640, 1.55], [23.6, MX, 600, 1.5], [25.2, CX, 420, 1.5], [T, CX, 420, 1.5]]
+const RED = '#e11d2a', RED_GLOW = 'rgba(225,29,42,0.65)', BLUE = '#2347d6', BLUE_GLOW = 'rgba(35,71,214,0.65)'
+
+const S = {}
+function cam(t) {
+  let i = CAM.findIndex((k) => k[0] > t); if (i < 0) i = CAM.length - 1; if (i === 0) i = 1
+  const a = CAM[i - 1], b = CAM[i], f = io((t - a[0]) / (b[0] - a[0] || 1))
+  return { x: a[1] + (b[1] - a[1]) * f, y: a[2] + (b[2] - a[2]) * f, z: a[3] + (b[3] - a[3]) * f }
+}
+// the merchant app's red, or the customer app's blue, by where the camera is
+function bg(c) {
+  const b = sm((c.x - MX) / (CX - MX))
+  const mix = (p, q) => p.map((v, i) => Math.round(v + (q[i] - v) * b))
+  const base = mix([200, 18, 26], [30, 58, 190]), lite = mix([239, 74, 79], [86, 124, 240]), dark = mix([124, 10, 16], [14, 26, 104])
+  X.fillStyle = `rgb(${base})`; X.fillRect(0, 0, W, H)
+  let g = X.createRadialGradient(240, 50, 0, 240, 50, 1500); g.addColorStop(0, `rgba(${lite},0.95)`); g.addColorStop(1, `rgba(${lite},0)`); X.fillStyle = g; X.fillRect(0, 0, W, H)
+  g = X.createRadialGradient(W, H, 0, W, H, 1400); g.addColorStop(0, `rgba(${dark},0.9)`); g.addColorStop(1, `rgba(${dark},0)`); X.fillStyle = g; X.fillRect(0, 0, W, H)
+}
+
+const cur = (flow, t) => { let k = 0; flow.forEach((s, i) => { if (s[1] <= t) k = i }); return k }
+function screens(flow, t, x, y, w, h) {
+  const k = cur(flow, t), [name, t0, kind] = flow[k]
+  const f = k ? out((t - t0) / (kind === 'fade' ? 0.3 : 0.45)) : 1
+  const im = S[name], prev = k ? S[flow[k - 1][0]] : null
+  if (f >= 1 || !prev) X.drawImage(im, x, y, w, h)
+  else if (kind === 'fade') { X.drawImage(prev, x, y, w, h); X.globalAlpha = f; X.drawImage(im, x, y, w, h); X.globalAlpha = 1 }
+  else if (kind === 'push') {
+    X.drawImage(prev, x - w * 0.3 * f, y, w, h); X.fillStyle = `rgba(0,0,0,${0.18 * f})`; X.fillRect(x, y, w, h)
+    X.save(); X.shadowColor = 'rgba(0,0,0,0.25)'; X.shadowBlur = 30; X.drawImage(im, x + w * (1 - f), y, w, h); X.restore()
+  } else if (kind === 'share') { // dim the page, the share sheet slides up
+    const st = 256 / AH, sy = y + h * st
+    X.drawImage(prev, x, y, w, h); X.globalAlpha = f; X.drawImage(im, 0, 0, im.width, im.height * st, x, y, w, h * st); X.globalAlpha = 1
+    X.fillStyle = `rgba(0,0,0,${0.3 * f})`; X.fillRect(x, sy, w, h - h * st)
+    X.drawImage(im, 0, im.height * st, im.width, im.height * (1 - st), x, sy + (h - h * st) * (1 - f), w, h * (1 - st))
+  }
+  extras(name, t, x, y, w, h)
+  return name
+}
+// motion inside one screen: the scan line, the remark typed, the hourglass, the spinner, the PIN
+function extras(name, t, x, y, w, h) {
+  const k = w / AW, R = (a, b, c, d) => [x + a * k, y + b * k, c * k, d * k]
+  if (name === 's0' && t < 5) {
+    const a = clamp((t - 2.8) / 1.8); if (a <= 0 || a >= 1) return
+    const [bx, by, bw, bh] = R(92, 288, 210, 210), ly = by + bh * (0.5 - 0.5 * Math.cos(a * 2 * Math.PI))
+    const g = X.createLinearGradient(0, ly - 26 * k, 0, ly); g.addColorStop(0, 'rgba(239,68,68,0)'); g.addColorStop(1, 'rgba(239,68,68,0.5)')
+    X.fillStyle = g; X.fillRect(bx, ly - 26 * k, bw, 26 * k)
+    X.fillStyle = '#ff4646'; X.shadowColor = 'rgba(255,70,70,0.9)'; X.shadowBlur = 10; X.fillRect(bx, ly - 1.5 * k, bw, 3 * k); X.shadowBlur = 0
+  }
+  if (name === 'blank' && t > 7.75) { // "For buying shoe", letter by letter
+    const a = clamp((t - 7.75) / 1.0), [tx, ty, , th] = R(29, 561, 110, 29), tw = 110 * k * a
+    const im = S.s2, s = im.width / AW
+    X.drawImage(im, 29 * s, 561 * s, 110 * s * a + 0.01, 29 * s, tx, ty, tw, th)
+    if ((t * 2.2) % 1 < 0.6 || a < 1) { X.fillStyle = RED; X.fillRect(tx + tw + 1.5 * k, ty + 5 * k, 1.6 * k, 19 * k) }
+  }
+  if (name === 's4') { // the hourglass turns over while the customer pays, and back
+    const a = io((t - 12.0) / 0.7) - io((t - 17.3) / 0.6)
+    if (a > 0) {
+      const im = S.s4, s = im.width / AW, [hx, hy, hw, hh] = R(150, 203, 90, 116)
+      X.fillStyle = '#fff'; X.fillRect(hx, hy, hw, hh)
+      X.save(); X.translate(hx + hw / 2, hy + hh / 2); X.rotate(Math.PI * a)
+      X.drawImage(im, 150 * s, 203 * s, 90 * s, 116 * s, -hw / 2, -hh / 2, hw, hh); X.restore()
+    }
+  }
+  if (name === 'c1') { // loading
+    const im = S.c1, s = im.width / AW, [sx, sy, sw, sh] = R(170, 355, 50, 50)
+    X.fillStyle = '#fff'; X.fillRect(sx, sy, sw, sh)
+    X.save(); X.translate(sx + sw / 2, sy + sh / 2); X.rotate(t * 5)
+    X.drawImage(im, 170 * s, 355 * s, 50 * s, 50 * s, -sw / 2, -sh / 2, sw, sh); X.restore()
+  }
+  if (name === 'c3') { // six PIN digits
+    const n = Math.floor(clamp((t - 15.5) / 1.0) * 6.99)
+    for (let i = 0; i < n && i < 6; i++) {
+      const [bx, by, bw, bh] = R(50 + i * 50, 218, 39, 31)
+      X.fillStyle = '#fff'; X.fillRect(bx, by, bw, bh)
+      X.fillStyle = '#111'; X.beginPath(); X.arc(bx + bw / 2, by + bh / 2, 5 * k, 0, Math.PI * 2); X.fill()
+    }
+  }
+}
+function phone(p, draw) {
+  const { x, y, bez: bz } = p, r = p.w * 0.13
+  X.save(); X.shadowColor = 'rgba(10,0,30,0.5)'; X.shadowBlur = 70; X.shadowOffsetY = 30
+  rrect(x - bz, y - bz, p.w + bz * 2, p.h + bz * 2, r + bz); X.fillStyle = '#17181b'; X.fill(); X.restore()
+  rrect(x - bz, y - bz, p.w + bz * 2, p.h + bz * 2, r + bz); X.strokeStyle = 'rgba(255,255,255,0.14)'; X.lineWidth = 1.5; X.stroke()
+  X.save(); rrect(x, y, p.w, p.h, r); X.clip()
+  const band = draw(x, y + p.band, p.w, p.app)
+  X.fillStyle = band; X.fillRect(x, y, p.w, p.band + 1)
+  const u = p.w / 390
+  X.fillStyle = '#111'; X.font = `600 ${15 * u}px -apple-system, Figtree, sans-serif`; X.textBaseline = 'middle'; X.fillText('11:12', x + 34 * u, y + p.band * 0.56)
+  for (let i = 0; i < 4; i++) X.fillRect(x + p.w - 84 * u + i * 5.4 * u, y + p.band * 0.56 + 4 * u - i * 2.2 * u, 3.6 * u, 3.4 * u + i * 2.2 * u)
+  rrect(x + p.w - 58 * u, y + p.band * 0.56 - 6.5 * u, 26 * u, 13 * u, 4 * u); X.lineWidth = 1.2; X.strokeStyle = 'rgba(0,0,0,0.5)'; X.stroke(); rrect(x + p.w - 56 * u, y + p.band * 0.56 - 4.5 * u, 19 * u, 9 * u, 2.5 * u); X.fill()
+  X.restore()
+  rrect(x + p.w / 2 - p.w * 0.14, y + p.w * 0.028, p.w * 0.28, p.w * 0.08, p.w * 0.04); X.fillStyle = '#000'; X.fill()
+}
+// a dimmed status band over a dimmed screen (share sheet, PIN)
+function dimBand(p, a) {
+  if (a <= 0) return
+  X.save(); rrect(p.x, p.y, p.w, p.h, p.w * 0.13); X.clip(); X.fillStyle = `rgba(0,0,0,${0.3 * a})`; X.fillRect(p.x, p.y, p.w, p.band); X.restore()
+  rrect(p.x + p.w / 2 - p.w * 0.14, p.y + p.w * 0.028, p.w * 0.28, p.w * 0.08, p.w * 0.04); X.fillStyle = '#000'; X.fill()
+}
+const span = (flow, name, t, fin = 0.45) => { const k = flow.findIndex((s) => s[0] === name); return t >= flow[k][1] && t < flow[k + 1][1] + 0.3 ? out((t - flow[k][1]) / fin) * (1 - out((t - flow[k + 1][1]) / 0.3)) : 0 }
+function merchant(t) { phone(M, (x, y, w, h) => { screens(MFLOW, t, x, y, w, h); return '#fff' }); dimBand(M, span(MFLOW, 's8', t)) }
+function customer(t) { phone(CU, (x, y, w, h) => { screens(CFLOW, t, x, y, w, h); return '#fff' }); dimBand(CU, span(CFLOW, 'c3', t, 0.3)) }
+// focus: the scene dims around the target, which gets a soft outline in that app's colour
+function focus(t) {
+  for (const [t0, who, [cx, cy, cw, ch], r, look] of TAPS) {
+    const p = who === 'm' ? M : CU, acc = who === 'm' ? RED : BLUE, glow = who === 'm' ? RED_GLOW : BLUE_GLOW
+    const hold = look ? 0.8 : 0.08
+    const d = t - t0; if (d < -0.6 || d > hold + 0.5) continue
+    const a = d < 0 ? sm((d + 0.6) / 0.3) : 1 - sm((d - hold) / 0.25)
+    const [x, y] = at(p, cx, cy), w = cw * p.k, h = ch * p.k, pad = 5
+    X.save()
+    X.beginPath(); X.rect(-4000, -4000, 12000, 9000); rpath(x - pad, y - pad, w + pad * 2, h + pad * 2, r * p.k + pad)
+    X.fillStyle = `rgba(14,6,24,${0.36 * a})`; X.fill('evenodd')
+    const q = !look && d > 0 && d < 0.18 ? 1 - 0.04 * Math.sin((d / 0.18) * Math.PI) : 1
+    X.translate(x + w / 2, y + h / 2); X.scale(q, q)
+    X.globalAlpha = a; X.shadowColor = glow; X.shadowBlur = 18
+    rrect(-w / 2 - pad, -h / 2 - pad, w + pad * 2, h + pad * 2, r * p.k + pad); X.strokeStyle = acc; X.lineWidth = 2.5; X.stroke()
+    X.restore()
+  }
+}
+// a fingertip that comes down on each tap and lifts away
+function finger(t) {
+  for (const [t0, who, [cx, cy, cw, ch], , look] of TAPS) {
+    if (look) continue
+    const p = who === 'm' ? M : CU, acc = who === 'm' ? RED : BLUE
+    const d = t - t0; if (d < -0.45 || d > 0.5) continue
+    const a = d < 0 ? sm((d + 0.45) / 0.3) : 1 - sm((d - 0.15) / 0.35)
+    const press = d < 0 ? 1 - 0.15 * sm((d + 0.12) / 0.12) : 0.85 + 0.15 * sm(d / 0.2)
+    const [x, y] = at(p, cx + cw / 2, cy + ch / 2), r = 20 * press
+    X.save(); X.globalAlpha = a * 0.9; X.shadowColor = 'rgba(0,0,0,0.35)'; X.shadowBlur = 10
+    X.fillStyle = 'rgba(25,25,25,0.32)'; X.beginPath(); X.arc(x, y, r, 0, Math.PI * 2); X.fill()
+    X.shadowBlur = 0; X.lineWidth = 2.5; X.strokeStyle = 'rgba(255,255,255,0.95)'; X.stroke(); X.restore()
+    const q = clamp(d / 0.6)
+    if (d > 0 && q < 1) { X.save(); X.globalAlpha = (1 - q) * 0.9; X.strokeStyle = acc; X.lineWidth = 3; X.beginPath(); X.arc(x, y, 10 + 40 * out(q), 0, Math.PI * 2); X.stroke(); X.restore() }
+  }
+}
+function frame(t) {
+  const c = cam(t)
+  bg(c)
+  X.save(); X.translate(W / 2, H / 2); X.scale(c.z, c.z); X.translate(-c.x, -c.y)
+  merchant(t); customer(t)
+  focus(t); finger(t)
+  X.restore()
+}
+window.prep = async (srcs) => { for (const [k, src] of Object.entries(srcs)) S[k] = await img(src) }
+window.still = (t) => { frame(t); return C.toDataURL('image/jpeg', 0.88) }
+window.run = async (cfg) => {
+  const fps = cfg.fps || 30, n = Math.round(T * fps)
+  const stream = C.captureStream(0), track = stream.getVideoTracks()[0]
+  const rec = new MediaRecorder(stream, { mimeType: 'video/mp4;codecs=avc1.640028', videoBitsPerSecond: cfg.bitrate || 900000, videoKeyFrameIntervalDuration: 500 })
+  const done = new Promise((r) => (rec.onstop = r))
+  let chain = Promise.resolve()
+  rec.ondataavailable = (e) => { if (e.data.size) chain = chain.then(async () => { const b = new Uint8Array(await e.data.arrayBuffer()); let s = ''; for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000)); await window.saveChunk(btoa(s)) }) }
+  rec.start(250)
+  const start = performance.now()
+  for (let i = 0; i < n; i++) {
+    frame(i / fps); track.requestFrame()
+    const wait = start + ((i + 1) / fps) * 1000 - performance.now(); if (wait > 0) await new Promise((r) => setTimeout(r, wait))
+  }
+  await new Promise((r) => setTimeout(r, 300)); rec.stop(); await done; await chain
+  return { frames: n, late: Math.round(performance.now() - start - T * 1000) }
+}
+</script></body></html>

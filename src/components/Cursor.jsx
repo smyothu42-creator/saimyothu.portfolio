@@ -24,11 +24,13 @@ const TARGETS = [
   '.sv-services .sv-pill', // core values on the About page
   '.sv-track-step',        // About page workflow steps (absorbed into the dot)
   '.st-flows-arrow',       // OrderFlow flow arrows
+  '.sv-toc-back',          // "Back to work" in the case study's side menu (absorbed into its arrow chip)
 ].join(', ')
 
 // The element the cursor wraps and pulls: usually the hit itself, but a
 // workflow step is a dot plus a name, and only the dot should take it.
-const visualOf = (el) => (el?.matches('.sv-track-step') ? el.querySelector('.sv-track-dot') || el : el)
+const visualOf = (el) => (el?.matches('.sv-track-step') ? el.querySelector('.sv-track-dot') || el
+  : el?.matches('.sv-toc-back') ? el.querySelector('.sv-toc-back-ic') || el : el)
 const SIZE = 22
 const PILL = { w: 92, h: 38 }
 const MAG = { pull: 0.22, max: 10, pad: 6 }

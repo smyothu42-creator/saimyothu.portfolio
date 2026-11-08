@@ -758,6 +758,7 @@ function Photos({ items }) {
 // from step to step (a dot runs along the link to the next one), and after the
 // last step the "again" pill lights up before it starts over.
 const LOOP_MS = 2200
+const LOOP_REST_MS = 4500 // the wait after someone drags it
 // The test, feedback, improve loop as a turning carousel: glass cards on an
 // oval orbit. One angle turns the whole orbit (eased, a step every LOOP_MS) and
 // every card's place, size, depth, blur and how solid it is follow from where
@@ -767,11 +768,17 @@ function Loop({ steps }) {
   const [on, setOn] = useState(0)
   const cards = useRef([])
   const angle = useRef(0) // where the orbit is now, in steps
+  const raf = useRef(0)
+  const [held, setHeld] = useState(false) // a pointer is dragging the orbit
+  const [settle, setSettle] = useState(0) // bumped on release, so it eases home even onto the same card
+  const released = useRef(false) // the next turn comes from a drag, not the timer
+  const drag = useRef(null)
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const t = setTimeout(() => setOn((i) => i + 1), LOOP_MS)
+    if (held || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    // after a drag, leave the chosen card up long enough to read
+    const t = setTimeout(() => setOn((i) => i + 1), released.current ? LOOP_REST_MS : LOOP_MS)
     return () => clearTimeout(t)
-  }, [on])
+  }, [on, held, settle])
   // place every card for the orbit angle `a` (in steps; card i is at the front when a = i)
   const place = (a) => {
     const narrow = window.matchMedia('(max-width: 640px)').matches
@@ -788,19 +795,51 @@ function Loop({ steps }) {
     })
   }
   useEffect(() => {
-    const from = angle.current, t0 = performance.now(), dur = 1100
-    let raf = 0
+    const fromDrag = released.current
+    released.current = false
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const from = angle.current, t0 = performance.now(), dur = reduced ? 1 : fromDrag ? 520 : 1100
     const tick = (now) => {
       const k = Math.min(1, (now - t0) / dur)
-      const e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2
+      // a release is already moving, so it only slows down; a timed turn eases both ways
+      const e = fromDrag ? 1 - Math.pow(1 - k, 3) : k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2
       angle.current = from + (on - from) * e
       place(angle.current)
-      if (k < 1) raf = requestAnimationFrame(tick)
+      if (k < 1) raf.current = requestAnimationFrame(tick)
     }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
+    raf.current = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf.current)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [on])
+  }, [on, settle])
+  // Drag sideways to turn the orbit by hand; on release it settles on the nearest
+  // card, or the next one along if the drag was a short flick.
+  const onDown = (e) => {
+    if (e.button) return
+    cancelAnimationFrame(raf.current)
+    e.currentTarget.setPointerCapture(e.pointerId)
+    // about the distance the front card travels in one step, so it follows the pointer
+    const step = Math.max(1, (cards.current[0]?.offsetWidth || 300) * 1.3)
+    drag.current = { x: e.clientX, from: angle.current, step, dx: 0 }
+    setHeld(true)
+  }
+  const onMove = (e) => {
+    const d = drag.current
+    if (!d) return
+    d.dx = e.clientX - d.x
+    angle.current = d.from - d.dx / d.step
+    place(angle.current)
+  }
+  const onUp = () => {
+    const d = drag.current
+    if (!d) return
+    drag.current = null
+    let to = Math.round(angle.current)
+    if (Math.abs(d.dx) > 30 && to === Math.round(d.from)) to += d.dx < 0 ? 1 : -1
+    released.current = true
+    setOn(to)
+    setSettle((s) => s + 1)
+    setHeld(false)
+  }
   useEffect(() => {
     const onResize = () => place(angle.current)
     window.addEventListener('resize', onResize)
@@ -810,12 +849,12 @@ function Loop({ steps }) {
   const cur = ((on % n) + n) % n
   return (
     <div className="cs-loop">
-      <div className="cs-loop-stage">
+      <div className={'cs-loop-stage' + (held ? ' is-held' : '')} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp}>
         <svg className="cs-loop-orbit" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="50" cy="15" rx="48" ry="13" /></svg>
         {steps.map((st, i) => (
           <article key={st.t} ref={(el) => { cards.current[i] = el }} className="cs-loop-card" aria-hidden={i !== cur} aria-current={i === cur ? 'step' : undefined}>
             <span className="cs-loop-ic"><Doodle name={{ staff: 'clipboard', alerts: 'chat', reports: 'chartup' }[st.icon] || st.icon} /></span>
-            <span className="cs-loop-n">{String(i + 1).padStart(2, '0')}</span>
+            <span className="cs-loop-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
             <b>{st.t}</b>
             <p>{st.p}</p>
           </article>

@@ -10,7 +10,7 @@
 // does (sheet up, page push, side panel, page up), and the order flies from the phone to the
 // board. window.run(cfg) records one loop to MP4; window.still(t) draws one frame.
 const C = document.getElementById('c'), X = C.getContext('2d')
-const W = 1600, H = 1032, T = 16 // 1.55 : 1, the case cover's shape
+const W = 1600, H = 1032, T = 21.2 // 1.55 : 1, the case cover's shape
 C.width = W; C.height = H
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v))
 const sm = (a) => { a = clamp(a); return a * a * (3 - 2 * a) }
@@ -31,15 +31,16 @@ const bw = (x, y) => [B.x + x * B.k, B.y + B.bar + y * B.k]
 // ---- what happens when ----
 // screens: [name, start, transition]; transitions: fade, push (from the right), sheet (up over),
 // panel (the order panel slides in from the right), up (a new page slides up)
-const PHONE = [['g-menu', 0], ['g-item', 2.35, 'sheet'], ['g-review', 3.62, 'push'], ['g-track', 4.95, 'push'], ['g-menu', 14.55, 'fade']]
-const DESK = [['a-board', 0], ['a-open', 8.38, 'panel'], ['a-ready', 10.05, 'fade'], ['a-cleared', 11.05, 'fade'], ['a-metrics', 12.0, 'up'], ['a-board', 14.55, 'fade']]
+const PHONE = [['g-menu', 0], ['g-item', 2.35, 'sheet'], ['g-review', 3.62, 'push'], ['g-track', 4.95, 'push'], ['g-menu', 19.75, 'fade']]
+const DESK = [['a-board', 0], ['a-open', 8.38, 'panel'], ['a-ready', 10.05, 'fade'], ['a-cleared', 16.25, 'fade'], ['a-metrics', 17.2, 'up'], ['a-board', 19.75, 'fade']]
 // taps and clicks: [time, app css rect (x, y, w, h), corner radius] on the phone / desk
 const PTAPS = [[2.3, [295, 376, 91, 39], 10], [3.55, [176, 648, 186, 40], 12], [4.75, [16, 742, 370, 54], 10]]
-const DTAPS = [[8.3, [463, 174, 299, 229], 14], [10.0, [1021, 837, 419, 63], 0], [11.0, [1021, 837, 419, 63], 0]]
+const DTAPS = [[8.3, [463, 174, 299, 229], 14], [10.0, [1021, 837, 419, 63], 0], [16.2, [1021, 837, 419, 63], 0]]
 // camera: [time, centre x, centre y, zoom]; eased between keys
 const CAM = [[0, 800, 450, 1], [2.0, 360, 470, 1.8], [3.0, 360, 560, 1.8], [4.3, 330, 640, 1.8], [5.25, 330, 640, 1.8],
-  [6.5, 800, 450, 1.02], [7.25, 800, 450, 1.02], [8.1, 960, 360, 1.55], [9.2, 1120, 470, 1.4], [9.75, 1210, 640, 1.65], [11.45, 1210, 640, 1.65],
-  [12.3, 980, 420, 1.22], [13.7, 930, 400, 1.22], [14.7, 800, 450, 1], [16, 800, 450, 1]]
+  [6.5, 800, 450, 1.02], [7.25, 800, 450, 1.02], [8.1, 960, 360, 1.55], [9.2, 1120, 470, 1.4], [9.75, 1210, 640, 1.65], [10.35, 1210, 640, 1.65],
+  [11.2, 800, 1425, 1.25], [14.0, 800, 1425, 1.25], [15.0, 1210, 640, 1.65], [16.65, 1210, 640, 1.65], // down to the printers and back
+  [17.5, 980, 420, 1.22], [18.9, 930, 400, 1.22], [19.9, 800, 450, 1], [21.2, 800, 450, 1]]
 
 const S = {}
 function cam(t) {
@@ -142,9 +143,9 @@ function finger(t) {
 }
 // the staff's pointer on the board: in after the order lands, out after the payment
 function cursor(t) {
-  const a = sm((t - 7.35) / 0.3) * (1 - sm((t - 11.6) / 0.3)); if (a <= 0) return
+  const a = sm((t - 7.35) / 0.3) * (1 - sm((t - 16.8) / 0.3)); if (a <= 0) return
   const c = ([tt, [x, y, w, h]]) => [tt, x + w / 2, y + h / 2]
-  const pts = [[7.2, 760, 640], ...DTAPS.map(c), [12, 1300, 700]]
+  const pts = [[7.2, 760, 640], ...DTAPS.map(c), [17.2, 1300, 700]]
   let i = pts.findIndex((p) => p[0] > t); if (i < 0) i = pts.length - 1; if (i === 0) i = 1
   const [t0, x0, y0] = pts[i - 1], [t1, x1, y1] = pts[i]
   const m = io((t - Math.max(t0 + 0.15, t1 - 0.8)) / Math.min(0.65, t1 - t0 - 0.15))
@@ -178,11 +179,36 @@ function chip(t) {
   X.fillStyle = '#78716c'; X.font = '500 15px Figtree, sans-serif'; X.fillText('Table 1 · 2 items · 19,000 Ks', -w / 2 + 64, 13)
   X.restore()
 }
+// Print Slips reaches the counter: below the admin in the scene, the cashier's and the kitchen's
+// thermal printers feed out the customer bill and the kitchen ticket (print-of.mjs renders both
+// with the admin's own receipt template, for the order open on the board).
+function printer(cx, label, slip, t0, t) {
+  const bw = 480, bh = 170, x = cx - bw / 2, y = 1480, sw = 420, sh = sw * slip.height / slip.width, tail = 44
+  const feed = clamp((t - t0) / 2.1), printing = feed > 0 && feed < 1, shown = (sh + tail) * out(feed)
+  X.save(); X.beginPath(); X.rect(0, 0, 3000, y + 20); X.clip()
+  X.shadowColor = 'rgba(120,60,10,0.25)'; X.shadowBlur = 26; X.shadowOffsetY = 8
+  X.fillStyle = '#fff'; X.fillRect(cx - sw / 2, y + 20 - shown, sw, sh + tail)
+  X.shadowColor = 'transparent'; X.drawImage(slip, cx - sw / 2, y + 20 - shown, sw, sh); X.restore()
+  X.save(); X.shadowColor = 'rgba(120,60,10,0.32)'; X.shadowBlur = 44; X.shadowOffsetY = 22
+  rrect(x, y, bw, bh, 34); X.fillStyle = '#26262a'; X.fill(); X.restore()
+  const g = X.createLinearGradient(0, y, 0, y + bh); g.addColorStop(0, '#3d3d42'); g.addColorStop(1, '#1d1d20')
+  rrect(x, y, bw, bh, 34); X.fillStyle = g; X.fill()
+  rrect(cx - 224, y + 13, 448, 12, 6); X.fillStyle = '#0d0d0f'; X.fill()
+  X.beginPath(); X.arc(x + bw - 52, y + bh - 50, 9, 0, Math.PI * 2); X.fillStyle = printing ? `rgba(76,255,122,${0.6 + 0.4 * Math.sin(t * 22)})` : 'rgba(76,255,122,0.4)'; X.fill()
+  // its name on the body: the card's title and bottom fade cover anything lower in the frame
+  X.font = '600 30px Figtree, sans-serif'; X.fillStyle = '#fff'; X.textBaseline = 'middle'; X.fillText(label, x + 40, y + bh - 50)
+}
+function printers(t) {
+  if (t < 10.2 || t > 15.2) return
+  printer(470, 'Cashier · customer bill', S['p-bill'], 10.95, t)
+  printer(1130, 'Kitchen · ticket', S['p-kitchen'], 11.2, t)
+}
 function frame(t) {
   bg()
   const c = cam(t)
   X.save(); X.translate(W / 2, H / 2); X.scale(c.z, c.z); X.translate(-c.x, -c.y)
   browser(t)
+  printers(t)
   focus(t, DTAPS, bw, B.k)
   cursor(t)
   phone(t)

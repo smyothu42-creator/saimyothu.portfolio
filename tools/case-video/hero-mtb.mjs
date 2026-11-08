@@ -1,0 +1,25 @@
+// MTB Pay Merchant cover loop: renders hero-mtb.html to MP4, or stills for checking.
+// usage: node hero-mtb.mjs out.mp4 [bitrate]      node hero-mtb.mjs --stills dir t1 t2 ...
+import fs from 'node:fs'
+import path from 'node:path'
+import { launch } from './lib.mjs'
+const args = process.argv.slice(2)
+const { browser, page } = await launch(1600, 1032, 1)
+page.on('pageerror', (e) => console.log('ERR', e.message))
+await page.goto('file://' + path.resolve('hero-mtb.html'), { waitUntil: 'networkidle0' })
+const names = fs.readdirSync('hero-mtb').filter((f) => /\.(jpg|png)$/.test(f))
+const srcs = Object.fromEntries(names.map((f) => [f.replace(/\.(jpg|png)$/, ''), 'hero-mtb/' + f]))
+await page.evaluate((s) => window.prep(s), srcs)
+if (args[0] === '--stills') {
+  const dir = args[1]; fs.mkdirSync(dir, { recursive: true })
+  for (const t of args.slice(2)) {
+    const d = await page.evaluate((t) => window.still(+t), t)
+    fs.writeFileSync(path.join(dir, `t${t}.jpg`), Buffer.from(d.split(',')[1], 'base64'))
+  }
+} else {
+  const [out, bitrate = '900000'] = args
+  fs.writeFileSync(out, '')
+  await page.exposeFunction('saveChunk', (b64) => fs.appendFileSync(out, Buffer.from(b64, 'base64')))
+  console.log(JSON.stringify(await page.evaluate((b) => window.run({ bitrate: b }), +bitrate)), (fs.statSync(out).size / 1e6).toFixed(2) + ' MB')
+}
+await browser.close()

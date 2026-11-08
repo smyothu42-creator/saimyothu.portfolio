@@ -65,7 +65,7 @@ export const CASES = [
     tags: ['Product Design'],
     desc: 'QR table ordering for cafés in Myanmar: a guest app on the phone, and an admin that runs every order.',
     short: 'QR ordering and a café admin.', // one line for More Work
-    art: { img: '/case/orderflow/cover.jpg?v=24', video: '/case/orderflow/hero.mp4?v=5', poster: '/case/orderflow/hero.jpg?v=3', thumb: '/case/orderflow/thumb-pos.jpg?v=10', card: '/case/orderflow/thumb.jpg', text: 'OrderFlow', color: '#1f3a5f', bg: 'linear-gradient(160deg,#cfe4f7,#dfe7fb 55%,#eef1fb)' },
+    art: { img: '/case/orderflow/cover.jpg?v=24', video: '/case/orderflow/hero.mp4?v=7', poster: '/case/orderflow/hero.jpg?v=3', thumb: '/case/orderflow/thumb-pos.jpg?v=10', card: '/case/orderflow/thumb.jpg', text: 'OrderFlow', color: '#1f3a5f', bg: 'linear-gradient(160deg,#cfe4f7,#dfe7fb 55%,#eef1fb)' },
     // One case for both products: the guest app (orderflow-client) and the admin
     // panel (orderflow-admin-panel). Told as a product manager's case: Impact,
     // Project Overview, The Opportunity, Problem Discovery, Product Vision &
@@ -74,7 +74,7 @@ export const CASES = [
     // keeps one side-list entry per section). Numbers come from the Startup World Cup pitch deck (Oct
     // 2026); the deck's unconfirmed and [example] figures are left out on purpose.
     // The cover is a short motion loop of the real screens (art.video, tools/case-video/hero-of.html):
-    // a guest's QR order reaching the staff board, then the owner's numbers.
+    // a guest's QR order reaching the staff board, its slips printing at the cashier and in the kitchen, then the owner's numbers.
     study: {
       navTop: false,
       overviewNav: 'Project Overview',
@@ -241,10 +241,10 @@ export const CASES = [
           notitle: true,
           blocks: [
             { kind: 'flows', label: 'Guest app', items: [
-              { title: 'Normal Ordering Flow', p: 'Scan the table QR and order. No app, no sign-in.', desc: 'Guests scan the QR on their table and the menu opens in the browser, with no app and no sign-in. They switch to Burmese or English, browse by category, and tap an item to add it. The basket stays in thumb reach, so they review and place the order in a few taps, then follow it until it’s ready.', src: '/case/orderflow/feat/g-order.mp4?v=3', poster: '/case/orderflow/feat/g-order.jpg?v=3', alt: 'Guest app: scanning the table QR, switching to Burmese, adding two items and placing the order', steps: [{ t: 0, text: 'Scan the table QR, no app' }, { t: 1.35, text: 'Burmese or English' }, { t: 9.45, text: 'Browse by category' }, { t: 13.81, text: 'Tap an item' }, { t: 18.55, text: 'Basket in thumb reach' }, { t: 23.66, text: 'Review and place' }, { t: 29.15, text: 'Track until ready' }] },
-              { title: 'Online Order Flow', p: 'Order ahead from the shop’s link, then pick it up.', desc: 'Guests order ahead from the shop’s own link. They add what they want, choose pickup or delivery with a ready time, and leave a name and phone number that’s saved for next time. After placing it there’s a moment to cancel, then an order number to show at the counter.', src: '/case/orderflow/feat/g-pickup.mp4?v=3', poster: '/case/orderflow/feat/g-pickup.jpg?v=3', alt: 'Guest app: an online pickup order from the shop link, with name and phone, to the order number', steps: [{ t: 0, text: 'Order ahead from the shop’s link' }, { t: 1.52, text: 'Add what you want' }, { t: 9.83, text: 'Pickup or delivery, with a ready time' }, { t: 12.68, text: 'Name and phone, saved for next time' }, { t: 18.17, text: 'Place it, with a moment to cancel' }, { t: 23.7, text: 'An order number for the counter' }] },
-              { title: 'Loyalty Flow', p: 'Points, stamps and member perks in one tab.', desc: 'Every perk lives in one Rewards tab. Points turn into free treats, each order adds a stamp to the card, and a member level shows the perks that come with it, so guests can see why it’s worth coming back.', src: '/case/orderflow/feat/g-loyalty.mp4?v=3', poster: '/case/orderflow/feat/g-loyalty.jpg?v=3', alt: 'Guest app: the Rewards tab with points, the stamp card and the membership card', steps: [{ t: 0, text: 'Every perk in one tab' }, { t: 2.97, text: 'Points turn into free treats' }, { t: 8.44, text: 'A stamp with every order' }, { t: 13.77, text: 'A member level and its perks' }] },
-              { title: 'Account Login Flow', p: 'Sign in with email or Google to earn rewards.', desc: 'Guests can order without an account. Signing in is only there to earn points: with email and password, or in one tap with Google, and anyone new can create an account in the same place.', src: '/case/orderflow/feat/g-account.mp4?v=3', poster: '/case/orderflow/feat/g-account.jpg?v=3', alt: 'Guest app: signing in with email or Google, and creating an account', steps: [{ t: 0, text: 'Order without an account' }, { t: 2.51, text: 'Sign in to earn points' }, { t: 4.5, text: 'Email and password' }, { t: 7.69, text: 'Or one tap with Google' }, { t: 10.06, text: 'New here? Create an account' }] },
+              { tag: 'QR order', title: 'Normal Ordering Flow', p: 'Scan the table QR and order. No app, no sign-in.', desc: 'Guests scan the QR on their table and the menu opens in the browser, with no app and no sign-in. They switch to Burmese or English, browse by category, and tap an item to add it. The basket stays in thumb reach, so they review and place the order in a few taps, then follow it until it’s ready.', src: '/case/orderflow/feat/g-order.mp4?v=3', poster: '/case/orderflow/feat/g-order.jpg?v=3', alt: 'Guest app: scanning the table QR, switching to Burmese, adding two items and placing the order', steps: [{ t: 0, text: 'Scan the table QR, no app' }, { t: 1.35, text: 'Burmese or English' }, { t: 9.45, text: 'Browse by category' }, { t: 13.81, text: 'Tap an item' }, { t: 18.55, text: 'Basket in thumb reach' }, { t: 23.66, text: 'Review and place' }, { t: 29.15, text: 'Track until ready' }] },
+              { tag: 'Pickup', title: 'Online Order Flow', p: 'Order ahead from the shop’s link, then pick it up.', desc: 'Guests order ahead from the shop’s own link. They add what they want, choose pickup or delivery with a ready time, and leave a name and phone number that’s saved for next time. After placing it there’s a moment to cancel, then an order number to show at the counter.', src: '/case/orderflow/feat/g-pickup.mp4?v=3', poster: '/case/orderflow/feat/g-pickup.jpg?v=3', alt: 'Guest app: an online pickup order from the shop link, with name and phone, to the order number', steps: [{ t: 0, text: 'Order ahead from the shop’s link' }, { t: 1.52, text: 'Add what you want' }, { t: 9.83, text: 'Pickup or delivery, with a ready time' }, { t: 12.68, text: 'Name and phone, saved for next time' }, { t: 18.17, text: 'Place it, with a moment to cancel' }, { t: 23.7, text: 'An order number for the counter' }] },
+              { tag: 'Loyalty', title: 'Loyalty Flow', p: 'Points, stamps and member perks in one tab.', desc: 'Every perk lives in one Rewards tab. Points turn into free treats, each order adds a stamp to the card, and a member level shows the perks that come with it, so guests can see why it’s worth coming back.', src: '/case/orderflow/feat/g-loyalty.mp4?v=3', poster: '/case/orderflow/feat/g-loyalty.jpg?v=3', alt: 'Guest app: the Rewards tab with points, the stamp card and the membership card', steps: [{ t: 0, text: 'Every perk in one tab' }, { t: 2.97, text: 'Points turn into free treats' }, { t: 8.44, text: 'A stamp with every order' }, { t: 13.77, text: 'A member level and its perks' }] },
+              { tag: 'Sign in', title: 'Account Login Flow', p: 'Sign in with email or Google to earn rewards.', desc: 'Guests can order without an account. Signing in is only there to earn points: with email and password, or in one tap with Google, and anyone new can create an account in the same place.', src: '/case/orderflow/feat/g-account.mp4?v=3', poster: '/case/orderflow/feat/g-account.jpg?v=3', alt: 'Guest app: signing in with email or Google, and creating an account', steps: [{ t: 0, text: 'Order without an account' }, { t: 2.51, text: 'Sign in to earn points' }, { t: 4.5, text: 'Email and password' }, { t: 7.69, text: 'Or one tap with Google' }, { t: 10.06, text: 'New here? Create an account' }] },
             ] },
           ],
         },
@@ -255,10 +255,10 @@ export const CASES = [
           notitle: true,
           blocks: [
             { kind: 'flows', device: 'browser', label: 'Admin panel', items: [
-              { title: 'QR Order Flow', p: 'A guest’s QR order, from the board to payment.', src: '/case/orderflow/feat/a-qr.mp4?v=3', poster: '/case/orderflow/feat/a-qr.jpg?v=3', alt: 'Admin: a QR order on the board, opened, its kitchen slips printed and its payment recorded', steps: [{ t: 0, text: 'A QR order lands on its table' }, { t: 2.63, text: 'Open it to see what the guest ordered' }, { t: 5.87, text: 'Print slips for the kitchen' }, { t: 10.52, text: 'Payment done, the table clears' }] },
-              { title: 'Manual Order Flow', p: 'A counter order, from table to kitchen to payment.', src: '/case/orderflow/feat/a-manual.mp4?v=3', poster: '/case/orderflow/feat/a-manual.jpg?v=3', alt: 'Admin: a counter order for table 6, three items, cash with change and printed slips', steps: [{ t: 0, text: 'Take an order at the counter' }, { t: 4.09, text: 'Pick the table' }, { t: 7.29, text: 'Tap items to add them' }, { t: 12.52, text: 'Send it to the kitchen' }, { t: 15.33, text: 'Take payment, with change' }, { t: 20.5, text: 'Print slips; table 6 is on the board' }] },
-              { title: 'Report & Metrics Walkthrough', p: 'The day’s sales, busy hours and top items.', src: '/case/orderflow/feat/a-reports.mp4?v=3', poster: '/case/orderflow/feat/a-reports.jpg?v=3', alt: 'Admin: metrics for the day, the daily close, orders by channel and sales per item', steps: [{ t: 0, text: 'Today’s sales at a glance' }, { t: 3.18, text: 'Busy hours and top items' }, { t: 6.72, text: 'Daily close, ready to print' }, { t: 10.52, text: 'Every order, by channel' }, { t: 13.34, text: 'Sales per item' }] },
-              { title: 'Adding New Menu Flow', p: 'A new item, from photo to price.', src: '/case/orderflow/feat/a-newmenu.mp4?v=3', poster: '/case/orderflow/feat/a-newmenu.jpg?v=3', alt: 'Admin: adding an espresso with a photo, English and Burmese names, a price and prep time', steps: [{ t: 0, text: 'Add an item from the menu list' }, { t: 3.87, text: 'Upload its photo' }, { t: 5.97, text: 'Name it in English and Burmese' }, { t: 8.23, text: 'Description, price and prep time' }, { t: 14.61, text: 'Count its stock, or skip it' }, { t: 19.04, text: 'It’s on the menu, ready to order' }] },
+              { tag: 'QR order', title: 'QR Order Flow', p: 'A guest’s QR order, from the board to payment.', src: '/case/orderflow/feat/a-qr.mp4?v=3', poster: '/case/orderflow/feat/a-qr.jpg?v=3', alt: 'Admin: a QR order on the board, opened, its kitchen slips printed and its payment recorded', steps: [{ t: 0, text: 'A QR order lands on its table' }, { t: 2.63, text: 'Open it to see what the guest ordered' }, { t: 5.87, text: 'Print slips for the kitchen' }, { t: 10.52, text: 'Payment done, the table clears' }] },
+              { tag: 'Counter order', title: 'Manual Order Flow', p: 'A counter order, from table to kitchen to payment.', src: '/case/orderflow/feat/a-manual.mp4?v=3', poster: '/case/orderflow/feat/a-manual.jpg?v=3', alt: 'Admin: a counter order for table 6, three items, cash with change and printed slips', steps: [{ t: 0, text: 'Take an order at the counter' }, { t: 4.09, text: 'Pick the table' }, { t: 7.29, text: 'Tap items to add them' }, { t: 12.52, text: 'Send it to the kitchen' }, { t: 15.33, text: 'Take payment, with change' }, { t: 20.5, text: 'Print slips; table 6 is on the board' }] },
+              { tag: 'Reports', title: 'Report & Metrics Walkthrough', p: 'The day’s sales, busy hours and top items.', src: '/case/orderflow/feat/a-reports.mp4?v=3', poster: '/case/orderflow/feat/a-reports.jpg?v=3', alt: 'Admin: metrics for the day, the daily close, orders by channel and sales per item', steps: [{ t: 0, text: 'Today’s sales at a glance' }, { t: 3.18, text: 'Busy hours and top items' }, { t: 6.72, text: 'Daily close, ready to print' }, { t: 10.52, text: 'Every order, by channel' }, { t: 13.34, text: 'Sales per item' }] },
+              { tag: 'New item', title: 'Adding New Menu Flow', p: 'A new item, from photo to price.', src: '/case/orderflow/feat/a-newmenu.mp4?v=3', poster: '/case/orderflow/feat/a-newmenu.jpg?v=3', alt: 'Admin: adding an espresso with a photo, English and Burmese names, a price and prep time', steps: [{ t: 0, text: 'Add an item from the menu list' }, { t: 3.87, text: 'Upload its photo' }, { t: 5.97, text: 'Name it in English and Burmese' }, { t: 8.23, text: 'Description, price and prep time' }, { t: 14.61, text: 'Count its stock, or skip it' }, { t: 19.04, text: 'It’s on the menu, ready to order' }] },
             ] },
           ],
         },
@@ -298,7 +298,7 @@ export const CASES = [
     short: 'Lunch ordering for office teams.', // one line for More Work
     art: { video: '/case/superfine-employee/hero.mp4?v=2', poster: '/case/superfine-employee/hero.jpg?v=2', img: '/case/superfine-employee/cover.jpg?v=5', thumb: '/case/superfine-employee/thumb.jpg?v=3', card: '/case/superfine-employee/thumb.jpg?v=3', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
     // Told as a product designer's case: Impact, Project Overview, Product Context,
-    // The Problem, Research & Insights, How I ship (with AI), Final UI Design,
+    // The Problem, Understand the Business and User, How I ship (with AI), Final UI Design,
     // Usability, Takeaway. Facts come from the
     // superfine.corporate.employee repo: its README (IA, ordering flow,
     // interview findings) and ACCESSIBILITY-AUDIT.md (WCAG 2.2 AA, 23 Jul 2026).
@@ -306,7 +306,6 @@ export const CASES = [
     study: {
       navTop: false,
       overviewNav: 'Project Overview',
-      overviewPart: 'Case Study',
       layout: 'story',
       heading: 'Designing lunch ordering that says what it costs, before you ask',
       // TODO(Sai): confirm your part and the dates.
@@ -349,14 +348,14 @@ export const CASES = [
         },
         {
           id: 'research',
-          nav: 'Research & Insights',
+          nav: 'Understand the Business and User',
           illo: 'research',
           blocks: [
             { kind: 'lead', p: 'I started with the business, then the people ordering. Three steps took us from Superfine’s side of the meal program to what the app had to do.' },
             { kind: 'steps', items: [
-              { spot: 'store', t: 'Understand Business', p: 'With the Superfine team: how company meal programs, allowances, cut-offs and delivery days work.' },
-              { spot: 'map', t: 'Map the problems', p: 'What goes wrong for Superfine, and what goes wrong for the employees who order.' },
-              { spot: 'target', t: 'Pick and Try to solve', p: 'Rank the problems by how often they happen and how much they hurt, and solve the top ones first.' },
+              { spot: 'store', t: '2 interview rounds with SFK', p: 'Two rounds with the Superfine Kitchen team on how company meal programs, allowances, cut-offs and delivery days work.' },
+              { spot: 'map', t: 'Map the business and user problems', p: 'What goes wrong for Superfine, and what goes wrong for the employees who order.' },
+              { spot: 'target', t: 'Pick and try to solve', p: 'Rank the problems by how often they happen and how much they hurt, and solve the top ones first.' },
             ] },
           ],
         },
@@ -424,11 +423,11 @@ export const CASES = [
           blocks: [
             // web first; recorded from the app (tools/case-video/sf-f-*.json, cfg-sf-f-*.json)
             { kind: 'flows', device: 'browser', label: 'Employee web app', items: [
-              { title: 'Ordering Flow', p: 'Lunch with the allowance in view, from the menu to confirmed.', src: '/case/superfine-employee/flows/order.mp4', poster: '/case/superfine-employee/flows/order.jpg', alt: 'Employee web app: the allowance in the header, a meal with options, the over-budget header, the cart split, company invoice and the confirmation', steps: [{ t: 0, text: 'The allowance, in the header' }, { t: 2.27, text: 'Pick a meal and its options' }, { t: 6.7, text: 'See what you’ll pay' }, { t: 10.58, text: 'The cart splits who pays' }, { t: 12.33, text: 'Pay by company invoice' }, { t: 17.18, text: 'Placed and confirmed' }] },
-              { title: 'Previous Orders', p: 'Every order’s status, past orders, re-order and rating.', src: '/case/superfine-employee/flows/orders.mp4', poster: '/case/superfine-employee/flows/orders.jpg', alt: 'Employee web app: My Orders with live status, the Past tab, re-order and rating a meal', steps: [{ t: 0, text: 'Every order and its status' }, { t: 2.7, text: 'Past orders, in one tab' }, { t: 4.23, text: 'Re-order in one tap' }, { t: 6.67, text: 'Rate a meal' }] },
-              { title: 'Edit Order', p: 'Change a placed order before the cut-off, and save.', src: '/case/superfine-employee/flows/edit.mp4', poster: '/case/superfine-employee/flows/edit.jpg', alt: 'Employee web app: editing a placed order from My Orders, swapping the meal, reviewing the changes and saving them', steps: [{ t: 0, text: 'Edit before the cut-off' }, { t: 1.64, text: 'Swap the meal' }, { t: 8.98, text: 'Review the changes' }, { t: 13.62, text: 'Save, and the order updates' }] },
-              { title: 'Auto-Ordering', p: 'Pick meals once, choose the days, and lunch orders itself.', src: '/case/superfine-employee/flows/auto.mp4', poster: '/case/superfine-employee/flows/auto.jpg', alt: 'Employee web app: setting up Auto-Order, picking a meal with its options, choosing days and turning it on', steps: [{ t: 0, text: 'Set it and forget it' }, { t: 1.94, text: 'Pick the meals to repeat' }, { t: 7.89, text: 'Choose the days' }, { t: 9.51, text: 'Turn it on' }] },
-              { title: 'Allergens & Dietary', p: 'Filter out allergens and keep only what fits your diet.', src: '/case/superfine-employee/flows/diet.mp4', poster: '/case/superfine-employee/flows/diet.jpg', alt: 'Employee web app: filtering out tree nuts and dairy, then keeping vegan meals only', steps: [{ t: 0, text: 'Filter out allergens' }, { t: 5.22, text: 'Only what fits your diet' }, { t: 9.06, text: 'The menu updates' }] },
+              { tag: 'Ordering', title: 'Ordering Flow', p: 'Lunch with the allowance in view, from the menu to confirmed.', src: '/case/superfine-employee/flows/order.mp4', poster: '/case/superfine-employee/flows/order.jpg', alt: 'Employee web app: the allowance in the header, a meal with options, the over-budget header, the cart split, company invoice and the confirmation', steps: [{ t: 0, text: 'The allowance, in the header' }, { t: 2.27, text: 'Pick a meal and its options' }, { t: 6.7, text: 'See what you’ll pay' }, { t: 10.58, text: 'The cart splits who pays' }, { t: 12.33, text: 'Pay by company invoice' }, { t: 17.18, text: 'Placed and confirmed' }] },
+              { tag: 'Past orders', title: 'Previous Orders', p: 'Every order’s status, past orders, re-order and rating.', src: '/case/superfine-employee/flows/orders.mp4', poster: '/case/superfine-employee/flows/orders.jpg', alt: 'Employee web app: My Orders with live status, the Past tab, re-order and rating a meal', steps: [{ t: 0, text: 'Every order and its status' }, { t: 2.7, text: 'Past orders, in one tab' }, { t: 4.23, text: 'Re-order in one tap' }, { t: 6.67, text: 'Rate a meal' }] },
+              { tag: 'Edit order', title: 'Edit Order', p: 'Change a placed order before the cut-off, and save.', src: '/case/superfine-employee/flows/edit.mp4', poster: '/case/superfine-employee/flows/edit.jpg', alt: 'Employee web app: editing a placed order from My Orders, swapping the meal, reviewing the changes and saving them', steps: [{ t: 0, text: 'Edit before the cut-off' }, { t: 1.64, text: 'Swap the meal' }, { t: 8.98, text: 'Review the changes' }, { t: 13.62, text: 'Save, and the order updates' }] },
+              { tag: 'Auto-order', title: 'Auto-Ordering', p: 'Pick meals once, choose the days, and lunch orders itself.', src: '/case/superfine-employee/flows/auto.mp4', poster: '/case/superfine-employee/flows/auto.jpg', alt: 'Employee web app: setting up Auto-Order, picking a meal with its options, choosing days and turning it on', steps: [{ t: 0, text: 'Set it and forget it' }, { t: 1.94, text: 'Pick the meals to repeat' }, { t: 7.89, text: 'Choose the days' }, { t: 9.51, text: 'Turn it on' }] },
+              { tag: 'Allergens', title: 'Allergens & Dietary', p: 'Filter out allergens and keep only what fits your diet.', src: '/case/superfine-employee/flows/diet.mp4', poster: '/case/superfine-employee/flows/diet.jpg', alt: 'Employee web app: filtering out tree nuts and dairy, then keeping vegan meals only', steps: [{ t: 0, text: 'Filter out allergens' }, { t: 5.22, text: 'Only what fits your diet' }, { t: 9.06, text: 'The menu updates' }] },
             ] },
           ],
         },
@@ -440,11 +439,11 @@ export const CASES = [
           blocks: [
             // the same flows on a phone (tools/case-video/sf-m-*.json, cfg-sf-m-*.json)
             { kind: 'flows', label: 'Employee mobile web', items: [
-              { title: 'Ordering Flow', desc: 'The allowance sits in the header, so you always know what’s left. Pick a meal and its options, and the header shows what you’ll pay. The cart splits what the company covers from what’s yours, then you pay by company invoice and the order is confirmed.', src: '/case/superfine-employee/flows/m-order.mp4', poster: '/case/superfine-employee/flows/m-order.jpg', alt: 'Employee app on a phone: the allowance in the header, a meal with options, the cart split, company invoice and the confirmation' },
-              { title: 'Previous Orders', desc: 'My Orders shows every order and where it is. Past orders sit in their own tab, any of them can be re-ordered in one tap, and a meal can be rated once it’s eaten.', src: '/case/superfine-employee/flows/m-orders.mp4', poster: '/case/superfine-employee/flows/m-orders.jpg', alt: 'Employee app on a phone: My Orders with status, the Past tab, re-order and rating a meal' },
-              { title: 'Edit Order', desc: 'Until the cut-off, a placed order can still change. Open it from My Orders, swap the meal on the menu, review the changes at checkout and save, and the same order updates.', src: '/case/superfine-employee/flows/m-edit.mp4', poster: '/case/superfine-employee/flows/m-edit.jpg', alt: 'Employee app on a phone: editing a placed order, swapping the meal, reviewing and saving the changes' },
-              { title: 'Auto-Ordering', desc: 'Pick the meals to repeat once, choose the days, and turn it on. From then on lunch orders itself, so nobody has to remember the cut-off every week.', src: '/case/superfine-employee/flows/m-auto.mp4', poster: '/case/superfine-employee/flows/m-auto.jpg', alt: 'Employee app on a phone: setting up Auto-Order, picking a meal, choosing days and turning it on' },
-              { title: 'Allergens & Dietary', desc: 'Filter out the allergens to avoid, then keep only what fits your diet. The menu updates as you go, so every meal left is one you can eat.', src: '/case/superfine-employee/flows/m-diet.mp4', poster: '/case/superfine-employee/flows/m-diet.jpg', alt: 'Employee app on a phone: filtering out tree nuts and dairy, then keeping vegan meals only' },
+              { tag: 'Ordering', title: 'Ordering Flow', desc: 'The allowance sits in the header, so you always know what’s left. Pick a meal and its options, and the header shows what you’ll pay. The cart splits what the company covers from what’s yours, then you pay by company invoice and the order is confirmed.', src: '/case/superfine-employee/flows/m-order.mp4', poster: '/case/superfine-employee/flows/m-order.jpg', alt: 'Employee app on a phone: the allowance in the header, a meal with options, the cart split, company invoice and the confirmation' },
+              { tag: 'Past orders', title: 'Previous Orders', desc: 'My Orders shows every order and where it is. Past orders sit in their own tab, any of them can be re-ordered in one tap, and a meal can be rated once it’s eaten.', src: '/case/superfine-employee/flows/m-orders.mp4', poster: '/case/superfine-employee/flows/m-orders.jpg', alt: 'Employee app on a phone: My Orders with status, the Past tab, re-order and rating a meal' },
+              { tag: 'Edit order', title: 'Edit Order', desc: 'Until the cut-off, a placed order can still change. Open it from My Orders, swap the meal on the menu, review the changes at checkout and save, and the same order updates.', src: '/case/superfine-employee/flows/m-edit.mp4', poster: '/case/superfine-employee/flows/m-edit.jpg', alt: 'Employee app on a phone: editing a placed order, swapping the meal, reviewing and saving the changes' },
+              { tag: 'Auto-order', title: 'Auto-Ordering', desc: 'Pick the meals to repeat once, choose the days, and turn it on. From then on lunch orders itself, so nobody has to remember the cut-off every week.', src: '/case/superfine-employee/flows/m-auto.mp4', poster: '/case/superfine-employee/flows/m-auto.jpg', alt: 'Employee app on a phone: setting up Auto-Order, picking a meal, choosing days and turning it on' },
+              { tag: 'Allergens', title: 'Allergens & Dietary', desc: 'Filter out the allergens to avoid, then keep only what fits your diet. The menu updates as you go, so every meal left is one you can eat.', src: '/case/superfine-employee/flows/m-diet.mp4', poster: '/case/superfine-employee/flows/m-diet.jpg', alt: 'Employee app on a phone: filtering out tree nuts and dairy, then keeping vegan meals only' },
             ] },
           ],
         },
@@ -486,7 +485,7 @@ export const CASES = [
     tags: ['Product Design'],
     desc: 'The driver app for a Bay Area office meal service, from the kitchen to the door.',
     short: 'A delivery driver app.', // one line for More Work
-    art: { img: '/case/superfine/cover.jpg?v=2', thumb: '/case/superfine/thumb.jpg', card: '/case/superfine/thumb.jpg', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
+    art: { img: '/case/superfine/cover.jpg?v=4', thumb: '/case/superfine/thumb.jpg', card: '/case/superfine/thumb.jpg', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
     // Story layout in six phases (Understand → Improve, the same track as the
     // About page). Facts come from the driver prototype (sfk-driver-app: its
     // README, review notes and commit history). Videos and stills are real
@@ -506,15 +505,6 @@ export const CASES = [
       gallery: [],
       tools: 'Figma, Claude Code',
       sections: [
-        {
-          id: 'hello',
-          nav: 'Intro',
-          bare: true,
-          immersive: true,
-          blocks: [
-            { kind: 'reel', src: '/case/superfine/sf-intro.mp4?v=3', audio: '/case/superfine/sf-intro.m4a', poster: '/case/superfine/sf-intro.jpg', alt: 'Intro: hot food, one free hand and a 60 minute clock. Then a driver run: go on duty, scan each slip, slide to confirm, navigate, follow the steps at the door and send a proof photo.' },
-          ],
-        },
         {
           id: 'impact',
           eyebrow: 'Overview',
@@ -783,10 +773,11 @@ export const CASES = [
     tags: ['Product Design', 'Payments'],
     desc: 'A merchant wallet for small businesses in Myanmar, built to be fast and clear for shopkeepers who aren’t tech-savvy.',
     short: 'A wallet for small shops.', // one line for More Work
-    art: { img: '/case/mtb-pay-merchant/cover.jpg', thumb: '/case/mtb-pay-merchant/thumb.jpg?v=6', card: '/case/mtb-pay-merchant/thumb.jpg?v=6', text: 'MTB Pay', color: '#fff', bg: '#c8121a' },
+    result: '100+ merchants taking payments',
+    art: { img: '/case/mtb-pay-merchant/cover.jpg', video: '/case/mtb-pay-merchant/hero.mp4?v=4', poster: '/case/mtb-pay-merchant/hero.jpg?v=4', thumb: '/case/mtb-pay-merchant/thumb.jpg?v=6', card: '/case/mtb-pay-merchant/thumb.jpg?v=6', text: 'MTB Pay', color: '#fff', bg: '#c8121a' },
     // Told as a UI/UX designer's case: Impact, Project Overview, Product Context, UX
     // Challenges, Visual Direction, Design System, Final Interface, Interaction &
-    // Edge Cases, Takeaway. Visual Direction describes what the real screens show.
+    // Edge Cases (now one section with Final Interface), Takeaway. Visual Direction describes what the real screens show.
     // Facts come from Sai's own case page (smyothu.framer.website/work/spark);
     // screens are from the Figma flows (tools/case-video/out-mtb).
     // TODO(Sai): add the dates and where the app is now.
@@ -799,7 +790,7 @@ export const CASES = [
       accent: '#44403c',
       tags: ['Fintech', 'Mobile', 'Payments'],
       role: 'UI/UX Designer',
-      scope: ['Onboarding', 'Home', 'eMoney', 'My Bank', 'Receive payment', 'Top up', 'Bill payment', 'Refund', 'Profile'],
+      scope: ['Merchant App'],
       duration: '',
       team: ['4 product designers', '11 developers', '3 stakeholders'],
       gallery: [],
@@ -810,16 +801,14 @@ export const CASES = [
           nav: 'Impact',
           notitle: true,
           blocks: [
-            { kind: 'lead', p: 'Merchants reported faster top-ups, fewer errors and more confidence using the app.' },
-          ],
-        },
-        {
-          id: 'hello',
-          nav: 'Intro',
-          bare: true,
-          toc: false,
-          blocks: [
-            { kind: 'reel', src: '/case/mtb-pay-merchant/intro.mp4?v=4', audio: '/case/mtb-pay-merchant/intro.m4a?v=3', poster: '/case/mtb-pay-merchant/intro.jpg?v=2', alt: 'Intro: slow transactions and frequent errors for small shops in Myanmar. Then a day at one shop counter with MTB Pay Merchant: a morning phone top-up, a QR payment in the lunch rush, a refund in the afternoon, and the day on one screen at closing time.' },
+            // 100+ merchants from Sai; the rest from MTB's CEO in ABA's report of 30 July 2026
+            // (aba.org.tw/candid-report-on-myanmar-banking-environment-on-30-july-2026)
+            { kind: 'impact', items: [
+              { num: '100+', label: 'Merchants taking payments with the app' },
+              { num: '300K+', label: 'People on MTB Pay, the wallet their customers pay from' },
+              { num: '19', label: 'MTB branches behind it' },
+              { num: '100K+', label: 'MTB banking customers' },
+            ] },
           ],
         },
         {
@@ -839,10 +828,10 @@ export const CASES = [
           nav: 'UX Challenges',
           blocks: [
             { kind: 'iconlist', items: [
-              { h: 'Slow transactions', p: 'Outdated systems made everyday payments and top-ups slow.' },
-              { h: 'Frequent errors', p: 'Mistakes were common in daily transactions.' },
-              { h: 'Unclear statuses', p: 'Merchants couldn’t always tell what had happened to their money.' },
-              { h: 'New to digital tools', p: 'Many shopkeepers had little experience with apps, and no time to learn one.' },
+              { spot: 'hourglass', h: 'Slow transactions', p: 'Outdated systems made everyday payments and top-ups slow.' },
+              { spot: 'receipt', h: 'Frequent errors', p: 'Mistakes were common in daily transactions.' },
+              { spot: 'money', h: 'Unclear statuses', p: 'Merchants couldn’t always tell what had happened to their money.' },
+              { spot: 'phone', h: 'New to digital tools', p: 'Many shopkeepers had little experience with apps, and no time to learn one.' },
             ] },
           ],
         },
@@ -851,10 +840,10 @@ export const CASES = [
           nav: 'Visual Direction',
           blocks: [
             { kind: 'lead', p: 'Built for the counter: one strong colour, big numbers and plain words.' },
-            { kind: 'notes', items: [
-              { t: 'Colour', p: 'MTB red for actions and the balance, white everywhere else, green for money in and red for money out.' },
-              { t: 'Typography', p: 'One clear typeface, and the amount is the biggest text on every money screen.' },
-              { t: 'Hierarchy', p: 'The balance first, then money in and out, the four services, and the latest transactions.' },
+            { kind: 'loop', steps: [
+              { icon: 'palette', t: 'Colour', p: 'MTB red for actions and the balance, white everywhere else, green for money in and red for money out.' },
+              { icon: 'type', t: 'Typography', p: 'One clear typeface, and the amount is the biggest text on every money screen.' },
+              { icon: 'layers', t: 'Hierarchy', p: 'The balance first, then money in and out, the four services, and the latest transactions.' },
             ] },
           ],
         },
@@ -863,40 +852,51 @@ export const CASES = [
           nav: 'Design System',
           illo: 'juggle',
           blocks: [
-            { kind: 'lead', p: 'We built on the design system with clear fonts, high contrast and consistent components, optimised for small screens and busy shops.' },
-            { kind: 'notes', items: [
-              { t: 'One result screen', p: 'Top up, payment and refund all end the same way: a check, the amount, the details and a receipt to save.' },
-              { t: 'Sheets for one question', p: 'An amount or a refund reason comes up in a sheet over the screen it belongs to.' },
-              { t: 'One main button', p: 'The next step is always a full-width red button at the bottom.' },
-              { t: 'Service tiles', p: 'Big red tiles with simple line icons, one for each service.' },
+            { kind: 'lead', p: 'We built the app on a Figma design system: colour and type styles, components with their states as variants, and a page of documentation for each, made for small screens and busy shops.' },
+            { kind: 'steps', items: [
+              // what the Figma file held; the values are read from the screens in Merchant.zip
+              { count: 7, t: 'Colours', swatches: [['#F43D3F', 'Primary red'], ['#FDEBEB', 'Red tint'], ['#11B669', 'Success'], ['#C15400', 'Warning'], ['#1D46D1', 'Link'], ['#161616', 'Text'], ['#97A1B3', 'Muted']] },
+              { count: 7, t: 'Type sizes', scale: [24, 20, 18, 16, 14, 12, 10] },
+              { count: 8, t: 'Components', chips: ['Button', 'Input', 'Amount chip', 'Sheet', 'Dialog', 'Service tile', 'Result', 'PIN'] },
+              { count: 3, t: 'Docs per component', chips: ['Style', 'Usage', 'Properties'] },
+            ] },
+            { kind: 'shot', src: '/case/mtb-pay-merchant/design-system.avif', alt: 'Design system documentation in Figma: style, usage and properties pages for the components' },
+          ],
+        },
+        {
+          id: 'motion',
+          nav: 'Motion UI',
+          notitle: true,
+          blocks: [
+            // played from Sai's Figma section "Merchant Scan Consumer QR to Receive Payment"
+            // (Section 1.pdf; tools/case-video/mtb-flows.py, cfg-mtb-receive.json, cfg-mtb-pay.json)
+            { kind: 'flows', label: 'Merchant app', items: [
+              { tag: 'Scan QR', title: 'Merchant: Scan Consumer QR to Receive Payment', desc: 'The merchant scans the customer’s QR and the sender comes up with their wallet balance. They tap an amount or type one, add a remark, and check the summary before confirming. The screen waits while the customer confirms on their phone, then shows the payment with a receipt to save or share.', src: '/case/mtb-pay-merchant/flows/receive.mp4?v=2', poster: '/case/mtb-pay-merchant/flows/receive.jpg?v=2', alt: 'Merchant app: scanning a customer’s QR, picking 50,000 MMK, adding a remark, confirming the summary, waiting for the customer, the successful payment and sharing the receipt', steps: [{ t: 0, text: 'Scan the customer’s QR' }, { t: 2.77, text: 'The sender and their balance come up' }, { t: 4.07, text: 'Tap an amount' }, { t: 5.42, text: 'Add a remark' }, { t: 8.59, text: 'Check the summary, then confirm' }, { t: 11.16, text: 'Wait while the customer confirms on their phone' }, { t: 13.96, text: 'The customer paid, and it says so' }, { t: 16.53, text: 'Save or share the receipt' }] },
+              { tag: 'Pay with QR', title: 'Customer: Pay With QR', desc: 'The other side of the same payment, in the MTB Pay wallet. The customer shows their QR at the counter. Once the shop confirms, the request comes in with a summary of who they’re paying and how much, valid for 60 seconds. They confirm with their PIN, and the payment succeeds on both phones at once.', src: '/case/mtb-pay-merchant/flows/pay.mp4', poster: '/case/mtb-pay-merchant/flows/pay.jpg', alt: 'MTB Pay wallet: the customer’s Pay With QR, the shop’s payment request, the summary, entering the PIN, Payment Successful and the payment in History', steps: [{ t: 0, text: 'Show your QR at the counter' }, { t: 2.4, text: 'The shop’s request comes in' }, { t: 4.42, text: 'Check who you’re paying, and how much' }, { t: 7.07, text: 'Confirm with your PIN' }, { t: 9.07, text: 'Paid, and the shop sees it' }, { t: 11.84, text: 'Every detail in History' }] },
+              { tag: 'Set amount', title: 'Merchant: Dynamic QR, Set Amount', desc: 'The shop’s QR can ask for an exact amount. The merchant opens Receive Payment, taps Specify Amount and types it on the keypad. After Confirm, the QR shows the amount under the shop’s name, ready to scan, with a way to clear or edit it.', src: '/case/mtb-pay-merchant/flows/dyn.mp4', poster: '/case/mtb-pay-merchant/flows/dyn.jpg', alt: 'Merchant app: the shop’s QR, Specify Amount, typing 100,000 and the QR showing 100,000 MMK', steps: [{ t: 0, text: 'Open the shop’s QR' }, { t: 2.85, text: 'Add an amount to it' }, { t: 4.75, text: 'Type the amount' }, { t: 7.25, text: 'Confirm, and the QR asks for it' }] },
+              { tag: 'Fund out', title: 'Merchant: Fund Out to a Super Agent', desc: 'The shop moves money from its wallet to a Super Agent. From eMoney the merchant scans the agent’s QR, picks an amount and adds a remark, checks the summary, then confirms with a PIN and the code sent by SMS. The receipt can be saved or shared.', src: '/case/mtb-pay-merchant/flows/fund.mp4', poster: '/case/mtb-pay-merchant/flows/fund.jpg', alt: 'Merchant app: eMoney, scanning a Super Agent’s QR, choosing 500,000, the summary, PIN, SMS code, success and sharing the receipt', steps: [{ t: 0, text: 'Open eMoney' }, { t: 1.57, text: 'Fund out to a Super Agent' }, { t: 4.41, text: 'Scan the agent’s QR' }, { t: 6.63, text: 'Pick an amount, add a remark' }, { t: 11.6, text: 'Check the summary' }, { t: 14.1, text: 'Confirm with your PIN' }, { t: 16.42, text: 'Then the code sent by SMS' }, { t: 18.82, text: 'Done, with a receipt' }, { t: 22.29, text: 'Share it' }] },
+              { tag: 'Refund', title: 'Merchant: Refund a Payment', desc: 'From Home the merchant opens Refund, finds the payment by its transaction number and checks it. A refund needs a reason, typed in a sheet over the payment. After the summary and a PIN, the money goes back to the customer and the receipt can be shared.', src: '/case/mtb-pay-merchant/flows/refund.mp4', poster: '/case/mtb-pay-merchant/flows/refund.jpg', alt: 'Merchant app: Refund, searching a transaction number, the payment, typing a reason, the summary, PIN, success and sharing the receipt', steps: [{ t: 0, text: 'Open Refund' }, { t: 1.57, text: 'Find the payment by its number' }, { t: 5.64, text: 'Check the payment, then refund' }, { t: 8.04, text: 'Give a reason' }, { t: 11.61, text: 'Check the summary' }, { t: 13.91, text: 'Confirm with your PIN' }, { t: 16.21, text: 'Refunded, with a receipt' }, { t: 19.68, text: 'Share it' }] },
+              { tag: 'Pay bill', title: 'Merchant: Bill Payment, YESC', desc: 'A Yangon electricity bill, paid at the counter. The merchant picks the bill, chooses YESC and enters the barcode, then scrolls the whole bill: units, due dates, fine, fees and the shop’s commission. A PIN pays it, and every detail stays in History.', src: '/case/mtb-pay-merchant/flows/bill.mp4', poster: '/case/mtb-pay-merchant/flows/bill.jpg', alt: 'Merchant app: Pay Bill, Electricity Bill, YESC and barcode, the full bill summary, PIN, success and the bill in History', steps: [{ t: 0, text: 'Pick the bill' }, { t: 1.77, text: 'Choose YESC, enter the barcode' }, { t: 6.24, text: 'Check the whole bill' }, { t: 9.94, text: 'Confirm with your PIN' }, { t: 12.24, text: 'Paid' }, { t: 14.41, text: 'Every detail in History' }] },
+              { tag: 'Top up', title: 'Merchant: Phone Top Up', desc: 'The merchant types the customer’s phone number, picks an amount, and checks the summary with fees and commission. A PIN tops it up, the receipt can be saved, and the details stay in History.', src: '/case/mtb-pay-merchant/flows/topup.mp4', poster: '/case/mtb-pay-merchant/flows/topup.jpg', alt: 'Merchant app: typing a phone number, choosing 1,000, the summary, PIN, success, saving the receipt and History', steps: [{ t: 0, text: 'Type the number' }, { t: 2.6, text: 'Pick an amount' }, { t: 4.92, text: 'Check the summary' }, { t: 7.22, text: 'Confirm with your PIN' }, { t: 9.52, text: 'Topped up' }, { t: 10.82, text: 'Save the receipt' }, { t: 12.52, text: 'Every detail in History' }] },
             ] },
           ],
         },
         {
-          id: 'interface',
-          nav: 'Final Interface',
-          title: 'Fewer steps, *clear flows*',
+          id: 'edge',
+          nav: 'Edge Cases',
+          title: 'Edge Cases',
           blocks: [
+            // the real error and empty states from the Figma boards in Merchant.zip
             { kind: 'choices', items: [
-              { h: 'Home', p: 'Balance, money in and out, four services and the latest transactions.', src: '/case/mtb-pay-merchant/home.jpg', alt: 'Home screen with the account balance, total in and out, four services and latest transactions' },
-              { h: 'Top up', p: 'Type the number, then tap an amount or a package.', src: '/case/mtb-pay-merchant/topup-amount.jpg', alt: 'Top up screen with a phone number and a grid of amounts' },
-              { h: 'Check before paying', p: 'Fees, discount and commission are listed before anything is confirmed.', src: '/case/mtb-pay-merchant/topup-summary.jpg', alt: 'Top up summary listing the provider, amount, fees and total' },
-              { h: 'Receive by QR', p: 'Scan the customer, or show the shop’s QR to download or share.', src: '/case/mtb-pay-merchant/receive-qr.jpg', alt: 'The shop’s QR code with Download, Share and Specify Amount' },
-              { h: 'Set an amount', p: 'Add a fixed amount to the QR when the shop needs one.', src: '/case/mtb-pay-merchant/receive-amount.jpg', alt: 'Specify Amount sheet with a number keypad' },
-              { h: 'Refund', p: 'Find the payment by its number, then check the details before confirming.', src: '/case/mtb-pay-merchant/refund-summary.jpg', alt: 'Refund summary with the transaction details and a Confirm button' },
-            ] },
-          ],
-        },
-        {
-          id: 'states',
-          nav: 'Interaction and Edge Cases',
-          title: 'Every state says *what happens next*',
-          blocks: [
-            { kind: 'choices', items: [
-              { h: 'Success', p: 'The amount, the details and a receipt to save, the same in every flow.', src: '/case/mtb-pay-merchant/receive-done.jpg', alt: 'Successful payment with the amount, sender and a Save Receipt button' },
-              { h: 'Failed', p: 'A wrong number gets one short message and a Try Again button.', src: '/case/mtb-pay-merchant/topup-invalid.jpg', alt: 'Invalid Number message with a Try Again button' },
-              { h: 'Waiting', p: 'While the customer confirms, the screen says so, with a way to cancel.', src: '/case/mtb-pay-merchant/receive-wait.jpg', alt: 'Waiting for Customer’s Confirmation screen with an hourglass' },
-              { h: 'Required', p: 'A refund can’t go ahead without a reason.', src: '/case/mtb-pay-merchant/refund-reason.jpg', alt: 'Refund Information sheet with a required reason' },
+              { h: 'Wrong QR', p: 'Scan a Cash Out QR by mistake and the app says so, and which QR to scan instead.', src: '/case/mtb-pay-merchant/edge/invalid-qr.jpg', alt: 'QR Invalid: You scanned Cash Out QR. Please try again with Receive Payment QR' },
+              { h: 'Session expired', p: 'When a scan times out, go back home or scan again.', src: '/case/mtb-pay-merchant/edge/session.jpg', alt: 'Session Expired with Back to Home and Scan QR Again' },
+              { h: 'Invalid number', p: 'A wrong phone number for a top-up gets one short message and Try Again.', src: '/case/mtb-pay-merchant/edge/topup-invalid.jpg', alt: 'Top Up: Invalid Number, you have entered invalid phone number, with Try Again' },
+              { h: 'Invalid barcode', p: 'A bill barcode that doesn’t exist gets the same pattern: what went wrong, then Try Again.', src: '/case/mtb-pay-merchant/edge/barcode.jpg', alt: 'Electricity bill: Invalid Barcode Number with Try Again' },
+              { h: 'Already paid', p: 'A bill that’s already been paid is stopped before it’s paid twice.', src: '/case/mtb-pay-merchant/edge/paid.jpg', alt: 'Bill is Already Paid message with OK' },
+              { h: 'Not enough money', p: 'If the wallet can’t cover it, the app says so before anything is sent.', src: '/case/mtb-pay-merchant/edge/insufficient.jpg', alt: 'Insufficient Amount: you don’t have sufficient balance in wallet' },
+              { h: 'No match', p: 'A refund search with a wrong transaction number says nothing was found and what to enter.', src: '/case/mtb-pay-merchant/edge/wrong-id.jpg', alt: 'Refund search with no result found and a prompt to enter the correct transaction number' },
+              { h: 'Too many wrong PINs', p: 'After five wrong PINs the app locks, and says exactly when to try again.', src: '/case/mtb-pay-merchant/edge/pin.jpg', alt: 'PIN Verification Failure: wrong PIN 5 times, wait 15 minutes until 6/02/2024 16:01' },
+              { h: 'Nothing yet', p: 'A new shop’s home says there are no transactions yet, instead of showing a blank list.', src: '/case/mtb-pay-merchant/edge/empty.jpg', alt: 'Home with the balance and services, and There is no transactions yet' },
             ] },
           ],
         },
@@ -1238,10 +1238,10 @@ export const CASES = [
           blocks: [
             // screens from Sai's Figma file (Meeting.pdf), see tools/case-video/meet-flows.py
             { kind: 'flows', device: 'browser', label: 'Running a call', items: [
-              { title: 'Meetings at a Glance', p: 'Open the Meeting List from the dashboard, and step through today, yesterday and tomorrow.', src: '/case/heizen-studio/flows/dash.mp4', poster: '/case/heizen-studio/flows/dash.jpg', alt: 'The projects dashboard with the Meeting List open, moving from today to yesterday and tomorrow' },
-              { title: 'Start a Meeting', p: 'Start a call from the list. The bot joins, you keep private notes, and AI writes the meeting notes at the end.', src: '/case/heizen-studio/flows/start.mp4', poster: '/case/heizen-studio/flows/start.jpg', alt: 'Starting a meeting from the dashboard, recording it, generating insights and the AI notes' },
-              { title: 'Review a Past Meeting', p: 'Open a meeting record for its notes, the full transcript and the recording.', src: '/case/heizen-studio/flows/review.mp4', poster: '/case/heizen-studio/flows/review.jpg', alt: 'Opening a completed meeting from the Meeting List, its notes, then its transcript and recording' },
-              { title: 'Meeting from a Link', p: 'Paste a meeting link from the dashboard, then send the bot, record audio only, or upload it later.', src: '/case/heizen-studio/flows/anywhere.mp4', poster: '/case/heizen-studio/flows/anywhere.jpg', alt: 'Starting a new meeting from a pasted link, recording it and getting the notes and transcript' },
+              { tag: 'Overview', title: 'Meetings at a Glance', p: 'Open the Meeting List from the dashboard, and step through today, yesterday and tomorrow.', src: '/case/heizen-studio/flows/dash.mp4', poster: '/case/heizen-studio/flows/dash.jpg', alt: 'The projects dashboard with the Meeting List open, moving from today to yesterday and tomorrow' },
+              { tag: 'Start', title: 'Start a Meeting', p: 'Start a call from the list. The bot joins, you keep private notes, and AI writes the meeting notes at the end.', src: '/case/heizen-studio/flows/start.mp4', poster: '/case/heizen-studio/flows/start.jpg', alt: 'Starting a meeting from the dashboard, recording it, generating insights and the AI notes' },
+              { tag: 'Review', title: 'Review a Past Meeting', p: 'Open a meeting record for its notes, the full transcript and the recording.', src: '/case/heizen-studio/flows/review.mp4', poster: '/case/heizen-studio/flows/review.jpg', alt: 'Opening a completed meeting from the Meeting List, its notes, then its transcript and recording' },
+              { tag: 'From a link', title: 'Meeting from a Link', p: 'Paste a meeting link from the dashboard, then send the bot, record audio only, or upload it later.', src: '/case/heizen-studio/flows/anywhere.mp4', poster: '/case/heizen-studio/flows/anywhere.jpg', alt: 'Starting a new meeting from a pasted link, recording it and getting the notes and transcript' },
             ] },
           ],
         },
@@ -1252,11 +1252,11 @@ export const CASES = [
           notitle: true,
           blocks: [
             { kind: 'flows', device: 'browser', label: 'Meetings inside projects', items: [
-              { title: 'Start from a Project', p: 'Every project has its own Meetings page. A call started there is already filed under it, with a live transcript.', src: '/case/heizen-studio/flows/project.mp4', poster: '/case/heizen-studio/flows/project.jpg', alt: 'A project’s Meetings page, starting a call with a live transcript, then the notes and recording' },
-              { title: 'Auto-Assign by Email', p: 'Add a client’s email once, and every meeting with them lands in the project.', src: '/case/heizen-studio/flows/assign.mp4', poster: '/case/heizen-studio/flows/assign.jpg', alt: 'Adding a client email on a project’s Meetings page and confirming it' },
-              { title: 'Move to a Project', p: 'Filed in the wrong place? Move it to another project from its menu.', src: '/case/heizen-studio/flows/move.mp4', poster: '/case/heizen-studio/flows/move.jpg', alt: 'Moving a meeting to another project from its menu' },
-              { title: 'Save Notes as a Wiki', p: 'Turn a meeting’s notes into a wiki page in one click.', src: '/case/heizen-studio/flows/wiki.mp4', poster: '/case/heizen-studio/flows/wiki.jpg', alt: 'Saving a meeting’s notes as a wiki page' },
-              { title: 'Tag a Meeting', p: 'Tag a call by type, like sprint meeting or requirement gathering, and give each tag its own colour.', src: '/case/heizen-studio/flows/tag.mp4', poster: '/case/heizen-studio/flows/tag.jpg', alt: 'Adding and editing tags on a meeting, with a colour for each' },
+              { tag: 'From a project', title: 'Start from a Project', p: 'Every project has its own Meetings page. A call started there is already filed under it, with a live transcript.', src: '/case/heizen-studio/flows/project.mp4', poster: '/case/heizen-studio/flows/project.jpg', alt: 'A project’s Meetings page, starting a call with a live transcript, then the notes and recording' },
+              { tag: 'Auto-assign', title: 'Auto-Assign by Email', p: 'Add a client’s email once, and every meeting with them lands in the project.', src: '/case/heizen-studio/flows/assign.mp4', poster: '/case/heizen-studio/flows/assign.jpg', alt: 'Adding a client email on a project’s Meetings page and confirming it' },
+              { tag: 'Move', title: 'Move to a Project', p: 'Filed in the wrong place? Move it to another project from its menu.', src: '/case/heizen-studio/flows/move.mp4', poster: '/case/heizen-studio/flows/move.jpg', alt: 'Moving a meeting to another project from its menu' },
+              { tag: 'Wiki', title: 'Save Notes as a Wiki', p: 'Turn a meeting’s notes into a wiki page in one click.', src: '/case/heizen-studio/flows/wiki.mp4', poster: '/case/heizen-studio/flows/wiki.jpg', alt: 'Saving a meeting’s notes as a wiki page' },
+              { tag: 'Tag', title: 'Tag a Meeting', p: 'Tag a call by type, like sprint meeting or requirement gathering, and give each tag its own colour.', src: '/case/heizen-studio/flows/tag.mp4', poster: '/case/heizen-studio/flows/tag.jpg', alt: 'Adding and editing tags on a meeting, with a colour for each' },
             ] },
           ],
         },
@@ -1592,6 +1592,7 @@ export const ABOUT = {
   // "What a product designer does": my view, then two tabs, each a short path
   // of steps (`word` is shown big, `line` under it when picked).
   craft: {
+    show: false, // the whole How I work box (Designer / Founder tabs) is hidden; set true to bring it back
     showIntro: false, // hides title, statement and body for now; set true to bring them back
     label: 'How I work',
     title: 'What a product designer does',
