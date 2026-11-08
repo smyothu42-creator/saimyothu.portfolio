@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { ABOUT, PROFILE } from '../data'
-import { Card, BackButton, Button, Icon, ConnectCard, Filter, TakeNote } from './ui'
-import { newestFirst, range } from '../dates'
+import { ABOUT, PROFILE, RESUME_URL } from '../data'
+import { Card, BackButton, Icon, ConnectCard, Filter, TakeNote } from './ui'
+import { newestFirst } from '../dates'
 import Testimonials from './Testimonials'
 
 
@@ -36,10 +36,11 @@ export default function AboutPage() {
       <Card>
         <div className="sv-exp-head-row">
           <h2 className="sv-h2">Work Experience</h2>
-          <Button href="/Sai-Myo-Thu-Resume.pdf" external className="sv-resume" aria-label="Resume (opens the PDF)">
-            Resume
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" /></svg>
-          </Button>
+          {/* same glass chip as the home card's "About me", with its label always showing */}
+          <a className="sv-intro-hint sv-resume" href={RESUME_URL} target="_blank" rel="noopener noreferrer" aria-label="Resume (opens in a new tab)">
+            <span className="sv-intro-hint-text"><span>Resume</span></span>
+            <Icon name="arrowUpRight" size={16} stroke={2} />
+          </a>
         </div>
         <ul className="sv-exp">
           {roles.map((e) => <Role key={e.co} e={e} />)}
@@ -176,38 +177,30 @@ function TakeDrop({ open, anchor, trigger, onClose }) {
   )
 }
 
-// One role: logo tile, "Role at Company", dates; opens to show its note.
+// Years only: "2024–2025", "Current", or one year if it started and ended in it.
+const years = (start, end) => {
+  if (!end) return 'Current'
+  const from = start.slice(0, 4)
+  const to = end.slice(0, 4)
+  return from === to ? from : `${from}–${to}`
+}
+
+// One job as a table row: company, role, years.
 function Role({ e }) {
-  const [open, setOpen] = useState(false)
-  const head = (
-    <>
-      <span className="sv-exp-logo">{e.logo ? <img src={e.logo} alt="" /> : e.co[0]}</span>
-      <span className="sv-exp-text">
-        <span className="sv-exp-role">{e.role} at {e.co}</span>
-        <span className="sv-dim">{range(e.start, e.end)}</span>
-      </span>
-    </>
-  )
-  if (!e.note) return <li className="sv-exp-row"><div className="sv-exp-head">{head}</div></li>
   return (
-    <li className={'sv-exp-row' + (open ? ' is-open' : '')}>
-      <button className="sv-exp-head" aria-expanded={open} onClick={() => setOpen((v) => !v)}>
-        {head}
-        <span className="sv-exp-chev"><Icon name="chevron" size={20} /></span>
-      </button>
-      <div className="sv-exp-body"><p>{e.note}</p></div>
+    <li className="sv-exp-row">
+      <span className="sv-exp-co">{e.co}</span>
+      <span className="sv-exp-role">{e.role}</span>
+      <span className="sv-exp-dates">{years(e.start, e.end)}</span>
     </li>
   )
 }
 
-// Top photo card as a slideshow: ABOUT.photos first, then the hero photo,
-// cross-fading every 3 seconds (reduced motion: a plain fade, no zoom). The
-// dots jump to a photo; the name stays on top.
+// Top photo card as a slideshow of ABOUT.photos, cross-fading every 3 seconds
+// (reduced motion: a plain fade, no zoom). The dots jump to a photo; the name
+// stays on top.
 function HeroSlides() {
-  const slides = [
-    ...(ABOUT.photos || []),
-    { src: PROFILE.hero?.src || PROFILE.portrait, alt: PROFILE.name, position: PROFILE.hero?.position },
-  ]
+  const slides = ABOUT.photos || []
   const [i, setI] = useState(0)
   const [takeOpen, setTakeOpen] = useState(false)
   const takeChip = useRef(null)
@@ -230,14 +223,14 @@ function HeroSlides() {
           <div
             key={sl.src}
             className={'sv-slide' + (k === i ? ' is-on' : '')}
-            style={{ backgroundImage: `url(${sl.src})`, backgroundPosition: sl.position }}
+            style={{ backgroundImage: `url(${sl.src})`, '--pos': sl.position, '--pos-phone': sl.phonePosition }}
             role="img"
             aria-label={sl.alt}
             aria-hidden={k !== i}
           />
         ))}
       </div>
-      <BackButton href="/" label="Back to home" />
+      <BackButton href="/" label="Back" />
       {/* like the home card: the whole photo opens my take; on hover the card
           lifts and the chip opposite the back button folds out to "My take" */}
       {ABOUT.takes?.length > 0 && (
@@ -246,20 +239,30 @@ function HeroSlides() {
             ref={takeLink}
             type="button"
             className="sv-card-link"
-            aria-label="My take"
+            aria-label="My Takes"
             aria-expanded={takeOpen}
             aria-controls="sv-take-drop"
             onClick={() => setTakeOpen((v) => !v)}
           />
           <span className="sv-intro-hint sv-photo-hint" aria-hidden="true" ref={takeChip}>
-            <span className="sv-intro-hint-text"><span>My take</span></span>
+            <span className="sv-intro-hint-text"><span>My Takes</span></span>
             <Icon name="quote" size={16} stroke={2} />
           </span>
           <TakeDrop open={takeOpen} anchor={takeChip} trigger={takeLink} onClose={() => setTakeOpen(false)} />
         </>
       )}
       <div className="sv-hero-foot">
-        <h1 className="sv-h1">{PROFILE.name}</h1>
+        <div className="sv-hero-id">
+          <h1 className="sv-h1">{PROFILE.name}</h1>
+          {/* captions share one grid cell, so the name stays put as photos change */}
+          {slides.some((sl) => sl.caption) && (
+            <div className="sv-hero-caps">
+              {slides.map((sl, k) => sl.caption && (
+                <p key={sl.src} className={'sv-hero-cap' + (k === i ? ' is-on' : '')} aria-hidden={k !== i}>{sl.caption}</p>
+              ))}
+            </div>
+          )}
+        </div>
         {slides.length > 1 && (
           <div className="sv-dots" role="tablist" aria-label="Photos">
             {slides.map((sl, k) => (

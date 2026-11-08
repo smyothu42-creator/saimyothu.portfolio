@@ -4,6 +4,7 @@ import { useGSAP } from '@gsap/react'
 import { ABOUT, CASES, HOME_WORK, MORE_WORK, PROFILE } from '../data'
 import { Card, Icon, ConnectCard } from './ui'
 import Media from './Media'
+import Testimonials from './Testimonials'
 
 const prefersReduced = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
@@ -13,9 +14,37 @@ export default function Home() {
       <Intro />
       <MainWork />
       <Portfolio />
-      <ValuesStrip />
+      <Testimonials />
+      <AboutTeaser />
       <ConnectCard />
     </>
+  )
+}
+
+// Invitation to the About page: the whole card is the link. Three real photos
+// sit like a small hand of cards, echoing More Work, and fan out on hover.
+const ABOUT_PHOTOS = [
+  { src: PROFILE.hero.src, position: 'center 40%' },
+  { src: '/sai-team.jpg', position: '0% center' },
+  { src: ABOUT.photos[0].src, position: '50% center' },
+]
+
+function AboutTeaser() {
+  return (
+    <Card as="a" href="/about" className="sv-teaser" aria-label="About me: read my story">
+      <div className="sv-teaser-text">
+        <h2 className="sv-teaser-title">The person behind the work.</h2>
+        <span className="sv-teaser-go">
+          Read my story
+          <span className="sv-teaser-arrow"><Icon name="arrowUpRight" size={17} stroke={2} /></span>
+        </span>
+      </div>
+      <div className="sv-teaser-fan" aria-hidden="true">
+        {ABOUT_PHOTOS.map((p) => (
+          <i key={p.src} style={{ backgroundImage: `url(${p.src})`, backgroundPosition: p.position }} />
+        ))}
+      </div>
+    </Card>
   )
 }
 
@@ -43,15 +72,15 @@ function Intro() {
           aria-label={PROFILE.name}
         />
         <div>
-          <h1 className="sv-name">
-            {PROFILE.nameLines.map((l) => <span key={l}>{l}</span>)}
-          </h1>
+          <h1 className="sv-name">{PROFILE.name}</h1>
           <p className="sv-intro-note">
+            {PROFILE.signoff}.{' '}
             {PROFILE.note.map((part, i) =>
               typeof part === 'string' ? part : (
                 <a key={i} href={part.href} target="_blank" rel="noopener noreferrer">{part.text}</a>
               ),
             )}
+            .
           </p>
         </div>
       </div>
@@ -247,7 +276,7 @@ function Portfolio() {
         {shown ? (
           <>
             <span className="sv-fan-title">{shown.title}</span>
-            <span className="sv-dim">{shown.domain}</span>
+            <span className="sv-dim">{shown.short}</span>
           </>
         ) : (
           <span className="sv-fan-hint">
@@ -255,52 +284,6 @@ function Portfolio() {
             <span className="sv-hint-touch">Tap a card to open the project</span>
           </span>
         )}
-      </div>
-    </Card>
-  )
-}
-
-// Core values strip: the values drift sideways in an endless loop. It keeps
-// drifting while hovered; the value under the pointer is spotlighted (the
-// others dim back).
-const VS_SECONDS = 48 // time for one full loop
-
-function ValuesStrip() {
-  const values = ABOUT.values || []
-  const track = useRef(null)
-
-  useEffect(() => {
-    const el = track.current
-    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    let x = 0, last = performance.now(), raf = 0
-    const frame = (now) => {
-      raf = requestAnimationFrame(frame)
-      const dt = Math.min(64, now - last)
-      last = now
-      const half = el.scrollWidth / 2
-      if (!half) return
-      x = (x - (half / (VS_SECONDS * 1000)) * dt) % half // wraps at the second copy
-      el.style.transform = `translate3d(${x.toFixed(2)}px, 0, 0)`
-    }
-    raf = requestAnimationFrame(frame)
-    return () => cancelAnimationFrame(raf)
-  }, [])
-
-  if (!values.length) return null
-  const run = (copy) =>
-    values.map((v, k) => (
-      <span className="sv-vs-item" key={copy + k}>
-        <span className="sv-vs-text">{v}</span>
-      </span>
-    ))
-  return (
-    <Card className="sv-vs" aria-label="My core values">
-      <ul className="sr-only">{values.map((v) => <li key={v}>{v}</li>)}</ul>
-      <div className="sv-vs-run" aria-hidden="true">
-        <div className="sv-vs-track" ref={track}>
-          {run('a')}
-          {run('b')}
-        </div>
       </div>
     </Card>
   )

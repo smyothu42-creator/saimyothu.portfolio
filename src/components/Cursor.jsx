@@ -17,6 +17,8 @@ import { useEffect, useRef } from 'react'
 
 const TARGETS = [
   '.sv-btn',               // pill buttons, e.g. "More Works"
+  '.sv-resume',            // Resume chip in Work Experience
+  '.sv-footer-top',        // "Back to top" in the footer
   '.sv-round',             // testimonial arrows
   '.sv-back',              // round back buttons
   '.sv-connect .sv-social', // "Let's connect" social icons

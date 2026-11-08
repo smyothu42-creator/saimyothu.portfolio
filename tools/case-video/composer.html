@@ -43,7 +43,7 @@ async function prepClip(sc) {
   const dur = sc.dur ?? map.at(-1).t + (sc.tail ?? 1.2)
   // clicks from record.mjs, on the output clock, as fractions of the viewport
   const css = idx.css || [idx.w, idx.h]
-  const taps = (idx.taps || []).filter((p) => p.t >= (sc.from ?? 0) && p.t <= (sc.to ?? 1e9)).map((p) => ({ t: toOut(p.t), x: p.x / css[0], y: p.y / css[1] }))
+  const taps = (idx.taps || []).filter((p) => p.t >= (sc.from ?? 0) && p.t <= (sc.to ?? 1e9)).map((p) => ({ t: toOut(p.t), x: p.x / css[0], y: p.y / css[1], quiet: p.quiet }))
   return { ...sc, map, caps, dur, taps, w: idx.w, h: idx.h, cache: new Map() }
 }
 async function frameAt(clip, t) {
@@ -187,8 +187,8 @@ function pointer(sc, t, rx, ry, rw, rh, touch) {
     const a = sm(clamp((t - (next.t - 0.08 - dur)) / dur))
     px += (next.x - px) * a; py += (next.y - py) * a
   }
-  if (prev) ring(prev, 0.9)
-  const down = prev && t - prev.t < 0.18 ? 0.86 : 1
+  if (prev && !prev.quiet) ring(prev, 0.9) // `quiet`: the arrow only moves there, no click
+  const down = prev && !prev.quiet && t - prev.t < 0.18 ? 0.86 : 1
   const x = rx + px * rw, y = ry + py * rh, k = 2.3 * S * down
   X.save(); X.translate(x, y); X.scale(k, k)
   X.beginPath(); X.moveTo(0, 0); X.lineTo(0, 17); X.lineTo(4.2, 13); X.lineTo(7, 19.5); X.lineTo(9.6, 18.4); X.lineTo(6.9, 12.2); X.lineTo(12.4, 12.2); X.closePath()

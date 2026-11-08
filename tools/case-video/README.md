@@ -103,3 +103,5 @@ Corporate Meal Order Final UI Design flows (`public/case/superfine-employee/flow
 `DPR=1.25 node record.mjs out-sf-f-<f> sf-f-<f>.json http://localhost:3100/login 1440 900` for order, orders, auto and diet
 (each signs in off camera first), and `node compose.mjs cfg-sf-f-<f>.json sf-f-<f>.mp4`; the step times in data.js are
 the `caps` compose prints. compose now records a keyframe every 0.5 s in 0.25 s pieces and waits for the last chunk.
+
+More Work thumbnails and covers from `mock-thumb.py` (run in this folder): OrderFlow Landing `python3 mock-thumb.py lp thumb.jpg` and `python3 mock-thumb.py lp cover.jpg 31 -13 654 484 1890` (the laptop stays neutral silver; the base is redrawn as amber crystal, `crystal` in the script). Driver app `python3 mock-thumb.py driver thumb.jpg` and `python3 mock-thumb.py driver cover.jpg 0 65 534 395 1600`, so its case page cover is the same hand-held mockup as its thumbnail.

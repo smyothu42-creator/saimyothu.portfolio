@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
+import { Fragment, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { Person } from './Illos'
 import { Icon } from './ui'
 import { scrollToY } from '../scroll'
@@ -36,15 +36,46 @@ function useTicker(n, ms, on) {
 
 // ---------------------------------------------------------------------------
 // Impact: the headline result in a sentence, then the key numbers.
-export function Impact({ headline, items }) {
+const STORE_MARKS = {
+  play: (
+    <>
+      <path fill="#00A0FF" d="M3.6 2.3 13.3 12l-9.7 9.7c-.4-.2-.6-.6-.6-1.1V3.4c0-.5.2-.9.6-1.1z" />
+      <path fill="#00E676" d="M3.6 2.3c.4-.1 1 0 1.6.3L16.3 9l-3 3z" />
+      <path fill="#FF3D00" d="M3.6 21.7c.4.1 1 0 1.6-.3L16.3 15l-3-3z" />
+      <path fill="#FFC107" d="m16.3 9 3.7 2.1c.9.5.9 1.3 0 1.8L16.3 15l-3-3z" />
+    </>
+  ),
+  apple: <path fill="#fff" d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />,
+}
+
+export function Impact({ headline, items, links, fit }) {
+  const stats = (
+    <div className={'cs-stats' + (fit ? ' is-fit' : '')}>
+      {items.map((it, i) => (
+        <Fragment key={it.label}>
+          {fit && i > 0 && <i className="cs-stat-div" aria-hidden="true" />}
+          <div><span className="cs-stat-num">{it.num}</span><span>{it.label}</span></div>
+        </Fragment>
+      ))}
+    </div>
+  )
   return (
     <>
       {headline && <p className="cs-lead">{headline}</p>}
-      <div className="cs-stats">
-        {items.map((it) => (
-          <div key={it.label}><span className="cs-stat-num">{it.num}</span><span>{it.label}</span></div>
-        ))}
-      </div>
+      {/* with links (e.g. the app stores): the numbers on the left, the buttons on the right */}
+      {links?.length > 0 ? (
+        <div className="cs-stat-row">
+          {stats}
+          <div className="cs-stat-links">
+            {links.map((l) => (
+              <a key={l.href} className="cs-store" href={l.href} target="_blank" rel="noopener noreferrer" aria-label={`${l.over} ${l.label} (opens in a new tab)`}>
+                <svg viewBox="0 0 24 24" aria-hidden="true">{STORE_MARKS[l.store]}</svg>
+                <span><small>{l.over}</small><b>{l.label}</b></span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ) : stats}
     </>
   )
 }
@@ -460,11 +491,13 @@ export function WalkTabs({ flows }) {
   return <Tabbed items={flows} label="Flows" render={(f) => <Walkthrough screens={f.screens} note={f.note} />} />
 }
 
-// Flows one at a time (OrderFlow's Design Execution): the flow's title and a
-// short line in the middle, arrows either side to move between flows, and its
-// step-by-step Demo below. When a flow's recording ends it moves on to the
-// next one by itself, wrapping round. Each item is { title, p, ...Demo props };
-// `label` names the carousel for screen readers.
+// Flows one at a time (OrderFlow's Design Execution). On top, a green live light
+// with the playing flow's short name (`tag`), its name and description. Then
+// every flow's name: boxes in a row above a web flow's window, a list beside a
+// phone flow's phone (a row on small screens, too narrow for both). Then its
+// step-by-step Demo. When a flow's recording ends it moves on to the next one by
+// itself, wrapping round. Each item is { title, tag, p or desc, ...Demo props };
+// `label` names it for screen readers.
 export function FlowSwitch({ items, device, label }) {
   const [cur, setCur] = useState(0)
   const [dir, setDir] = useState(1)
@@ -475,7 +508,6 @@ export function FlowSwitch({ items, device, label }) {
   const go = (d) => show((cur + d + n) % n, d)
   const pick = (i) => { if (i !== cur) show(i, i > cur ? 1 : -1) }
   const it = items[cur]
-  const prev = items[(cur - 1 + n) % n], next = items[(cur + 1) % n]
   // Start loading once the section is within a screen or so of the viewport:
   // the flow on screen and the one after it, so moving on starts at once.
   const root = useRef(null)
@@ -488,52 +520,61 @@ export function FlowSwitch({ items, device, label }) {
     return () => io.disconnect()
   }, [near])
   const wants = (i) => near && (i === cur || i === (cur + 1) % n || seen.has(i))
-  // Phone flows with a description: arrows, title and description on the
-  // left, the phone on the right.
+  // Phone flows with a description hide the step list beside the phone.
   const side = device !== 'browser' && items.some((x) => x.desc)
-  const head = (
-    <>
-      {/* a green live light with the playing flow's short name (`tag`), above the title */}
-      <span className="st-rec" aria-hidden="true"><i /><span key={cur}>{it.tag || it.title}</span></span>
-      <div className="st-flows-head">
-        {n > 1 && <button type="button" className="st-flows-arrow" onClick={() => go(-1)} aria-label={'Previous flow: ' + prev.title}>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
-        </button>}
-        <div className="st-flows-text" key={cur} data-dir={dir > 0 ? 'next' : 'prev'} aria-live="polite">
-          <h2 className="sv-h2 st-flows-title">{it.title}</h2>
-          {it.p && !side && <p className="st-flows-p">{it.p}</p>}
+  const line = (x) => (side ? x.desc : x.p)
+  const flowName = (x) => x.title.replace(/\s+Flow$/, '') // shown without the word "Flow"
+  // When the names scroll sideways, keep the current one in view.
+  const tabs = useRef(null)
+  // The bar under the current name follows its recording; set directly, so
+  // playback doesn't re-render the whole carousel.
+  const bar = useRef(null)
+  const setBar = useCallback((r) => { if (bar.current) bar.current.style.transform = `scaleX(${r})` }, [])
+  useEffect(() => {
+    const row = tabs.current
+    const el = row?.children[cur]
+    if (!el || row.scrollWidth <= row.clientWidth) return
+    row.scrollTo({ left: el.offsetLeft - (row.clientWidth - el.offsetWidth) / 2, behavior: prefersReduced() ? 'auto' : 'smooth' })
+  }, [cur])
+  const info = (
+    <div className="st-flows-info">
+      <div className="st-flows-now">
+        <span className="st-rec" aria-hidden="true"><i /><span key={cur}>{it.tag || it.title}</span></span>
+        <h2 className="sv-h2 st-flows-title" key={'t' + cur}>{flowName(it)}</h2>
+        {/* every description is laid out unseen in one cell, so the cell fits the
+            longest and nothing moves between flows */}
+        <div className="st-flows-slot">
+          {items.map((x) => line(x) && <p key={x.title} className="st-flows-p st-flows-sizer" aria-hidden="true">{line(x)}</p>)}
+          {line(it) && <p className="st-flows-p" key={cur} data-dir={dir > 0 ? 'next' : 'prev'} aria-live="polite">{line(it)}</p>}
         </div>
-        {n > 1 && <button type="button" className="st-flows-arrow" onClick={() => go(1)} aria-label={'Next flow: ' + next.title}>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
-        </button>}
       </div>
-      {n > 1 && <div className="st-flows-dots">
-        {items.map((x, i) => (
-          <button key={x.title} type="button" className={i === cur ? 'is-on' : undefined} onClick={() => pick(i)} aria-label={x.title} aria-current={i === cur ? 'true' : undefined} />
-        ))}
-      </div>}
-    </>
+      {n > 1 && (
+        <div className="st-flows-tabs" ref={tabs}>
+          {items.map((x, i) => (
+            <button key={x.title} type="button" className={'st-flows-tab' + (i === cur ? ' is-on' : '')} aria-current={i === cur ? 'true' : undefined} onClick={() => pick(i)}>
+              <span className="st-flows-tab-name">{flowName(x)}</span>
+              {/* the list beside a phone keeps the description under the current name */}
+              {side && i === cur && <span className="st-flows-tab-desc">{x.desc}</span>}
+              {i === cur && <span className="st-flows-bar" aria-hidden="true"><i ref={bar} /></span>}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   )
   const panels = (
     <div className="st-panels" data-dir={dir > 0 ? 'next' : 'prev'}>
       {items.map((x, i) => (
         <div key={x.title} className={'st-panel' + (i === cur ? ' is-active' : '')} aria-hidden={i !== cur} inert={i !== cur}>
-          <Demo device={device} {...x} desc={side ? undefined : x.desc} bare={side} active={i === cur} onEnd={n > 1 ? () => go(1) : undefined} load={wants(i)} />
+          <Demo device={device} {...x} desc={side ? undefined : x.desc} bare={side} active={i === cur} onEnd={n > 1 ? () => go(1) : undefined} onProgress={i === cur ? setBar : undefined} load={wants(i)} />
         </div>
       ))}
     </div>
   )
   return (
-    <div className={'st-flows' + (side ? ' is-side' : '')} ref={root} role="region" aria-roledescription="carousel" aria-label={label ? label + ' flows' : 'Flows'}>
-      {side ? (
-        <>
-          <div className="st-flows-side">
-            {head}
-            <p className="st-demo-desc st-flows-desc" key={cur} data-dir={dir > 0 ? 'next' : 'prev'}>{it.desc}</p>
-          </div>
-          {panels}
-        </>
-      ) : <>{head}{panels}</>}
+    <div className={'st-flows' + (side ? ' is-phone' : '')} ref={root} role="region" aria-roledescription="carousel" aria-label={label ? label + ' flows' : 'Flows'}>
+      {info}
+      {panels}
     </div>
   )
 }
@@ -698,7 +739,8 @@ const stepNo = (i) => String(i + 1).padStart(2, '0')
 // (FlowSwitch moves on to the next flow) instead of looping.
 // `load` false holds back the video and its poster (FlowSwitch only loads the
 // flow on screen and the next one, once the section is close).
-export function Demo({ src, poster, steps = [], desc, bare, alt, device = 'phone', active = true, onEnd, load = true }) {
+// `onProgress` gets 0 to 1 as it plays, for a progress bar outside the player.
+export function Demo({ src, poster, steps = [], desc, bare, alt, device = 'phone', active = true, onEnd, onProgress, load = true }) {
   const ref = useRef(null)
   const [at, setAt] = useState(0)
   const [playing, setPlaying] = useState(false)
@@ -723,6 +765,7 @@ export function Demo({ src, poster, steps = [], desc, bare, alt, device = 'phone
   const onTime = () => {
     const v = ref.current, t = v.currentTime
     if (onEnd && !ended.current && v.duration && t >= v.duration - 1.6) { ended.current = true; onEnd() }
+    if (onProgress && v.duration) onProgress(Math.min(1, t / (v.duration - 1.6))) // 1 is where onEnd moves on
     let k = 0
     steps.forEach((s, i) => { if (s.t <= t + 0.05) k = i })
     setAt(k)
@@ -853,6 +896,78 @@ export function Choices({ items, ms = 4200, device = 'phone', label, ratio }) {
           ))}
           {device !== 'browser' && <span className="st-device-island" aria-hidden="true" />}
         </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// A row of phones, each with its name and one line underneath, for a set too
+// long to list beside one phone. Scrolls sideways: swipe, trackpad, drag with
+// the mouse, or the arrows. `items` are { h, p, src, alt }.
+export function Rail({ items }) {
+  const ref = useRef(null)
+  const grab = useRef(null)
+  const [at, setAt] = useState(0)
+  const [atEnd, setAtEnd] = useState(false)
+  const [held, setHeld] = useState(false)
+
+  const cardStep = () => {
+    const [a, b] = ref.current.children
+    return b.offsetLeft - a.offsetLeft
+  }
+  const onScroll = () => {
+    const el = ref.current
+    const end = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4
+    setAt(end ? items.length - 1 : Math.round(el.scrollLeft / cardStep())) // the last phones can't reach the left edge
+    setAtEnd(end)
+  }
+  useEffect(onScroll) // the row may already fit, so the arrows start out right
+  const go = (dir) => ref.current.scrollBy({ left: dir * cardStep(), behavior: prefersReduced() ? 'auto' : 'smooth' })
+
+  const onDown = (e) => {
+    if (e.pointerType !== 'mouse') return // touch scrolls natively
+    grab.current = { x: e.clientX, left: ref.current.scrollLeft }
+    e.currentTarget.setPointerCapture(e.pointerId)
+    setHeld(true)
+  }
+  const onMove = (e) => {
+    if (grab.current) ref.current.scrollLeft = grab.current.left - (e.clientX - grab.current.x)
+  }
+  const onUp = () => { grab.current = null; setHeld(false) }
+
+  return (
+    <div className="st-rail">
+      <ol
+        className={'st-rail-row' + (held ? ' is-held' : '') + (atEnd ? ' is-end' : '')}
+        ref={ref}
+        tabIndex={0}
+        aria-label="Edge cases, scrolls sideways"
+        onScroll={onScroll}
+        onPointerDown={onDown}
+        onPointerMove={onMove}
+        onPointerUp={onUp}
+        onPointerCancel={onUp}
+      >
+        {items.map((it) => (
+          <li key={it.h} className="st-rail-item">
+            <div className="st-device">
+              <div className="st-device-screen">
+                <img src={it.src} alt={it.alt} loading="lazy" draggable={false} />
+                <span className="st-device-island" aria-hidden="true" />
+              </div>
+            </div>
+            <h3 className="st-rail-h">{it.h}</h3>
+            <p className="st-rail-p">{it.p}</p>
+          </li>
+        ))}
+      </ol>
+      <div className="st-rail-foot">
+        <span className="st-rail-count" aria-hidden="true">{stepNo(at)} / {stepNo(items.length - 1)}</span>
+        <span className="st-rail-arrows">
+          <button type="button" aria-label="Previous" disabled={at === 0} onClick={() => go(-1)}><Icon name="arrowRight" size={20} /></button>
+          <button type="button" aria-label="Next" disabled={atEnd} onClick={() => go(1)}><Icon name="arrowRight" size={20} /></button>
+        </span>
       </div>
     </div>
   )

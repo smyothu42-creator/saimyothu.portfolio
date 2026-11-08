@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { NAV, ABOUT } from '../data'
 import { Icon, TakeNote } from './ui'
 import { useDragPill } from '../useDragPill'
+import { scrollToY } from '../scroll'
 
 const isActive = (href, path) =>
   href === '/' ? path === '/' : path === href || path.startsWith(href + '/')
@@ -37,7 +38,7 @@ export default function Dock({ path }) {
   const drag = useDragPill({
     root,
     axis: () => (horizontal() ? 'x' : 'y'),
-    items: () => NAV.flatMap((it, i) => (it.external ? [] : [{ key: i, el: items.current[i] }])), // pages only, not the resume
+    items: () => NAV.flatMap((it, i) => (it.external || it.toBottom ? [] : [{ key: i, el: items.current[i] }])), // pages only, not the resume or contact
     pill: pos,
     current: activeIndex,
     onPick: (i) => items.current[i]?.click(), // a normal (untrusted) click navigates
@@ -88,7 +89,10 @@ export default function Dock({ path }) {
             className={'sv-dock-item' + (shownOn === i ? ' is-active' : '')}
             aria-label={item.external ? `${item.label} (opens in a new tab)` : item.label}
             aria-current={on ? 'page' : undefined}
-            onClick={(e) => { if (e.isTrusted) drag.blockClick(e) }}
+            onClick={(e) => {
+              if (e.isTrusted && drag.blockClick(e)) return
+              if (item.toBottom) { e.preventDefault(); scrollToY(document.documentElement.scrollHeight, 1.2) }
+            }}
             draggable={false}
           >
             <Icon name={item.icon} size={22} />
@@ -103,13 +107,13 @@ export default function Dock({ path }) {
             ref={takeBtn}
             type="button"
             className={'sv-dock-item sv-dock-take' + (take ? ' is-open' : '')}
-            aria-label="My take"
+            aria-label="My Takes"
             aria-expanded={take}
             aria-controls="sv-take-pop"
             onClick={() => setTake((v) => !v)}
           >
             <Icon name="quote" size={21} />
-            <span className="sv-dock-tip" aria-hidden="true">My take</span>
+            <span className="sv-dock-tip" aria-hidden="true">My Takes</span>
           </button>
         </>
       )}

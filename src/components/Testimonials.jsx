@@ -6,7 +6,8 @@ import { Card, Icon } from './ui'
 // name and role) on the left and arrows on the right to switch. Quote and
 // person cross-fade together. On touch screens, swipe left/right to switch.
 export default function Testimonials() {
-  const list = TESTIMONIALS
+  // samples never show; with no real quotes yet, the whole section stays hidden
+  const list = TESTIMONIALS.filter((p) => !p.placeholder)
   const n = list.length
   const [i, setI] = useState(0)
   const swipe = useRef(null)
@@ -49,6 +50,7 @@ export default function Testimonials() {
         {n > 1 && (
           <div className="sv-tq-nav">
             <button className="sv-round" aria-label="Previous testimonial" onClick={() => go(-1)}><Icon name="arrowLeft" size={15} stroke={1.8} /></button>
+            <span className="sv-tq-count" aria-live="polite" aria-label={`Testimonial ${i + 1} of ${n}`}>{i + 1}/{n}</span>
             <button className="sv-round" aria-label="Next testimonial" onClick={() => go(1)}><Icon name="arrowRight" size={15} stroke={1.8} /></button>
           </div>
         )}

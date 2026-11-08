@@ -10,6 +10,7 @@ from screens import paste  # noqa: E402
 
 SRC, SCREEN = 'merch-hand/source.png', 'out-portal/fund-done-clean.png'
 ZOOM_ROOM = 1.12  # view size relative to the screen's extent: lower is closer
+THUMB_ZOOM = 0.86  # the thumbnail's view, relative to that: lower is closer
 GROW = 4.5  # source px each side moves out, so none of the photo's old screen shows at the edges
 TRIM = 2    # the screenshot's own border
 ROUGH = np.array([(355, 148), (700, 270), (550, 556), (207, 398)], float)  # TL TR BR BL
@@ -105,7 +106,8 @@ def render(cx, cy, fw, fh, W, H):
 lo, hi = quad.min(0), quad.max(0)
 cx, cy = (lo + hi) / 2 + [0, 12]
 side = int(max(hi - lo) * ZOOM_ROOM)
-cv2.imwrite(sys.argv[1], render(cx, cy, side, side, 1600, 1600), [cv2.IMWRITE_JPEG_QUALITY, 92])
+thumb_side = round(side * THUMB_ZOOM)  # the small thumbnail sits closer than the card
+cv2.imwrite(sys.argv[1], render(cx, cy, thumb_side, thumb_side, 1600, 1600), [cv2.IMWRITE_JPEG_QUALITY, 92])
 cw = int(side * 1300 / 1200)
 cv2.imwrite(sys.argv[2], render(cx, cy, cw, side, 1300, 1200), [cv2.IMWRITE_JPEG_QUALITY, 92])
 # Case study cover, 1890 x 1400: the page sets its title over the bottom third, so the view

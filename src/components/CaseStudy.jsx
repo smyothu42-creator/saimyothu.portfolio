@@ -7,7 +7,7 @@ import {
   JourneyMap, Tree, Frameworks, Wireframes, Spec, Closing,
   HMW, Details, Achievements, Roadmap,
 } from './CaseBlocks'
-import { Impact, Role, Sub, IconList, Segments, Table, Iterations, Pills, Walkthrough, Film, Shot, WalkTabs, ShotTabs, Reel, Demo, FlowSwitch, Choices, BeforeAfter, Compare2, Steps, IaTree, Doodle } from './Story'
+import { Impact, Role, Sub, IconList, Segments, Table, Iterations, Pills, Walkthrough, Film, Shot, WalkTabs, ShotTabs, Reel, Demo, FlowSwitch, Choices, Rail, BeforeAfter, Compare2, Steps, IaTree, Doodle } from './Story'
 import { Illo, Person } from './Illos'
 import { Card, BackButton, ConnectCard, Icon } from './ui'
 import Media from './Media'
@@ -26,7 +26,7 @@ export default function CaseStudy({ slug }) {
   if (!c) {
     return (
       <Card className="sv-pagehead">
-        <BackButton href="/" label="Back to home" />
+        <BackButton href="/" label="Back" />
         <h1 className="sv-h1">Project not found</h1>
         <p className="sv-pagehead-sub"><a className="sv-link" href="/">Back to home</a></p>
       </Card>
@@ -59,7 +59,7 @@ export default function CaseStudy({ slug }) {
       {s?.sections?.length > 1 && <CaseNav sections={s.sections} top={s.navTop !== false} overview={s.overviewNav} overviewPart={s.overviewPart} />}
       <Card className="sv-cover" id="cs-top">
         <Media art={c.art} title={c.title} eager video={c.art.video} />
-        <BackButton href="/" label="Back to home" />
+        <BackButton href="/" label="Back" />
         <h1 className="sv-cover-title">{c.coverTitle || c.title}</h1>
       </Card>
 
@@ -87,34 +87,40 @@ export default function CaseStudy({ slug }) {
       <OtherWork key={c.slug} current={c.slug} />
 
       {s?.gallery?.length > 0 && <Gallery images={s.gallery} />}
-      {!s && <ConnectCard />}
+      <ConnectCard />
     </div>
   )
 }
 
-// The end of a case study: two projects side by side. The main projects (the
-// home page's) come first, the ones not opened yet before the rest; once the
-// main ones have been seen, the More Work three follow. Opened case studies are
-// remembered in this browser only (localStorage), so it falls back to the
-// plain order when that isn't available.
+// The end of a case study: the next two projects to look at. The main projects
+// (the home page's) come first, then the More Work ones, in their set order, and
+// a project already opened on this visit doesn't come back. With one left it shows
+// alone; once everything has been viewed the list restarts in the same order. A new
+// visit starts fresh (sessionStorage), and without storage only the current project
+// is left out.
 const SEEN_KEY = 'sv-seen-work'
-const readSeen = () => { try { return JSON.parse(localStorage.getItem(SEEN_KEY)) || [] } catch { return [] } }
+const readSeen = () => { try { return JSON.parse(sessionStorage.getItem(SEEN_KEY)) || [] } catch { return [] } }
 function OtherWork({ current }) {
   const [items] = useState(() => {
+    const all = [...HOME_WORK, ...MORE_WORK].filter((slug) => slug !== current)
     const seen = readSeen()
-    // 0 unseen main, 1 unseen more, 2 seen main, 3 seen more
-    const rank = (slug) => (seen.includes(slug) ? 2 : 0) + (HOME_WORK.includes(slug) ? 0 : 1)
-    const order = [...HOME_WORK, ...MORE_WORK].filter((slug) => slug !== current)
-    const sorted = order.map((slug, i) => [slug, rank(slug), i]).sort((x, y) => x[1] - y[1] || x[2] - y[2]).map(([slug]) => slug)
-    return sorted.slice(0, 2).map((slug) => CASES.find((c) => c.slug === slug)).filter(Boolean)
+    let left = all.filter((slug) => !seen.includes(slug))
+    if (!left.length) { // everything viewed: start over
+      left = all
+      try { sessionStorage.removeItem(SEEN_KEY) } catch { /* private window */ }
+    }
+    return left
+      .slice(0, 2)
+      .map((slug) => CASES.find((c) => c.slug === slug))
+      .filter(Boolean)
   })
   useEffect(() => {
-    try { const seen = readSeen(); if (!seen.includes(current)) localStorage.setItem(SEEN_KEY, JSON.stringify([...seen, current])) } catch { /* private mode */ }
+    try { const seen = readSeen(); if (!seen.includes(current)) sessionStorage.setItem(SEEN_KEY, JSON.stringify([...seen, current])) } catch { /* private window: this page only */ }
   }, [current])
   return (
     <Card className="sv-others">
       <h2 className="sv-h2">More Work</h2>
-      <ul className="sv-others-grid">
+      <ul className={'sv-others-grid' + (items.length === 1 ? ' is-one' : '')}>
         {items.map((c) => (
           <li key={c.slug}>
             <a className="sv-other" href={`/work/${c.slug}`}>
@@ -197,9 +203,9 @@ const VISUALS = {
   hmw: HMW, details: Details, achievements: Achievements, roadmap: Roadmap,
   impact: Impact, role: Role, sub: Sub, iconlist: IconList, segments: Segments, table: Table,
   iterations: Iterations, pills: Pills, walkthrough: Walkthrough, film: Film, shot: Shot, walktabs: WalkTabs, shottabs: ShotTabs,
-  reel: Reel, demo: Demo, flows: FlowSwitch, choices: Choices, beforeafter: BeforeAfter, compare2: Compare2, steps: Steps, iatree: IaTree, hub: Hub, decisions: Decisions, arch: Arch, mockpair: MockPair, ship: Ship, photos: Photos, loop: Loop,
+  reel: Reel, demo: Demo, flows: FlowSwitch, choices: Choices, rail: Rail, beforeafter: BeforeAfter, compare2: Compare2, steps: Steps, iatree: IaTree, hub: Hub, decisions: Decisions, arch: Arch, mockpair: MockPair, ship: Ship, photos: Photos, loop: Loop,
 }
-const TEXT = new Set(['hub', 'decisions', 'arch', 'mockpair', 'ship', 'photos', 'loop', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'flows', 'choices', 'compare2', 'steps', 'iatree'])
+const TEXT = new Set(['hub', 'decisions', 'arch', 'mockpair', 'ship', 'photos', 'loop', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'flows', 'choices', 'rail', 'compare2', 'steps', 'iatree'])
 
 function Block({ block }) {
   const Visual = VISUALS[block.kind]
@@ -347,9 +353,9 @@ function CaseNav({ sections, top = true, overview, overviewPart }) {
   return (
     <nav className="sv-toc" aria-label="On this page">
       {/* the way back sits here; the cover's back button only shows where this list is hidden */}
-      <a className="sv-toc-back" href="/">
+      <a className="sv-toc-back" href="/" data-back>
         <span className="sv-toc-back-ic"><Icon name="arrowLeft" size={18} /></span>
-        Back to work
+        Back to Previous
       </a>
       <ol ref={list} className={drag.dragging ? 'is-dragging' : undefined} {...drag.handlers}>
         <span
@@ -357,7 +363,7 @@ function CaseNav({ sections, top = true, overview, overviewPart }) {
           style={pill ? { ...drag.pillStyle(), height: pill.h } : undefined}
           aria-hidden="true"
         />
-        {/* A section's `part` (e.g. How we think) heads the list from that section on. */}
+        {/* A section's `part` (e.g. We think) heads the list from that section on. */}
         {items.map((it) => (
           <li key={it.id}>
             {it.part && <p className="sv-toc-part">{it.part}</p>}
@@ -622,7 +628,6 @@ function Decisions({ items }) {
         return (
           <li key={it.key} className="cs-dec-row">
             <div className="cs-dec-text">
-              <h3>{it.t}</h3>
               <div className="cs-dec-pd">
                 <p><b>Problem</b>{it.problem}</p>
                 <p><b>Decision</b>{it.decision}</p>
