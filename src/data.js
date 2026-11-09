@@ -69,7 +69,7 @@ export const CASES = [
     tags: ['Product Design'],
     desc: 'QR table ordering for cafés in Myanmar: a guest app on the phone, and an admin that runs every order.',
     short: 'QR ordering and a café admin.', // one line for More Work
-    art: { img: '/case/orderflow/cover.jpg?v=24', video: '/case/orderflow/hero.mp4?v=7', videoSm: '/case/orderflow/hero-sm.mp4', poster: '/case/orderflow/hero.jpg?v=3', thumb: '/case/orderflow/thumb-pos.jpg?v=10', card: '/case/orderflow/thumb.jpg', text: 'OrderFlow', color: '#1f3a5f', bg: 'linear-gradient(160deg,#cfe4f7,#dfe7fb 55%,#eef1fb)' },
+    art: { img: '/case/orderflow/cover.jpg?v=24', video: '/case/orderflow/hero.mp4?v=8', videoSm: '/case/orderflow/hero-sm.mp4?v=2', poster: '/case/orderflow/hero.jpg?v=3', thumb: '/case/orderflow/thumb-pos.jpg?v=10', card: '/case/orderflow/thumb.jpg', text: 'OrderFlow', color: '#1f3a5f', bg: 'linear-gradient(160deg,#cfe4f7,#dfe7fb 55%,#eef1fb)' },
     // One case for both products: the guest app (orderflow-client) and the admin
     // panel (orderflow-admin-panel). Told as a product manager's case: Impact,
     // Project Overview, The Opportunity, Problem Discovery, Product Vision &
@@ -297,7 +297,7 @@ export const CASES = [
     tags: ['Product Design'],
     desc: 'Lunch ordering for employees on a company meal program, on the web and on a phone.',
     short: 'Lunch ordering for office teams.', // one line for More Work
-    art: { video: '/case/superfine-employee/hero.mp4?v=2', videoSm: '/case/superfine-employee/hero-sm.mp4', poster: '/case/superfine-employee/hero.jpg?v=2', img: '/case/superfine-employee/cover.jpg?v=5', thumb: '/case/superfine-employee/thumb.jpg?v=3', card: '/case/superfine-employee/thumb.jpg?v=3', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
+    art: { video: '/case/superfine-employee/hero.mp4?v=3', videoSm: '/case/superfine-employee/hero-sm.mp4?v=2', poster: '/case/superfine-employee/hero.jpg?v=2', img: '/case/superfine-employee/cover.jpg?v=5', thumb: '/case/superfine-employee/thumb.jpg?v=3', card: '/case/superfine-employee/thumb.jpg?v=3', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
     // Told as a product designer's case: Impact, Project Overview, Product Context,
     // The Problem, Understand the Business and User, How I ship (with AI), Design Walkthrough,
     // Usability, Takeaway. Facts come from the
@@ -552,7 +552,7 @@ export const CASES = [
     desc: 'A merchant wallet for small businesses in Myanmar, built to be fast and clear for shopkeepers who aren’t tech-savvy.',
     short: 'A wallet for small shops.', // one line for More Work
     result: 'A merchant wallet used by 100+ merchants',
-    art: { img: '/case/mtb-pay-merchant/cover.jpg', video: '/case/mtb-pay-merchant/hero.mp4?v=4', videoSm: '/case/mtb-pay-merchant/hero-sm.mp4', poster: '/case/mtb-pay-merchant/hero.jpg?v=4', thumb: '/case/mtb-pay-merchant/thumb.jpg?v=6', card: '/case/mtb-pay-merchant/thumb.jpg?v=6', text: 'MTB Pay', color: '#fff', bg: '#c8121a' },
+    art: { img: '/case/mtb-pay-merchant/cover.jpg', video: '/case/mtb-pay-merchant/hero.mp4?v=5', videoSm: '/case/mtb-pay-merchant/hero-sm.mp4?v=2', poster: '/case/mtb-pay-merchant/hero.jpg?v=4', thumb: '/case/mtb-pay-merchant/thumb.jpg?v=6', card: '/case/mtb-pay-merchant/thumb.jpg?v=6', text: 'MTB Pay', color: '#fff', bg: '#c8121a' },
     // Told as a UI/UX designer's case: Impact, Project Overview, Product Context, UX
     // Challenges, Visual Direction, Design System, Final Interface, Interaction &
     // Takeaway (Edge Cases removed at Sai's request; its screens are still in public/case/mtb-pay-merchant/edge). Visual Direction describes what the real screens show.

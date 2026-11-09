@@ -2640,17 +2640,23 @@ html.is-loading, html.is-loading body { overflow: hidden; }
    middle, round glass arrows either side, dots under it, the demo below. */
 .st-flows { display: flex; flex-direction: column; gap: 18px; }
 /* a green live light and the playing flow's short name */
-.st-rec { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 10px; border-radius: 999px;
-  font: 500 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.14em; text-transform: uppercase; color: #fff; pointer-events: none;
+.st-rec { display: inline-flex; align-items: center; gap: 10px; padding: 7px 14px 7px 13px; border-radius: 999px;
+  font: 500 13px/1.2 var(--font); color: #fff; pointer-events: none;
   background: linear-gradient(170deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04)); border: 1px solid rgba(255, 255, 255, 0.22); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2); }
-.st-rec i { position: relative; width: 10px; height: 10px; border-radius: 50%; background: #4cff7a; box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 12px 2px rgba(76, 255, 122, 0.95); animation: st-rec-blink 1.2s ease-in-out infinite; }
-.st-rec i::after { content: ''; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid rgba(76, 255, 122, 0.95); animation: st-rec-ring 1.2s ease-out infinite; }
-.st-rec > span { animation: st-rec-in 0.35s ease-out; }
-@keyframes st-rec-in { from { opacity: 0; transform: translateY(3px); } }
-@keyframes st-rec-blink { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.82); } }
-@keyframes st-rec-ring { 0% { transform: scale(0.7); opacity: 1; } 100% { transform: scale(2.1); opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .st-rec i, .st-rec i::after { animation: none; } }
-@media (max-width: 640px) { .st-rec { font-size: 10px; padding: 5px 10px 5px 8px; } }
+/* the live light: a breathing dot and two soft ripples half a beat apart. Only transform and opacity
+   animate, and a ripple starts at the dot's size at zero strength, so the loop has no visible restart. */
+.st-rec i { position: relative; flex: none; width: 9px; height: 9px; }
+.st-rec i::before { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: 50%; background: #5fe58f; box-shadow: 0 0 8px rgba(95, 229, 143, 0.7); animation: st-rec-breathe 2.8s ease-in-out infinite; }
+.st-rec i b { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(95, 229, 143, 0) 35%, rgba(95, 229, 143, 0.4) 78%, rgba(95, 229, 143, 0) 100%); opacity: 0; animation: st-rec-ripple 2.8s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+.st-rec i b + b { animation-delay: 1.4s; }
+/* the pill's width glides between labels; Story.jsx sets it from the label's measured size */
+.st-rec-label { display: block; overflow: hidden; white-space: nowrap; transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
+.st-rec-label > span { display: block; width: max-content; animation: st-rec-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes st-rec-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+@keyframes st-rec-breathe { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.92); opacity: 0.85; } }
+@keyframes st-rec-ripple { 0% { transform: scale(1); opacity: 0; } 12% { opacity: 1; } 80%, 100% { transform: scale(3.2); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .st-rec i::before, .st-rec i b, .st-rec-label > span { animation: none; } .st-rec-label { transition: none; } }
+@media (max-width: 640px) { .st-rec { font-size: 12px; padding: 6px 12px 6px 11px; gap: 9px; } }
 @keyframes st-flows-in { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: none; } }
 @keyframes st-flows-in-prev { from { opacity: 0; transform: translateX(-18px); } to { opacity: 1; transform: none; } }
 .st-flows-info { container-type: inline-size; display: flex; flex-direction: column; gap: 16px; min-width: 0; }

@@ -536,10 +536,23 @@ export function FlowSwitch({ items, device, label }) {
     if (!el || row.scrollWidth <= row.clientWidth) return
     row.scrollTo({ left: el.offsetLeft - (row.clientWidth - el.offsetWidth) / 2, behavior: prefersReduced() ? 'auto' : 'smooth' })
   }, [cur])
+  // the live label's box takes the text's width, so the pill glides instead of snapping. The
+  // observer re-measures if the text itself resizes (web font arriving, phone breakpoint).
+  const recLabel = useRef(null)
+  useLayoutEffect(() => {
+    const box = recLabel.current
+    const text = box?.firstChild
+    if (!text) return
+    const fit = () => { box.style.width = text.offsetWidth + 'px' }
+    fit()
+    const watch = new ResizeObserver(fit)
+    watch.observe(text)
+    return () => watch.disconnect()
+  }, [cur])
   const info = (
     <div className="st-flows-info">
       <div className="st-flows-now">
-        <span className="st-rec" aria-hidden="true"><i /><span key={cur}>{it.tag || it.title}</span></span>
+        <span className="st-rec" aria-hidden="true"><i><b /><b /></i><span className="st-rec-label" ref={recLabel}><span key={cur}>{it.tag || it.title}</span></span></span>
         <h2 className="sv-h2 st-flows-title" key={'t' + cur}>{flowName(it)}</h2>
         {/* every description is laid out unseen in one cell, so the cell fits the
             longest and nothing moves between flows */}
