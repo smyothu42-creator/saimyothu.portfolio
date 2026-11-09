@@ -33,10 +33,12 @@ export function BackButton({ href = '/', label = 'Back' }) {
 // 24px line icons, stroke = currentColor.
 const paths = {
   home: <><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z" /></>,
-  resume: <><path d="M13.5 3.5h-6a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V8.5z" /><path d="M13.5 3.5v5h5" /><path d="M9 15h6" /></>,
-  work: <><path d="M12 3.5 21 8.25l-9 4.75-9-4.75z" /><path d="m3 12.25 9 4.75 9-4.75" /><path d="m3 16 9 4.75L21 16" /></>,
-  about: <><circle cx="12" cy="12" r="8.75" /><circle cx="12" cy="9.75" r="2.75" /><path d="M6.6 18.75c.9-2.45 2.9-3.75 5.4-3.75s4.5 1.3 5.4 3.75" /></>,
-  contact: <><rect x="3" y="5.25" width="18" height="13.5" rx="2.75" /><path d="m3.75 7.75 6.9 5a2.3 2.3 0 0 0 2.7 0l6.9-5" /></>,
+  // dock icons share optical keylines so they read the same size: circle 20,
+  // wide 19x15, tall 15x19, square-ish 18x17, all centred on the 24 grid
+  resume: <><path d="M14 2.5H7A2.5 2.5 0 0 0 4.5 5v14A2.5 2.5 0 0 0 7 21.5h10a2.5 2.5 0 0 0 2.5-2.5V8z" /><path d="M14 2.5V8h5.5" /><path d="M8.75 15.5h6.5" /></>,
+  work: <><path d="M12 3.4 21 8.15l-9 4.75-9-4.75z" /><path d="m3 12.15 9 4.75 9-4.75" /><path d="m3 15.9 9 4.75 9-4.75" /></>,
+  about: <><circle cx="12" cy="12" r="10" /><circle cx="12" cy="9.6" r="3.1" /><path d="M5.5 19.1c1-2.8 3.4-4.3 6.5-4.3s5.5 1.5 6.5 4.3" /></>,
+  contact: <><rect x="2.5" y="4.5" width="19" height="15" rx="3" /><path d="m3.2 7.5 7.4 5.3a2.4 2.4 0 0 0 2.8 0l7.4-5.3" /></>,
   arrowLeft: <path d="M19 12H5M11 6l-6 6 6 6" />,
   arrowRight: <path d="M5 12h14M13 6l6 6-6 6" />,
   arrowUpRight: <path d="M7 17 17 7M8 7h9v9" />,
@@ -48,7 +50,7 @@ const paths = {
   mail: <><rect x="3" y="5" width="18" height="14" rx="2.5" /><path d="m3.5 7 8.5 6 8.5-6" /></>,
   copy: <><rect x="8" y="8" width="12" height="12" rx="2.5" /><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" /></>,
   check: <path d="m5 12.5 4.5 4.5L19 7.5" />,
-  quote: <><path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-5 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" /><path d="M9.5 8.5v1.6c0 1.2-.6 2-1.6 2.4M14.5 8.5v1.6c0 1.2-.6 2-1.6 2.4" /></>,
+  quote: <><path d="M5 3.5h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-5 4v-4H5a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z" /><path d="M10.2 8v1.4c0 1-.5 1.7-1.4 2.1M15.2 8v1.4c0 1-.5 1.7-1.4 2.1" /></>,
   WhatsApp: <><path d="M3 21l1.65-4.8A8.5 8.5 0 1 1 7.8 19.4L3 21z" /><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 1c-1-.5-2-1.5-2.5-2.5l1-1-1-2L9 9.5z" /></>,
 }
 

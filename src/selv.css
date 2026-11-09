@@ -923,6 +923,7 @@ html, body { overflow-x: clip; }
   .sv-teaser-fan { justify-self: center; }
 }
 @media (prefers-reduced-motion: reduce) { .sv-teaser, .sv-teaser-fan i, .sv-teaser-arrow { transition: none; } }
+.sv-tq-mark { display: block; width: 28px; height: auto; margin-bottom: 14px; fill: var(--sv-text); opacity: 0.5; }
 .sv-tq-quotes { display: grid; touch-action: pan-y; }
 .sv-tq-quote {
   grid-area: 1 / 1;

@@ -26,10 +26,14 @@ export default function Testimonials() {
   }
   return (
     <Card className="sv-testimonial" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+      <svg className="sv-tq-mark" viewBox="0 0 31 24" aria-hidden="true" focusable="false">
+        <path d="M7 24a7 7 0 0 1-7-7C0 9.5 4.6 3 11.2.3a1.6 1.6 0 0 1 1.3 2.9C9.6 5 7.8 7.3 7.2 10H7a7 7 0 0 1 0 14Z" />
+        <path d="M24 24a7 7 0 0 1-7-7c0-7.5 4.6-14 11.2-16.7a1.6 1.6 0 0 1 1.3 2.9C26.6 5 24.8 7.3 24.2 10H24a7 7 0 0 1 0 14Z" />
+      </svg>
       <div className="sv-tq-quotes" aria-live="polite">
         {list.map((p, k) => (
           <blockquote key={k} className={'sv-tq-quote' + (k === i ? ' is-on' : '')} aria-hidden={k !== i}>
-            “{p.quote}”
+            {p.quote}
           </blockquote>
         ))}
       </div>

@@ -112,7 +112,7 @@ export default function Dock({ path }) {
             aria-controls="sv-take-pop"
             onClick={() => setTake((v) => !v)}
           >
-            <Icon name="quote" size={21} />
+            <Icon name="quote" size={22} />
             <span className="sv-dock-tip" aria-hidden="true">My Takes</span>
           </button>
         </>
