@@ -499,7 +499,7 @@ export const CASES = [
       accent: '#44403c',
       tags: ['Mobile', 'Logistics', 'AI prototyping'],
       role: 'Product Designer',
-      scope: ['Driver app', 'Kitchen loading', 'Proof of delivery', 'Dispatch hand-offs'],
+      scope: ['Driver app'],
       // TODO(Sai): confirm the dates (driver sprints ran Oct 13–30 2026, updates into Nov).
       duration: 'Oct to Nov 2026',
       team: [],
@@ -801,9 +801,9 @@ export const CASES = [
       accent: '#44403c',
       tags: ['B2B', 'Web portal', 'Payments'],
       role: 'UX/UI Designer',
-      scope: ['Onboarding', 'Dashboard', 'Merchant information', 'Transaction history', 'Refund management', 'Fund settlement', 'API key'],
+      scope: ['Merchant Portal'],
       duration: '',
-      team: ['3 UX/UI designers', '5 developers', '1 project manager'],
+      team: ['3 designers', '11 developers', '2 PMs'],
       gallery: [],
       tools: 'Figma',
       sections: [
