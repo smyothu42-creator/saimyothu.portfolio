@@ -1,29 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
+import { createElement, useEffect, useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
 import Lenis from 'lenis'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { scroller } from './scroll'
 
 import Backdrop from './components/Backdrop'
 import Dock from './components/Dock'
 import Cursor from './components/Cursor'
 import Loader from './components/Loader'
-import Home from './components/Home'
-import AboutPage from './components/AboutPage'
-import CaseStudy from './components/CaseStudy'
 import Footer from './components/Footer'
-
-// Tiny path router: /work/<slug> → case study, /about, else → home.
-function parseRoute(pathname) {
-  const m = pathname.match(/^\/work\/([\w-]+)\/?$/)
-  if (m) return { name: 'case', slug: m[1] }
-  if (/^\/work\/?$/.test(pathname)) return { name: 'home' } // the old Work page
-  if (/^\/about\/?$/.test(pathname)) return { name: 'about' }
-  return { name: 'home' }
-}
-
-const PAGES = { home: Home, about: AboutPage }
+import { getPage, loadPage, parseRoute, preloadPages } from './pages'
 
 // Each page visit (history entry) remembers how far down it was scrolled, so
 // going back returns to the same place. `idx` counts visits within the site, so
@@ -46,6 +31,7 @@ export default function App() {
   const lenisRef = useRef(null)
   const entryKey = useRef(null)
   const stopRestore = useRef(null)
+  const lastNav = useRef(0)
 
   // Scrolls to y, trying again while the page is still growing (images and
   // videos load in) and giving up as soon as the visitor scrolls themselves.
@@ -89,8 +75,13 @@ export default function App() {
     document.startViewTransition(update)
   }
 
-  const navigate = (to) => {
+  const navigate = async (to) => {
     if (to === window.location.pathname) { lenisRef.current?.scrollTo(0, { duration: 0.8 }); return } // same page: back to top
+    const nav = ++lastNav.current
+    // Its code first, so the page switches in one go. If that fails (say, an old
+    // tab after a new deploy), a normal page load gets the current files.
+    try { await loadPage(parseRoute(to).name) } catch { window.location.href = to; return }
+    if (nav !== lastNav.current) return // a newer click won
     saveScroll(entryKey.current)
     stopRestore.current?.()
     const key = newKey()
@@ -109,10 +100,15 @@ export default function App() {
   useEffect(() => {
     // The browser would jump before the new page renders, so we place it ourselves.
     window.history.scrollRestoration = 'manual'
+    preloadPages()
     const first = window.history.state?.key || newKey()
     window.history.replaceState({ ...window.history.state, key: first, idx: window.history.state?.idx ?? 0 }, '')
     entryKey.current = first
-    const onPop = (e) => {
+    const onPop = async (e) => {
+      const nav = ++lastNav.current
+      const to = window.location.pathname
+      try { await loadPage(parseRoute(to).name) } catch { window.location.reload(); return }
+      if (nav !== lastNav.current) return
       saveScroll(entryKey.current)
       entryKey.current = e.state?.key ?? null
       const y = scrolls[e.state?.key] ?? 0
@@ -141,9 +137,6 @@ export default function App() {
     // A reload keeps its place too.
     const reloaded = scrolls[window.history.state?.key]
     if (reloaded) restoreScroll(reloaded)
-    // Keep GSAP ScrollTrigger (scroll-linked effects) in step with Lenis.
-    gsap.registerPlugin(ScrollTrigger)
-    lenis.on('scroll', ScrollTrigger.update)
     let id
     const raf = (time) => { lenis.raf(time); id = requestAnimationFrame(raf) }
     id = requestAnimationFrame(raf)
@@ -182,8 +175,6 @@ export default function App() {
 
   const scrollTop = () => lenisRef.current?.scrollTo(0, { duration: 1.2 })
 
-  const Page = PAGES[route.name]
-
   return (
     <>
       <Backdrop />
@@ -191,7 +182,7 @@ export default function App() {
       <Cursor />
       <Loader />
       <main className={'sv-col page' + (route.name === 'case' ? ' is-wide' : '')} key={path}>
-        {route.name === 'case' ? <CaseStudy slug={route.slug} /> : <Page />}
+        {createElement(getPage(route.name), { slug: route.slug })}
         <Footer onBackToTop={scrollTop} />
       </main>
     </>

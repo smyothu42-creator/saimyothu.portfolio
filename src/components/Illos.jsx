@@ -1,3 +1,4 @@
+import { avif } from '../avif'
 // Hand-drawn illustrations by Pablo Stanley: Open Doodles (scenes) and Open
 // Peeps (busts), both CC0. The files live in /public/illustrations, with the
 // sets' accents recoloured.
@@ -35,7 +36,7 @@ function Pair({ file, className, dark }) {
 export function Illo({ name, className = 'cs-illo' }) {
   const file = SCENES[name]
   if (!file) return null
-  return <Pair file={file} className={className} dark={`/illustrations/painted/${file}.png`} />
+  return <Pair file={file} className={className} dark={avif(`/illustrations/painted/${file}.png`)} />
 }
 
 export function Person({ name, className = 'st-person' }) {

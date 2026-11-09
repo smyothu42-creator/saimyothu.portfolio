@@ -11,8 +11,8 @@ import { PROFILE } from '../data'
 // panels lift away one after another, like a blind opening onto the site.
 
 const COLS = 6
-const MIN_MS = 1700 // always show at least this long
-const MAX_MS = 5000 // never hold the page longer than this
+const MIN_MS = 1000 // always show at least this long
+const MAX_MS = 3000 // never hold the page longer than this
 const LEAVE_MS = 1500
 
 function preload(src) {

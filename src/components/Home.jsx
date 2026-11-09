@@ -4,6 +4,7 @@ import { useGSAP } from '@gsap/react'
 import { ABOUT, CASES, HOME_WORK, MORE_WORK, PROFILE } from '../data'
 import { Card, Icon, ConnectCard } from './ui'
 import Media from './Media'
+import { avif } from '../avif'
 import Testimonials from './Testimonials'
 
 const prefersReduced = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
@@ -25,7 +26,7 @@ export default function Home() {
 // sit like a small hand of cards, echoing More Work, and fan out on hover.
 const ABOUT_PHOTOS = [
   { src: PROFILE.hero.src, position: 'center 40%' },
-  { src: '/sai-team.jpg', position: '0% center' },
+  { src: avif('/sai-team.jpg'), position: '0% center' },
   { src: ABOUT.photos[0].src, position: '50% center' },
 ]
 
@@ -145,9 +146,10 @@ function pose(cards, open, hover, instant, opening) {
 // nothing depends on hovering.
 function MainWork() {
   const items = HOME_WORK.map((slug) => CASES.find((c) => c.slug === slug)).filter(Boolean)
-  return items.map((c) => (
+  return items.map((c, i) => (
     <Card as="a" key={c.slug} className="sv-proj" href={`/work/${c.slug}`}>
-      <Media art={c.art.thumb ? { ...c.art, img: c.art.thumb } : c.art} title={c.title} />
+      {/* the first card is the page's main image: load it right away */}
+      <Media art={c.art.thumb ? { ...c.art, img: c.art.thumb } : c.art} title={c.title} eager={i === 0} />
       <div className="sv-proj-foot">
         <div>
           <h2 className="sv-proj-title">{c.title}</h2>
@@ -251,7 +253,7 @@ function Portfolio() {
 
   return (
     <Card className="sv-portfolio">
-      <h2 className="sv-h2">More Work</h2>
+      <h2 className="sv-h2">More Works</h2>
       <div
         className="sv-fan"
         ref={root}

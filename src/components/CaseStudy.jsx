@@ -11,6 +11,7 @@ import { Impact, Role, Sub, IconList, Segments, Table, Iterations, Pills, Walkth
 import { Illo, Person } from './Illos'
 import { Card, BackButton, ConnectCard, Icon } from './ui'
 import Media from './Media'
+import { avif } from '../avif'
 
 // Case study as a column of cards, like the project pages on the reference:
 //   cover card (project art, back button, title over its foot)
@@ -119,7 +120,7 @@ function OtherWork({ current }) {
   }, [current])
   return (
     <Card className="sv-others">
-      <h2 className="sv-h2">More Work</h2>
+      <h2 className="sv-h2">More Works</h2>
       <ul className={'sv-others-grid' + (items.length === 1 ? ' is-one' : '')}>
         {items.map((c) => (
           <li key={c.slug}>
@@ -404,7 +405,7 @@ function BrandTile({ name }) {
     )
   }
   if (!BRANDS[name]) return null
-  return <img className="cs-logo" src={`/logos/apps/${name}.png`} alt={BRANDS[name]} width="64" height="64" loading="lazy" />
+  return <img className="cs-logo" src={avif(`/logos/apps/${name}.png`)} alt={BRANDS[name]} width="64" height="64" loading="lazy" />
 }
 
 // Product vision: the OrderFlow ecosystem. The logo sits in the middle and
@@ -464,7 +465,7 @@ function Hub({ items, outer = [] }) {
   return (
     <div className="cs-hub">
       <div className="cs-hub-art">
-        <span className="cs-hub-core"><img src="/logos/orderflow-icon.png" alt="" /></span>
+        <span className="cs-hub-core"><img src={avif('/logos/orderflow-icon.png')} alt="" /></span>
         <div className="cs-orbit is-out">
           <OrbitRing r={46} count={outer.length} start={-60} gap={10} />
           {outer.map((it, i) => {
@@ -538,7 +539,7 @@ const WIFI_OFF = <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h.01
 function DecPos() {
   return (
     <div className="cs-dec-pos" aria-hidden="true">
-      <div className="st-device cs-dec-phone is-app"><div className="st-device-screen"><img src="/case/orderflow/guest-latest.jpg" alt="" loading="lazy" /><span className="st-device-island" /></div></div>
+      <div className="st-device cs-dec-phone is-app"><div className="st-device-screen"><img src={avif('/case/orderflow/guest-latest.jpg')} alt="" loading="lazy" /><span className="st-device-island" /></div></div>
       <div className="cs-dec-wire">
         <span className="cs-dec-chip">
           <span className="cs-dec-chip-ic"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z" /><path d="M9 8h6M9 12h6M9 16h3" /></svg></span>
@@ -554,7 +555,7 @@ function DecPos() {
             </div>
             <div className="cs-dec-grid">
               {[['latte', 'Latte', '12,000'], ['americano', 'Americano', '12,000'], ['matcha', 'Iced Matcha', '9,500'], ['black', 'Black Coffee', '9,500'], ['espresso', 'Espresso', '8,000'], ['iced-latte', 'Iced Latte', '10,000']].map(([k, t, p]) => (
-                <span key={k} className="cs-dec-tile"><img src={`/case/orderflow/pos/${k}.jpg`} alt="" loading="lazy" /><b>{t}</b><i>{p}</i></span>
+                <span key={k} className="cs-dec-tile"><img src={avif(`/case/orderflow/pos/${k}.jpg`)} alt="" loading="lazy" /><b>{t}</b><i>{p}</i></span>
               ))}
             </div>
             <div className="cs-dec-ticket">
@@ -587,7 +588,7 @@ function DecOffline() {
       <div className="cs-dec-mobile">
         <span className="cs-dec-pill">{WIFI_OFF}Wi-Fi down, still running on mobile data</span>
         <div className="st-device cs-dec-phone is-app">
-          <div className="st-device-screen"><img src="/case/orderflow/admin-mobile.jpg" alt="" loading="lazy" /><span className="st-device-island" /></div>
+          <div className="st-device-screen"><img src={avif('/case/orderflow/admin-mobile.jpg')} alt="" loading="lazy" /><span className="st-device-island" /></div>
         </div>
       </div>
     </div>
@@ -601,7 +602,7 @@ function DecEco() {
       <svg className="cs-dec-arrow" viewBox="0 0 40 12"><path d="M0 6h36M31 1l5 5-5 5" /></svg>
       <div className="cs-dec-ringwrap">
         <div className="cs-dec-ring">
-          <span className="cs-dec-ring-core"><img src="/logos/orderflow-icon.png" alt="" loading="lazy" /></span>
+          <span className="cs-dec-ring-core"><img src={avif('/logos/orderflow-icon.png')} alt="" loading="lazy" /></span>
           <div className="cs-orbit cs-dec-orbit">
             <OrbitRing r={40} count={ring.length} start={-90} gap={17} />
             {ring.map(([k, t], i) => {
@@ -644,7 +645,7 @@ function Decisions({ items }) {
 // Product architecture: the three surfaces layered as one scene (owner's
 // dashboard at the back, the staff board, the guest's phone in front), and a
 // short line for each. The highlight moves from guest to staff to owner.
-const ARCH_SHOTS = { owner: '/case/orderflow/arch-owner.jpg?v=2', staff: '/case/orderflow/arch-staff.jpg', guest: '/case/orderflow/guest-latest.jpg' }
+const ARCH_SHOTS = { owner: avif('/case/orderflow/arch-owner.jpg?v=2'), staff: avif('/case/orderflow/arch-staff.jpg'), guest: avif('/case/orderflow/guest-latest.jpg') }
 // Each screen is clickable too: it picks that step and comes to the front.
 const pressable = (label, onPick) => ({ role: 'button', tabIndex: 0, 'aria-label': label, onClick: onPick, onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPick() } } })
 function ArchBrowser({ who, on, label, onPick }) {

@@ -1,4 +1,5 @@
 // Content for the portfolio. Edit these to update the site.
+import { avifAll } from './avif'
 
 // Page backdrop: 'calm' (blue mountains in evening mist, public/bg-calm.jpg),
 // 'lofi' (drawn lo-fi room, night in dark mode / morning in
@@ -13,7 +14,7 @@ export const BACKDROP = 'calm'
 export const RESUME_URL = 'https://drive.google.com/file/d/1ttu2gmFXslg1PrH6z5P8ztkYimWgyUum/view?usp=sharing'
 
 export const NAV = [
-  { label: 'Work', href: '/', icon: 'work' },
+  { label: 'Works', href: '/', icon: 'work' },
   { label: 'About', href: '/about', icon: 'about' },
   { label: 'Contact', href: '#contact', icon: 'contact', toBottom: true }, // scrolls to the contact card at the page's end
   { label: 'Resume', href: RESUME_URL, icon: 'resume', external: true },
@@ -68,7 +69,7 @@ export const CASES = [
     tags: ['Product Design'],
     desc: 'QR table ordering for cafés in Myanmar: a guest app on the phone, and an admin that runs every order.',
     short: 'QR ordering and a café admin.', // one line for More Work
-    art: { img: '/case/orderflow/cover.jpg?v=24', video: '/case/orderflow/hero.mp4?v=7', poster: '/case/orderflow/hero.jpg?v=3', thumb: '/case/orderflow/thumb-pos.jpg?v=10', card: '/case/orderflow/thumb.jpg', text: 'OrderFlow', color: '#1f3a5f', bg: 'linear-gradient(160deg,#cfe4f7,#dfe7fb 55%,#eef1fb)' },
+    art: { img: '/case/orderflow/cover.jpg?v=24', video: '/case/orderflow/hero.mp4?v=7', videoSm: '/case/orderflow/hero-sm.mp4', poster: '/case/orderflow/hero.jpg?v=3', thumb: '/case/orderflow/thumb-pos.jpg?v=10', card: '/case/orderflow/thumb.jpg', text: 'OrderFlow', color: '#1f3a5f', bg: 'linear-gradient(160deg,#cfe4f7,#dfe7fb 55%,#eef1fb)' },
     // One case for both products: the guest app (orderflow-client) and the admin
     // panel (orderflow-admin-panel). Told as a product manager's case: Impact,
     // Project Overview, The Opportunity, Problem Discovery, Product Vision &
@@ -259,10 +260,10 @@ export const CASES = [
           notitle: true,
           blocks: [
             { kind: 'flows', device: 'browser', label: 'Admin panel', items: [
-              { tag: 'QR order', title: 'QR Order Flow', p: 'A guest’s QR order, from the board to payment.', src: '/case/orderflow/feat/a-qr.mp4?v=3', poster: '/case/orderflow/feat/a-qr.jpg?v=3', alt: 'Admin: a QR order on the board, opened, its kitchen slips printed and its payment recorded', steps: [{ t: 0, text: 'A QR order lands on its table' }, { t: 2.63, text: 'Open it to see what the guest ordered' }, { t: 5.87, text: 'Print slips for the kitchen' }, { t: 10.52, text: 'Payment done, the table clears' }] },
-              { tag: 'Counter order', title: 'Manual Order Flow', p: 'A counter order, from table to kitchen to payment.', src: '/case/orderflow/feat/a-manual.mp4?v=3', poster: '/case/orderflow/feat/a-manual.jpg?v=3', alt: 'Admin: a counter order for table 6, three items, cash with change and printed slips', steps: [{ t: 0, text: 'Take an order at the counter' }, { t: 4.09, text: 'Pick the table' }, { t: 7.29, text: 'Tap items to add them' }, { t: 12.52, text: 'Send it to the kitchen' }, { t: 15.33, text: 'Take payment, with change' }, { t: 20.5, text: 'Print slips; table 6 is on the board' }] },
-              { tag: 'Reports', title: 'Reports & Metrics', p: 'The day’s sales, busy hours and top items.', src: '/case/orderflow/feat/a-reports.mp4?v=3', poster: '/case/orderflow/feat/a-reports.jpg?v=3', alt: 'Admin: metrics for the day, the daily close, orders by channel and sales per item', steps: [{ t: 0, text: 'Today’s sales at a glance' }, { t: 3.18, text: 'Busy hours and top items' }, { t: 6.72, text: 'Daily close, ready to print' }, { t: 10.52, text: 'Every order, by channel' }, { t: 13.34, text: 'Sales per item' }] },
-              { tag: 'New item', title: 'Add New Menu', p: 'A new item, from photo to price.', src: '/case/orderflow/feat/a-newmenu.mp4?v=3', poster: '/case/orderflow/feat/a-newmenu.jpg?v=3', alt: 'Admin: adding an espresso with a photo, English and Burmese names, a price and prep time', steps: [{ t: 0, text: 'Add an item from the menu list' }, { t: 3.87, text: 'Upload its photo' }, { t: 5.97, text: 'Name it in English and Burmese' }, { t: 8.23, text: 'Description, price and prep time' }, { t: 14.61, text: 'Count its stock, or skip it' }, { t: 19.04, text: 'It’s on the menu, ready to order' }] },
+              { tag: 'QR order', title: 'QR Order Flow', p: 'A guest’s QR order, from the board to payment.', src: '/case/orderflow/feat/a-qr.mp4?v=4', poster: '/case/orderflow/feat/a-qr.jpg?v=3', alt: 'Admin: a QR order on the board, opened, its kitchen slips printed and its payment recorded', steps: [{ t: 0, text: 'A QR order lands on its table' }, { t: 0.82, text: 'Open it to see what the guest ordered' }, { t: 2.96, text: 'Print slips for the kitchen' }, { t: 4.17, text: 'Payment done, the table clears' }] },
+              { tag: 'Counter order', title: 'Manual Order Flow', p: 'A counter order, from table to kitchen to payment.', src: '/case/orderflow/feat/a-manual.mp4?v=4', poster: '/case/orderflow/feat/a-manual.jpg?v=3', alt: 'Admin: a counter order for table 6, three items, cash with change and printed slips', steps: [{ t: 0, text: 'Take an order at the counter' }, { t: 2.74, text: 'Pick the table' }, { t: 4.91, text: 'Tap items to add them' }, { t: 8.79, text: 'Send it to the kitchen' }, { t: 10.88, text: 'Take payment, with change' }, { t: 13.76, text: 'Print slips; table 6 is on the board' }] },
+              { tag: 'Reports', title: 'Reports & Metrics', p: 'The day’s sales, busy hours and top items.', src: '/case/orderflow/feat/a-reports.mp4?v=4', poster: '/case/orderflow/feat/a-reports.jpg?v=3', alt: 'Admin: metrics for the day, the daily close, orders by channel and sales per item', steps: [{ t: 0, text: 'Today’s sales at a glance' }, { t: 0.43, text: 'Busy hours and top items' }, { t: 2.04, text: 'Daily close, ready to print' }, { t: 3.57, text: 'Every order, by channel' }, { t: 5.24, text: 'Sales per item' }] },
+              { tag: 'New item', title: 'Add New Menu', p: 'A new item, from photo to price.', src: '/case/orderflow/feat/a-newmenu.mp4?v=4', poster: '/case/orderflow/feat/a-newmenu.jpg?v=3', alt: 'Admin: adding an espresso with a photo, English and Burmese names, a price and prep time', steps: [{ t: 0, text: 'Add an item from the menu list' }, { t: 2.64, text: 'Upload its photo' }, { t: 3.78, text: 'Name it in English and Burmese' }, { t: 5.52, text: 'Description, price and prep time' }, { t: 10.43, text: 'Count its stock, or skip it' }, { t: 13.72, text: 'It’s on the menu, ready to order' }] },
             ] },
           ],
         },
@@ -296,7 +297,7 @@ export const CASES = [
     tags: ['Product Design'],
     desc: 'Lunch ordering for employees on a company meal program, on the web and on a phone.',
     short: 'Lunch ordering for office teams.', // one line for More Work
-    art: { video: '/case/superfine-employee/hero.mp4?v=2', poster: '/case/superfine-employee/hero.jpg?v=2', img: '/case/superfine-employee/cover.jpg?v=5', thumb: '/case/superfine-employee/thumb.jpg?v=3', card: '/case/superfine-employee/thumb.jpg?v=3', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
+    art: { video: '/case/superfine-employee/hero.mp4?v=2', videoSm: '/case/superfine-employee/hero-sm.mp4', poster: '/case/superfine-employee/hero.jpg?v=2', img: '/case/superfine-employee/cover.jpg?v=5', thumb: '/case/superfine-employee/thumb.jpg?v=3', card: '/case/superfine-employee/thumb.jpg?v=3', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
     // Told as a product designer's case: Impact, Project Overview, Product Context,
     // The Problem, Understand the Business and User, How I ship (with AI), Design Walkthrough,
     // Usability, Takeaway. Facts come from the
@@ -551,7 +552,7 @@ export const CASES = [
     desc: 'A merchant wallet for small businesses in Myanmar, built to be fast and clear for shopkeepers who aren’t tech-savvy.',
     short: 'A wallet for small shops.', // one line for More Work
     result: 'A merchant wallet used by 100+ merchants',
-    art: { img: '/case/mtb-pay-merchant/cover.jpg', video: '/case/mtb-pay-merchant/hero.mp4?v=4', poster: '/case/mtb-pay-merchant/hero.jpg?v=4', thumb: '/case/mtb-pay-merchant/thumb.jpg?v=6', card: '/case/mtb-pay-merchant/thumb.jpg?v=6', text: 'MTB Pay', color: '#fff', bg: '#c8121a' },
+    art: { img: '/case/mtb-pay-merchant/cover.jpg', video: '/case/mtb-pay-merchant/hero.mp4?v=4', videoSm: '/case/mtb-pay-merchant/hero-sm.mp4', poster: '/case/mtb-pay-merchant/hero.jpg?v=4', thumb: '/case/mtb-pay-merchant/thumb.jpg?v=6', card: '/case/mtb-pay-merchant/thumb.jpg?v=6', text: 'MTB Pay', color: '#fff', bg: '#c8121a' },
     // Told as a UI/UX designer's case: Impact, Project Overview, Product Context, UX
     // Challenges, Visual Direction, Design System, Final Interface, Interaction &
     // Takeaway (Edge Cases removed at Sai's request; its screens are still in public/case/mtb-pay-merchant/edge). Visual Direction describes what the real screens show.
@@ -1395,3 +1396,6 @@ export const CONTACT_HINTS = {
   Facebook: 'The off-duty me',
   Email: EMAIL,
 }
+
+// Keep writing .jpg and .png paths above; these swap to the AVIF where there is one.
+;[PROFILE, CASES, TESTIMONIALS, OTHERS_INTRO, ABOUT].forEach(avifAll)

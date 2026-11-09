@@ -371,6 +371,18 @@ body {
     linear-gradient(180deg, rgba(2, 6, 20, 0.2), rgba(2, 6, 20, 0) 40%, rgba(2, 6, 20, 0.3)),
     url('/bg-calm-sm.jpg'); }
 }
+@supports (background-image: image-set(url('a.avif') type('image/avif'))) {
+  .sv-backdrop.is-calm { background-image:
+    radial-gradient(ellipse 90% 80% at 50% 45%, rgba(0, 0, 0, 0) 45%, rgba(2, 6, 20, 0.45) 100%),
+    linear-gradient(180deg, rgba(2, 6, 20, 0.2), rgba(2, 6, 20, 0) 40%, rgba(2, 6, 20, 0.3)),
+    url('/bg-calm.avif'); }
+  @media (max-width: 900px) {
+    .sv-backdrop.is-calm { background-image:
+      radial-gradient(ellipse 90% 80% at 50% 45%, rgba(0, 0, 0, 0) 45%, rgba(2, 6, 20, 0.45) 100%),
+      linear-gradient(180deg, rgba(2, 6, 20, 0.2), rgba(2, 6, 20, 0) 40%, rgba(2, 6, 20, 0.3)),
+      url('/bg-calm-sm.avif'); }
+  }
+}
 
 /* City: "Timelapse of car" by Harish Shivaraman, Unsplash License
    (unsplash.com/photos/pXzvJeuFgd0). Yangon at night: Sule Pagoda at the end
