@@ -281,7 +281,7 @@ export const CASES = [
           nav: 'Takeaway',
           illo: 'idea',
           blocks: [
-            { kind: 'lead', p: 'The hardest calls were about what not to build. Each feature we skipped was one less reason for an owner to say no. And the guest app and the admin are one product: a shortcut on one side usually turns into work for someone on the other.' },
+            { kind: 'lead', p: 'What we assumed users wanted, what they said they wanted and what they actually needed were never the same. So talk to users early and often, and understand them before building.' },
           ],
         },
       ],
@@ -466,12 +466,7 @@ export const CASES = [
           nav: 'Takeaway',
           illo: 'reading',
           blocks: [
-            { kind: 'lead', p: 'Picking a meal was rarely the hard part of ordering lunch. People wanted to know what’s covered, when ordering closes and whether lunch is coming, so the app had to answer those before anyone asked.' },
-            { kind: 'notes', items: [
-              { t: 'Show the money early', p: 'The allowance sits in the header and the cart splits who pays, so nobody has to wait until checkout to find out.' },
-              { t: 'Design for the floor too', p: 'Floor employees only have a phone and can miss a cut-off mid-shift, so every flow had to work just as well there.' },
-              { t: 'Prototype in real code', p: 'A clickable prototype got us through 10 feedback rounds in 6 weeks, and developers built from its code.' },
-            ] },
+            { kind: 'lead', p: 'Understanding the business shaped the design as much as the users did. And with people’s money and daily lunches at stake, testing is what kept the risk under control.' },
           ],
         },
       ],
