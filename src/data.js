@@ -466,11 +466,11 @@ export const CASES = [
           nav: 'Takeaway',
           illo: 'reading',
           blocks: [
-            { kind: 'lead', p: 'A careful hand audit still needs a machine to check it, and the machine still needs a person. Our sixteenth problem came from one of our own fixes.' },
+            { kind: 'lead', p: 'Picking a meal was rarely the hard part of ordering lunch. People wanted to know what’s covered, when ordering closes and whether lunch is coming, so the app had to answer those before anyone asked.' },
             { kind: 'notes', items: [
-              { t: 'Put it live', p: 'The accessibility fixes are written and tested, not yet released.' },
-              { t: 'A real person', p: 'An hour with someone who uses a screen reader every day.' },
-              { t: 'Keep checking', p: 'Run the automated check on every change, so a fix can’t break something else again.' },
+              { t: 'Show the money early', p: 'The allowance sits in the header and the cart splits who pays, so nobody has to wait until checkout to find out.' },
+              { t: 'Design for the floor too', p: 'Floor employees only have a phone and can miss a cut-off mid-shift, so every flow had to work just as well there.' },
+              { t: 'Prototype in real code', p: 'A clickable prototype got us through 10 feedback rounds in 6 weeks, and developers built from its code.' },
             ] },
           ],
         },
