@@ -295,8 +295,8 @@ export const CASES = [
     logo: '/logos/superfine-kitchen.png',
     featured: true,
     tags: ['Product Design'],
-    desc: 'Lunch ordering for employees on a company meal program, on the web and on a phone.',
-    short: 'Lunch ordering for office teams.', // one line for More Work
+    desc: 'Lunch ordering for employees on a company meal program, with allowance and cost shown up front.',
+    short: 'Company lunch ordering for office teams.', // one line for More Work
     art: { video: '/case/superfine-employee/hero.mp4?v=3', videoSm: '/case/superfine-employee/hero-sm.mp4?v=2', poster: '/case/superfine-employee/hero.jpg?v=2', img: '/case/superfine-employee/cover.jpg?v=5', thumb: '/case/superfine-employee/thumb.jpg?v=3', card: '/case/superfine-employee/thumb.jpg?v=3', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
     // Told as a product designer's case: Impact, Project Overview, Product Context,
     // The Problem, Understand the Business and User, How I ship (with AI), Design Walkthrough,
@@ -308,9 +308,9 @@ export const CASES = [
       navTop: false,
       overviewNav: 'Project Overview',
       layout: 'story',
-      heading: 'Designing lunch ordering that says what it costs, before you ask',
+      heading: 'Company lunch ordering for employees',
       // TODO(Sai): confirm your part and the dates.
-      summary: 'Superfine Kitchen cooks in San Francisco and delivers lunch to Bay Area offices. Employees on a company meal program order through this app. At Heizen I designed it web first, made it work on a phone, and tested it against WCAG 2.2 AA.',
+      summary: 'Superfine Kitchen cooks in San Francisco and delivers lunch to Bay Area offices. Employees on a company meal program order here. Allowance, cut-off and cost are clear before they checkout. At Heizen I designed it web first, made it work on a phone, and tested it against WCAG 2.2 AA.',
       accent: '#44403c',
       tags: ['Web app', 'Responsive', 'Accessibility'],
       role: 'Product Designer',
