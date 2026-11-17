@@ -108,9 +108,10 @@ export function ConnectCard() {
   const canHover = !window.matchMedia?.('(hover: none)').matches
   const text = CONTACT_HINTS[hint] || (canHover ? CONTACT_HINTS.rest : CONTACT_HINTS.restTouch)
   return (
-    <Card className="sv-connect">
+    <Card className="sv-connect" id="contact">
       <h2 className="sv-connect-title">Let's talk over coffee</h2>
       <Socials onHint={setHint} />
+      <p className="dl-email"><a href={`mailto:${EMAIL}`}>{EMAIL}</a></p>
       <p className={'sv-fan-hint sv-connect-note' + (hint ? '' : ' is-rest')} key={text}>{text}</p>
     </Card>
   )

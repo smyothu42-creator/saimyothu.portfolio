@@ -10,10 +10,9 @@ import { PROFILE } from '../data'
 // backdrop photo and fonts are ready, the text slides up and out and the
 // panels lift away one after another, like a blind opening onto the site.
 
-const COLS = 6
-const MIN_MS = 1000 // always show at least this long
-const MAX_MS = 3000 // never hold the page longer than this
-const LEAVE_MS = 1500
+const MIN_MS = 280
+const MAX_MS = 900
+const LEAVE_MS = 220
 
 function preload(src) {
   return new Promise((resolve) => {
@@ -25,7 +24,6 @@ function preload(src) {
 
 export default function Loader() {
   const [state, setState] = useState('loading') // loading | leaving | done
-  const [pct, setPct] = useState(0)
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -39,10 +37,8 @@ export default function Loader() {
       const t = performance.now() - start
       const goal = ready ? 100 : Math.min(88, (t / MAX_MS) * 150)
       shown += (goal - shown) * (ready ? 0.1 : 0.05)
-      setPct(shown)
-      if (ready && shown > 99.5 && t >= (reduced ? 300 : MIN_MS)) {
-        setPct(100)
-        setTimeout(() => setState('leaving'), reduced ? 0 : 250)
+      if (ready && shown > 99.5 && t >= (reduced ? 80 : MIN_MS)) {
+        setTimeout(() => setState('leaving'), reduced ? 0 : 80)
         setTimeout(() => setState('done'), reduced ? 250 : 250 + LEAVE_MS)
         return
       }
@@ -69,39 +65,9 @@ export default function Loader() {
   }, [state])
 
   if (state === 'done') return null
-  const words = PROFILE.name.split(' ')
-  const count = String(Math.round(pct)).padStart(3, '0')
   return (
-    <div className="sv-ld" data-state={state} aria-live="polite" aria-label="Loading">
-      <div className="sv-ld-cols" aria-hidden="true">
-        {Array.from({ length: COLS }, (_, i) => <span key={i} style={{ '--i': i }} />)}
-      </div>
-
-      <div className="sv-ld-content">
-        <div className="sv-ld-row sv-ld-top">
-          <span className="sv-ld-small"><span>Portfolio</span></span>
-        </div>
-
-        <div className="sv-ld-center">
-          <h1 className="sv-ld-name" aria-label={PROFILE.name}>
-            {words.map((w, k) => (
-              <span className="sv-ld-mask" key={k} aria-hidden="true">
-                <span style={{ animationDelay: `${200 + k * 110}ms` }}>{w}</span>
-              </span>
-            ))}
-          </h1>
-          <p className="sv-ld-role"><span className="sv-ld-mask"><span>{PROFILE.role}</span></span></p>
-        </div>
-
-        <div className="sv-ld-row sv-ld-bottom">
-          <span className="sv-ld-small"><span>Loading</span></span>
-          <span className="sv-ld-count" aria-label={`${Math.round(pct)} percent`}>{count}</span>
-        </div>
-      </div>
-
-      <div className="sv-ld-line" aria-hidden="true">
-        <span style={{ transform: `scaleX(${pct / 100})` }} />
-      </div>
+    <div className="dl-loader" data-state={state} aria-live="polite" aria-label="Loading">
+      <p>{PROFILE.name}</p>
     </div>
   )
 }

@@ -15,13 +15,27 @@ export default function Media({ art, title, aspect, eager = false, video }) {
   const ref = useRef(null)
   const [noMotion] = useState(still)
   const [clip] = useState(() => (isPhone() && art.videoSm) || video)
+  const [playing, setPlaying] = useState(Boolean(video) && !still())
   useEffect(() => {
-    if (video && !noMotion) ref.current?.play().catch(() => {})
+    if (video && !noMotion) ref.current?.play().catch(() => setPlaying(false))
   }, [video, noMotion])
+  const toggle = () => {
+    const node = ref.current
+    if (!node) return
+    if (node.paused) { node.play().then(() => setPlaying(true)).catch(() => {}) }
+    else { node.pause(); setPlaying(false) }
+  }
   return (
     <div className={'media' + (video ? ' is-video' : '')} style={{ aspectRatio: aspect, background: art.bg }}>
       {video ? (
-        <video ref={ref} src={noMotion ? undefined : clip} poster={art.poster || art.img} autoPlay={!noMotion} muted loop playsInline preload={noMotion ? 'none' : 'auto'} aria-label={title} />
+        <>
+          <video ref={ref} src={noMotion ? undefined : clip} poster={art.poster || art.img} autoPlay={!noMotion} muted loop playsInline preload={noMotion ? 'none' : 'auto'} aria-label={title} />
+          {!noMotion && (
+            <button type="button" className="dl-pause" aria-label={playing ? 'Pause video' : 'Play video'} onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle() }}>
+              {playing ? 'Pause' : 'Play'}
+            </button>
+          )}
+        </>
       ) : art.img ? (
         <img src={art.img} alt={title} loading={eager ? 'eager' : 'lazy'} fetchPriority={eager ? 'high' : 'auto'} decoding="async" />
       ) : (

@@ -3,9 +3,7 @@ import { flushSync } from 'react-dom'
 import Lenis from 'lenis'
 import { scroller } from './scroll'
 
-import Backdrop from './components/Backdrop'
 import Dock from './components/Dock'
-import Cursor from './components/Cursor'
 import Loader from './components/Loader'
 import Footer from './components/Footer'
 import { getPage, loadPage, parseRoute, preloadPages } from './pages'
@@ -131,7 +129,8 @@ export default function App() {
 
   // Lenis smooth scrolling + client-side routing for internal path links.
   useEffect(() => {
-    const lenis = new Lenis({ lerp: 0.1, smoothWheel: true })
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const lenis = new Lenis({ lerp: 0.1, smoothWheel: !reduced })
     lenisRef.current = lenis
     scroller.lenis = lenis
     // A reload keeps its place too.
@@ -178,9 +177,7 @@ export default function App() {
 
   return (
     <>
-      <Backdrop />
-      <Dock path={path} />
-      <Cursor />
+      <Dock path={path} key={`nav-${path}`} />
       <Loader />
       <main className={'sv-col page' + (route.name === 'case' ? ' is-wide' : '')} key={path}>
         {createElement(getPage(route.name), { slug: route.slug })}
