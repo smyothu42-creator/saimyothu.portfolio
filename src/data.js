@@ -21,24 +21,29 @@ export const NAV = [
 ]
 
 // Home hero copy.
+export const ORDERFLOW_URL = 'https://orderflowmm.com/'
+
 export const PROFILE = {
   name: 'Sai Myo Thu',
-  role: 'Co-Founder & Product Designer',
+  role: 'Product Designer',
   // Home page avatar: the bookshop photo, framed by `avatar`
   // (background-size and -position, zoomed onto the face).
   portrait: '/sai-profile-blue.jpg', // edited copy of sai-profile.jpg: navy shirt, mountain background
   avatar: { size: '229%', position: '40% 41%' },
   // About page: the big photo card at the top (the demo photo).
   hero: { src: '/sai-demo.jpg', aspect: '3 / 2', position: 'center 40%' },
-  tagline: 'Product designer turning complex problems into simple, strategic experiences.',
+  tagline: 'Hover on projects',
   // Opens the home hero's paragraph, and is the footer's sign-off.
   signoff: 'Designed in Yangon, iced Americano nearby',
   // Plain strings render as text; { text, href } render as outbound links.
   note: [
-    'Co-\u2060Founder at ',
-    { text: 'OrderFlow', href: 'https://orderflowmm.com/' },
-    ' & Product Designer at ',
+    'I’m a product designer and co-founder building ',
+    { text: 'OrderFlow', href: ORDERFLOW_URL },
+    ', a browser-based ordering ecosystem for F&B businesses in Myanmar, from table ordering to kitchen operations. Previously, I designed products at ',
     { text: 'Heizen', href: 'https://www.heizen.work/' },
+    ' and ',
+    { text: 'Dinger', href: 'https://dinger.asia/' },
+    '.',
   ],
 }
 
@@ -69,105 +74,84 @@ export const CASES = [
     tags: ['Product Design'],
     desc: 'QR table ordering for cafés in Myanmar: a guest app on the phone, and an admin that runs every order.',
     short: 'QR ordering and a café admin.', // one line for More Work
-    art: { img: '/case/orderflow/cover.jpg?v=24', video: '/case/orderflow/hero.mp4?v=8', videoSm: '/case/orderflow/hero-sm.mp4?v=2', poster: '/case/orderflow/hero.jpg?v=3', thumb: '/case/orderflow/thumb-pos.jpg?v=10', card: '/case/orderflow/thumb.jpg', text: 'OrderFlow', color: '#1f3a5f', bg: 'linear-gradient(160deg,#cfe4f7,#dfe7fb 55%,#eef1fb)' },
-    // One case for both products: the guest app (orderflow-client) and the admin
-    // panel (orderflow-admin-panel). Told as a product manager's case: Impact,
-    // Project Overview, The Opportunity, Problem Discovery, Product Vision &
-    // Strategy, MVP & Prioritization, Product Architecture, Key Product Decisions,
-    // Design Walkthrough, Takeaway (eyebrows number them; `group`
-    // keeps one side-list entry per section). Numbers come from the Startup World Cup pitch deck (Oct
-    // 2026); the deck's unconfirmed and [example] figures are left out on purpose.
-    // The cover is a short motion loop of the real screens (art.video, tools/case-video/hero-of.html):
-    // a guest's QR order reaching the staff board, its slips printing at the cashier and in the kitchen, then the owner's numbers.
+    art: { img: '/case/orderflow/cover.jpg?v=34', video: '/case/orderflow/hero.mp4?v=8', bento: '/case/orderflow/bento.mp4?v=2', bentoPoster: '/case/orderflow/bento.jpg?v=2', videoSm: '/case/orderflow/hero-sm.mp4?v=2', poster: '/case/orderflow/hero.jpg?v=3', thumb: '/case/orderflow/thumb-pos.jpg?v=10', card: '/case/orderflow/thumb.jpg', text: 'OrderFlow', color: '#1f3a5f', bg: 'linear-gradient(160deg,#cfe4f7,#dfe7fb 55%,#eef1fb)' },
+    // Guest app + café admin. Numbers are the pilot café only (Startup World Cup deck, Oct 2026).
+    // Cover loop: art.video, tools/case-video/hero-of.html.
     study: {
       navTop: false,
       overviewNav: 'Project Overview',
       overviewPart: 'About',
       layout: 'story',
-      heading: 'F&B Operation Management Tool',
-      summary: 'OrderFlow runs a café’s whole operation in one system: guests order from the table QR, staff manage orders, tables and kitchen slips, and owners run the menu, prices and reports.',
+      heading: '1,300 orders in 42 days.',
+      summary: 'Staff did not want to key every customer order into the POS. A mistake could come out of their own pocket, and a rush meant racing through one order after another. Guests felt the pressure of a long queue behind them, but did not want to install an app. Owners could not keep paying to reprint menus whenever prices or items changed. OrderFlow put the order on the table QR, in Burmese or English. One pilot café ran 1,300+ orders in its first 42 days, live 60 days in a row, for 35.7M MMK.',
+      glance: {
+        cols: 2,
+        jumpLabel: 'Overview',
+        items: [
+          { label: 'Problem', value: 'Staff rushed to enter every order into the POS and paid for mistakes. Guests felt pressure from the queue but would not install an app. Owners could not keep reprinting changing menus.' },
+          { label: 'Role', value: 'Product designer. I led product strategy, discovery and validation, owned the guest and café-admin flows, and contributed to front-end development.' },
+          { label: 'Actions', value: 'Spoke with people across the F&B domain, built the MVP, tested it in a real café, iterated, tested and compared it again, then released the next version.' },
+          { label: 'Result', value: '1,300+ orders in 42 days for 35.7M MMK. In the second test, a counter order reached the kitchen in about 1–10 seconds with one click.' },
+        ],
+      },
       accent: '#44403c',
       tags: ['Product Strategy', 'B2B SaaS', 'F&B'],
-      role: 'Co-Founder, Product Manager',
-      duration: 'Ongoing',
+      role: 'Product Designer',
+      scope: ['Guest App / Café Admin'],
+      timeline: '2026-Ongoing',
+      metaIndustry: true,
       team: ['2 engineers', '1 brand designer'],
       gallery: [],
       tools: 'Claude Code, Figma, Trello',
       sections: [
         {
-          id: 'impact',
-          nav: 'Impact',
-          notitle: true,
+          id: 'problem',
+          nav: 'The shift',
+          jumpLabel: 'Problem',
+          title: 'The same order was taken twice before it reached the kitchen.',
           blocks: [
-            // `fit`: columns as wide as their text, the same gap either side of every divider
-            { kind: 'impact', fit: true, items: [
-              { num: '4', label: 'Cafés in 6 months' },
-              { num: '1,300+', label: 'Orders at one shop\nin its first 42 days' },
-              { num: '60 / 60', label: 'Days straight a\ncustomer used it' },
-              { num: '35.7M', label: 'MMK in revenue\nthrough OrderFlow' },
+            { kind: 'lead', p: 'During busy hours, one order created pressure on every side of the counter. Staff had to listen, write it down and key it into the POS while the kitchen waited. Guests felt rushed by the queue behind them, and owners kept paying to replace menus whenever an item or price changed.' },
+            { kind: 'split', cols: 2, items: [
+              { h: 'Owners', illustration: '/case/orderflow/problem-bill-watercolor-clear.webp', p: 'Menu items and prices changed often, and reprinting the menu each time added another recurring cost.' },
+              { h: 'Staff', illustration: '/case/orderflow/problem-typing-watercolor-clear.webp', p: 'They did not want to race through one POS entry after another during a rush. A wrong order created more work and could mean paying for the mistake themselves.' },
+              { h: 'Guests', illustration: '/case/orderflow/problem-no-answer-watercolor-clear.webp', p: 'A long line behind them made ordering stressful, but installing an app for one café was too much to ask.' },
+              { h: 'The kitchen', illustration: '/case/orderflow/problem-cookie-watercolor-clear.webp', p: 'The kitchen needed a clear printed order as soon as it was placed, without waiting for staff to repeat it across the room.' },
             ] },
           ],
         },
         {
-          id: 'opportunity',
-          nav: 'The Opportunity',
-          part: 'We think',
-          title: 'Big market, *one gap*',
+          id: 'listened',
+          nav: 'Seven people',
+          jumpLabel: 'Actions',
+          title: 'Seven conversations shaped the MVP.',
           blocks: [
-            { kind: 'lead', p: 'Most of Myanmar’s 23,741 cafés still take orders on paper, and none let the guest order.' },
-            { kind: 'stats', h: 'Market size', items: [
-              { num: '6.2T', label: 'MMK, Asia-Pacific market' },
-              { num: '33.2B', label: 'MMK a year, Myanmar' },
-              { num: '4.3B', label: 'MMK a year, Yangon first' },
-            ] },
-            { kind: 'stats', h: 'Digital adoption', items: [
-              { logos: ['foodpanda', 'grab'], num: '39.8M', label: 'People online' },
-              { logos: ['kbzpay'], num: '19M', label: 'Use KBZPay' },
-              { logos: ['myanmar'], num: '25%', label: 'Inflation' },
+            { kind: 'donut', p: 'Before that shift I caught up with seven people. Not a workshop, and not a survey. I sat with them the way you catch up, and listened for what they wanted, what they needed, and the trouble they already met every day. I wanted the day in their words, before a screen existed.', items: [
+              { t: 'Business owner', n: 2 },
+              { t: 'F&B expert', n: 1 },
+              { t: 'Cashier', n: 1 },
+              { t: 'Regular customer', n: 3 },
             ] },
           ],
         },
         {
-          id: 'discovery',
-          nav: 'Problem Discovery',
+          id: 'rules',
+          nav: 'The gap',
+          title: 'The product had to fit the way a café actually works.',
           blocks: [
-            { kind: 'lead', p: 'We watched cafés at busy hours and talked to the people on each side of an order.' },
-            { kind: 'notes', items: [
-              { t: 'Owners', illo: 'owner', p: 'Want to keep their POS and stop reprinting menus. With inflation near 25%, a printed price is soon wrong.' },
-              { t: 'Floor staff', illo: 'staff', p: 'Too many tables at once, orders shouted across the room, and every order typed in again at the counter.' },
-              { t: 'Guests', illo: 'guest', p: 'Wait to be noticed, get the wrong drink, and won’t install an app to order.' },
+            { kind: 'lead', p: 'The interviews made the constraints clear: guests would not install an app, owners needed a menu they could update without reprinting, and staff needed the kitchen to receive an accurate order without the usual rush and repetition.' },
+            { kind: 'list', items: [
+              'Let guests order without installing an app. They should be able to scan the table QR and use the browser already on their phone, in Burmese or English.',
+              'Let owners update the menu without reprinting it. They should be able to change an item or price once and have the QR menu show the latest version.',
+              'Remove the need to repeat an order. OrderFlow needed to keep the items and table number together, then let staff print a clear kitchen slip in one click.',
             ] },
           ],
         },
         {
-          id: 'vision',
-          nav: 'Product Vision',
-          title: 'An *ecosystem*, starting with QR',
+          id: 'prototype',
+          nav: 'The pilot',
+          title: 'Built, tested on a real shift, improved, then tested again.',
           blocks: [
-            { kind: 'lead', p: 'Busy owner-run cafés in Yangon order from the table QR first. Then we grow the rest of the shop around it.' },
-            { kind: 'hub', items: [
-              { key: 'qr', t: 'QR ordering', tag: 'Live now', p: 'Guests scan the QR and order in Burmese or English, no app.', live: true },
-              { key: 'pos', t: 'POS', tag: 'Pro plan', p: 'Counter orders, tables and bills in one system with the QR orders.' },
-              { key: 'ai', t: 'Flowy AI', tag: 'Pro plan', p: 'Every order is data. Flowy AI turns it into answers for owners.' },
-              { key: 'loyalty', t: 'Loyalty', tag: 'From Q3 2027', p: 'Points and rewards that bring guests back, an add-on to any plan.' },
-              { key: 'inventory', t: 'Inventory', tag: 'Next', p: 'Stock counts down with each order, so owners know what to restock.' },
-            ], outer: [
-              { key: 'menu', t: 'Menu management', p: 'Items, prices and photos in English and Burmese, switched on or off.' },
-              { key: 'tables', t: 'Tables', p: 'Floors and tables on one map, each with a printable QR code.' },
-              { key: 'slips', t: 'Kitchen slips', p: 'Every accepted order prints a slip, so the kitchen knows what’s next.' },
-              { key: 'staff', t: 'Staff', p: 'Accounts for the whole team, each with only the access they need.' },
-              { key: 'reports', t: 'Reports', p: 'Sales, orders per hour and top items, ready for the owner anytime.' },
-              { key: 'alerts', t: 'Notifications', p: 'New orders and updates all in one place, so nothing gets missed.' },
-            ] },
-          ],
-        },
-        {
-          id: 'mvp',
-          nav: 'The MVP',
-          part: 'We execute',
-          title: 'Start with *assumptions* (MVP)',
-          blocks: [
-            { kind: 'lead', p: 'Assumptions and limited information were all we had, so we built one small version to test them in the market.' },
+            { kind: 'lead', p: 'Assumptions were all I had, so the first version was small. I put it in a real café, trained the staff at the table, and ran the same loop each time: watch a shift, ask what slows the counter, fix it, ship it to the pilot, test again.' },
             { kind: 'mockpair',
               phone: { label: 'Guest', alt: 'Guest flow: menu, options, order summary, waiting, preparing, ready', srcs: ['c-menu', 'c-item', 'c-summary', 'c-waiting', 'c-preparing', 'c-ready'].map((n) => `/case/orderflow/mvp/${n}.jpg`) },
               browser: { label: 'Shop', alt: 'Shop flow: add an item, table QR, QR stand, accept, ready, paid', srcs: ['a-item', 'a-table-qr', 'a-qr-stand', 'a-accept', 'a-ready', 'a-paid'].map((n) => `/case/orderflow/mvp/${n}.jpg`) },
@@ -175,113 +159,126 @@ export const CASES = [
           ],
         },
         {
-          id: 'validation',
-          nav: 'Validation',
-          title: 'Validated on *real usage*',
+          id: 'shift',
+          nav: 'What we learned',
+          title: 'Interviews and live testing revealed four things the product had to do.',
           blocks: [
-            { kind: 'lead', p: 'We put the MVP in a real café, trained the staff on site, and improved the product from what we saw and heard.' },
+            { kind: 'lead', p: 'What people said in interviews and what happened during a real shift pointed to the same four needs, from getting an order to the kitchen to closing the month.' },
+            { kind: 'split', items: [
+              { h: 'Print the order for the kitchen', p: 'If OrderFlow could turn each order into a clear slip that staff could print in one click and pass straight to the kitchen, it would meet their most important need.' },
+              { h: 'Items and table number at a glance', p: 'I could have asked staff to keep checking statuses. On shift, they needed the order items and the table number together. The items told them what to make. The table number told them where to serve it.' },
+              { h: 'Make orders easy to place and fix', p: 'Guests could make a mistake at any point. Older guests had trouble with the small basket button and where search sat. The basket needed a bigger button, search needed a clearer spot, and guests needed a way to catch and fix a mistake.' },
+              { h: 'Daily and monthly sales, already added up.', p: 'Shops put together sales reports every day and at the end of each month. Many shops in Myanmar do this in Excel. An export of individual orders still leaves the shop to add up the sales. The daily and monthly totals had to be ready in OrderFlow.' },
+            ] },
             { kind: 'photos', items: [
-              { src: '/case/orderflow/setup.jpg', alt: 'Our team training RAW’s staff on the OrderFlow admin at a café table' },
-              { src: '/sai-demo.jpg', alt: 'Sai walking café staff through OrderFlow on a laptop, with QR stands on the table' },
-            ] },
-            { kind: 'loop', steps: [
-              { icon: 'staff', t: 'Test with real users', p: 'Guests and staff use it during real shifts.' },
-              { icon: 'alerts', t: 'Get feedback', p: 'We watch at the counter and ask staff what slows them down.' },
-              { icon: 'reports', t: 'Improve', p: 'Fix it, ship it to the pilot cafés, and test again.' },
+              { src: '/case/orderflow/setup.jpg', alt: 'Training the café’s staff on the OrderFlow admin at a table' },
             ] },
           ],
         },
         {
-          id: 'architecture',
-          nav: 'Architecture',
-          title: 'The product *architecture*',
+          id: 'shipped',
+          nav: 'What shipped',
+          title: 'Decisions that came from the findings.',
           blocks: [
-            { kind: 'lead', p: 'An order starts on a guest’s phone, lands on the staff board and ends up in the owner’s numbers.' },
+            { kind: 'lead', p: 'The interviews and the live shift pointed to the same actions. These are the decisions that went into the next release.' },
+            { kind: 'split', cols: 3, items: [
+              { h: 'Guest', bullets: [
+                'No app. The order opens from the table QR, in Burmese or English.',
+                'The basket button is bigger, and search sits where a guest can find it.',
+                'A guest can review the order and fix a wrong item before it is placed.',
+              ] },
+              { h: 'Staff', bullets: [
+                'The items and the table number arrive together.',
+                'One click prints the kitchen slip.',
+                'The kitchen gets that slip without the order being said again across the room.',
+              ] },
+              { h: 'Owner', bullets: [
+                'Items and prices update once, on the QR menu. Nothing to reprint.',
+                'Daily and monthly sales are already added up.',
+                'The shop does not have to total the orders in Excel.',
+              ] },
+            ] },
             { kind: 'arch', items: [
-              { key: 'guest', t: 'Guest', p: 'Orders from the table QR. No app.' },
-              { key: 'staff', t: 'Staff', p: 'A live board by table, with printed slips.' },
-              { key: 'owner', t: 'Owner', p: 'Reports, sales, menu and prices.' },
+              { key: 'guest', t: 'Guest', p: 'Order from the table without queue pressure or an app.' },
+              { key: 'staff', t: 'Staff', p: 'The items and table number arrive together, and the kitchen slip prints in one click.' },
+              { key: 'owner', t: 'Owner', p: 'Update menu items and prices without reprinting, and see daily and monthly sales already added up.' },
             ] },
           ],
         },
         {
-          id: 'decisions',
-          nav: 'Decisions',
-          title: 'Three calls that *shaped it*',
+          id: 'second-test',
+          nav: 'Prototype vs. second test',
+          title: 'The second test showed what changed.',
           blocks: [
-            { kind: 'decisions', items: [
-              { key: 'pos', problem: 'Cafés didn’t want to give up their POS.', decision: 'OrderFlow takes the order. The POS keeps the bill.' },
-              { key: 'offline', problem: 'Blackouts are common, and most café systems only work on one device.', decision: 'A responsive admin lets owners manage orders from a phone on mobile data.' },
-              { key: 'eco', problem: 'Competitors started copying QR ordering.', decision: 'We grew it into one system: POS, AI, loyalty and inventory.' },
-            ] },
+            { kind: 'lead', p: 'I tested the same core tasks with five participants in the prototype round and five participants after the changes. The timing rows show observed task times; the completion rows show how many participants finished without help.' },
+            {
+              kind: 'table',
+              cols: ['Task', 'Prototype', 'Second test'],
+              rows: [
+                ['Counter order to kitchen', '~2–3 min', '~1–10 s · one click'],
+                ['Complete an order without errors', '60%', '100% · no errors'],
+                ['Add a new menu item without help', '3 min 24 s', '2 min'],
+                ['Find an item with search (search was hard to find)', '24 s', '11 s'],
+                ['Open the basket without help', '3 of 5', '5 of 5'],
+                ['Fix a wrong item without help', '2 of 5', '4 of 5'],
+              ],
+            },
+            { kind: 'compare2', ratio: '1600 / 1000', beforeLabel: 'Prototype', afterLabel: 'Shipped', before: '/case/orderflow/mvp-compare.jpg', after: '/case/orderflow/orders-qr.jpg', alt: 'The café order board with an order open beside it, in the prototype and in the shipped product' },
           ],
         },
         {
           id: 'shipping',
-          nav: 'Workflow',
-          title: 'Shipping the *front end*',
+          nav: 'Shipping',
+          jumpLabel: 'Shipped',
+          title: 'Shipping the front end',
           blocks: [
-            { kind: 'lead', p: 'Every change went out the same way: its own branch, type check, lint and build, a changelog note on how it was checked, then staging before production.' },
-            { kind: 'ship',
-              stats: [
-                { num: '53', label: 'Commits by me, Jun to Nov 2026' },
-                { num: '2', label: 'Front-end repos: guest app and admin' },
-                { num: '4', label: 'Pull requests by me, merged' },
-              ],
-              log: [
-                ['055d995', 'admin', 'feat(admin): rework order flows, room checkout, and admin UI polish'],
-                ['66814c1', 'guest', 'feat: guest sign-in UI, online-order updates and language hydration fix'],
-                ['6a7b878', 'admin', 'feat(reports): add item sales and sales summary tabs'],
-                ['1d7f7e0', 'guest', 'feat(loyalty): refresh loyalty/home UI, add rewards hub and zh/ko locales'],
-                ['ef4a261', 'admin', 'design: rebuild the print prompt around what a cashier needs at the counter'],
-                ['ef40d2f', 'guest', 'feat(menu): show out-of-stock items instead of hiding them'],
-              ],
+            { kind: 'lead', p: 'I worked with two engineers and a brand designer. I brought the interview and café-shift findings into the guest and admin flows, worked through feasibility and edge cases with engineering, and contributed the front-end changes. Every change then followed the same path: its own branch, type check, lint and build, a changelog note on how it was checked, then staging before production.' },
+            { kind: 'ship', stats: [
+              { num: '53', label: 'Commits by me, Jun to Nov 2026' },
+              { num: '2', label: 'Front-end repos: guest app and admin' },
+              { num: '4', label: 'Pull requests by me, merged' },
+            ], image: '/case/orderflow/github-contributions-grid-2026.png', alt: 'GitHub contribution calendar with activity shown by day', summary: '27 contributions in the last year', year: '2026' },
+          ],
+        },
+        {
+          id: 'walkthrough',
+          nav: 'Walkthrough',
+          title: 'Design Walkthrough',
+          blocks: [
+            { kind: 'flowpair',
+              phone: { label: 'Guest', items: [
+                { name: 'QR order', src: '/case/orderflow/feat/g-order.mp4?v=3', poster: '/case/orderflow/feat/g-order.jpg?v=3', alt: 'Guest app: scanning the table QR, switching to Burmese, adding two items and placing the order' },
+                { name: 'Pickup', src: '/case/orderflow/feat/g-pickup.mp4?v=3', poster: '/case/orderflow/feat/g-pickup.jpg?v=3', alt: 'Guest app: an online pickup order from the shop link, with name and phone, to the order number' },
+              ] },
+              browser: { label: 'Shop', items: [
+                { name: 'QR order', src: '/case/orderflow/feat/a-qr.mp4?v=4', poster: '/case/orderflow/feat/a-qr.jpg?v=3', alt: 'Admin: a QR order on the board, opened, its kitchen slips printed and its payment recorded' },
+                { name: 'Counter order', src: '/case/orderflow/feat/a-manual.mp4?v=4', poster: '/case/orderflow/feat/a-manual.jpg?v=3', alt: 'Admin: a counter order for table 6, three items, cash with change and printed slips' },
+                { name: 'Reports', src: '/case/orderflow/feat/a-reports.mp4?v=4', poster: '/case/orderflow/feat/a-reports.jpg?v=3', alt: 'Admin: metrics for the day, the daily close, orders by channel and sales per item' },
+                { name: 'New item', src: '/case/orderflow/feat/a-newmenu.mp4?v=4', poster: '/case/orderflow/feat/a-newmenu.jpg?v=3', alt: 'Admin: adding an espresso with a photo, English and Burmese names, a price and prep time' },
+              ] },
             },
           ],
         },
         {
-          id: 'execution',
-          nav: 'Client Side',
-          group: 'Design Walkthrough',
-          notitle: true,
+          id: 'result',
+          nav: 'The numbers',
+          jumpLabel: 'Result',
+          title: 'One café. 42 days.',
           blocks: [
-            { kind: 'flows', label: 'Guest app', items: [
-              { tag: 'QR order', title: 'Normal Ordering Flow', p: 'Scan the table QR and order. No app, no sign-in.', desc: 'Scan the table QR and order in a few taps. No app, no sign-in.', src: '/case/orderflow/feat/g-order.mp4?v=3', poster: '/case/orderflow/feat/g-order.jpg?v=3', alt: 'Guest app: scanning the table QR, switching to Burmese, adding two items and placing the order', steps: [{ t: 0, text: 'Scan the table QR, no app' }, { t: 1.35, text: 'Burmese or English' }, { t: 9.45, text: 'Browse by category' }, { t: 13.81, text: 'Tap an item' }, { t: 18.55, text: 'Basket in thumb reach' }, { t: 23.66, text: 'Review and place' }, { t: 29.15, text: 'Track until ready' }] },
-              { tag: 'Pickup', title: 'Online Order Flow', p: 'Order ahead from the shop’s link, then pick it up.', desc: 'Order ahead from the shop’s link, then collect at the counter.', src: '/case/orderflow/feat/g-pickup.mp4?v=3', poster: '/case/orderflow/feat/g-pickup.jpg?v=3', alt: 'Guest app: an online pickup order from the shop link, with name and phone, to the order number', steps: [{ t: 0, text: 'Order ahead from the shop’s link' }, { t: 1.52, text: 'Add what you want' }, { t: 9.83, text: 'Pickup or delivery, with a ready time' }, { t: 12.68, text: 'Name and phone, saved for next time' }, { t: 18.17, text: 'Place it, with a moment to cancel' }, { t: 23.7, text: 'An order number for the counter' }] },
-              { tag: 'Loyalty', title: 'Loyalty Flow', p: 'Points, stamps and member perks in one tab.', desc: 'Points, stamps and member perks, all in one Rewards tab.', src: '/case/orderflow/feat/g-loyalty.mp4?v=3', poster: '/case/orderflow/feat/g-loyalty.jpg?v=3', alt: 'Guest app: the Rewards tab with points, the stamp card and the membership card', steps: [{ t: 0, text: 'Every perk in one tab' }, { t: 2.97, text: 'Points turn into free treats' }, { t: 8.44, text: 'A stamp with every order' }, { t: 13.77, text: 'A member level and its perks' }] },
-              { tag: 'Sign in', title: 'Account Login Flow', p: 'Sign in with email or Google to earn rewards.', desc: 'Order without an account. Sign in only to earn points.', src: '/case/orderflow/feat/g-account.mp4?v=3', poster: '/case/orderflow/feat/g-account.jpg?v=3', alt: 'Guest app: signing in with email or Google, and creating an account', steps: [{ t: 0, text: 'Order without an account' }, { t: 2.51, text: 'Sign in to earn points' }, { t: 4.5, text: 'Email and password' }, { t: 7.69, text: 'Or one tap with Google' }, { t: 10.06, text: 'New here? Create an account' }] },
+            { kind: 'lead', p: 'Measured on the pilot café, and left as revenue through OrderFlow. This is the café’s takings on the system, not a modelled design ROI.' },
+            { kind: 'stats', items: [
+              { num: '1,300+', label: 'Orders in the first 42 days' },
+              { num: '35.7M', label: 'MMK in revenue' },
+              { num: '1–10 sec', label: 'Order-to-kitchen time, one click' },
             ] },
           ],
         },
         {
-          id: 'execution-admin',
-          nav: 'Admin Side',
-          group: 'Design Walkthrough',
-          notitle: true,
+          id: 'again',
+          nav: 'If I could go back',
+          title: 'I would move through assumptions faster.',
           blocks: [
-            { kind: 'flows', device: 'browser', label: 'Admin panel', items: [
-              { tag: 'QR order', title: 'QR Order Flow', p: 'A guest’s QR order, from the board to payment.', src: '/case/orderflow/feat/a-qr.mp4?v=4', poster: '/case/orderflow/feat/a-qr.jpg?v=3', alt: 'Admin: a QR order on the board, opened, its kitchen slips printed and its payment recorded', steps: [{ t: 0, text: 'A QR order lands on its table' }, { t: 0.82, text: 'Open it to see what the guest ordered' }, { t: 2.96, text: 'Print slips for the kitchen' }, { t: 4.17, text: 'Payment done, the table clears' }] },
-              { tag: 'Counter order', title: 'Manual Order Flow', p: 'A counter order, from table to kitchen to payment.', src: '/case/orderflow/feat/a-manual.mp4?v=4', poster: '/case/orderflow/feat/a-manual.jpg?v=3', alt: 'Admin: a counter order for table 6, three items, cash with change and printed slips', steps: [{ t: 0, text: 'Take an order at the counter' }, { t: 2.74, text: 'Pick the table' }, { t: 4.91, text: 'Tap items to add them' }, { t: 8.79, text: 'Send it to the kitchen' }, { t: 10.88, text: 'Take payment, with change' }, { t: 13.76, text: 'Print slips; table 6 is on the board' }] },
-              { tag: 'Reports', title: 'Reports & Metrics', p: 'The day’s sales, busy hours and top items.', src: '/case/orderflow/feat/a-reports.mp4?v=4', poster: '/case/orderflow/feat/a-reports.jpg?v=3', alt: 'Admin: metrics for the day, the daily close, orders by channel and sales per item', steps: [{ t: 0, text: 'Today’s sales at a glance' }, { t: 0.43, text: 'Busy hours and top items' }, { t: 2.04, text: 'Daily close, ready to print' }, { t: 3.57, text: 'Every order, by channel' }, { t: 5.24, text: 'Sales per item' }] },
-              { tag: 'New item', title: 'Add New Menu', p: 'A new item, from photo to price.', src: '/case/orderflow/feat/a-newmenu.mp4?v=4', poster: '/case/orderflow/feat/a-newmenu.jpg?v=3', alt: 'Admin: adding an espresso with a photo, English and Burmese names, a price and prep time', steps: [{ t: 0, text: 'Add an item from the menu list' }, { t: 2.64, text: 'Upload its photo' }, { t: 3.78, text: 'Name it in English and Burmese' }, { t: 5.52, text: 'Description, price and prep time' }, { t: 10.43, text: 'Count its stock, or skip it' }, { t: 13.72, text: 'It’s on the menu, ready to order' }] },
-            ] },
-          ],
-        },
-        {
-          id: 'mvp-vs-now',
-          nav: 'MVP vs Current',
-          group: 'Design Walkthrough',
-          title: 'MVP vs *current*',
-          blocks: [
-            { kind: 'compare2', ratio: '1600 / 1000', beforeLabel: 'MVP', afterLabel: 'Current', before: '/case/orderflow/mvp-compare.jpg', after: '/case/orderflow/orders-qr.jpg', alt: 'The café order board with an order open beside it, in the MVP and in the current product' },
-          ],
-        },
-        {
-          id: 'takeaway',
-          nav: 'Takeaway',
-          illo: 'idea',
-          blocks: [
-            { kind: 'lead', p: 'What we assumed users wanted, what they said they wanted and what they actually needed were never the same. So talk to users early and often, and understand them before building.' },
+            { kind: 'lead', p: 'I spent too much time polishing assumption-led designs as if they were ready for a final launch. Once I observed a real café shift, much of that polish had to be revised. If I could start again, I would test those assumptions sooner and move faster.' },
           ],
         },
       ],
@@ -289,6 +286,7 @@ export const CASES = [
   },
   {
     title: 'Corporate Meal Order',
+    name: 'Superfine Kitchen',
     domain: 'F&B',
     slug: 'superfine-employee',
     result: '$173K in lunch orders in the first 6 weeks',
@@ -297,176 +295,134 @@ export const CASES = [
     tags: ['Product Design'],
     desc: 'Lunch ordering for employees on a company meal program, with allowance and cost shown up front.',
     short: 'Company lunch ordering for office teams.', // one line for More Work
-    art: { video: '/case/superfine-employee/hero.mp4?v=3', videoSm: '/case/superfine-employee/hero-sm.mp4?v=2', poster: '/case/superfine-employee/hero.jpg?v=2', img: '/case/superfine-employee/cover.jpg?v=5', thumb: '/case/superfine-employee/thumb.jpg?v=3', card: '/case/superfine-employee/thumb.jpg?v=3', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
-    // Told as a product designer's case: Impact, Project Overview, Product Context,
-    // The Problem, Understand the Business and User, How I ship (with AI), Design Walkthrough,
-    // Usability, Takeaway. Facts come from the
-    // superfine.corporate.employee repo: its README (IA, ordering flow,
-    // interview findings) and ACCESSIBILITY-AUDIT.md (WCAG 2.2 AA, 23 Jul 2026).
-    // Recordings: tools/case-video (web 1440 × 900 primary, phone 402 × 874 secondary).
+    art: { video: '/case/superfine-employee/hero.mp4?v=3', bento: '/case/superfine-employee/bento.mp4?v=2', bentoPoster: '/case/superfine-employee/bento.jpg?v=2', videoSm: '/case/superfine-employee/hero-sm.mp4?v=2', poster: '/case/superfine-employee/hero.jpg?v=2', img: '/case/superfine-employee/cover.jpg?v=5', thumb: '/case/superfine-employee/thumb.jpg?v=3', card: '/case/superfine-employee/thumb.jpg?v=3', text: 'Superfine Kitchen', color: '#5a3a52', bg: 'linear-gradient(160deg,#f4d9ec,#efd6f3 50%,#f6dbe6)' },
+    // Decision story. Facts from the superfine.corporate.employee repo README
+    // and ACCESSIBILITY-AUDIT.md (WCAG 2.2 AA, 23 Jul 2026).
+    // Recordings: tools/case-video (web 1440 × 900, phone 402 × 874).
     study: {
       navTop: false,
       overviewNav: 'Project Overview',
       layout: 'story',
-      heading: 'Company lunch ordering for employees',
+      heading: '$173K of lunch in six weeks.',
       // TODO(Sai): confirm your part and the dates.
-      summary: 'Superfine Kitchen cooks in San Francisco and delivers lunch to Bay Area offices. Employees on a company meal program order here. Allowance, cut-off and cost are clear before they checkout. At Heizen I designed it web first, made it work on a phone, and tested it against WCAG 2.2 AA.',
+      summary: 'Superfine Kitchen needed an ordering experience for everyday company lunches, but employees used a catering site built for one-off events. They could not see what their company covered, when ordering closed, or whether lunch was on its way. At Heizen, I researched the journey and designed a responsive ordering flow around those questions. In the first six weeks after the first customer was onboarded, the product handled 1,738 orders worth $173K.',
+      glance: {
+        cols: 2,
+        jumpLabel: 'Overview',
+        items: [
+          { label: 'Problem', value: 'The old catering site hid the company allowance until checkout and gave employees no clear cut-off or order status.' },
+          { label: 'Role', value: 'Product designer at Heizen. I owned the user interviews, user journeys, flows, prototype and UI.' },
+          { label: 'Designed', value: 'A responsive ordering flow that shows the allowance, personal cost, cut-off and order status when employees need them.' },
+          { label: 'Result', value: 'The product handled 1,738 orders worth $173K across 49 companies and 334 staff in its first six weeks.' },
+        ],
+      },
       accent: '#44403c',
       tags: ['Web app', 'Responsive', 'Accessibility'],
       role: 'Product Designer',
       scope: ['Responsive Web Platform'],
-      duration: 'Jun to Sep 2026',
+      timeline: 'Jun to Sep 2026',
+      metaIndustry: true,
       team: [],
       gallery: [],
       tools: 'Figma, Claude Code, axe-core',
       sections: [
         {
-          id: 'impact',
-          nav: 'Impact',
-          notitle: true,
-          blocks: [
-            { kind: 'impact', fit: true, items: [
-              // live results, 6 weeks after the first customer was onboarded (8 Nov 2026)
-              { num: '$173K', label: 'In orders in the\nfirst 6 weeks' },
-              { num: '1,738', label: 'Orders placed' },
-              { num: '49', label: 'Companies ordering,\n334 employees' },
-            ] },
-          ],
-        },
-        {
-          id: 'context',
-          nav: 'Product Context',
-          illo: 'lunch',
-          blocks: [
-            { kind: 'lead', p: 'Companies pay part of their employees’ lunch, like $15 a day at Neptune Corp. Cards are charged 24 hours before delivery.' },
-            { kind: 'notes', items: [
-              { t: 'Office employees', illo: 'employee', p: 'Order between meetings and want to see what’s covered.' },
-              { t: 'Floor employees', illo: 'staff', p: 'Only have a phone, and need the cut-off and to know food is coming.' },
-              { t: 'Company admins', illo: 'owner', p: 'Set the allowance, add people by email and watch the spend.' },
-            ] },
-          ],
-        },
-        {
-          id: 'research',
-          nav: 'Understand',
-          title: 'Understand the Business and User',
-          illo: 'research',
-          blocks: [
-            { kind: 'lead', p: 'I started with the business, then the people ordering. Three steps took us from Superfine’s side of the meal program to what the app had to do.' },
-            { kind: 'steps', items: [
-              { spot: 'store', t: 'Interview the team', p: 'Two rounds with the Superfine Kitchen team on how company meal programs, allowances, cut-offs and delivery days work.' },
-              { spot: 'map', t: 'Map the problems', p: 'What goes wrong for Superfine, and what goes wrong for the employees who order.' },
-              { spot: 'target', t: 'Solve the top ones', p: 'Rank the problems by how often they happen and how much they hurt, and solve the top ones first.' },
-            ] },
-          ],
-        },
-        {
           id: 'problem',
-          nav: 'The Problem',
+          nav: 'The lunch',
+          jumpLabel: 'Prepare',
+          title: 'Employees learned what they owed too late.',
           blocks: [
-            { kind: 'lead', p: 'Employees ordered on a third-party catering platform, a shop built for one-off party orders. It knew nothing about a company lunch: no allowance, no cut-offs and no order status.' },
-            { kind: 'compare2', ratio: '1600 / 1000', beforeLabel: 'Before · Third-party platform', afterLabel: 'After · Superfine Web-app', before: '/case/superfine-employee/platform-before.jpg', after: '/case/superfine-employee/platform-after.jpg', alt: 'the third-party catering platform employees used before, and the new Superfine menu with the allowance in the header' },
-            { kind: 'iconlist', items: [
-              { spot: 'wallet', h: 'Hidden allowance', p: 'People found out what was covered at checkout, if at all.' },
-              { spot: 'clock', h: 'Missed cut-offs', p: 'Each order type closes at a different time before delivery.' },
-              { spot: 'box', h: 'No status', p: 'Nothing said whether lunch was actually coming.' },
-              { spot: 'card', h: 'Surprise charges', p: 'Unclear when the card is charged, and by how much.' },
+            { kind: 'lead', p: 'Superfine Kitchen delivers lunch to Bay Area offices. Companies cover part of each meal, but employees were ordering through a third-party site designed for party catering. The site treated a recurring workday lunch like a one-off event: the allowance appeared only at checkout, while the cut-off and delivery status were hard to find or absent.' },
+            { kind: 'split', cols: 2, items: [
+              { h: 'Office staff', illustration: '/case/superfine-employee/problem-office-watercolor.webp', p: 'Ordering between meetings, they discovered their company coverage and personal cost at the last step. The card charge could come as a surprise.' },
+              { h: 'Floor staff', illustration: '/case/superfine-employee/problem-floor-watercolor.webp', p: 'They ordered on a phone around their shifts. Small controls made the site harder to use, and an unclear cut-off could leave them without lunch.' },
+              { h: 'Company admins', illustration: '/case/superfine-employee/problem-admins-watercolor.webp', p: 'They set allowances, added employees and monitored spending, but that program context did not appear in the employee ordering experience.' },
+              { h: 'After ordering', illustration: '/case/superfine-employee/problem-old-site-watercolor.webp', p: 'The old site did not show a useful status, so employees could not check whether their lunch was coming.' },
             ] },
           ],
         },
         {
-          id: 'journey',
-          nav: 'User Journey',
-          title: 'Ordering lunch, *before the app*',
+          id: 'rules',
+          nav: 'The rules',
+          title: 'The journey pointed to three questions.',
           blocks: [
-            { kind: 'lead', p: 'One lunch order on the third-party platform, for the two kinds of employee we talked to. The lowest points are what the app had to fix.' },
-            // Built from the interview findings above. TODO(Sai): check the moods against what employees told you.
-            { kind: 'journeymap', rows: ['emotion', 'pain'],
-              stages: ['Find the menu', 'Pick a meal', 'Check the allowance', 'Beat the cut-off', 'Get charged', 'Wait for lunch'],
-              users: [
-                { name: 'Office employee', illo: 'employee', cells: [
-                  { emotion: -1, mood: 'Lost', pain: 'Which link is our company’s?' },
-                  { emotion: 0, mood: 'Fine', pain: 'A menu built for party trays' },
-                  { emotion: -2, mood: 'Unsure', pain: 'What does the company cover?' },
-                  { emotion: -1, mood: 'Rushed', pain: 'When does today close?' },
-                  { emotion: -2, mood: 'Surprised', pain: 'Charged more, and when?' },
-                  { emotion: -1, mood: 'Worried', pain: 'Is lunch actually coming?' },
-                ] },
-                { name: 'Floor employee', illo: 'staff', cells: [
-                  { emotion: -2, mood: 'Stuck', pain: 'Hard to use on a phone' },
-                  { emotion: -1, mood: 'Squinting', pain: 'Small text, small buttons' },
-                  { emotion: -1, mood: 'Unsure', pain: 'Covered or not?' },
-                  { emotion: -2, mood: 'Missed it', pain: 'Shift ran past the cut-off' },
-                  { emotion: -1, mood: 'Unsure', pain: 'No idea what was charged' },
-                  { emotion: -1, mood: 'Worried', pain: 'No status on the floor' },
-                ] },
+            { kind: 'lead', p: 'Through user interviews and two rounds with the Superfine Kitchen team, I worked through the meal program and mapped the journey from opening the menu to waiting for delivery. The office and floor contexts differed, but the same uncertainty appeared at three moments. I used those moments to prioritize the design.' },
+            { kind: 'list', items: [
+              'Before choosing a meal: What does my company cover, and what will I pay?',
+              'Before placing or changing an order: When does this order type close?',
+              'After ordering: Is my lunch confirmed and on its way?',
+            ] },
+          ],
+        },
+        {
+          id: 'shift',
+          nav: 'Four calls',
+          jumpLabel: 'Decisions',
+          title: 'Four decisions turned those questions into a flow.',
+          blocks: [
+            { kind: 'lead', p: 'I designed around the moments where employees lacked information, then used a working prototype to review the flow with customers and give engineering a concrete UI reference.' },
+            { kind: 'split', items: [
+              { h: 'Show the allowance early', p: 'The old site revealed coverage at checkout. I put the allowance in the menu header and separated the company and employee shares in the cart, so the cost is clear before an order is placed.' },
+              { h: 'Make the cut-off visible', p: 'Different order types close at different times. The deadline stays on screen, and both edits to a placed order and auto-order respect that same cut-off.' },
+              { h: 'Use one responsive product', p: 'Office staff use a desktop; floor staff may only have a phone. I carried the same allowance, cart and confirmation through both layouts instead of creating a separate floor app.' },
+              { h: 'Test a working flow', p: 'I built a clickable prototype and worked through 10 rounds in six weeks. It let us review the ordering rules in context. Engineering used it as a UI reference while building the product separately.' },
+            ] },
+            { kind: 'compare2', ratio: '1600 / 1000', beforeLabel: 'Before · Third-party platform', afterLabel: 'After · Superfine', before: '/case/superfine-employee/platform-before.jpg', after: '/case/superfine-employee/platform-after.jpg', alt: 'the third-party catering platform employees used before, and the new Superfine menu with the allowance in the header' },
+          ],
+        },
+        {
+          id: 'shipped',
+          nav: 'What shipped',
+          jumpLabel: 'Shipped',
+          title: 'The answers became part of the order.',
+          blocks: [
+            { kind: 'lead', p: 'The finished flow makes coverage visible before checkout, keeps the deadline close to the action, and gives employees a place to check their order after placing it. The same flow works on desktop and phone.' },
+            { kind: 'split', cols: 2, items: [
+              { h: '01 · Coverage', bullets: ['Found out at checkout.', 'The allowance is in the header. The cart splits who pays.'] },
+              { h: '02 · Cut-off', bullets: ['Each order type closed at a different time.', 'The deadline is on the screen. A placed order can be changed until it.'] },
+              { h: '03 · Status', bullets: ['Nothing said whether lunch was coming.', 'My Orders shows the current status; past orders offer re-order and rating.'] },
+              { h: '04 · The phone', bullets: ['Small text, and a phone only.', 'The same order, on the phone they already carry. Not a second product.'] },
+            ] },
+            { kind: 'subheading', h: 'Explore the ordering flow.', h2: 'Web and phone.', p: 'These walkthroughs show ordering, order history, edits, auto-order and dietary filters across both layouts.' },
+            { kind: 'flowpair', shared: true,
+              phone: { label: 'On the phone', items: [
+                { name: 'Ordering', src: '/case/superfine-employee/flows/m-order.mp4', poster: '/case/superfine-employee/flows/m-order.jpg', alt: 'Employee app on a phone: the allowance in the header, a meal with options, the cart split, company invoice and the confirmation' },
+                { name: 'Past orders', src: '/case/superfine-employee/flows/m-orders.mp4', poster: '/case/superfine-employee/flows/m-orders.jpg', alt: 'Employee app on a phone: My Orders with status, the Past tab, re-order and rating a meal' },
+                { name: 'Edit order', src: '/case/superfine-employee/flows/m-edit.mp4', poster: '/case/superfine-employee/flows/m-edit.jpg', alt: 'Employee app on a phone: editing a placed order, swapping the meal, reviewing and saving the changes' },
+                { name: 'Auto-order', src: '/case/superfine-employee/flows/m-auto.mp4', poster: '/case/superfine-employee/flows/m-auto.jpg', alt: 'Employee app on a phone: setting up Auto-Order, picking a meal, choosing days and turning it on' },
+                { name: 'Allergens', src: '/case/superfine-employee/flows/m-diet.mp4', poster: '/case/superfine-employee/flows/m-diet.jpg', alt: 'Employee app on a phone: filtering out tree nuts and dairy, then keeping vegan meals only' },
               ] },
+              browser: { label: 'On the web', device: 'pos', logo: null, items: [
+                { name: 'Ordering', src: '/case/superfine-employee/flows/order.mp4', poster: '/case/superfine-employee/flows/order.jpg', alt: 'Employee web app: the allowance in the header, a meal with options, the over-budget header, the cart split, company invoice and the confirmation' },
+                { name: 'Past orders', src: '/case/superfine-employee/flows/orders.mp4', poster: '/case/superfine-employee/flows/orders.jpg', alt: 'Employee web app: My Orders with live status, the Past tab, re-order and rating a meal' },
+                { name: 'Edit order', src: '/case/superfine-employee/flows/edit.mp4', poster: '/case/superfine-employee/flows/edit.jpg', alt: 'Employee web app: editing a placed order from My Orders, swapping the meal, reviewing the changes and saving them' },
+                { name: 'Auto-order', src: '/case/superfine-employee/flows/auto.mp4', poster: '/case/superfine-employee/flows/auto.jpg', alt: 'Employee web app: setting up Auto-Order, picking a meal with its options, choosing days and turning it on' },
+                { name: 'Allergens', src: '/case/superfine-employee/flows/diet.mp4', poster: '/case/superfine-employee/flows/diet.jpg', alt: 'Employee web app: filtering out tree nuts and dairy, then keeping vegan meals only' },
+              ] },
+            },
           ],
         },
         {
-          id: 'ai',
-          nav: 'How I ship (with AI)',
-          illo: 'idea',
+          id: 'result',
+          nav: 'The numbers',
+          jumpLabel: 'Result',
+          title: 'Launch activity and design checks.',
           blocks: [
-            { kind: 'lead', p: 'Instead of static frames, I shipped a clickable prototype built with AI (Claude Code). It was fast enough to run 10 rounds of feedback in 6 weeks, and still leave time to test it with customers.' },
-            { kind: 'impact', items: [
-              { num: '10', label: 'Feedback rounds in 6 weeks' },
-              { num: 'GitHub', label: 'Developers built from the prototype’s code as their UI reference' },
-              { num: 'Tested', label: 'With customers before launch, in the time saved' },
+            { kind: 'lead', p: 'In the first six weeks after the first customer was onboarded, the product handled the orders and sales below. I also checked 17 desktop and phone screens with a keyboard, screen reader and automated tools. I found and fixed 16 accessibility issues; 36 automated checks reported no WCAG 2.2 AA violations.' },
+            { kind: 'stats', h: 'First six weeks', items: [
+              { num: '$173K', label: 'Lunch orders' },
+              { num: '1,738', label: 'Orders' },
+              { num: '49', label: 'Companies' },
+              { num: '334', label: 'Staff ordering' },
             ] },
           ],
         },
         {
-          id: 'final',
-          nav: 'Web',
-          group: 'Design Walkthrough',
-          notitle: true,
+          id: 'again',
+          nav: 'If I could go back',
+          title: 'I would watch one lunch hour.',
           blocks: [
-            // web first; recorded from the app (tools/case-video/sf-f-*.json, cfg-sf-f-*.json)
-            { kind: 'flows', device: 'browser', label: 'Employee web app', items: [
-              { tag: 'Ordering', title: 'Ordering Flow', p: 'Lunch with the allowance in view, from the menu to confirmed.', src: '/case/superfine-employee/flows/order.mp4', poster: '/case/superfine-employee/flows/order.jpg', alt: 'Employee web app: the allowance in the header, a meal with options, the over-budget header, the cart split, company invoice and the confirmation', steps: [{ t: 0, text: 'The allowance, in the header' }, { t: 2.27, text: 'Pick a meal and its options' }, { t: 6.7, text: 'See what you’ll pay' }, { t: 10.58, text: 'The cart splits who pays' }, { t: 12.33, text: 'Pay by company invoice' }, { t: 17.18, text: 'Placed and confirmed' }] },
-              { tag: 'Past orders', title: 'Previous Orders', p: 'Every order’s status, past orders, re-order and rating.', src: '/case/superfine-employee/flows/orders.mp4', poster: '/case/superfine-employee/flows/orders.jpg', alt: 'Employee web app: My Orders with live status, the Past tab, re-order and rating a meal', steps: [{ t: 0, text: 'Every order and its status' }, { t: 2.7, text: 'Past orders, in one tab' }, { t: 4.23, text: 'Re-order in one tap' }, { t: 6.67, text: 'Rate a meal' }] },
-              { tag: 'Edit order', title: 'Edit Order', p: 'Change a placed order before the cut-off, and save.', src: '/case/superfine-employee/flows/edit.mp4', poster: '/case/superfine-employee/flows/edit.jpg', alt: 'Employee web app: editing a placed order from My Orders, swapping the meal, reviewing the changes and saving them', steps: [{ t: 0, text: 'Edit before the cut-off' }, { t: 1.64, text: 'Swap the meal' }, { t: 8.98, text: 'Review the changes' }, { t: 13.62, text: 'Save, and the order updates' }] },
-              { tag: 'Auto-order', title: 'Auto-Ordering', p: 'Pick meals once, choose the days, and lunch orders itself.', src: '/case/superfine-employee/flows/auto.mp4', poster: '/case/superfine-employee/flows/auto.jpg', alt: 'Employee web app: setting up Auto-Order, picking a meal with its options, choosing days and turning it on', steps: [{ t: 0, text: 'Set it and forget it' }, { t: 1.94, text: 'Pick the meals to repeat' }, { t: 7.89, text: 'Choose the days' }, { t: 9.51, text: 'Turn it on' }] },
-              { tag: 'Allergens', title: 'Allergens', p: 'Filter out allergens and keep only what fits your diet.', src: '/case/superfine-employee/flows/diet.mp4', poster: '/case/superfine-employee/flows/diet.jpg', alt: 'Employee web app: filtering out tree nuts and dairy, then keeping vegan meals only', steps: [{ t: 0, text: 'Filter out allergens' }, { t: 5.22, text: 'Only what fits your diet' }, { t: 9.06, text: 'The menu updates' }] },
-            ] },
-          ],
-        },
-        {
-          id: 'final-mobile',
-          nav: 'Mobile',
-          group: 'Design Walkthrough',
-          notitle: true,
-          blocks: [
-            // the same flows on a phone (tools/case-video/sf-m-*.json, cfg-sf-m-*.json)
-            { kind: 'flows', label: 'Employee mobile web', items: [
-              { tag: 'Ordering', title: 'Ordering Flow', desc: 'See your allowance, pick lunch, and pay by company invoice.', src: '/case/superfine-employee/flows/m-order.mp4', poster: '/case/superfine-employee/flows/m-order.jpg', alt: 'Employee app on a phone: the allowance in the header, a meal with options, the cart split, company invoice and the confirmation' },
-              { tag: 'Past orders', title: 'Previous Orders', desc: 'See each order’s status, re-order in a tap, and rate a meal.', src: '/case/superfine-employee/flows/m-orders.mp4', poster: '/case/superfine-employee/flows/m-orders.jpg', alt: 'Employee app on a phone: My Orders with status, the Past tab, re-order and rating a meal' },
-              { tag: 'Edit order', title: 'Edit Order', desc: 'Change a placed order any time before the cut-off.', src: '/case/superfine-employee/flows/m-edit.mp4', poster: '/case/superfine-employee/flows/m-edit.jpg', alt: 'Employee app on a phone: editing a placed order, swapping the meal, reviewing and saving the changes' },
-              { tag: 'Auto-order', title: 'Auto-Ordering', desc: 'Pick meals and days once, and lunch orders itself.', src: '/case/superfine-employee/flows/m-auto.mp4', poster: '/case/superfine-employee/flows/m-auto.jpg', alt: 'Employee app on a phone: setting up Auto-Order, picking a meal, choosing days and turning it on' },
-              { tag: 'Allergens', title: 'Allergens', desc: 'Filter out allergens, and every meal left is one you can eat.', src: '/case/superfine-employee/flows/m-diet.mp4', poster: '/case/superfine-employee/flows/m-diet.jpg', alt: 'Employee app on a phone: filtering out tree nuts and dairy, then keeping vegan meals only' },
-            ] },
-          ],
-        },
-        {
-          id: 'usability',
-          nav: 'Usability',
-          title: 'Can everyone use it?',
-          blocks: [
-            { kind: 'lead', p: 'Tested against WCAG 2.2 AA, by hand with a keyboard and screen reader, then with an automated checker.' },
-            { kind: 'impact', items: [
-              { num: '16', label: 'Problems found and fixed' },
-              { num: '0', label: 'Violations in 36 automated runs' },
-              { num: '17', label: 'Screens checked, desktop and phone' },
-            ] },
-          ],
-        },
-        {
-          id: 'takeaway',
-          nav: 'Takeaway',
-          illo: 'reading',
-          blocks: [
-            { kind: 'lead', p: 'Understanding the business shaped the design as much as the users did. And with people’s money and daily lunches at stake, testing is what kept the risk under control.' },
+            { kind: 'lead', p: 'The interviews and two rounds with the kitchen team exposed the main gaps, but I would observe an office lunch hour earlier. Watching someone order around the cut-off would help me test the journey in its real setting before settling the priority of each problem.' },
           ],
         },
       ],
@@ -474,6 +430,7 @@ export const CASES = [
   },
   {
     title: 'SFK Driver App',
+    name: 'SFK Driver App',
     domain: 'F&B',
     slug: 'sfk-driver-app',
     result: 'Prototyped in three sprints',
@@ -507,10 +464,7 @@ export const CASES = [
           title: 'Hot food and one free hand',
           blocks: [
             { kind: 'lead', p: 'Superfine’s drivers run one to three stops from the kitchen, with bags in their hands and parking, access and setup that change at every office. Hot food has 60 minutes from loading, and dispatch needs to know who is where.' },
-            { kind: 'notes', items: [
-              { t: 'The job', p: 'See the orders, follow the instructions, navigate, prove the delivery, and let Superfine track them.' },
-              { t: 'What we wanted', p: 'One app for the shift, from the kitchen to the door, that dispatch can follow live.' },
-            ] },
+            { kind: 'lead', p: 'The job is to see the orders, follow the instructions, navigate, prove the delivery and let Superfine track them. What we wanted was one app for the shift, from the kitchen to the door, that dispatch can follow live.' },
           ],
         },
         {
@@ -541,679 +495,501 @@ export const CASES = [
   },
   {
     title: 'MTB Pay Merchant',
+    name: 'MTB Pay Merchant',
     slug: 'mtb-pay-merchant',
     domain: 'Fintech',
     tags: ['Product Design', 'Payments'],
-    desc: 'A merchant wallet for small businesses in Myanmar, built to be fast and clear for shopkeepers who aren’t tech-savvy.',
+    desc: 'A merchant wallet for small businesses in Myanmar, designed around fast, clear counter tasks and explicit payment states.',
     short: 'A wallet for small shops.', // one line for More Work
     result: 'A merchant wallet used by 100+ merchants',
-    art: { img: '/case/mtb-pay-merchant/cover.jpg', video: '/case/mtb-pay-merchant/hero.mp4?v=5', videoSm: '/case/mtb-pay-merchant/hero-sm.mp4?v=2', poster: '/case/mtb-pay-merchant/hero.jpg?v=4', thumb: '/case/mtb-pay-merchant/thumb.jpg?v=6', card: '/case/mtb-pay-merchant/thumb.jpg?v=6', text: 'MTB Pay', color: '#fff', bg: '#c8121a' },
-    // Told as a UI/UX designer's case: Impact, Project Overview, Product Context, UX
-    // Challenges, Visual Direction, Design System, Final Interface, Interaction &
-    // Takeaway (Edge Cases removed at Sai's request; its screens are still in public/case/mtb-pay-merchant/edge). Visual Direction describes what the real screens show.
-    // Facts come from Sai's own case page (smyothu.framer.website/work/spark);
-    // screens are from the Figma flows (tools/case-video/out-mtb).
-    // TODO(Sai): add the dates and where the app is now.
+    art: { img: '/case/mtb-pay-merchant/hand.jpg?v=1', video: '/case/mtb-pay-merchant/hero.mp4?v=5', bento: '/case/mtb-pay-merchant/bento.mp4?v=2', bentoPoster: '/case/mtb-pay-merchant/bento.jpg?v=2', videoSm: '/case/mtb-pay-merchant/hero-sm.mp4?v=2', poster: '/case/mtb-pay-merchant/hero.jpg?v=4', thumb: '/case/mtb-pay-merchant/thumb.jpg?v=6', card: '/case/mtb-pay-merchant/thumb.jpg?v=6', text: 'MTB Pay', color: '#fff', bg: '#c8121a' },
+    // Decision story from the published case only (smyothu.framer.website/work/spark)
+    // and the Figma flow recordings (tools/case-video/out-mtb). No dates on file.
+    // Edge-case screens stay out, as requested; they remain in public/case/mtb-pay-merchant/edge.
     study: {
       navTop: false,
       overviewNav: 'Project Overview',
       layout: 'story',
-      heading: 'A merchant wallet for shopkeepers, not tech people',
-      summary: 'MTB Bank partnered with us to support small businesses in Myanmar by improving its merchant app. The goal was a faster, more intuitive system for people with limited tech skills, one that reinforced trust in MTB’s digital ecosystem.',
+      heading: '100+ merchants, on both stores.',
+      summary: 'The bank needed one merchant app for QR payments, top-ups, bills and refunds. I did not conduct merchant research on this project; I translated the business requirements into navigation, payment flows and UI rules for a busy counter. The app keeps the balance first, makes the amount easy to check and states what happened to the money. It is live on the App Store and Google Play, used by 100+ merchants.',
+      glance: {
+        jumpLabel: 'Overview',
+        items: [
+          { label: 'Business need', value: 'Give merchants one counter app for QR payments, top-ups, bills and refunds, with clearer transaction states and a flow that can be learned quickly.' },
+          { label: 'Role', value: 'I translated the business requirements into the app structure, payment flows and UI decisions, and built the Figma design system from a Carbon Design System foundation.' },
+          { label: 'Collaboration', value: 'I worked within a team of 3 designers, 11 developers and 2 PMs, using the product and bank requirements to align the screens, states and implementation.' },
+          { label: 'Result', value: 'Live on the App Store and Google Play, used by 100+ merchants. Merchant adoption is the recorded product outcome for this case.' },
+        ],
+      },
       accent: '#44403c',
       tags: ['Fintech', 'Mobile', 'Payments'],
       role: 'UI/UX Designer',
       scope: ['Merchant App'],
-      duration: '',
-      team: ['3 designers', '11 developers', '2 PMs'],
-      gallery: [],
-      tools: 'Figma',
-      sections: [
-        {
-          id: 'impact',
-          nav: 'Impact',
-          notitle: true,
-          blocks: [
-            // Merchant app only, not MTB Pay, agents or the bank. 100+ from Sai (Google Play also
-            // shows 100+ downloads).
-            { kind: 'impact', items: [
-              { num: '100+', label: 'Merchants taking payments' },
-            ], links: [
-              { store: 'play', over: 'Get it on', label: 'Google Play', href: 'https://play.google.com/store/apps/details?id=com.mtb.merchant' },
-              { store: 'apple', over: 'Download on the', label: 'App Store', href: 'https://apps.apple.com/us/app/mtb-pay-merchant/id6756643448' },
-            ] },
-          ],
-        },
-        {
-          id: 'context',
-          nav: 'Product Context',
-          illo: 'research',
-          blocks: [
-            { kind: 'lead', p: 'MTB Bank wanted to support small businesses in Myanmar and build trust in its digital services. Its merchants are SME owners who make transactions every day, and most aren’t tech-savvy.' },
-            { kind: 'notes', items: [
-              { t: 'What they do in it', p: 'Take payments by QR, top up phones, pay bills, give refunds, and check the balance.' },
-              { t: 'What they asked for', p: 'Faster top-ups, clear transaction statuses, and navigation that suits people new to digital tools.' },
-            ] },
-          ],
-        },
-        {
-          id: 'challenges',
-          nav: 'UX Challenges',
-          blocks: [
-            { kind: 'iconlist', items: [
-              { spot: 'hourglass', h: 'Slow transactions', p: 'Outdated systems made everyday payments and top-ups slow.' },
-              { spot: 'receipt', h: 'Frequent errors', p: 'Mistakes were common in daily transactions.' },
-              { spot: 'money', h: 'Unclear statuses', p: 'Merchants couldn’t always tell what had happened to their money.' },
-              { spot: 'phone', h: 'New to digital tools', p: 'Many shopkeepers had little experience with apps, and no time to learn one.' },
-            ] },
-          ],
-        },
-        {
-          id: 'visual',
-          nav: 'Visual Direction',
-          blocks: [
-            { kind: 'lead', p: 'Built for the counter: one strong colour, big numbers and plain words.' },
-            { kind: 'loop', steps: [
-              { icon: 'palette', t: 'Colour', p: 'MTB red for actions and the balance, white everywhere else, green for money in and red for money out.' },
-              { icon: 'type', t: 'Typography', p: 'One clear typeface, and the amount is the biggest text on every money screen.' },
-              { icon: 'layers', t: 'Hierarchy', p: 'The balance first, then money in and out, the four services, and the latest transactions.' },
-            ] },
-          ],
-        },
-        {
-          id: 'system',
-          nav: 'Design System',
-          illo: 'juggle',
-          blocks: [
-            { kind: 'lead', p: 'We built the app on a Figma design system: colour and type styles, components with their states as variants, and a page of documentation for each, made for small screens and busy shops.' },
-            { kind: 'shot', src: '/case/mtb-pay-merchant/design-system.avif', alt: 'Design system documentation in Figma: style, usage and properties pages for the components' },
-          ],
-        },
-        {
-          id: 'motion',
-          nav: 'Design Walkthrough',
-          notitle: true,
-          blocks: [
-            // played from Sai's Figma section "Merchant Scan Consumer QR to Receive Payment"
-            // (Section 1.pdf; tools/case-video/mtb-flows.py, cfg-mtb-receive.json, cfg-mtb-pay.json)
-            { kind: 'flows', label: 'Merchant app', items: [
-              { tag: 'Scan QR', title: 'Scan to Get Paid', desc: 'Scan their QR, set the amount, and wait while they confirm.', src: '/case/mtb-pay-merchant/flows/receive.mp4?v=2', poster: '/case/mtb-pay-merchant/flows/receive.jpg?v=2', alt: 'Merchant app: scanning a customer’s QR, picking 50,000 MMK, adding a remark, confirming the summary, waiting for the customer, the successful payment and sharing the receipt', steps: [{ t: 0, text: 'Scan the customer’s QR' }, { t: 2.77, text: 'The sender and their balance come up' }, { t: 4.07, text: 'Tap an amount' }, { t: 5.42, text: 'Add a remark' }, { t: 8.59, text: 'Check the summary, then confirm' }, { t: 11.16, text: 'Wait while the customer confirms on their phone' }, { t: 13.96, text: 'The customer paid, and it says so' }, { t: 16.53, text: 'Save or share the receipt' }] },
-              { tag: 'Pay with QR', title: 'Customer Pays by QR', desc: 'The customer confirms with a PIN, and both phones show it.', src: '/case/mtb-pay-merchant/flows/pay.mp4', poster: '/case/mtb-pay-merchant/flows/pay.jpg', alt: 'MTB Pay wallet: the customer’s Pay With QR, the shop’s payment request, the summary, entering the PIN, Payment Successful and the payment in History', steps: [{ t: 0, text: 'Show your QR at the counter' }, { t: 2.4, text: 'The shop’s request comes in' }, { t: 4.42, text: 'Check who you’re paying, and how much' }, { t: 7.07, text: 'Confirm with your PIN' }, { t: 9.07, text: 'Paid, and the shop sees it' }, { t: 11.84, text: 'Every detail in History' }] },
-              { tag: 'Set amount', title: 'Set a QR Amount', desc: 'Type an amount, and the shop’s QR shows it, ready to scan.', src: '/case/mtb-pay-merchant/flows/dyn.mp4', poster: '/case/mtb-pay-merchant/flows/dyn.jpg', alt: 'Merchant app: the shop’s QR, Specify Amount, typing 100,000 and the QR showing 100,000 MMK', steps: [{ t: 0, text: 'Open the shop’s QR' }, { t: 2.85, text: 'Add an amount to it' }, { t: 4.75, text: 'Type the amount' }, { t: 7.25, text: 'Confirm, and the QR asks for it' }] },
-              { tag: 'Fund out', title: 'Fund Out to an Agent', desc: 'Move money to a Super Agent, with a PIN and an SMS code.', src: '/case/mtb-pay-merchant/flows/fund.mp4', poster: '/case/mtb-pay-merchant/flows/fund.jpg', alt: 'Merchant app: eMoney, scanning a Super Agent’s QR, choosing 500,000, the summary, PIN, SMS code, success and sharing the receipt', steps: [{ t: 0, text: 'Open eMoney' }, { t: 1.57, text: 'Fund out to a Super Agent' }, { t: 4.41, text: 'Scan the agent’s QR' }, { t: 6.63, text: 'Pick an amount, add a remark' }, { t: 11.6, text: 'Check the summary' }, { t: 14.1, text: 'Confirm with your PIN' }, { t: 16.42, text: 'Then the code sent by SMS' }, { t: 18.82, text: 'Done, with a receipt' }, { t: 22.29, text: 'Share it' }] },
-              { tag: 'Refund', title: 'Refund a Payment', desc: 'Find the payment, give a reason, and confirm with a PIN.', src: '/case/mtb-pay-merchant/flows/refund.mp4', poster: '/case/mtb-pay-merchant/flows/refund.jpg', alt: 'Merchant app: Refund, searching a transaction number, the payment, typing a reason, the summary, PIN, success and sharing the receipt', steps: [{ t: 0, text: 'Open Refund' }, { t: 1.57, text: 'Find the payment by its number' }, { t: 5.64, text: 'Check the payment, then refund' }, { t: 8.04, text: 'Give a reason' }, { t: 11.61, text: 'Check the summary' }, { t: 13.91, text: 'Confirm with your PIN' }, { t: 16.21, text: 'Refunded, with a receipt' }, { t: 19.68, text: 'Share it' }] },
-              { tag: 'Pay bill', title: 'Pay a YESC Bill', desc: 'Enter the barcode, check the bill, and pay with a PIN.', src: '/case/mtb-pay-merchant/flows/bill.mp4', poster: '/case/mtb-pay-merchant/flows/bill.jpg', alt: 'Merchant app: Pay Bill, Electricity Bill, YESC and barcode, the full bill summary, PIN, success and the bill in History', steps: [{ t: 0, text: 'Pick the bill' }, { t: 1.77, text: 'Choose YESC, enter the barcode' }, { t: 6.24, text: 'Check the whole bill' }, { t: 9.94, text: 'Confirm with your PIN' }, { t: 12.24, text: 'Paid' }, { t: 14.41, text: 'Every detail in History' }] },
-              { tag: 'Top up', title: 'Phone Top Up', desc: 'Type the number, pick an amount, and confirm with a PIN.', src: '/case/mtb-pay-merchant/flows/topup.mp4', poster: '/case/mtb-pay-merchant/flows/topup.jpg', alt: 'Merchant app: typing a phone number, choosing 1,000, the summary, PIN, success, saving the receipt and History', steps: [{ t: 0, text: 'Type the number' }, { t: 2.6, text: 'Pick an amount' }, { t: 4.92, text: 'Check the summary' }, { t: 7.22, text: 'Confirm with your PIN' }, { t: 9.52, text: 'Topped up' }, { t: 10.82, text: 'Save the receipt' }, { t: 12.52, text: 'Every detail in History' }] },
-            ] },
-          ],
-        },
-        {
-          id: 'takeaway',
-          nav: 'Takeaway',
-          illo: 'idea',
-          blocks: [
-            { kind: 'lead', p: 'Empathy-driven design starts by listening. When we build for real needs, we create tools that improve lives, not just technology that works.' },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    title: 'Retina AI',
-    slug: 'retina-ai',
-    domain: 'AI',
-    tags: ['Product Design', 'Food Data'],
-    desc: 'End to end product design for Compass Group: the review workspaces where nutritionists and article experts turn AI label data into profiles they can stand behind.',
-    short: 'Reviewing AI food label data.', // one line for More Work
-    art: { img: '/case/retina-ai/cover.jpg', thumb: '/case/retina-ai/thumb.jpg', card: '/case/retina-ai/card.jpg', text: 'Retina AI', color: '#fff', bg: '#b67d17' },
-    // Facts come from the prototype in compass-ui-ux-designs/retina: its screens,
-    // routes and mock data. No research, results or team roles are claimed
-    // because the repo doesn't record them.
-    // TODO(Sai): add the dates, the team, where it is now and What I learned.
-    study: {
-      layout: 'story',
-      heading: 'Designing how a food label becomes a profile people can trust',
-      summary: 'Retina.AI is Compass Group’s food article intelligence platform. AI reads the label on each product, then a nutritionist and an Article SME check the allergens, ingredients and nutrition before the profile goes to Cookbook.',
-      accent: '#44403c',
-      tags: ['B2B', 'AI review', 'Food data'],
-      role: 'Product Designer, end to end',
-      scope: ['Nutritionist review', 'Article SME workspace'],
-      duration: '',
-      team: [],
-      gallery: [],
-      tools: 'Figma, Magic Patterns',
-      sections: [
-        {
-          id: 'product',
-          eyebrow: 'Overview',
-          nav: 'The product',
-          title: 'One article, two kinds of expert',
-          blocks: [
-            { kind: 'lead', p: 'AI can read a food label in moments, but someone has to be able to stand behind what it found. I designed the two workspaces where that happens: one for the nutritionist and one for the Article SME.' },
-            { kind: 'shot', wide: true, src: '/case/retina-ai/dashboard.jpg', alt: 'Nutritionist dashboard with a banner for articles pending review, a note about articles updated by the Article SME, and summary counts', caption: 'The nutritionist’s dashboard opens on what needs attention.' },
-          ],
-        },
-        {
-          id: 'role',
-          eyebrow: 'Overview',
-          nav: 'My role',
-          illo: 'shipping',
-          blocks: [
-            { kind: 'role', items: [
-              { h: 'Product', items: ['The flow from AI extraction to approval', 'How the two roles hand work over'] },
-              { h: 'Design', items: ['Dashboards and review queues', 'The article review screen', 'Catalog and audit log'] },
-              { h: 'Prototype', items: ['A working prototype of both workspaces', 'Real packaging photos in the mock data'] },
-            ] },
-          ],
-        },
-
-        // ---- Understand -------------------------------------------------
-        {
-          id: 'users',
-          eyebrow: 'Understand',
-          group: 'Understand',
-          nav: 'Who it serves',
-          blocks: [
-            { kind: 'segments', items: [
-              { h: 'Nutritionist', sub: 'Clinical review', items: ['Checks what the AI extracted', 'Validates ingredients and allergens', 'Approves the profile'] },
-              { h: 'Article SME', sub: 'Catalog and audit', items: ['Triages the review queue', 'Manages the catalog', 'Audits changes across sites'] },
-            ] },
-          ],
-        },
-
-        // ---- Define -----------------------------------------------------
-        {
-          id: 'problems',
-          eyebrow: 'Define',
-          group: 'Define',
-          nav: 'What it had to handle',
-          illo: 'juggle',
-          blocks: [
-            { kind: 'iconlist', items: [
-              { h: 'Allergens leave no room for a guess', p: 'AI can read a label quickly, but a person has to stand behind the result before it goes anywhere.' },
-              { h: 'Not every article needs the same attention', p: 'Some are ready to go, some need a closer look and some need fixing. A single long list hides that.' },
-              { h: 'The answer is on the pack', p: 'Checking means comparing the extracted data with the label itself, again and again, for every article.' },
-              { h: 'One article, several hands', p: 'An article can move between the nutritionist and the SME and back again, and each of them needs to see what changed.' },
-            ] },
-          ],
-        },
-
-        // ---- Explore ----------------------------------------------------
-        {
-          id: 'review',
-          eyebrow: 'Explore',
-          group: 'Design',
-          nav: 'Clinical review',
-          title: 'Put the data next to the label',
-          blocks: [
-            { kind: 'lead', p: 'A nutritionist’s job is to compare what the AI extracted with what the pack actually says, so the screen puts both side by side.' },
-            { kind: 'shot', wide: true, src: '/case/retina-ai/review.jpg', alt: 'Review screen with the task list on the left, allergens and nutrients in the middle, and a photo of the pack with thumbnails on the right', caption: 'The queue, the extracted data and the pack in one view.' },
-            { kind: 'notes', items: [
-              { t: 'Queues by what’s needed', p: 'Work is split into Ready To Cookbook, To Review, To Fix and From SME, so the nutritionist knows what kind of attention each article needs.' },
-              { t: 'Confidence up front', p: 'The AI’s confidence sits beside the article name, before any of the data.' },
-              { t: 'Contains and may contain', p: 'Allergens definitely on the label and possible traces from the factory line are two separate lists.' },
-              { t: 'Every side of the pack', p: 'Front, back, side and barcode photos stay one click away.' },
-              { t: 'A way out', p: 'When a label can’t be trusted, Request Re-scan sits right beside Approve & Push.' },
-            ] },
-          ],
-        },
-        {
-          id: 'catalog',
-          eyebrow: 'Explore',
-          group: 'Design',
-          nav: 'Catalog and audit',
-          title: 'Keep everyone working from the same list',
-          blocks: [
-            { kind: 'lead', p: 'The Article SME works across sites. The review screen matches the nutritionist’s, so an article looks the same whoever opens it.' },
-            { kind: 'shot', wide: true, src: '/case/retina-ai/sme.jpg', alt: 'Article SME task screen with the article list, the ingredients table with allergen flags, and a pack photo', caption: 'The Article SME’s review, with ingredients and their allergen flags.' },
-            { kind: 'shot', wide: true, src: '/case/retina-ai/sme-dashboard.jpg', alt: 'Article SME dashboard with totals, a weekly chart of articles reviewed and a note about articles needing attention', caption: 'The SME’s dashboard shows the week’s reviews and what needs attention.' },
-            { kind: 'notes', items: [
-              { t: 'A fixed vocabulary', p: 'A read-only catalog holds 18 allergens and 22 nutrients, each with a code.' },
-              { t: 'Changes show up', p: 'When the SME edits an article, it reaches the nutritionist tagged SME Updated, with its own From SME queue.' },
-              { t: 'A record of edits', p: 'The audit log covers ingredients, nutrition, allergens and claims: what changed, who changed it and when.' },
-            ] },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    title: 'Merchant Experience',
-    slug: 'merchant-experience',
-    domain: 'Fintech',
-    tags: ['Product Design', 'Fintech'],
-    desc: 'A secure portal for one large MTB Bank partner: live transactions, refunds, settlements and API access in one place.',
-    short: 'A bank partner’s merchant portal.', // one line for More Work
-    art: { img: '/case/merchant-experience/cover.jpg?v=2', thumb: '/case/merchant-experience/thumb.jpg?v=12', card: '/case/merchant-experience/card.jpg?v=3', text: 'Merchant Experience', color: '#fff', bg: '#7c0a10' },
-    // Facts come from Sai's page (smyothu.framer.website/work/merchant-portal-copy-copy);
-    // screens are from the Figma boards in Merchant Portal.zip (tools/case-video/out-portal).
-    // Same structure as the driver app: why, flows, where it leads. The longer version is in git (83b7696).
-    // TODO(Sai): add the dates.
-    study: {
-      layout: 'story',
-      heading: 'Secure merchant management',
-      summary: 'MTB Bank developed a Merchant Portal for a single large-scale partner. It gives them live transaction monitoring, refund handling, API access and reporting, and full control over digital payments without relying on manual communication.',
-      accent: '#44403c',
-      tags: ['B2B', 'Web portal', 'Payments'],
-      role: 'UX/UI Designer',
-      scope: ['Merchant Portal'],
-      duration: '',
+      timeline: '2025',
+      metaIndustry: true,
       team: ['3 designers', '11 developers', '2 PMs'],
       gallery: [],
       tools: 'Figma',
       sections: [
         {
           id: 'problem',
-          nav: 'Why we built it',
-          title: 'Spreadsheets and email threads',
+          nav: 'The counter',
+          jumpLabel: 'The counter',
+          title: 'The brief called for faster, clearer counter tasks.',
           blocks: [
-            { kind: 'lead', p: 'The merchant tracked transactions and processed refunds through spreadsheets and email, which caused delays and confusion. We worked closely with MTB’s partner team and the merchant, and they asked for three things: real-time data, exportable reports and smooth refund handling.' },
-            { kind: 'notes', items: [
-              { t: 'Before', p: 'Spreadsheets for tracking, email for refunds.' },
-              { t: 'What we wanted', p: 'One secure place with better visibility, and less back and forth.' },
-            ] },
-          ],
-        },
-        {
-          id: 'run',
-          nav: 'The portal',
-          group: 'Design Walkthrough',
-          notitle: true,
-          blocks: [
-            // the Figma screens from Merchant Portal.zip, see tools/case-video/portal-flows.py
-            { kind: 'flows', device: 'browser', label: 'Merchant portal', items: [
-              { tag: 'Sign in', title: 'Sign In', p: 'Sign in with a user ID and PIN, then confirm with a code sent by SMS.', src: '/case/merchant-experience/flows/login.mp4?v=2', poster: '/case/merchant-experience/flows/login.jpg?v=2', alt: 'Sign in with user ID and PIN, the SMS verification code, the welcome screen and the dashboard' },
-              { tag: 'Dashboard', title: 'Dashboard', p: 'Open the balance and growth charts, by day, month or year.', src: '/case/merchant-experience/flows/dash.mp4?v=3', poster: '/case/merchant-experience/flows/dash.jpg?v=3', alt: 'The dashboard opening its charts, then switching from daily to monthly and yearly' },
-              { tag: 'Transactions', title: 'Transactions', p: 'Scroll across every column, then filter the table.', src: '/case/merchant-experience/flows/tx.mp4?v=2', poster: '/case/merchant-experience/flows/tx.jpg?v=2', alt: 'Scrolling across the Transaction History table and opening the filter panel' },
-              { tag: 'Refunds', title: 'Refunds', p: 'Open a payment, give a reason, and confirm the refund with a PIN.', src: '/case/merchant-experience/flows/refund.mp4?v=2', poster: '/case/merchant-experience/flows/refund.jpg?v=2', alt: 'Refund list, a payment’s detail, typing a reason, the PIN dialog and the updated list' },
-              { tag: 'Settlement', title: 'Settlement', p: 'Enter an amount, confirm with a PIN, and see the balances update.', src: '/case/merchant-experience/flows/fund.mp4?v=3', poster: '/case/merchant-experience/flows/fund.jpg?v=3', alt: 'From the dashboard to Fund Settlement, entering an amount, the PIN dialog and Successfully Transferred' },
-              { tag: 'API keys', title: 'API Keys', p: 'Generate a key, then save and copy it.', src: '/case/merchant-experience/flows/api.mp4?v=2', poster: '/case/merchant-experience/flows/api.jpg?v=2', alt: 'No API keys yet, generating one, saving and copying it, and the key in the list' },
-            ] },
-          ],
-        },
-        {
-          id: 'leads-to',
-          nav: 'Where it leads',
-          title: 'Less waiting, more control',
-          blocks: [
-            { kind: 'lead', p: 'The portal reduced communication delays and improved refund processing time. Live tracking and API tools streamlined both support and integration work for the merchant.' },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    title: 'Heizen Studio',
-    name: 'Heizen Studio Meetings',
-    slug: 'heizen-studio',
-    domain: 'AI',
-    tags: ['Product Design', 'AI', 'SaaS'],
-    desc: 'Bringing meetings into Heizen’s delivery platform, so calls stop living in a separate tool.',
-    short: 'Meetings inside a delivery platform.', // one line for More Work
-    art: { img: '/case/heizen-studio/cover.jpg?v=3', thumb: '/case/heizen-studio/thumb.jpg?v=3', card: '/case/heizen-studio/card.jpg', text: 'Heizen Studio', color: '#fff', bg: '#3a4196' },
-    // Screens are Sai's Figma designs (~/Downloads/Meeting.pdf). TODO(Sai): check
-    // this copy, add dates, team and real results.
-    study: {
-      layout: 'story',
-      heading: 'Bringing meetings into the platform where the work happens',
-      summary: 'Heizen Studio is the workspace Heizen uses to deliver client software, from the first meeting to the last test case. It had no meetings feature, so we ran our calls through Granola, outside the platform. I designed Meetings to bring them in.',
-      accent: '#44403c',
-      tags: ['B2B', 'Internal tool', 'AI'],
-      role: 'Product Designer',
-      scope: ['Meetings'],
-      duration: '',
-      team: [],
-      gallery: [],
-      tools: 'Figma',
-      sections: [
-        {
-          id: 'problem',
-          nav: 'Why we built it',
-          title: 'Our calls lived in another tool',
-          blocks: [
-            { kind: 'lead', p: 'Projects in Heizen Studio start with a conversation. But the platform had nowhere to put one, so we used Granola, and what was decided stayed outside, away from the requirements and sprints it belonged to.' },
-            { kind: 'notes', items: [
-              { t: 'Before', p: 'Calls in Granola, delivery work in Heizen Studio.' },
-              { t: 'What we wanted', p: 'Meetings in the same workspace as everything they lead to.' },
-            ] },
-          ],
-        },
-        {
-          id: 'run',
-          nav: 'Running a call',
-          group: 'Design Execution',
-          notitle: true,
-          blocks: [
-            // screens from Sai's Figma file (Meeting.pdf), see tools/case-video/meet-flows.py
-            { kind: 'flows', device: 'browser', label: 'Running a call', items: [
-              { tag: 'Overview', title: 'Overview', p: 'Step through today, yesterday and tomorrow from the Meeting List.', src: '/case/heizen-studio/flows/dash.mp4', poster: '/case/heizen-studio/flows/dash.jpg', alt: 'The projects dashboard with the Meeting List open, moving from today to yesterday and tomorrow' },
-              { tag: 'Start', title: 'Start Meeting', p: 'The bot joins, you keep private notes, and AI writes the notes.', src: '/case/heizen-studio/flows/start.mp4', poster: '/case/heizen-studio/flows/start.jpg', alt: 'Starting a meeting from the dashboard, recording it, generating insights and the AI notes' },
-              { tag: 'Review', title: 'Past Meeting', p: 'Open a meeting record for its notes, the full transcript and the recording.', src: '/case/heizen-studio/flows/review.mp4', poster: '/case/heizen-studio/flows/review.jpg', alt: 'Opening a completed meeting from the Meeting List, its notes, then its transcript and recording' },
-              { tag: 'From a link', title: 'From a Link', p: 'Paste a link, then send the bot, record audio, or upload later.', src: '/case/heizen-studio/flows/anywhere.mp4', poster: '/case/heizen-studio/flows/anywhere.jpg', alt: 'Starting a new meeting from a pasted link, recording it and getting the notes and transcript' },
-            ] },
-          ],
-        },
-        {
-          id: 'projects',
-          nav: 'Inside projects',
-          group: 'Design Execution',
-          notitle: true,
-          blocks: [
-            { kind: 'flows', device: 'browser', label: 'Meetings inside projects', items: [
-              { tag: 'From a project', title: 'From a Project', p: 'A call started in a project is filed there, with a live transcript.', src: '/case/heizen-studio/flows/project.mp4', poster: '/case/heizen-studio/flows/project.jpg', alt: 'A project’s Meetings page, starting a call with a live transcript, then the notes and recording' },
-              { tag: 'Auto-assign', title: 'Auto-Assign', p: 'Add a client’s email once, and every meeting with them lands in the project.', src: '/case/heizen-studio/flows/assign.mp4', poster: '/case/heizen-studio/flows/assign.jpg', alt: 'Adding a client email on a project’s Meetings page and confirming it' },
-              { tag: 'Move', title: 'Move Meeting', p: 'Filed in the wrong place? Move it to another project from its menu.', src: '/case/heizen-studio/flows/move.mp4', poster: '/case/heizen-studio/flows/move.jpg', alt: 'Moving a meeting to another project from its menu' },
-              { tag: 'Wiki', title: 'Save to Wiki', p: 'Turn a meeting’s notes into a wiki page in one click.', src: '/case/heizen-studio/flows/wiki.mp4', poster: '/case/heizen-studio/flows/wiki.jpg', alt: 'Saving a meeting’s notes as a wiki page' },
-              { tag: 'Tag', title: 'Tag Meeting', p: 'Tag a call by type, and give each tag its own colour.', src: '/case/heizen-studio/flows/tag.mp4', poster: '/case/heizen-studio/flows/tag.jpg', alt: 'Adding and editing tags on a meeting, with a colour for each' },
-            ] },
-          ],
-        },
-        {
-          id: 'leads-to',
-          nav: 'Where it leads',
-          title: 'From meeting to requirement',
-          blocks: [
-            { kind: 'lead', p: 'Heizen Studio’s promise is from meeting to test case, in one workspace. Meetings is the first step of that: calls are recorded, and their decisions turn into requirement documents, which become stories, then test cases.' },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    title: 'OrderFlow Landing Page',
-    slug: 'orderflow-landing',
-    domain: 'F&B',
-    tags: ['Web Design', 'Landing Page'],
-    desc: 'The site that explains OrderFlow to café and restaurant owners, and asks them to try it.',
-    short: 'A landing page for café owners.', // one line for More Work
-    art: { img: '/case/orderflow-landing/cover.jpg?v=3', thumb: '/case/orderflow-landing/thumb.jpg?v=3', card: '/case/orderflow-landing/thumb.jpg?v=3', text: 'OrderFlow', color: '#fff', bg: '#f28a1c' },
-    // The copy describes what the live site says (orderflowmm.com/en, 8 Nov 2026). The clips are
-    // recordings of it, see tools/case-video/lp-record.mjs; the pilot request is never sent. TODO(Sai): confirm the role, add the
-    // dates, team, tools, and any real results.
-    study: {
-      layout: 'story',
-      heading: 'One page, one ask: try it at one outlet',
-      summary: 'OrderFlow is QR ordering for cafés and restaurants in Myanmar. This is the site that explains it to owners, in English and Burmese, and asks them to join a free pilot at one of their outlets.',
-      accent: '#44403c',
-      tags: ['Web', 'Landing page', 'F&B'],
-      role: 'Designer',
-      scope: ['Landing page'],
-      duration: '',
-      team: [],
-      gallery: [],
-      tools: '',
-      sections: [
-        {
-          id: 'problem',
-          nav: 'Why we built it',
-          title: 'A low-risk first step',
-          blocks: [
-            { kind: 'lead', p: 'Owners need to see how QR ordering works, and know it won’t disrupt their shop, before they’ll try it. So the page leads with a pilot: OrderFlow sets up the menu, tables and QR codes for free at one outlet and trains the team.' },
-            { kind: 'notes', items: [
-              { t: 'The audience', p: 'Café and F&B owners, who have no time to configure new software.' },
-              { t: 'What we wanted', p: 'Clear answers on how it works and what it takes, then one thing to do: apply for the pilot.' },
-            ] },
-          ],
-        },
-        {
-          id: 'run',
-          nav: 'The page',
-          group: 'Design Walkthrough',
-          notitle: true,
-          blocks: [
-            { kind: 'flows', device: 'browser', label: 'OrderFlow website', items: [
-              { tag: 'Pilot request', title: 'Pilot Request', p: 'Apply in three steps: about you, your venue, and the pilot.', src: '/case/orderflow-landing/flows/pilot.mp4?v=4', poster: '/case/orderflow-landing/flows/pilot.jpg?v=4', alt: 'Opening Apply for the Pilot and filling in the three-step form, up to Send application' },
-              { tag: 'Home', title: 'Home', p: 'The whole page, from the offer to the final call to action.', src: '/case/orderflow-landing/flows/home.mp4?v=3', poster: '/case/orderflow-landing/flows/home.jpg?v=3', alt: 'Scrolling the OrderFlow home page from top to bottom' },
-              { tag: 'Partnership', title: 'Partnership', p: 'What the pilot includes, and how it runs in five steps.', src: '/case/orderflow-landing/flows/partner.mp4?v=3', poster: '/case/orderflow-landing/flows/partner.jpg?v=3', alt: 'Scrolling the Pilot Partnership page from top to bottom' },
-              { tag: 'Pricing', title: 'Pricing', p: 'OrderFlow’s plans and pricing.', src: '/case/orderflow-landing/flows/pricing.mp4?v=3', poster: '/case/orderflow-landing/flows/pricing.jpg?v=3', alt: 'Scrolling the pricing page from top to bottom' },
-              { tag: 'About', title: 'About', p: 'The story behind OrderFlow, and its mission and vision.', src: '/case/orderflow-landing/flows/about.mp4?v=3', poster: '/case/orderflow-landing/flows/about.jpg?v=3', alt: 'Scrolling the About page from top to bottom' },
-              { tag: 'FAQs', title: 'FAQs', p: 'Questions owners ask before they try it.', src: '/case/orderflow-landing/flows/faqs.mp4?v=3', poster: '/case/orderflow-landing/flows/faqs.jpg?v=3', alt: 'Scrolling the FAQs page from top to bottom' },
-            ] },
-          ],
-        },
-        {
-          id: 'leads-to',
-          nav: 'Where it leads',
-          title: 'From the page to a pilot',
-          blocks: [
-            { kind: 'lead', p: 'The page is live at orderflowmm.com. Each pilot ends with the owner and OrderFlow reviewing the results together, using feedback from staff and customers.' },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    title: 'Heizen Supply Chain',
-    name: 'Heizen Discovery Tool',
-    slug: 'heizen-supply-chain',
-    domain: 'Supply Chain',
-    tags: ['Product Design', 'Supply Chain'],
-    desc: 'A discovery tool that gets a Heizen consultant ready for a first client call, in minutes.',
-    short: 'Prep for a first client call.', // one line for More Work
-    art: { img: '/case/heizen-supply-chain/cover.jpg', thumb: '/case/heizen-supply-chain/thumb.jpg', card: '/case/heizen-supply-chain/card.jpg', text: 'Heizen Discovery Tool', color: '#2A2A2A', bg: 'linear-gradient(160deg,#f8f6ef,#efebe2)' },
-    // Same six-phase structure as the Superfine cases. Facts come from the
-    // heizen-supply-chain repo: CLAUDE.md, DECISIONS.md, REDESIGN.md (17 Aug
-    // 2026), AUDIT.md (8 Aug 2026) and the Suvarna mock data. The intro film
-    // uses the product's own Brand theme (cream, graphite, dusty teal).
-    study: {
-      layout: 'story',
-      heading: 'Designing a discovery tool for the minutes before a client call',
-      summary: 'Heizen sells supply chain software to Indian manufacturers. Before a first call, a consultant has a company name and very little time. The Heizen Discovery Tool turns research into what we would build, a thirty-second brief, an operation map, gaps and the questions to ask. I designed it, and Jeet built it.',
-      accent: '#44403c',
-      tags: ['B2B', 'Sales tool', 'Supply Chain'],
-      role: 'Product Designer',
-      scope: ['What to build', 'Research brief', 'Operations map', 'Gaps, Questions, Atlas'],
-      // TODO(Sai): confirm the start date (audit 8 Aug, redesign 17 Aug, target end of Aug 2026).
-      duration: 'Jul to Aug 2026',
-      team: ['Sai, design', 'Aman, Abhilasha, Jeet, feedback', 'Jeet, build'],
-      gallery: [],
-      tools: 'Figma, Claude Code',
-      sections: [
-        {
-          id: 'impact',
-          eyebrow: 'Overview',
-          nav: 'Impact',
-          title: 'Four discovery calls, compressed into one',
-          blocks: [
-            { kind: 'lead', p: 'The tool opens on what Heizen would build for the client, and everything that argues for it is one click away.' },
-            { kind: 'notes', items: [
-              { t: 'Honest numbers', p: 'After a practitioner audit, the headline fell 38%, from ₹14.7 Cr to ₹9.1 Cr a year. It has the advantage of being true.' },
-              { t: 'Less to read', p: 'Words on screen cut from 9,244 to about 5,200. Gaps went from 830 words to 263.' },
-              { t: 'Readable', p: 'A 7:1 contrast floor, for a reader who is not twenty-five.' },
-            ] },
-          ],
-        },
-        {
-          id: 'role',
-          eyebrow: 'Overview',
-          nav: 'My role',
-          illo: 'shipping',
-          blocks: [
-            { kind: 'role', items: [
-              { h: 'Execution', items: ['Every screen and flow', 'The Heizen Brand theme', 'Coded prototype with Claude'] },
-              { h: 'Collaboration', items: ['Feedback from Aman, Abhilasha, Jeet', 'Jeet on the build'] },
-              { h: 'Research', items: ['The consultant’s day before a call', 'A supply chain practitioner audit'] },
-            ] },
-          ],
-        },
-
-        // ---- Understand -------------------------------------------------
-        {
-          id: 'background',
-          eyebrow: 'Understand',
-          group: 'Understand',
-          nav: 'Why this tool',
-          illo: 'research',
-          blocks: [
-            { kind: 'notes', items: [
-              { t: 'Overview', p: 'Heizen’s internal supply chain discovery platform, and a sales tool that happens to be built out of research.' },
-              { t: 'How it starts', p: 'A consultant enters a company, its sector and anyone they know there.' },
-              { t: 'What comes out', p: 'What we would build, a research dossier, an operation map, ranked gaps and call questions.' },
-              { t: 'Objective', p: 'Compress four discovery calls into one.' },
-            ] },
-          ],
-        },
-        {
-          id: 'users',
-          eyebrow: 'Understand',
-          group: 'Understand',
-          nav: 'Target users',
-          blocks: [
-            { kind: 'segments', items: [
-              { h: 'Consultants', illo: 'employee', sub: 'Like Aryan, the archetype', items: ['Minutes before a call', 'Sometimes on a phone', 'Not a supply chain expert'] },
-              { h: 'Investors and clients', illo: 'owner', sub: 'At demos', items: ['Want the point fast', 'Need numbers they can trust', 'Look for proof it worked before'] },
-            ] },
-          ],
-        },
-
-        // ---- Define -----------------------------------------------------
-        {
-          id: 'problems',
-          eyebrow: 'Define',
-          group: 'Define',
-          nav: 'Problem spaces',
-          illo: 'juggle',
-          blocks: [
-            { kind: 'iconlist', items: [
-              { h: 'Overwhelm', p: 'There was a lot of information shown everywhere.' },
-              { h: 'Numbers without a base', p: 'Savings appeared with nothing to compare them to.' },
-              { h: 'Green by default', p: 'Parts of the operation nobody had looked at still looked healthy.' },
-              { h: 'The answer was buried', p: 'What Heizen would actually sell sat somewhere inside a map and a dossier.' },
-            ] },
-          ],
-        },
-        {
-          id: 'audit',
-          eyebrow: 'Define',
-          group: 'Define',
-          nav: 'Practitioner audit',
-          title: 'An audit that cut our own headline',
-          blocks: [
-            { kind: 'lead', p: 'On 8 August a supply chain practitioner went through the numbers. Most of what they found made the tool look less impressive, and more believable.' },
-            { kind: 'table', cols: ['What the audit found', 'What we changed'], rows: [
-              ['The top gap was priced at ₹3.2 Cr, against an AP function of about ₹0.6 Cr', 'Re-priced from the size of the function'],
-              ['Overlapping savings were added together', 'Show gross and net, because savings do not add'],
-              ['Cash, margin and balance sheet money were mixed', 'Name each kind: cost avoided, margin gained, carrying cost released'],
-              ['Unresearched stages showed as green', 'Not looked at gets its own mark'],
-            ] },
-          ],
-        },
-
-        // ---- Explore ----------------------------------------------------
-        {
-          id: 'choices',
-          eyebrow: 'Explore',
-          group: 'Explore',
-          nav: 'Design choices',
-          title: 'Lead with the answer',
-          blocks: [
-            { kind: 'lead', p: 'The first thing a consultant needs from a new client is what we would sell them. Everything else argues for it.' },
-            { kind: 'choices', device: 'browser', items: [
-              { h: 'What to build, first', p: 'Opening a project lands on three ranked builds, each with its value and effort.', src: '/case/heizen-supply-chain/choice-build.jpg', alt: 'What to build: 3 builds worth ₹5.3 Cr a year, ranked, each with effort and past projects' },
-              { h: 'Health and evidence apart', p: 'Colour says how a stage is running. Fill and outline say how much we know.', src: '/case/heizen-supply-chain/choice-map.jpg', alt: 'Operations map, processes under Source, with health colours and evidence marks' },
-              { h: 'Proof it worked before', p: 'Atlas shows which past Heizen project already proves the fix.', src: '/case/heizen-supply-chain/choice-atlas.jpg', alt: 'Atlas: supply chain domains with how many sub-processes Heizen has proven, and the past projects behind them' },
+            { kind: 'lead', p: 'I worked from business requirements supplied by the bank and product team rather than research I conducted myself. The brief focused on everyday merchant tasks: reduce friction in top-ups, make transaction outcomes clear and organise several payment services in one app.' },
+            { kind: 'split', items: [
+              { h: 'One counter app', p: 'Take a payment by QR, top up a phone, pay a bill, give a refund and check the balance from one place.' },
+              { h: 'Faster top-ups', p: 'Keep the task short, make the amount easy to verify and avoid unnecessary choices at the counter.' },
+              { h: 'Clear money states', p: 'Show a summary before confirmation, a clear outcome after it and the same record in History.' },
+              { h: 'Learnable navigation', p: 'Keep the home structure and service locations predictable across repeated visits.' },
             ] },
           ],
         },
         {
           id: 'rules',
-          eyebrow: 'Explore',
-          group: 'Explore',
-          nav: 'Rules on every screen',
+          nav: 'The brief',
+          jumpLabel: 'The brief',
+          title: 'The business brief became three design requirements.',
           blocks: [
-            { kind: 'notes', items: [
-              { t: 'A comparator', p: 'Every number comes with something to compare it to.' },
-              { t: 'A base', p: 'Every price shows what it was worked out from.' },
-              { t: 'Empty is normal', p: 'A blank stage says it hasn’t been looked at, not that it’s fine.' },
-              { t: 'Correct by asking', p: '“Needs correction” opens a prompt to the AI. There is no manual editing.' },
+            { kind: 'lead', p: 'These requirements became the basis for my design decisions and the flow reviews with the product and engineering teams.' },
+            { kind: 'list', items: [
+              'Faster top-ups.',
+              'A status that says what happened to the money.',
+              'Navigation for people new to digital tools.',
             ] },
           ],
         },
         {
-          id: 'ai',
-          eyebrow: 'Explore',
-          group: 'Explore',
-          nav: 'Designing with AI',
-          illo: 'idea',
+          id: 'shift',
+          nav: 'Four decisions',
+          jumpLabel: 'Four decisions',
+          title: 'Four decisions for the counter.',
           blocks: [
-            { kind: 'lead', p: 'I built the prototype with Claude Code, so every review ran on a working tool, and a script checked density, contrast and data after each change.' },
-            { kind: 'notes', items: [
-              { t: 'Ask Helix', p: 'The AI assistant sits in a side panel. Select any text and ask about it.' },
-              { t: 'Checks in the repo', p: 'Scripts count the words on each screen and verify the data still adds up.' },
-              { t: 'These demos', p: 'Recorded from the prototype by a script, not mocked up.' },
+            { kind: 'lead', p: 'Built for the counter: one strong colour, big numbers, plain words. The home is the same on every visit, so a shopkeeper does not have to relearn it.' },
+            { kind: 'split', items: [
+              { h: 'The balance, first', p: 'Then money in and money out. Then the four services. Then the latest transactions. That order does not change.' },
+              { h: 'The amount is the biggest text', p: 'One typeface. On a busy counter the amount is the thing that gets misread. It is the biggest text on every money screen.' },
+              { h: 'Colour means one thing', p: 'MTB red carries the actions and the balance. White everywhere else. Green is money in. Red is money out.' },
+              { h: 'Status is a sentence', p: 'A summary before the confirm, a success that says the customer paid, a receipt to save or share, and the same detail in History.' },
             ] },
+            { kind: 'shot', natural: true, portrait: true, src: '/case/mtb-pay-merchant/home.jpg', alt: 'Merchant app home: account balance in the red card, total in and out, four services, latest transactions and the bottom bar', caption: 'The home, top to bottom: balance, in and out, four services, latest transactions.' },
           ],
         },
-
-        // ---- Test -------------------------------------------------------
         {
-          id: 'redesign',
-          eyebrow: 'Test',
-          group: 'Test',
-          nav: 'Redesign',
-          title: 'Discovery is three jobs, not one screen',
+          id: 'shipped',
+          nav: 'Getting paid',
+          jumpLabel: 'Getting paid',
+          title: 'Both phones say the money moved.',
           blocks: [
-            { kind: 'lead', p: 'After feedback from Aman, Abhilasha and Jeet, I split discovery into the three moments a consultant actually lives through.' },
-            { kind: 'table', cols: ['Stage', 'What the tool gives them'], rows: [
-              ['First call', 'An intro agenda and the questions to open with'],
-              ['Second call', 'Follow-ups by stakeholder, and data requests'],
-              ['Expansion', 'Built before: the closest past projects, side by side'],
-            ] },
-          ],
-        },
-
-        // ---- Ship -------------------------------------------------------
-        {
-          id: 'walkthrough',
-          eyebrow: 'Ship',
-          group: 'Ship',
-          nav: 'Design walkthrough',
-          blocks: [
-            { kind: 'demo', device: 'browser', src: '/case/heizen-supply-chain/web.mp4', poster: '/case/heizen-supply-chain/web.jpg', alt: 'Screen recording of the Heizen Discovery Tool for Suvarna Agro Foods: what to build, research, operations, gaps, questions, Atlas, compare and Ask Helix', steps: [
-              { t: 0.26, text: 'What we’d build' },
-              { t: 5.39, text: 'Research brief' },
-              { t: 10.61, text: 'Operation map' },
-              { t: 19.06, text: 'Gaps and effort' },
-              { t: 27.18, text: 'Questions for the call' },
-              { t: 32.21, text: 'Proven fixes in Atlas' },
-              { t: 37.43, text: 'Built before' },
-              { t: 42.65, text: 'Ask Helix anything' },
-            ] },
-          ],
-        },
-
-        // ---- Improve ----------------------------------------------------
-        {
-          id: 'next',
-          eyebrow: 'Improve',
-          group: 'Improve',
-          nav: 'What’s next',
-          blocks: [
-            { kind: 'notes', items: [
-              { t: 'Make', p: 'The audit found no coverage for manufacturing. That research comes next.' },
-              { t: 'Stable by end of August', p: 'The target for a version the team can take into real calls.' },
+            { kind: 'lead', p: 'A payment now has a summary before the confirm, a success that says the customer paid, a receipt to save or share, and the same detail in History. The customer confirms with a PIN, and both phones show it.' },
+            { kind: 'flowphone', label: 'Getting paid',
+              steps: [
+                { h: '01 · Get paid', ps: ['A payment by QR, at the counter.', 'Start at the shop’s home, scan their QR, and wait while they confirm.'] },
+                { h: '02 · The customer', ps: ['Both phones have to say it.', 'The customer confirms with a PIN. The shop sees that the customer paid.'] },
+                { h: '03 · The record', ps: ['Unclear what happened to the money.', 'The receipt can be saved or shared, and the same detail lands in History.'] },
+                { h: '04 · The next task', ps: ['Each service could have introduced a different pattern.', 'Find it, check the summary, confirm, keep the record—the same sequence across payment tasks.'] },
+              ],
+              items: [
+              { name: 'Scan to Get Paid', src: '/case/mtb-pay-merchant/flows/receive.mp4?v=4', poster: '/case/mtb-pay-merchant/flows/receive.jpg?v=4', alt: 'Merchant app: starting at the shop’s home, scanning a customer’s QR, picking 50,000 MMK, adding a remark, confirming the summary, waiting for the customer, the successful payment and sharing the receipt' },
+              { name: 'Customer Pays by QR', src: '/case/mtb-pay-merchant/flows/pay.mp4', poster: '/case/mtb-pay-merchant/flows/pay.jpg', alt: 'MTB Pay wallet: the customer’s Pay With QR, the shop’s payment request, the summary, entering the PIN, Payment Successful and the payment in History' },
+              { name: 'Set a QR Amount', src: '/case/mtb-pay-merchant/flows/dyn.mp4', poster: '/case/mtb-pay-merchant/flows/dyn.jpg', alt: 'Merchant app: the shop’s QR, Specify Amount, typing 100,000 and the QR showing 100,000 MMK' },
+              { name: 'Fund Out to an Agent', src: '/case/mtb-pay-merchant/flows/fund.mp4', poster: '/case/mtb-pay-merchant/flows/fund.jpg', alt: 'Merchant app: eMoney, scanning a Super Agent’s QR, choosing 500,000, the summary, PIN, SMS code, success and sharing the receipt' },
+              { name: 'Refund a Payment', src: '/case/mtb-pay-merchant/flows/refund.mp4', poster: '/case/mtb-pay-merchant/flows/refund.jpg', alt: 'Merchant app: Refund, searching a transaction number, the payment, typing a reason, the summary, PIN, success and sharing the receipt' },
+              { name: 'Pay a YESC Bill', src: '/case/mtb-pay-merchant/flows/bill.mp4', poster: '/case/mtb-pay-merchant/flows/bill.jpg', alt: 'Merchant app: Pay Bill, Electricity Bill, YESC and barcode, the full bill summary, PIN, success and the bill in History' },
+              { name: 'Phone Top Up', src: '/case/mtb-pay-merchant/flows/topup.mp4', poster: '/case/mtb-pay-merchant/flows/topup.jpg', alt: 'Merchant app: typing a phone number, choosing 1,000, the summary, PIN, success, saving the receipt and History' },
             ] },
           ],
         },
         {
-          id: 'learned',
-          eyebrow: 'Improve',
-          group: 'Improve',
-          nav: 'What I learned',
-          illo: 'reading',
+          id: 'system',
+          nav: 'The system',
+          jumpLabel: 'The system',
+          title: 'A Figma system built from Carbon, adapted for MTB Pay.',
           blocks: [
-            { kind: 'lead', p: 'The best change I made was taking a third of our headline away. A smaller number someone believes sells more than a big one they don’t.' },
+            { kind: 'lead', p: 'I built the Figma design system using Carbon Design System as the structural foundation, then adapted its tokens, components and interaction states for MTB’s brand and mobile payment flows. The library includes colour and type styles, component variants and documentation for usage and properties.' },
+            { kind: 'shot', src: '/case/mtb-pay-merchant/design-system.avif', alt: 'Design system documentation in Figma: style, usage and properties pages for the components', caption: 'Every component carries its states, its usage and a properties page.' },
+          ],
+        },
+        {
+          id: 'result',
+          nav: 'The numbers',
+          jumpLabel: 'The numbers',
+          title: 'What I can show.',
+          blocks: [
+            { kind: 'lead', p: 'The app is live on the App Store and Google Play and is used by 100+ merchants. Faster top-ups and clearer transaction states guided the design; merchant adoption is the product result recorded for this case.' },
+            { kind: 'stats', h: 'In market', items: [
+              { num: '100+', label: 'Merchants using the app' },
+            ] },
           ],
         },
       ],
     },
   },
+  {
+    title: 'Flowy Design System',
+    name: 'Flowy',
+    slug: 'flowy-design-system',
+    domain: 'Design system',
+    tags: ['Design System'],
+    desc: 'A work-in-progress agentic design system for OrderFlow’s guest app and admin, built around shared code, explicit contracts and enforceable rules.',
+    short: 'An agentic design system in progress for two live products.',
+    result: 'WIP · 21 shared components under review',
+    art: { img: '/case/flowy/cover.jpg?v=2', poster: '/case/flowy/cover.jpg?v=2', thumb: '/case/flowy/cover.jpg?v=2', card: '/case/flowy/cover.jpg?v=2', text: 'Flowy', color: '#583207', bg: '#FFFBF7' },
+    study: {
+      layout: 'story',
+      heading: 'Building an agentic design system from two live codebases',
+      summary: 'Flowy is a work-in-progress agentic design system for OrderFlow’s guest app and admin. The products grew as separate codebases, so shared jobs developed different values, components and states. I am turning those live decisions into named tokens, written component contracts, a shared React package and rules that designers, developers, QA and coding agents can all follow. The 21-component Storybook catalog is now under review before product migration begins.',
+      glance: {
+        cols: 2,
+        jumpLabel: 'Overview',
+        items: [
+          { label: 'Problem', value: 'Two live products had no shared source for the correct UI. Hard-coded values, library defaults and separate implementations allowed the same job to drift.' },
+          { label: 'Purpose', value: 'Keep the UI consistent and give the whole product team a shared understanding of how it should work. Explicit contracts let designers, developers, QA and coding agents inspect, use and verify the same system.' },
+          { label: 'Role', value: 'I lead the codebase audit, token naming, component contracts, shared React package, Storybook catalog and governance model.' },
+          { label: 'Collaboration', value: 'I propose rules from the live products. Designer and QA review visual and behavioural accuracy, while engineering checks integration before acceptance.' },
+          { label: 'Current state', value: 'The inventory, tokens, contracts and private package are in place. Twenty-one shared components are being reviewed in Storybook; screen migration has not started.' },
+          { label: 'Principle', value: 'One job, one value. Shared jobs use one contract, while product-specific jobs keep their own component. Consistency does not require both products to look identical.' },
+        ],
+      },
+      accent: '#583207',
+      tags: ['Tokens', 'Components', 'Documentation'],
+      role: 'Product Designer · System Lead',
+      scope: ['Agentic Design System'],
+      timeline: 'Ongoing',
+      team: [],
+      gallery: [],
+      tools: 'React, Storybook',
+      sections: [
+        {
+          id: 'next',
+          nav: 'Next',
+          jumpLabel: 'Next',
+          title: 'The next phase makes the system enforceable.',
+          blocks: [
+            { kind: 'lead', p: 'A catalog alone is documentation. The agentic layer comes from giving people and coding agents the same component contracts, then checking those rules automatically. Once the catalog is accepted, I will turn the agreed decisions into migration and governance controls.' },
+            { kind: 'list', items: [
+              'Designer, engineering and QA accept the visual and behavioural contracts in the catalog.',
+              'Write agent instructions from those contracts and add CI checks for raw colours and components used outside the shared package.',
+              'Create screenshot baselines, list the drifted screens and migrate them one at a time with a visual comparison.',
+              'Require every token or component change to include a pull request and changelog entry.',
+              'Build the Figma library from the accepted names and states so design and code describe the same system.',
+            ] },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    title: 'Poh Poh Digital Wallet',
+    name: 'Poh Poh',
+    slug: 'pohpoh',
+    domain: 'Fintech',
+    tags: ['Product Design', 'Mobile App'],
+    desc: 'A mobile wallet for people in Myanmar to save money or build up gold in smaller amounts.',
+    short: 'A mobile wallet for money and gold savings, refined until all four participants completed six tasks unaided.',
+    result: 'All four participants completed six tasks unaided in the second test.',
+    art: { img: '/case/pohpoh/cover.jpg', card: '/case/pohpoh/cover.jpg', text: 'Poh Poh', color: '#8e281b', bg: '#faeee8' },
+    study: {
+      layout: 'story',
+      overviewNav: 'Project Overview',
+      intro: false,
+      role: 'UX/UI Designer',
+      scope: ['Validated mobile prototype', 'IA, UI and usability testing'],
+      timeline: '2024',
+      metaIndustry: true,
+      glance: {
+        cols: 2,
+        jumpLabel: 'Overview',
+        items: [
+          { label: 'About', value: 'Poh Poh is a mobile-wallet concept for a Myanmar gold shop. It brings money saving, gold saving, withdrawals and transaction history into one place.' },
+          { label: 'Problem', value: 'The study focused on customers who wanted to build savings through small, repeated amounts instead of paying for a larger amount of gold at once.' },
+          { label: 'Status', value: 'A validated high-fidelity prototype. This case ends after two usability-testing rounds; development and market adoption are outside its scope.' },
+          { label: 'Role', value: 'I owned research synthesis, information architecture, wireframes, high-fidelity UI, the usability-testing plan and the design iterations.' },
+          { label: 'Collaboration', value: 'Paing Aung Khant (Matt) and I interviewed participants. The shop explained its gold and transfer workflows; I translated the findings into the product structure and screens.' },
+          { label: 'Result', value: 'In the second round, four participants completed the same six tasks without help. Average task time fell from 19.3 to 12.2 seconds, with a 4.5/5 ease-of-use rating.' },
+        ],
+      },
+      sections: [
+        {
+          id: 'target-user',
+          nav: 'Target user',
+          blocks: [
+            { kind: 'lead', p: 'The study focused on four participants who wanted to save money or gold in smaller amounts. We asked about their existing saving habits, familiar transfer methods and what they needed to trust the outcome of a transaction.' },
+            { kind: 'illustrated-needs', items: [
+              { src: '/case/pohpoh/need-saving-watercolor.webp', p: 'Save gold over time, even when the price is high.' },
+              { src: '/case/pohpoh/need-transfers-watercolor.webp', p: 'Deposit and withdraw money or gold easily.' },
+            ] },
+          ],
+        },
+        {
+          id: 'research',
+          nav: 'Research',
+          jumpLabel: 'Research',
+          blocks: [
+            { kind: 'lead', p: 'We began with an in-person interview at the shop to learn how gold was bought and sold. I then interviewed four participants with Paing Aung Khant (Matt). We asked how they planned savings, moved money and checked what happened after a transfer.' },
+            { kind: 'split', h: 'From findings to decisions' },
+            { kind: 'list', items: [
+              'Familiar wallet transfers reduced the learning curve, so the flow keeps the existing transfer method and lets customers upload payment proof.',
+              'The gold price affected how much people could set aside, so the amount in gold and the amount due in kyats appear together before payment.',
+              'Delivery trust mattered, so a gold withdrawal offers pickup or delivery and shows who will deliver it.',
+              'People needed to confirm what happened after a transfer, so history combines money and gold records with status, filters and a path to support.',
+            ] },
+          ],
+        },
+        {
+          id: 'designing-the-product',
+          nav: 'Designing the product',
+          jumpLabel: 'Decisions',
+          blocks: [
+            { kind: 'lead', p: 'I mapped the findings into six tasks that could be designed and tested end to end.' },
+            { kind: 'list', items: [
+              'Save money.',
+              'Withdraw money.',
+              'Save gold.',
+              'Withdraw gold.',
+              'Edit personal details.',
+              'Find a past transaction and its outcome.',
+            ] },
+            { kind: 'lead', p: 'I used those tasks to structure the information architecture, then developed the wireframes and high-fidelity prototype.' },
+            { kind: 'split', items: [
+              { h: 'Make the transaction checkable', p: 'The prototype shows the recipient, gold and kyat amounts, payment proof and transaction outcome so customers can review what they are doing and what happened next.' },
+              { h: 'Treat account security as an open requirement', p: 'The research raised unauthorised deposits and withdrawals, but this prototype did not validate authentication or authorisation. Before development, the product would need account verification, confirmation for sensitive actions and shop-side access rules.' },
+            ] },
+          ],
+        },
+        {
+          id: 'save-and-withdraw',
+          nav: 'Save and withdraw money or gold',
+          layout: 'aside',
+          blocks: [
+            { kind: 'lead', p: 'Users could move money through a digital wallet. After making a transfer, they uploaded a screenshot as proof.' },
+            { kind: 'split', h: 'Show the transfer steps', p: 'A progress bar showed each transfer step and what users should do next.' },
+            { kind: 'phones', alt: 'Transfer instructions with the wallet account and a copy button', items: [
+              '/case/pohpoh/phones/transfer-2.webp?v=4',
+            ] },
+            { kind: 'split', h: 'Show the price before payment', p: 'The app showed the amount due in kyats before users continued to payment.' },
+            { kind: 'phones', alt: 'Gold amount entry with quick amounts and the number pad', items: [
+              '/case/pohpoh/phones/price-3.webp?v=4',
+            ] },
+            { kind: 'split', h: 'Offer pickup and delivery', p: 'Users could choose pickup or delivery and see who would bring their gold.' },
+            { kind: 'phones', alt: 'Choosing delivery or pickup for a gold withdrawal', items: [
+              '/case/pohpoh/phones/pickup-1.webp?v=4',
+            ] },
+          ],
+        },
+        {
+          id: 'transaction-history',
+          nav: 'Managing transaction history',
+          layout: 'aside',
+          blocks: [
+            { kind: 'lead', p: 'History held past money and gold transactions in one place. A notification told users whether each transaction succeeded or failed.' },
+            { kind: 'split', h: 'Find a past transaction', p: 'Date and transaction filters helped users find a past transaction more quickly.' },
+            { kind: 'phones', alt: 'Transaction history and the date range filter', items: [
+              '/case/pohpoh/phones/history-1.webp?v=4',
+              '/case/pohpoh/phones/history-2.webp?v=4',
+            ] },
+            { kind: 'split', h: 'Get help with a failed transaction', p: 'Users could reach customer support quickly when a transaction needed extra attention.' },
+            { kind: 'phones', alt: 'Transaction alerts and the customer support chat', items: [
+              '/case/pohpoh/phones/support-1.webp?v=4',
+              '/case/pohpoh/phones/support-3.webp?v=4',
+            ] },
+          ],
+        },
+        {
+          id: 'usability-testing',
+          nav: 'Usability testing + improvements',
+          blocks: [
+            { kind: 'lead', p: 'In the first round, four participants attempted the six tasks defined earlier. I recorded where they hesitated, needed help or could not find an action, then used those observations to revise the prototype.' },
+            {
+              kind: 'screen-comparison',
+              h: 'A clearer home screen',
+              before: { src: '/case/pohpoh/compare-home-before.webp?v=2', alt: 'Original wallet home with amounts above balance labels, small action labels and a View all link' },
+              after: { src: '/case/pohpoh/compare-home-after.webp', alt: 'Revised wallet home with labels above amounts, outlined wallet buttons and a dedicated transaction history button' },
+              notes: [
+                { h: 'Balance labels', p: 'The label comes before the amount.', before: [62, 22], after: [28, 17] },
+                { h: 'Wallet actions', p: 'Larger labels and outlined buttons make the actions easier to see.', before: [74, 61], after: [29, 55] },
+                { h: 'Transaction history', p: 'A labelled button makes the history easier to find.', before: [78, 67], after: [71, 69] },
+              ],
+            },
+            {
+              kind: 'screen-comparison',
+              h: 'Clearer transfer steps',
+              before: { src: '/case/pohpoh/compare-transfer-before.webp?v=2', alt: 'Original gold transfer screen with a thin progress line and the amount above the receiving account' },
+              after: { src: '/case/pohpoh/compare-transfer-after.webp', alt: 'Revised gold transfer screen with a stronger progress line, a highlighted receiving account and the totals below it' },
+              notes: [
+                { h: 'Progress', p: 'A stronger line and shorter labels make the two steps clearer.', before: [72, 19], after: [29, 18] },
+                { h: 'Receiving account', p: 'The highlighted account moves above the gold and kyat amounts.', before: [75, 56], after: [27, 41] },
+                { h: 'Amount due', p: 'The gold amount and the price sit together below the account.', before: [69, 35], after: [32, 78] },
+              ],
+            },
+            {
+              kind: 'screen-comparison',
+              h: 'Key actions stand out',
+              before: { src: '/case/pohpoh/compare-history-before.webp?v=2', alt: 'Original transaction history with lightly outlined filter buttons' },
+              after: { src: '/case/pohpoh/compare-history-after.webp', alt: 'Revised transaction history with solid orange date and transaction type buttons' },
+              notes: [
+                { h: 'History filters', p: 'Solid buttons make the date and transaction type filters easier to spot.', before: [70, 18], after: [29, 18] },
+              ],
+            },
+          ],
+        },
+        {
+          id: 'second-round-testing',
+          nav: 'Second round of user testing',
+          jumpLabel: 'Result',
+          blocks: [
+            { kind: 'lead', p: 'After the changes, a second round tested the same six tasks with four participants. All four completed every task without assistance.' },
+            { kind: 'stats', items: [
+              { num: '100%', label: 'Task completion without help' },
+              { num: '12.2 s', label: 'Average time on task, down from 19.3 s' },
+              { num: '4.5/5', label: 'Ease-of-use rating' },
+            ] },
+          ],
+        },
+        {
+          id: 'takeaways',
+          nav: 'Takeaways',
+          blocks: [
+            { kind: 'split', items: [
+              { h: 'Design for the person making the transfer', p: 'People need to know what they will pay, what proof to send and where to check the outcome.' },
+              { h: 'Test again after making changes', p: 'Watching people use the prototype helped me see where the screens needed to make those answers clearer.' },
+              { h: 'Learn how money moves', p: 'Understanding the balance, security checks and transfer steps helped me see what a wallet needs to show at each point.' },
+            ] },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    title: 'UZ',
+    name: 'UZ',
+    slug: 'uz-branding',
+    domain: 'Visual Identity',
+    tags: ['Visual Identity'],
+    desc: 'A premium womenswear identity: the initials as one mark, four colours, and the same rules from the tag to the shop.',
+    short: 'Identity for a premium womenswear label.',
+    result: 'One mark, from the tag to the shop',
+    art: { img: '/case/uz-branding/cover.jpg', poster: '/case/uz-branding/logo-motion-v8.jpg', video: '/case/uz-branding/logo-motion-v8.mp4', thumb: '/case/uz-branding/cover.jpg', card: '/case/uz-branding/cover.jpg', text: 'UZ', color: '#F7EEEC', bg: '#C48A93' },
+    study: {
+      layout: 'story',
+      ref: true,
+      heading: 'Made to move with you',
+      summary: 'UZ is a premium womenswear label for adult women. The identity is built from one mark, four colours and a short set of rules, applied the same way from the tag to the shopfront.',
+      accent: '#C48A93',
+      tags: ['Identity', 'Colour', 'Packaging'],
+      role: 'Brand Designer',
+      scope: ['Logo, colour, applications'],
+      timeline: '2026',
+      team: [],
+      gallery: [],
+      tools: 'Figma',
+      sections: [
+        {
+          id: 'brief',
+          nav: 'The brief',
+          title: 'Soft, never girlish',
+          blocks: [
+            { kind: 'lead', p: 'UZ is a premium womenswear label for the Myanmar market, aimed at women who prefer understated, long-wearing pieces over trend-led or girlish styling. Premium means good fabric and careful finishing; feminine means soft lines without decorative excess. The brief was to set those qualities into rules that could carry from a garment tag to a shopfront.' },
+            { kind: 'split', cols: 3, items: [
+              { h: 'Price segment', p: 'Premium womenswear, expressed through material quality, finishing and restraint rather than loud luxury cues.' },
+              { h: 'Customer', p: 'Women looking for polished, feminine clothes they can return to for years, rather than pieces tied to one short trend.' },
+              { h: 'Competitive frame', p: 'Quieter than trend-heavy boutique branding and less formal than traditional luxury. UZ needed to feel contemporary, soft and lasting.' },
+            ] },
+            { kind: 'pillars', items: [
+              { title: 'Premium', line: 'Good fabric, careful finishing', video: '/case/uz-branding/id-premium.mp4', poster: '/case/uz-branding/id-premium.jpg', alt: 'Close-up of a sewing needle stitching cream linen, the seam building stitch by stitch' },
+              { title: 'Feminine', line: 'Soft lines, never girlish', video: '/case/uz-branding/id-feminine.mp4', poster: '/case/uz-branding/id-feminine.jpg', alt: 'Dusty rose silk drifting and folding in slow waves' },
+              { title: 'Made to last', line: 'Worn for years, not a season', video: '/case/uz-branding/id-lasting.mp4', poster: '/case/uz-branding/id-lasting.jpg', alt: 'Hands smoothing a tailored jacket flat on a pale counter' },
+            ] },
+          ],
+        },
+        {
+          id: 'mark',
+          nav: 'The mark',
+          title: 'Only the initials',
+          blocks: [
+            { kind: 'lead', p: 'I explored wordmark-only directions, separate fashion symbols and monograms built from the initials. The mark needed to feel distinctive without decoration, remain recognisable without the full name and work from a small woven label to a shop sign. The joined UZ monogram met those requirements most directly.' },
+            { kind: 'split', cols: 2, items: [
+              { h: 'Selection criteria', p: 'The U and Z had to remain identifiable, work in one colour, hold together at small sizes and feel quiet enough to sit beside the clothes.' },
+              { h: 'Refining the form', p: 'I made the U taller, stepped the Z downward and adjusted their overlap until the two letters read as one gesture without closing the negative space.' },
+              { h: 'Checking the smallest use', p: 'The icon was checked at profile-picture and woven-label scale, where fine details disappear first. The simplified silhouette stayed recognisable.' },
+              { h: 'Building the variants', p: 'Primary carries the brand alone; stacked adds the name for tags and packaging; horizontal fits websites and signs; the icon handles the smallest square spaces.' },
+            ] },
+          ],
+        },
+        {
+          id: 'system',
+          nav: 'Colour and type',
+          title: 'Four colours, two families',
+          blocks: [
+            { kind: 'lead', p: 'Four colours, and nothing outside them. Petal carries most surfaces, Blush takes the panels, Dusty Rose the covers and bags, and Mulberry signs everything. Cormorant Garamond sets the headlines; Jost does the body and labels.' },
+            { kind: 'shot', src: '/case/uz-branding/use-18-lookbook-v9.jpg', alt: 'Lookbook spread with a model against a tall window, the facing page carrying the UZ monogram above the Burmese headline သင့်နှင့်အတူ လှုပ်ရှားရန် and a two-line paragraph' },
+          ],
+        },
+        {
+          id: 'languages',
+          nav: 'Two languages',
+          title: 'English and Burmese together',
+          blocks: [
+            { kind: 'lead', p: 'Both languages look calm and equal. The English note sets its greeting in a serif and its body in a quiet sans; the Burmese note takes the same card with more line spacing, no italics and no tracking.' },
+            { kind: 'bilingual',
+              en: {
+                greet: 'Dear you,',
+                body: 'Thank you for choosing UZ. This piece was cut and finished with care, to move with you softly, and to stay with you for years to come.',
+              },
+              my: {
+                greet: 'မင်္ဂလာပါ',
+                body: 'UZ ကို ရွေးချယ်ပေးလို့ ကျေးဇူးတင်ပါတယ်။ ဒီအထည်လေးကို အချိန်ယူ ဂရုတစိုက် ချုပ်လုပ်ထားပါတယ်။ ဝတ်ဆင်တိုင်း သင့်နေ့တစ်နေ့ကို ပိုပျော်စေဖို့ လုပ်ပေးချင်ပါတယ်။',
+              },
+              notes: [
+                { label: 'Burmese', value: 'More line spacing' },
+                { label: 'Burmese', value: 'No italics, no tracking' },
+                { label: 'The name', value: 'UZ stays in Latin' },
+                { label: 'Per side', value: 'One language only' },
+              ] },
+          ],
+        },
+        {
+          id: 'print',
+          nav: 'Print and packaging',
+          title: 'The tag, the label, the box',
+          blocks: [
+            { kind: 'lead', p: 'Every piece leaves with a thank-you tag, a woven label at the neck and a cotton dust bag. The box is Dusty Rose outside, with the pattern on the tissue inside. The pattern is never used on the street.' },
+            { kind: 'shot', natural: true, src: '/case/uz-branding/use-02-tag-v2.jpg', alt: 'Dusty Rose and ivory thank-you tags: the UZ mark blind-embossed on the front, a handwritten-style note and QR code on the back' },
+            { kind: 'shot', src: '/case/uz-branding/use-19-invitation.jpg', alt: 'The invitation and its Dusty Rose envelope' },
+          ],
+        },
+        {
+          id: 'space',
+          nav: 'In the city',
+          title: 'The shopfront',
+          blocks: [
+            { kind: 'lead', p: 'Outside, the brand goes quiet: a Dusty Rose fascia, one photograph in the window, and the mark on the glass. That is the whole shopfront — nothing else needed.' },
+            { kind: 'shot', src: '/case/uz-branding/env-12-shopfront.jpg', alt: 'The shopfront at dusk, warm light inside and the mark on the glass' },
+          ],
+        },
+        {
+          id: 'digital',
+          nav: 'Digital',
+          title: 'Quieter on screen',
+          blocks: [
+            { kind: 'lead', p: 'On the phone and on the web, the layout keeps the same restraint. The clothes lead; the mark holds the corner.' },
+            { kind: 'duo', images: [
+              { src: '/case/uz-branding/dig-09-profile.jpg', alt: 'The Instagram profile on a phone, lying on blush silk', crop: '50% 50%' },
+              { src: '/case/uz-branding/dig-10-story.jpg', alt: 'Three story posts: the collection, the message and the shop', crop: '50% 50%' },
+            ] },
+            { kind: 'shot', src: '/case/uz-branding/dig-11-website.jpg', alt: 'The website on a laptop, the new collection in the hero' },
+          ],
+        },
+      ],
+    },
+  },
+
 ]
 
-// The three main projects, shown as large cards at the top of the home page.
-export const HOME_WORK = ['orderflow', 'superfine-employee', 'mtb-pay-merchant']
-// The fan of cards in the home page's More Work card; the middle one sits in front.
-export const MORE_WORK = ['orderflow-landing', 'sfk-driver-app', 'merchant-experience']
+// Project order on the home page and in the case study pager.
+export const HOME_WORK = ['orderflow', 'superfine-employee', 'flowy-design-system', 'pohpoh', 'mtb-pay-merchant', 'uz-branding']
+export const MORE_WORK = []
 
 // Testimonials on the home page. Use real quotes only, with the person's
 // permission. `photo` is optional (initials show otherwise), e.g.
@@ -1244,6 +1020,12 @@ export const TESTIMONIALS = [
     name: 'Sheldon Dcosta',
     role: 'Senior Product Manager, Heizen',
     photo: '/people/sheldon-dcosta.jpg',
+  },
+  {
+    quote: 'Sai Myo Thu is a creative and detail-oriented designer. He listens well, contributes fresh ideas, and collaborates effectively.',
+    name: 'Aung Kaung Myat',
+    role: 'Design Lead, Dinger',
+    photo: '/people/aung-kaung-myat.jpg',
   },
   {
     quote: 'Sai turned a messy ordering process into something our staff understood on day one. He spent time on the floor with us before he designed a single screen, and it shows.',
@@ -1284,10 +1066,10 @@ export const OTHERS_INTRO = {
 // About page.
 export const ABOUT = {
   // One entry per line.
-  headline: ['I design with a founder’s mindset:', 'understand the people and the business first,', 'then make it simple to use.'],
+  headline: ['Understand the people and the business first,', 'then make it simple to use.'],
   bio: [
-    'I’m 23, co-founder of OrderFlow, helping F&B businesses run ordering end to end, and product designer at Heizen. I care about clear systems, honest interfaces and design that earns its place in the business.',
-    'I started in 2023 making social, print and campaign visuals, and got curious about the screens behind the brands. In 2024 I moved into product UI and learned to design flows, not just screens. In 2025 I co-founded OrderFlow, and started seeing design as part of the business.',
+    'I’m 23, a product designer at Heizen. I design OrderFlow, the ordering system cafés in Myanmar use from table to kitchen. I believe less is more: clear communication and sound judgement help me decide what to keep and what to cut.',
+    'I started making social, print and campaign visuals in 2023, moved into product UI in 2024, and joined Heizen in 2025. I start with a user or business problem, find a solution before drawing screens, and work closely with the team to build it, writing code when needed.',
   ],
   // One entry per line.
   experienceLead: ['My Journey by Age'],
@@ -1298,14 +1080,14 @@ export const ABOUT = {
     // Placeholder copy; replace with your own.
     2023: { text: 'Started as a graphic designer at YER Myanmar, making social, print and campaign visuals. Learned layout, type and real deadlines, and got curious about the screens behind brands.' },
     2024: { text: 'Moved into product as a UI designer at Ultimate Solutions, then joined Dinger. Learned to design flows, not just screens, and why clear structure matters.' },
-    2025: { text: 'A busy year: Prime Ace Limousine, more work at Dinger, then joining Heizen and co-founding OrderFlow. Started seeing design as part of the business.' },
+    2025: { text: 'A busy year: Prime Ace Limousine, more work at Dinger, then joining Heizen and designing OrderFlow. Started seeing design as part of the business.' },
     2026: { text: 'Leading product design at Heizen while building OrderFlow for F&B businesses. Most days sit between strategy, systems and shipping.' },
   },
   // Roles (any order). `start`/`end` are 'YYYY-MM'; `end: null` means present.
   // `logo` is optional (falls back to the company initial on a tile).
   // `note` (optional) shows when the row is opened.
   experience: [
-    { co: 'OrderFlow', role: 'Co-Founder', start: '2025-11', end: null, logo: '/logos/orderflow-icon.png', note: 'Building QR table ordering for cafés, restaurants and tea houses in Myanmar. I lead product and design.' },
+    { co: 'OrderFlow', role: 'Product Designer', start: '2025-11', end: null, logo: '/logos/orderflow-icon.png', note: 'QR table ordering for cafés, restaurants and tea houses in Myanmar. I lead product and design.' },
     { co: 'Heizen', role: 'Product Designer', start: '2025-11', end: '2026-11', logo: '/logos/heizen.png', note: 'Leading product design. Most days sit between strategy, systems and shipping.' },
     { co: 'Prime Ace Limousine', role: 'UI/UX Designer', start: '2025-09', end: '2025-11', logo: '/logos/prime-ace.png' },
     { co: 'Dinger', role: 'UX/UI Designer', start: '2024-12', end: '2025-12', logo: '/logos/dinger-logo.png', note: 'Learned to design flows, not just screens, and why clear structure matters.' },
@@ -1344,17 +1126,6 @@ export const ABOUT = {
           { word: 'Test', line: 'Put a prototype in real hands and cut what confuses.' },
           { word: 'Ship', line: 'Build it side by side with engineering.' },
           { word: 'Improve', line: 'Measure what people really do, then go again.' },
-        ],
-      },
-      {
-        id: 'entrepreneur',
-        label: 'Sai the Founder',
-        steps: [
-          { word: 'Think freely', line: 'No boundaries at the start. Every idea is allowed.' },
-          { word: 'Find the problem', line: 'Pick one that is truly worth solving.' },
-          { word: 'Research', line: 'Go to the market and listen before building.' },
-          { word: 'Prototype', line: 'Make it real fast and test it with people.' },
-          { word: 'Prove it small', line: 'Win the smallest thing before the big bet.' },
         ],
       },
     ],

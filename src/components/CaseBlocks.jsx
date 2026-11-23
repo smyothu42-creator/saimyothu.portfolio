@@ -2,8 +2,6 @@
 // they stay sharp at any size and can be edited straight from data.js. Colour
 // comes from the study's `accent`, exposed on the article as --acc.
 
-import { Person } from './Illos'
-
 // Three-up summary: problem → what I did → outcome. Sits near the top so a
 // reviewer gets the whole story in one scroll.
 export function TLDR({ items }) {
@@ -362,7 +360,6 @@ export function JourneyMap({ title, stages, users }) {
             return (
               <div className="jm-row" key={u.name}>
                 <div className="jm-user">
-                  {u.illo ? <Person name={u.illo} className="jm-person" /> : null}
                   <strong>{u.name}</strong>
                 </div>
                 <div className="jm-track" style={cols}>

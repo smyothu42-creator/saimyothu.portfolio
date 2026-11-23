@@ -1,9 +1,18 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useDragPill } from '../useDragPill'
-import { EMAIL, SOCIALS, ABOUT, CONTACT_HINTS } from '../data'
+import { EMAIL, SOCIALS, ABOUT } from '../data'
 
 // Shared building blocks for the glass-card layout: the card itself, pill
 // buttons, the round back button, line icons and the "Let's connect" card.
+
+export function StageHint({ children }) {
+  return (
+    <p className="em-stage-line">
+      <img className="em-stage-illustration" src="/illustrations/watercolor-project-hover-green.webp" alt="" width="1086" height="724" />
+      {children}
+    </p>
+  )
+}
 
 export function Card({ as: Tag = 'section', className = '', children, ref, ...rest }) {
   return (
@@ -102,17 +111,21 @@ export function Socials({ onHint }) {
   )
 }
 
-// Closing card on most pages.
+// Closing contact line. Text links, the same destinations as the contact page.
 export function ConnectCard() {
-  const [hint, setHint] = useState(null)
-  const canHover = !window.matchMedia?.('(hover: none)').matches
-  const text = CONTACT_HINTS[hint] || (canHover ? CONTACT_HINTS.rest : CONTACT_HINTS.restTouch)
   return (
-    <Card className="sv-connect">
-      <h2 className="sv-connect-title">Let's talk over coffee</h2>
-      <Socials onHint={setHint} />
-      <p className={'sv-fan-hint sv-connect-note' + (hint ? '' : ' is-rest')} key={text}>{text}</p>
-    </Card>
+    <section className="rv-close" id="contact">
+      <p className="rv-kicker">Contact</p>
+      <a className="rv-email" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+      <ul className="rv-contact-list">
+        {SOCIALS.filter((s) => s.href && s.href !== '#').map((s) => (
+          <li key={s.label}>
+            <a href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a>
+          </li>
+        ))}
+        <li><a href="/contact">All contact</a></li>
+      </ul>
+    </section>
   )
 }
 

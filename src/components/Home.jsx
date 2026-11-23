@@ -1,292 +1,320 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
-import { ABOUT, CASES, HOME_WORK, MORE_WORK, PROFILE } from '../data'
-import { Card, Icon, ConnectCard } from './ui'
-import Media from './Media'
-import { avif } from '../avif'
-import Testimonials from './Testimonials'
+import { HOME_WORK, ORDERFLOW_URL, PROFILE } from '../data'
+import { StageHint } from './ui'
 
-const prefersReduced = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-
-export default function Home() {
-  return (
-    <>
-      <Intro />
-      <MainWork />
-      <Portfolio />
-      <Testimonials />
-      <AboutTeaser />
-      <ConnectCard />
-    </>
-  )
+export const HOME_PROJECTS = {
+  orderflow: {
+    year: '2026',
+    line: '1,300+ orders in 42 days',
+    metric: 'QR ordering for cafés, with the till left in place',
+    kind: 'pos',
+    pos: '/case/orderflow/feat/a-qr.mp4',
+  },
+  'mtb-pay-merchant': { year: '2025', line: '100+ merchants on the App Store', metric: 'A wallet for shopkeepers at a busy counter', kind: 'phone', src: '/case/mtb-pay-merchant/flows/receive.mp4' },
+  'flowy-design-system': { year: 'Ongoing', line: 'Flowy an agentic design system', metric: 'Catalog in review, screens not moved yet', kind: 'flowy', src: '/case/flowy/cover.jpg?v=2' },
+  pohpoh: { year: '2024', line: 'Gold wallet with 4.5/5 Ease-of-use rating', metric: 'Save money or build up gold in smaller amounts', kind: 'phone', src: '/case/pohpoh/hover.mp4?v=4', poster: '/case/pohpoh/hover-poster.webp' },
+  'superfine-employee': { year: '2026', line: '$173K in lunch orders in 6 weeks', metric: 'Office meal ordering with the allowance up front', kind: 'phone', src: '/case/superfine-employee/flows/m-order.mp4' },
+  'uz-branding': {
+    year: '2026',
+    line: 'A womenswear identity',
+    metric: 'A premium identity carried from the tag to the shopfront',
+    kind: 'brand',
+    mark: '/case/uz-branding/mark-white.png',
+    src: '/case/uz-branding/hover-photo.jpg?v=5',
+  },
+  'orderflow-landing': {
+    line: 'OrderFlow Landing Page',
+    metric: 'The website for OrderFlow’s QR ordering system',
+    year: '2026',
+    kind: 'external',
+    href: ORDERFLOW_URL,
+  },
 }
 
-// Invitation to the About page: the whole card is the link. Three real photos
-// sit like a small hand of cards, echoing More Work, and fan out on hover.
-const ABOUT_PHOTOS = [
-  { src: PROFILE.hero.src, position: 'center 40%' },
-  { src: avif('/sai-team.jpg'), position: '0% center' },
-  { src: ABOUT.photos[0].src, position: '50% center' },
-]
+const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+const yearTimelines = new WeakMap()
 
-function AboutTeaser() {
-  return (
-    <Card as="a" href="/about" className="sv-teaser" aria-label="About me: read my story">
-      <div className="sv-teaser-text">
-        <h2 className="sv-teaser-title">The person behind the work.</h2>
-        <span className="sv-teaser-go">
-          Read my story
-          <span className="sv-teaser-arrow"><Icon name="arrowUpRight" size={17} stroke={2} /></span>
-        </span>
-      </div>
-      <div className="sv-teaser-fan" aria-hidden="true">
-        {ABOUT_PHOTOS.map((p) => (
-          <i key={p.src} style={{ backgroundImage: `url(${p.src})`, backgroundPosition: p.position }} />
-        ))}
-      </div>
-    </Card>
-  )
+function paintYear(row, on, still) {
+  let timeline = yearTimelines.get(row)
+
+  if (!timeline) {
+    const year = row.querySelector('.em-row-year')
+    timeline = gsap.timeline({ paused: true })
+      .to(year.querySelector('.em-row-year-text'), {
+        yPercent: -110,
+        duration: 0.42,
+        ease: 'power2.inOut',
+      }, 0)
+      .to(year.querySelector('.em-row-arrow'), {
+        y: 0,
+        duration: 0.42,
+        ease: 'power2.inOut',
+      }, 0)
+    yearTimelines.set(row, timeline)
+  }
+
+  if (still) timeline.progress(on ? 1 : 0).pause()
+  else if (on) timeline.play()
+  else timeline.reverse()
 }
 
-// The whole card opens the About page: a link stretched over it (the
-// OrderFlow / Heizen links sit above it and stay clickable). On hover the
-// card lifts, the photo zooms a touch and the arrow chip opens to "About me".
-function Intro() {
-  return (
-    <Card className="sv-intro is-link">
-      <a className="sv-card-link" href="/about" aria-label="About me" />
-      {/* Arrow only by default; "About me" slides out when the card is hovered. */}
-      <span className="sv-intro-hint" aria-hidden="true">
-        <span className="sv-intro-hint-text"><span>About me</span></span>
-        <Icon name="arrowUpRight" size={16} stroke={2} />
-      </span>
-      <div className="sv-intro-id">
-        <div
-          className="sv-avatar"
-          style={{
-            backgroundImage: `url(${PROFILE.portrait})`,
-            backgroundSize: PROFILE.avatar?.size,
-            backgroundPosition: PROFILE.avatar?.position,
-          }}
-          role="img"
-          aria-label={PROFILE.name}
-        />
-        <div>
-          <h1 className="sv-name">{PROFILE.name}</h1>
-          <p className="sv-intro-note">
-            {PROFILE.signoff}.{' '}
-            {PROFILE.note.map((part, i) =>
-              typeof part === 'string' ? part : (
-                <a key={i} href={part.href} target="_blank" rel="noopener noreferrer">{part.text}</a>
-              ),
-            )}
-            .
-          </p>
-        </div>
-      </div>
-    </Card>
-  )
-}
-
-// More Work: more projects (MORE_WORK in data.js), held like a hand of cards:
-// every card turns around one pivot point well below the stack, so turning
-// moves it along a gentle arc. At rest the hand is nearly closed; hovering
-// opens it (GSAP): the side cards spring out one after the other with a
-// small overshoot, the front card rises, and the shadows deepen. Hovering
-// one card glides it out along its own radius and names it
-// below. Every card opens its case study.
-const ANGLE_REST = 6 // degrees from the centre to the outer cards at rest
-const ANGLE_OPEN = 16 // degrees from the centre to the outer cards when open
-const ANGLE_OPEN_NARROW = 8 // tablets and phones: less room either side
-const LIFT = 10 // px a hovered card slides out along its radius
-const RISE = 14 // px the front card rises when the hand opens
-const SHADOW_REST = '0 28px 50px -18px rgba(0, 0, 0, 0.75)'
-const SHADOW_OPEN = '0 44px 70px -22px rgba(0, 0, 0, 0.85)'
-
-// The hovered card: a deeper shadow.
-const SHADOW_LIFTED = '0 44px 70px -18px rgba(0, 0, 0, 0.9)'
-
-function pose(cards, open, hover, instant, opening) {
-  const still = instant || prefersReduced()
-  const wide = window.matchMedia('(min-width: 1060px)').matches
-  const spread = wide ? ANGLE_OPEN : ANGLE_OPEN_NARROW
-  // Three kinds of move: opening the hand (springy, side cards staggered),
-  // moving between cards while open (one smooth glide, no overshoot), and
-  // closing (eased back together).
-  const moving = open && !opening
-  const mid = (cards.length - 1) / 2
-  cards.forEach((el, i) => {
-    if (!el) return
-    const side = i - mid // negative left, positive right
-    const front = i === Math.floor(mid) // the card on top of the closed hand
-    const inner = Math.abs(side) < 1
-    const lifted = hover === i
-    const angle = (side / Math.max(mid, 1)) * (open ? spread : ANGLE_REST) // three or more fill the same arc; two stay close
-    const delay = still || !opening ? 0 : Math.abs(side) * 0.07
-    // Stacking order changes at once, so the card coming up never slides
-    // under its neighbour halfway through.
-    gsap.set(el, { zIndex: lifted ? 9 : 8 - Math.abs(i - Math.floor(mid)) })
-    gsap.to(el, {
-      rotate: angle,
-      y: (open && inner ? -RISE : 0) + (lifted ? -LIFT : 0),
-      boxShadow: lifted ? SHADOW_LIFTED : open ? SHADOW_OPEN : SHADOW_REST,
-      filter: `brightness(${!open && !front ? 0.65 : open && hover >= 0 && !lifted ? 0.72 : 1})`,
-      duration: still ? 0 : opening ? 0.85 : moving ? 0.7 : 0.6,
-      delay,
-      ease: opening ? 'back.out(1.6)' : moving ? 'expo.out' : 'power3.inOut',
-      // Kill every running or still-delayed tween on this card first, so an
-      // older (delayed) open can never start later and undo a close.
-      overwrite: true,
-    })
+function paintRow(row, on) {
+  const still = reduceMotion()
+  gsap.to(row.querySelector('.em-row-body'), { x: on && !still ? 6 : 0, duration: still ? 0 : 0.45, ease: 'power2.out', overwrite: 'auto' })
+  const textMotion = {
+    y: on && !still ? -2 : 0,
+    duration: still ? 0 : 0.45,
+    ease: on ? 'back.out(1.4)' : 'power2.out',
+    overwrite: 'auto',
+  }
+  gsap.to(row.querySelector('.em-row-index'), { ...textMotion, scale: on && !still ? 1.12 : 1 })
+  gsap.to(row.querySelector('.em-row-name'), { ...textMotion, scale: on && !still ? 1.12 : 1 })
+  gsap.to(row.querySelector('.em-row-line'), { ...textMotion, scale: on && !still ? 1.06 : 1 })
+  gsap.to(row.querySelector('.em-row-index'), {
+    color: on ? '#202833' : '#8a8a8e',
+    duration: still ? 0 : 0.3,
+    ease: 'sine.out',
+    overwrite: 'auto',
   })
+  paintYear(row, on, still)
 }
 
-// The three main projects, shown large with their name and one result, so
-// nothing depends on hovering.
-function MainWork() {
-  const items = HOME_WORK.map((slug) => CASES.find((c) => c.slug === slug)).filter(Boolean)
-  return items.map((c, i) => (
-    <Card as="a" key={c.slug} className="sv-proj" href={`/work/${c.slug}`}>
-      {/* the first card is the page's main image: load it right away */}
-      <Media art={c.art.thumb ? { ...c.art, img: c.art.thumb } : c.art} title={c.title} eager={i === 0} />
-      <div className="sv-proj-foot">
-        <div>
-          <h2 className="sv-proj-title">{c.title}</h2>
-          {c.result && <p className="sv-proj-result">{c.result}</p>}
-        </div>
-        <span className="sv-proj-arrow"><Icon name="arrowRight" size={30} stroke={1.8} /></span>
-      </div>
-    </Card>
+function Note({ parts }) {
+  return parts.map((part, i) => (
+    typeof part === 'string'
+      ? <span key={i}>{part}</span>
+      : (
+        <a key={i} href={part.href}>{part.text}</a>
+      )
   ))
 }
 
-function Portfolio() {
-  const items = MORE_WORK.map((slug) => CASES.find((c) => c.slug === slug)).filter(Boolean)
-  const root = useRef(null)
-  const cards = useRef([])
-  const [open, setOpen] = useState(false)
-  const [hover, setHover] = useState(-1)
-  const first = useRef(true)
-
-  const wasOpen = useRef(false)
-  useGSAP(() => {
-    pose(cards.current, open, hover, first.current, open && !wasOpen.current)
-    wasOpen.current = open
-    first.current = false
-  }, { scope: root, dependencies: [open, hover] })
-
-  const close = () => { setOpen(false); setHover(-1) }
-  const shown = hover >= 0 ? items[hover] : null
-
-  // Open state follows the real pointer, not enter/leave events: the page
-  // can scroll under a still mouse (no leave event fires) and a click leaves
-  // focus on a card. So the pointer is tracked across the whole page, what
-  // sits under it is re-checked on every move and scroll, the hand closes
-  // when the window loses focus, and focus opens it only for keyboard users.
-  const last = useRef(null)
+function Screen({ src, poster, play }) {
+  const ref = useRef(null)
   useEffect(() => {
-    const keyboard = () => root.current?.contains(document.activeElement) && document.activeElement.matches(':focus-visible')
-    // Only the cards themselves open the hand. Between cards (or in the empty
-    // space around them) it waits a moment before closing, so sliding across
-    // a gap doesn't flicker; anywhere else it closes at once.
-    let grace = 0
-    const check = () => {
-      if (keyboard()) return
-      const p = last.current
-      const el = p && document.elementFromPoint(p.x, p.y)
-      const card = el && root.current?.contains(el) ? el.closest('.sv-fan-card') : null
-      if (card) {
-        clearTimeout(grace)
-        grace = 0
-        setOpen(true)
-        setHover(Number(card.dataset.i))
-        return
-      }
-      setHover(-1)
-      if (el && root.current?.contains(el)) {
-        if (!grace) grace = setTimeout(() => { grace = 0; close() }, 220)
-      } else {
-        clearTimeout(grace)
-        grace = 0
-        close()
-      }
+    const v = ref.current
+    if (!v) return undefined
+    if (!play || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      v.pause()
+      return undefined
     }
-    let raf = 0
-    const later = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; check() }) }
-    const onMove = (e) => {
-      if (e.pointerType === 'touch') return
-      last.current = { x: e.clientX, y: e.clientY }
-      later()
+    const go = () => v.play().catch(() => {})
+    if (v.readyState >= 2) go()
+    else v.addEventListener('canplay', go, { once: true })
+    return () => v.removeEventListener('canplay', go)
+  }, [play, src])
+  return <video ref={ref} src={src} poster={poster} muted loop playsInline preload="auto" aria-hidden="true" />
+}
+
+function Phone({ src, poster, play }) {
+  return (
+    <div className="st-device em-phone">
+      <div className="st-device-screen">
+        <Screen src={src} poster={poster} play={play} />
+        <span className="st-device-island" />
+      </div>
+    </div>
+  )
+}
+
+function Pos({ src, play }) {
+  return (
+    <div className="em-pos">
+      <div className="em-pos-body">
+        <div className="em-pos-screen"><Screen src={src} play={play} /></div>
+        <div className="em-pos-chin"><img src="/logos/orderflow.png" alt="" /></div>
+      </div>
+    </div>
+  )
+}
+
+// Card bounds in the 1600 × 1200 Flowy cover, inset to exclude its backdrop and shadows.
+const flowyCards = [
+  [70, 216, 888, 428],
+  [994, 216, 536, 428],
+  [70, 680, 748, 450],
+  [854, 680, 328, 450],
+  [1218, 680, 312, 450],
+]
+const flowyBoard = { x: 70, y: 216, width: 1460, height: 914 }
+
+function FlowyCards({ src }) {
+  return flowyCards.map(([x, y, width, height]) => (
+    <span key={`${x}-${y}`} className="em-flowy-card" style={{
+      left: `${100 * (x - flowyBoard.x) / flowyBoard.width}%`,
+      top: `${100 * (y - flowyBoard.y) / flowyBoard.height}%`,
+      width: `${100 * width / flowyBoard.width}%`,
+      height: `${100 * height / flowyBoard.height}%`,
+      backgroundImage: `url("${src}")`,
+      backgroundSize: `${160000 / width}% ${120000 / height}%`,
+      backgroundPosition: `${100 * x / (1600 - width)}% ${100 * y / (1200 - height)}%`,
+    }} />
+  ))
+}
+
+export function ProjectShot({ item, on }) {
+  if (item.kind === 'flowy') {
+    return (
+      <div className={'em-shot is-flowy-cards' + (on ? ' is-on' : '')} aria-hidden="true">
+        <FlowyCards src={item.src} />
+      </div>
+    )
+  }
+  if (item.kind === 'external') {
+    return (
+      <div className={'em-shot is-external' + (on ? ' is-on' : '')} aria-hidden="true">
+        <svg viewBox="0 0 96 96" fill="none">
+          <path d="M7 89 89 7M31 7h58v58" stroke="currentColor" strokeWidth="12" />
+        </svg>
+      </div>
+    )
+  }
+  if (item.kind === 'pos') {
+    return (
+      <div className={'em-shot is-pos' + (on ? ' is-on' : '')}>
+        <Pos src={item.pos} play={on} />
+      </div>
+    )
+  }
+  if (item.kind === 'phone') {
+    return (
+      <div className={'em-shot is-phone' + (on ? ' is-on' : '')}>
+        <Phone src={item.src} poster={item.poster} play={on} />
+      </div>
+    )
+  }
+  if (item.kind === 'brand') {
+    return (
+      <div className={'em-shot is-brand' + (on ? ' is-on' : '')}>
+        <div className="em-brand" aria-hidden="true">
+          <div className="em-book">
+            <span className="em-book-pages" />
+            <div className="em-book-cover">
+              <img className="em-brand-photo" src={item.src} alt="" />
+              <span className="em-book-spine">UZ · Summer 2026</span>
+              <img className="em-brand-logo" src={item.mark} alt="" />
+              <span className="em-brand-foot">
+                <span>Summer 2026</span>
+                <span>Essentials For Women</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  return (
+    <div className={'em-shot is-' + item.kind + (item.soon ? ' is-soon' : '') + (on ? ' is-on' : '')}>
+      <img src={item.src} alt="" />
+      {item.soon && <span className="em-shot-flag" aria-hidden="true">Coming soon</span>}
+    </div>
+  )
+}
+
+function Stage({ shot, shots }) {
+  return (
+    <aside className={'em-stage' + (shot ? ' is-shot' : '')}>
+      <div className="em-stage-bar">
+        <a className="em-hand" href="/">Sai Myo Thu</a>
+        <nav className="em-stage-nav" aria-label="Main">
+          <a href="/about">About</a>
+          <a href="/contact">Contact</a>
+        </nav>
+      </div>
+      <StageHint>{PROFILE.tagline}</StageHint>
+      {shots.map((item) => (
+        <ProjectShot key={item.slug} item={item} on={item.slug === shot} />
+      ))}
+    </aside>
+  )
+}
+
+export default function Home() {
+  const [active, setActive] = useState(null)
+  const homeRef = useRef(null)
+  const introRef = useRef(null)
+  const listRef = useRef(null)
+  const work = [...HOME_WORK, 'orderflow-landing']
+    .map((slug) => (HOME_PROJECTS[slug] ? { slug, ...HOME_PROJECTS[slug] } : null))
+    .filter(Boolean)
+
+  useLayoutEffect(() => {
+    const home = homeRef.current
+    const list = listRef.current
+    const rows = Array.from(list.querySelectorAll('.em-row')).slice(0, 5)
+    if (rows.length < 5) return
+
+    const bodies = rows.map((row) => row.querySelector('.em-row-body'))
+    const visibleRows = 4 + 2 / 3
+
+    function fitRows() {
+      const listTop = list.getBoundingClientRect().top - home.getBoundingClientRect().top
+      const available = window.innerHeight - listTop - list.clientTop
+      // Budget for the actual text height, including wrapped titles and descriptions.
+      const contentHeight = bodies.reduce((sum, body, index) => {
+        const border = parseFloat(getComputedStyle(rows[index]).borderBottomWidth)
+        const visibleFraction = index === 4 ? 2 / 3 : 1
+        return sum + (body.getBoundingClientRect().height + border) * visibleFraction
+      }, 0)
+      const padding = (available - contentHeight) / (2 * visibleRows)
+      list.style.setProperty('--em-row-padding', `${padding}px`)
     }
-    const onAway = () => { last.current = null; close() }
-    // The mouse left the browser window (relatedTarget is null then).
-    const onOut = (e) => { if (!e.relatedTarget) onAway() }
-    // Safety net: pointer events can be missed (a fast flick out of the
-    // window, the OS screenshot tool, a page swap). Four times a second, ask
-    // the browser's own hover state whether a card is really under the
-    // pointer; if none is (and no keyboard focus), close.
-    const watchdog = setInterval(() => {
-      if (keyboard() || !root.current) return
-      if (!root.current.querySelector('.sv-fan-card:hover')) {
-        if (!grace) close()
-      }
-    }, 250)
-    window.addEventListener('pointermove', onMove, { passive: true })
-    window.addEventListener('scroll', later, { passive: true })
-    window.addEventListener('blur', onAway)
-    document.addEventListener('mouseout', onOut)
-    document.documentElement.addEventListener('mouseleave', onAway)
-    document.addEventListener('visibilitychange', onAway)
+
+    fitRows()
+    const observer = new ResizeObserver(fitRows)
+    observer.observe(introRef.current)
+    bodies.forEach((body) => observer.observe(body))
+    window.addEventListener('resize', fitRows)
     return () => {
-      cancelAnimationFrame(raf)
-      clearTimeout(grace)
-      clearInterval(watchdog)
-      window.removeEventListener('pointermove', onMove)
-      window.removeEventListener('scroll', later)
-      window.removeEventListener('blur', onAway)
-      document.removeEventListener('mouseout', onOut)
-      document.documentElement.removeEventListener('mouseleave', onAway)
-      document.removeEventListener('visibilitychange', onAway)
+      observer.disconnect()
+      window.removeEventListener('resize', fitRows)
     }
   }, [])
 
   return (
-    <Card className="sv-portfolio">
-      <h2 className="sv-h2">More Works</h2>
-      <div
-        className="sv-fan"
-        ref={root}
-        onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) close() }}
-      >
-        {items.map((it, i) => (
-          <a
-            key={it.slug}
-            ref={(el) => { cards.current[i] = el }}
-            href={`/work/${it.slug}`}
-            className="sv-fan-card"
-            data-i={i}
-            aria-label={`${it.title}, open case study`}
-            onFocus={(e) => { if (e.currentTarget.matches(':focus-visible')) { setOpen(true); setHover(i) } }}
-          >
-            <Media art={it.art.thumb ? { ...it.art, img: it.art.thumb } : it.art} title={it.title} />
-          </a>
-        ))}
+    <div className="em-home" ref={homeRef}>
+      <Stage shot={active} shots={work} />
+      <div className="em-work">
+        <p className="em-intro" ref={introRef}>
+          <Note parts={PROFILE.note} />
+        </p>
+
+        <div className="em-list" ref={listRef}>
+          {work.map((item, index) => (
+            <a
+              className="em-row"
+              key={item.slug}
+              href={item.href ?? `/work/${item.slug}`}
+              target={item.href ? '_blank' : undefined}
+              rel={item.href ? 'noopener noreferrer' : undefined}
+              onMouseEnter={(e) => { setActive(item.slug); paintRow(e.currentTarget, true) }}
+              onMouseLeave={(e) => { setActive(null); paintRow(e.currentTarget, false) }}
+              onFocus={(e) => { setActive(item.slug); paintRow(e.currentTarget, true) }}
+              onBlur={(e) => { setActive(null); paintRow(e.currentTarget, false) }}
+            >
+              <span className="em-row-body">
+                <span className="em-row-index">
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                </span>
+                <span className="em-row-copy">
+                  <span className="em-row-top">
+                    <span className="em-row-name">{item.line}</span>
+                    <span className="em-row-year">
+                      <span className="sr-only">{item.year}</span>
+                      <span className="em-row-year-text" aria-hidden="true">{item.year}</span>
+                      <svg className="em-row-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d={item.href ? 'M5 19 19 5M8 5h11v11' : 'M4 12h16m-7-7 7 7-7 7'} stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                  </span>
+                  <span className="em-row-line">{item.metric}</span>
+                </span>
+              </span>
+            </a>
+          ))}
+        </div>
       </div>
-      {/* Until a card is hovered, a hint says what to do; then it names the card. */}
-      <div className="sv-fan-caption" key={shown ? shown.slug : 'hint'} aria-live="polite">
-        {shown ? (
-          <>
-            <span className="sv-fan-title">{shown.title}</span>
-            <span className="sv-dim">{shown.short}</span>
-          </>
-        ) : (
-          <span className="sv-fan-hint">
-            <span className="sv-hint-mouse">Hover over the cards to explore my work</span>
-            <span className="sv-hint-touch">Tap a card to open the project</span>
-          </span>
-        )}
-      </div>
-    </Card>
+    </div>
   )
 }

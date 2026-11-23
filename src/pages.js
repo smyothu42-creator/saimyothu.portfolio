@@ -5,7 +5,10 @@
 const IMPORTS = {
   home: () => import('./components/Home'),
   about: () => import('./components/AboutPage'),
+  snaps: () => import('./components/SnapsPage'),
+  contact: () => import('./components/ContactPage'),
   case: () => import('./components/CaseStudy'),
+  flowy: () => import('./flowy/Reference'),
 }
 const loaded = {}
 
@@ -16,7 +19,10 @@ export const getPage = (name) => loaded[name]
 export function parseRoute(pathname) {
   const m = pathname.match(/^\/work\/([\w-]+)\/?$/)
   if (m) return { name: 'case', slug: m[1] }
-  if (/^\/about\/?$/.test(pathname)) return { name: 'about' }
+  if (/^\/(about|me)\/?$/.test(pathname)) return { name: 'about' }
+  if (/^\/snaps\/?$/.test(pathname)) return { name: 'snaps' }
+  if (/^\/contact\/?$/.test(pathname)) return { name: 'contact' }
+  if (/^\/flowy\/?$/.test(pathname)) return { name: 'flowy' }
   return { name: 'home' } // includes /work, the old Work page
 }
 

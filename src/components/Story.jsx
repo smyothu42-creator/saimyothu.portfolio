@@ -1,5 +1,4 @@
 import { Fragment, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
-import { Person } from './Illos'
 import { Icon } from './ui'
 import { scrollToY } from '../scroll'
 
@@ -108,79 +107,12 @@ export function Sub({ h, p, items, strong }) {
 }
 
 // Problem spaces as plain term / explanation rows.
-// Small object illustrations (no people) for list rows, drawn like the site's
-// Open Doodles: black ink outlines, flat fills from the same palette, and the
-// white sticker edge around the whole shape (each drawing is laid twice: a
-// thick white copy underneath, then the coloured one).
-const SPOTS = {
-  // a wallet, and what's in it is a question
-  wallet: <><path d="M10 14.5 30 8q3.2-1 4.2 2.2l1.4 4.3" fill="#F7D9BF" /><rect x="7" y="14" width="34" height="24" rx="5" fill="#E8A17A" /><rect x="29" y="21" width="12" height="9" rx="3" fill="#FBF3E4" /><circle cx="33.5" cy="25.5" r="1.4" fill="#1b1b1b" stroke="none" /><circle cx="38" cy="10" r="6.5" fill="#9CC1EE" /><path d="M35.8 8.6q.3-2.3 2.4-2.2 2.2.2 2 2.3-.2 1.4-1.9 1.9-.3.1-.3 1.4" fill="none" /><path d="M38 13.6v.1" /></>,
-  // an alarm clock
-  clock: <><circle cx="13.5" cy="12" r="5.5" fill="#F2C14E" /><circle cx="34.5" cy="12" r="5.5" fill="#F2C14E" /><path d="M13.5 39.5 10 44M34.5 39.5 38 44" /><circle cx="24" cy="27" r="14.5" fill="#F2C14E" /><circle cx="24" cy="27" r="10.5" fill="#FBF3E4" /><path d="M24 27v-7.5M24 27l5.5 3.2" /><path d="M24 7.5v4" /></>,
-  // a delivery box with a question on its side
-  box: <><path d="M8 18 24 11l16 7-16 7z" fill="#F2CF9C" /><path d="M8 18l16 7v17L8 35z" fill="#E6B980" /><path d="M40 18 24 25v17l16-7z" fill="#D29B5E" /><path d="M16 14.5 32 21.5" /><path d="M13.6 26.4q.4-2.4 2.7-1.9 2.2.6 1.6 2.7-.4 1.3-2 1.5-.4.1-.6 1.4" fill="none" /><path d="M15.2 33.4v.1" /></>,
-  // a card, and a charge nobody expected
-  // a little shop with a striped awning
-  store: <><path d="M9 21h30v19H9z" fill="#FBF3E4" /><path d="M7 12h34l-2 9H9z" fill="#E8A17A" /><path d="M14.5 12l-1.2 9M22 12v9M26 12v9M33.5 12l1.2 9" /><path d="M20 40V29h8v11" fill="#9CC1EE" /><path d="M7 21q4 4 8 0 4 4 8 0 4 4 8 0 4 4 8 0" fill="none" /></>,
-  // a folded map with a pin
-  map: <><path d="M6 12l11-4 14 4 11-4v28l-11 4-14-4-11 4z" fill="#BFE3C9" /><path d="M17 8v28M31 12v28" /><path d="M30 6.5q-5.5 0-5.5 5.5 0 4 5.5 10 5.5-6 5.5-10 0-5.5-5.5-5.5z" fill="#E76F51" /><circle cx="30" cy="12" r="2" fill="#FBF3E4" /></>,
-  // a target with an arrow in the bullseye
-  target: <><circle cx="22" cy="26" r="15" fill="#FBF3E4" /><circle cx="22" cy="26" r="10" fill="#E76F51" /><circle cx="22" cy="26" r="5" fill="#FBF3E4" /><path d="M22 26 38 10" /><path d="M35 7l1 4 4 1-3 3-4-1-1-4z" fill="#F2C14E" /></>,
-  // two speech bubbles
-  chat: <><path d="M6 10h24a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H15l-6 5v-5H6a3 3 0 0 1-3-3V13a3 3 0 0 1 3-3z" fill="#9CC1EE" /><path d="M36 20h6a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2v5l-6-5h-9a3 3 0 0 1-3-3v-2" fill="#F2C14E" /><path d="M10 17h16M10 22h10" /></>,
-  // a lightbulb
-  bulb: <><path d="M24 6a12 12 0 0 0-7 21.8c1.4 1 2 2.6 2 4.2v1h10v-1c0-1.6.6-3.2 2-4.2A12 12 0 0 0 24 6z" fill="#F2C14E" /><path d="M19 33h10v4a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3z" fill="#9CC1EE" /><path d="M20.5 22l3.5 3 3.5-3M24 25v8" /><path d="M5 18h3M40 18h3M9.5 6.5l2 2M38.5 6.5l-2 2" /></>,
-  // a winding route between two stops
-  route: <><path className="nf" d="M12 38c0-8 24-4 24-14S12 18 12 10" fill="none" strokeDasharray="3 4" /><circle cx="12" cy="10" r="5" fill="#9CC1EE" /><path d="M36 24q-5.5 0-5.5 5.5 0 4 5.5 10 5.5-6 5.5-10 0-5.5-5.5-5.5z" fill="#E76F51" transform="translate(0 -10)" /><circle cx="36" cy="19.5" r="2" fill="#FBF3E4" /><path d="M8 38h8" /></>,
-  // OrderFlow's products and modules
-  qr: <><rect x="13" y="4" width="22" height="40" rx="5" fill="#9CC1EE" /><rect x="16.5" y="10" width="15" height="24" rx="1.5" fill="#FBF3E4" /><path d="M19.5 13h4v4h-4zM24.5 13h4v4h-4zM19.5 23h4v4h-4z" fill="#1b1b1b" stroke="none" /><path d="M25 23.5h3M26.5 26.5h2M25 29h1.5M20 30h3" /><path d="M21 39h6" /></>,
-  pos: <><path d="M11 5h26v36l-4.3-2.6-4.4 2.6-4.3-2.6-4.4 2.6-4.3-2.6L11 41z" fill="#FBF3E4" /><path d="M16 12h16M16 18h16M16 24h10" /><path d="M16 31h7M27 31h5" stroke="#E76F51" /></>,
-  ai: <><path d="M24 7v6" /><circle cx="24" cy="6" r="2.6" fill="#F2C14E" /><rect x="9" y="13" width="30" height="24" rx="7" fill="#9CC1EE" /><path d="M9 22H5.5v8H9M39 22h3.5v8H39" /><circle cx="18" cy="24" r="3" fill="#1b1b1b" stroke="none" /><circle cx="30" cy="24" r="3" fill="#1b1b1b" stroke="none" /><path d="M19 31q5 3 10 0" /></>,
-  loyalty: <><rect x="9" y="21" width="30" height="20" rx="2" fill="#E76F51" /><rect x="7" y="14" width="34" height="8" rx="2" fill="#F2C14E" /><path d="M24 14v27" strokeWidth="5" stroke="#F2C14E" /><path d="M24 14v27" /><path d="M24 14q-9-10-11-2 0 3 11 2zM24 14q9-10 11-2 0 3-11 2z" fill="#F2C14E" /></>,
-  inventory: <><path d="M8 18 24 11l16 7-16 7z" fill="#F2CF9C" /><path d="M8 18l16 7v17L8 35z" fill="#E6B980" /><path d="M40 18 24 25v17l16-7z" fill="#D29B5E" /><path d="M16 14.5 32 21.5M12.5 31.5l5 2.3" /></>,
-  menu: <><path d="M24 11Q15 6 6 9v29q9-3 18 2 9-5 18-2V9q-9-3-18 2z" fill="#FBF3E4" /><path d="M24 11v29" /><path d="M10.5 16h9M10.5 21h9M10.5 26h6M28.5 16h9M28.5 21h9M28.5 26h6" /></>,
-  tables: <><ellipse cx="24" cy="22" rx="17" ry="6" fill="#E8A17A" /><path d="M10 25v15M38 25v15M24 28v13" /><ellipse cx="24" cy="20.5" rx="6" ry="2.2" fill="#FBF3E4" /></>,
-  slips: <><path d="M14 4h20v14H14z" fill="#FBF3E4" /><path d="M18 9h12M18 13h8" /><rect x="6" y="16" width="36" height="17" rx="4" fill="#9CC1EE" /><path d="M13 29h22v14H13z" fill="#FBF3E4" /><path d="M17 34h14M17 38h9" /><circle cx="35" cy="22" r="1.6" fill="#E76F51" stroke="none" /></>,
-  staff: <><rect x="10" y="10" width="28" height="33" rx="4" fill="#F2C14E" /><rect x="19" y="5" width="10" height="8" rx="2" fill="#9CC1EE" /><path d="M24 19l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.6-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z" fill="#FBF3E4" /><path d="M16 38h16" /></>,
-  reports: <><path d="M7 41h34" /><rect x="10" y="26" width="7" height="15" rx="1" fill="#9CC1EE" /><rect x="20.5" y="17" width="7" height="24" rx="1" fill="#F2C14E" /><rect x="31" y="9" width="7" height="32" rx="1" fill="#E76F51" /></>,
-  alerts: <><path d="M24 7a11 11 0 0 0-11 11v9l-4 6h30l-4-6v-9A11 11 0 0 0 24 7z" fill="#F2C14E" /><path d="M20 37a4 4 0 0 0 8 0" fill="#FBF3E4" /><path d="M24 4v3" /><path d="M5 14q1.5-4 5-6.5M43 14q-1.5-4-5-6.5" /></>,
-  // OrderFlow's test, feedback, improve loop
-  clipboard: <><rect x="9" y="8" width="30" height="35" rx="4" fill="#E8A17A" /><rect x="13" y="13" width="22" height="26" rx="1.5" fill="#FBF3E4" /><rect x="18" y="5" width="12" height="7" rx="2" fill="#9CC1EE" /><path d="M17 21l2.5 2.5L24 19M17 30l2.5 2.5L24 28M27 21.5h5M27 30.5h5" /></>,
-  chartup: <><rect x="6" y="8" width="36" height="32" rx="4" fill="#BFE3C9" /><path d="M11 33l8-8 6 5 11-12" /><path d="M30 17.5h6.5V24" /><path d="M11 13.5h9" /></>,
-  // MTB Pay Merchant's design system
-  // one result screen: a big check
-  done: <><rect x="9" y="5" width="30" height="38" rx="5" fill="#FBF3E4" /><circle cx="24" cy="19" r="8" fill="#BFE3C9" /><path d="M20.3 19l2.6 2.6 4.8-5" /><path d="M16 31h16M19 36h10" /></>,
-  // a sheet over the screen, for one question
-  sheet: <><rect x="11" y="4" width="26" height="40" rx="5" fill="#9CC1EE" /><path d="M11 24h26v15a5 5 0 0 1-5 5H16a5 5 0 0 1-5-5z" fill="#FBF3E4" /><path d="M21 28h6M16 34h16" /><path d="M16 11h10" /></>,
-  // one main button, and a tap on it
-  button: <><rect x="4" y="15" width="40" height="14" rx="5" fill="#E76F51" /><path d="M16 22h16" stroke="#fff" /><circle cx="33" cy="34" r="6" fill="#F2C14E" /><path d="M33 26v2M26 34h-2M38.5 28.5l-1.4 1.4" /></>,
-  // four service tiles
-  tiles: <><rect x="6" y="6" width="16" height="16" rx="4" fill="#E76F51" /><rect x="26" y="6" width="16" height="16" rx="4" fill="#E76F51" /><rect x="6" y="26" width="16" height="16" rx="4" fill="#E76F51" /><rect x="26" y="26" width="16" height="16" rx="4" fill="#F2C14E" /><path d="M11 14h6M31 11v6M34 14h-6M14 31v6M11 34h6M31 31l6 6M37 31l-6 6" stroke="#fff" /></>,
-  // MTB Pay Merchant's visual direction
-  // a paint palette: MTB red, money-in green, white
-  palette: <><path d="M24 6C13 6 5 13.5 5 23s8 17 17 17c3 0 4-2 3-4.5s0-4.5 3-4.5h5c5.5 0 10-3.5 10-9C43 13 34.5 6 24 6z" fill="#FBF3E4" /><circle cx="15" cy="20" r="3.4" fill="#E76F51" /><circle cx="23" cy="14" r="3.4" fill="#BFE3C9" /><circle cx="32" cy="16" r="3.4" fill="#F2C14E" /><circle cx="35" cy="25" r="3.4" fill="#9CC1EE" /></>,
-  // a type specimen card: Aa
-  type: <><rect x="5" y="8" width="38" height="32" rx="4" fill="#9CC1EE" /><path d="M11 33l7-18 7 18M13.6 27h8.8" /><circle cx="32" cy="28.5" r="4.5" fill="#FBF3E4" /><path d="M36.5 23.5V33" /></>,
-  // layers, the most important on top
-  layers: <><path d="M24 26 6 33l18 7 18-7z" fill="#9CC1EE" /><path d="M24 18 6 25l18 7 18-7z" fill="#F2C14E" /><path d="M24 8 6 15l18 7 18-7z" fill="#E76F51" /></>,
-  // MTB Pay Merchant's UX challenges
-  // an hourglass, for slow payments
-  hourglass: <><path d="M15 8h18v5q0 6.5-6.5 11 6.5 4.5 6.5 11v5H15v-5q0-6.5 6.5-11Q15 19.5 15 13z" fill="#9CC1EE" /><path d="M18.5 12.5h11q-1 4.5-5.5 8-4.5-3.5-5.5-8z" fill="#F2C14E" /><path d="M17.5 39.5q1-5.5 6.5-7.5 5.5 2 6.5 7.5z" fill="#F2C14E" /><rect x="11" y="4.5" width="26" height="4.5" rx="1.5" fill="#E8A17A" /><rect x="11" y="39" width="26" height="4.5" rx="1.5" fill="#E8A17A" /></>,
-  // a receipt that went wrong
-  receipt: <><path d="M10 5h24v36l-4-2.4-4 2.4-4-2.4-4 2.4-4-2.4-4 2.4z" fill="#FBF3E4" /><path d="M15 12h14M15 18h14M15 24h9" /><circle cx="35.5" cy="34.5" r="7.5" fill="#E76F51" /><path d="M33 32l5 5M38 32l-5 5" stroke="#fff" /></>,
-  // money, and where it went is a question
-  money: <><rect x="5" y="17" width="32" height="20" rx="3" fill="#BFE3C9" /><circle cx="21" cy="27" r="5" fill="#FBF3E4" /><path d="M9.5 22v.1M32.5 32v.1" /><circle cx="38" cy="13" r="6.5" fill="#F2C14E" /><path d="M35.8 11.6q.3-2.3 2.4-2.2 2.2.2 2 2.3-.2 1.4-1.9 1.9-.3.1-.3 1.4" fill="none" /><path d="M38 16.6v.1" /></>,
-  // a phone, new and shiny
-  phone: <><rect x="12" y="6" width="21" height="37" rx="4.5" fill="#9CC1EE" /><rect x="15.5" y="11" width="14" height="24" rx="1.5" fill="#FBF3E4" /><path d="M20 39.5h5" /><circle cx="22.5" cy="23" r="3.2" fill="#E76F51" /><path d="M40 5l1.7 4.3L46 11l-4.3 1.7L40 17l-1.7-4.3L34 11l4.3-1.7z" fill="#F2C14E" /></>,
-  card: <><rect x="6" y="12" width="32" height="22" rx="4" fill="#9CC1EE" /><path d="M6 18.5h32" strokeWidth="4" /><rect x="11" y="25" width="8" height="5.5" rx="1.2" fill="#F2C14E" /><circle cx="36.5" cy="34" r="7.5" fill="#E76F51" /><path d="M36.5 30.2v4.4M36.5 37.6v.1" stroke="#fff" /></>,
-}
 export function IconList({ items }) {
-  const spots = items.some((it) => it.spot)
   return (
-    <dl className={'cs-notes' + (spots ? ' has-spots' : '')}>
+    <dl className="cs-notes">
       {items.map((it) => (
         <div key={it.h}>
-          <dt>{it.spot && SPOTS[it.spot] && <span className="cs-spot" aria-hidden="true"><svg viewBox="0 0 48 48"><g className="cs-spot-edge">{SPOTS[it.spot]}</g><g>{SPOTS[it.spot]}</g></svg></span>}{it.h}</dt>
+          <dt>{it.h}</dt>
           <dd>{it.p}</dd>
         </div>
       ))}
@@ -188,14 +120,12 @@ export function IconList({ items }) {
   )
 }
 
-// Target user segments: a column each, with traits, under an optional bust
-// (`illo`, see Illos.jsx).
+// Target user segments: a column each, with traits.
 export function Segments({ items }) {
   return (
     <div className="st-segments">
       {items.map((it) => (
         <div className="st-segment" key={it.h}>
-          {it.illo && <Person name={it.illo} />}
           <h3 className="st-sub-h">{it.h}</h3>
           {it.sub && <p className="st-muted">{it.sub}</p>}
           <ul>{it.items.map((x) => <li key={x}>{x}</li>)}</ul>
@@ -205,27 +135,92 @@ export function Segments({ items }) {
   )
 }
 
-// Plain comparison table (secondary research).
-export function Table({ cols, rows }) {
+// Comparison table for research or testing.
+export function Table({ cols, rows, note }) {
   return (
     <div className="st-table-wrap">
       <table className="st-table">
+        {note && <caption>{note}</caption>}
         <thead><tr>{cols.map((c) => <th key={c} scope="col">{c}</th>)}</tr></thead>
-        <tbody>{rows.map((r) => <tr key={r[0]}>{r.map((c, i) => (i ? <td key={i}>{c}</td> : <th key={i} scope="row">{c}</th>))}</tr>)}</tbody>
+        <tbody>{rows.map((r) => <tr key={r[0]}>{r.map((c, i) => (i ? <td key={i} data-col={cols[i]}>{c}</td> : <th key={i} scope="row">{c}</th>))}</tr>)}</tbody>
       </table>
     </div>
   )
 }
 
-// A real work screenshot (FigJam board, Figma file). Opens full size in a
-// new tab, since boards carry small text. `crop` ('top' / 'bottom') with
-// `ratio` (width / height of the visible part) shows one half of a tall board.
+// A real work screenshot (FigJam board, Figma file). Static: it does not open
+// anything. `crop` ('top' / 'bottom') with `ratio` (width / height of the
+// visible part) shows one half of a tall board.
 export function Shot({ src, alt, crop, ratio }) {
   return (
-    <a className="st-shot" href={src} target="_blank" rel="noopener noreferrer" aria-label={`${alt} (opens full size)`}>
-      <img src={src} alt={alt} loading="lazy" style={crop ? { aspectRatio: ratio, objectFit: 'cover', objectPosition: crop } : undefined} />
-      <span className="st-shot-hint" aria-hidden="true">View full size ↗</span>
-    </a>
+    <div className="st-shot">
+      <img src={src} alt={alt} loading="lazy" draggable="false" style={crop ? { aspectRatio: ratio, objectFit: 'cover', objectPosition: crop } : undefined} />
+    </div>
+  )
+}
+
+// Brand values as three short films: a hairline and the words above, the film
+// below. Each clip plays only while it is on screen; reduced motion keeps the
+// poster frame.
+export function Pillars({ items }) {
+  return (
+    <div className="sv-pillars">
+      {items.map((it) => (
+        <figure className="sv-pillar" key={it.title}>
+          <div className="sv-pillar-head">
+            <strong>{it.title}</strong>
+            <span>{it.line}</span>
+          </div>
+          <PillarFilm {...it} />
+        </figure>
+      ))}
+    </div>
+  )
+}
+
+function PillarFilm({ title, video, poster, alt }) {
+  const ref = useRef(null)
+  useEffect(() => {
+    const v = ref.current
+    if (!v || prefersReduced()) return
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) v.play().catch(() => {})
+      else v.pause()
+    }, { threshold: 0.25 })
+    io.observe(v)
+    return () => io.disconnect()
+  }, [])
+  return (
+    <div className="sv-pillar-film">
+      <video ref={ref} src={video} poster={poster} muted loop playsInline preload="metadata" aria-label={alt || title} />
+    </div>
+  )
+}
+
+// English and Burmese side by side, each on its own card with the rules that
+// keep the two scripts calm and equal.
+export function Bilingual({ en, my, notes = [] }) {
+  return (
+    <div className="sv-bi">
+      <div className="sv-bi-cards">
+        <div className="sv-bi-card">
+          <p className="sv-bi-greet" lang="en">{en.greet}</p>
+          <p className="sv-bi-body" lang="en">{en.body}</p>
+        </div>
+        <div className="sv-bi-card is-my">
+          <p className="sv-bi-greet" lang="my">{my.greet}</p>
+          <p className="sv-bi-body" lang="my">{my.body}</p>
+        </div>
+      </div>
+      <dl className="sv-bi-notes">
+        {notes.map((n, i) => (
+          <div key={i}>
+            <dt>{n.label}</dt>
+            <dd>{n.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
   )
 }
 
@@ -753,11 +748,9 @@ const stepNo = (i) => String(i + 1).padStart(2, '0')
 // `load` false holds back the video and its poster (FlowSwitch only loads the
 // flow on screen and the next one, once the section is close).
 // `onProgress` gets 0 to 1 as it plays, for a progress bar outside the player.
-export function Demo({ src, poster, steps = [], desc, bare, alt, device = 'phone', active = true, onEnd, onProgress, load = true }) {
+export function Demo({ src, poster, steps = [], desc, bare, alt, device = 'phone', active = true, onEnd, onProgress, load = true, logo }) {
   const ref = useRef(null)
   const [at, setAt] = useState(0)
-  const [playing, setPlaying] = useState(false)
-  const [userPaused, setUserPaused] = useState(false)
   // In a flow, move on as the recording's held last frame begins (compose adds
   // a ~2.5 s tail), keeping only a beat of the final screen.
   const ended = useRef(false)
@@ -768,13 +761,13 @@ export function Demo({ src, poster, steps = [], desc, bare, alt, device = 'phone
     ended.current = false
     if (onEnd) v.currentTime = 0 // timeupdate then moves the step list back to the first step
     const io = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting && !userPaused) v.play().catch(() => {})
+      if (e.isIntersecting) v.play().catch(() => {})
       else v.pause()
     }, { threshold: 0.3 })
     io.observe(v)
     return () => io.disconnect()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userPaused, active, load])
+  }, [active, load])
   const onTime = () => {
     const v = ref.current, t = v.currentTime
     if (onEnd && !ended.current && v.duration && t >= v.duration - 1.6) { ended.current = true; onEnd() }
@@ -787,33 +780,29 @@ export function Demo({ src, poster, steps = [], desc, bare, alt, device = 'phone
     const v = ref.current
     v.currentTime = steps[i].t + 0.05
     setAt(i)
-    if (v.paused && !prefersReduced()) { setUserPaused(false); v.play().catch(() => {}) }
+    if (v.paused && !prefersReduced()) v.play().catch(() => {})
   }
-  const toggle = () => {
-    const v = ref.current
-    if (v.paused) { setUserPaused(false); v.play().catch(() => {}) } else { setUserPaused(true); v.pause() }
-  }
-  // Full screen shows just the recording, with the browser's own controls.
-  const toggleFull = () => {
-    const v = ref.current
-    if (document.fullscreenElement || document.webkitFullscreenElement) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return }
-    if (v.requestFullscreen) v.requestFullscreen().catch(() => {})
-    else if (v.webkitRequestFullscreen) v.webkitRequestFullscreen()
-    else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen()
-  }
-  useEffect(() => {
-    const v = ref.current
-    const on = () => { v.controls = (document.fullscreenElement || document.webkitFullscreenElement) === v }
-    document.addEventListener('fullscreenchange', on)
-    document.addEventListener('webkitfullscreenchange', on)
-    return () => { document.removeEventListener('fullscreenchange', on); document.removeEventListener('webkitfullscreenchange', on) }
-  }, [])
+  const isPhone = device !== 'browser' && device !== 'pos'
+  const video = (
+    <video
+      ref={ref}
+      src={load ? src : undefined}
+      poster={load ? poster : undefined}
+      muted
+      loop={!onEnd}
+      playsInline
+      preload={load && onEnd ? 'auto' : 'none'}
+      aria-label={alt}
+      onTimeUpdate={onTime}
+      onEnded={() => { if (onEnd && !ended.current) { ended.current = true; onEnd() } }}
+    />
+  )
   return (
     <div className={'st-demo is-' + device}>
       {/* web recordings show the screen alone; a phone shows its description
           (`desc`) beside it, or else its step list */}
-      {!bare && device !== 'browser' && desc && <p className="st-demo-desc">{desc}</p>}
-      {!bare && device !== 'browser' && !desc && <ol className="st-demo-steps">
+      {!bare && isPhone && desc && <p className="st-demo-desc">{desc}</p>}
+      {!bare && isPhone && !desc && <ol className="st-demo-steps">
         {steps.map((s, i) => (
           <li key={s.t}>
             <button type="button" className={'st-demo-step' + (i === at ? ' is-on' : i < at ? ' is-done' : '')} onClick={() => seek(i)} aria-current={i === at ? 'step' : undefined}>
@@ -823,34 +812,30 @@ export function Demo({ src, poster, steps = [], desc, bare, alt, device = 'phone
           </li>
         ))}
       </ol>}
-      <div className={device === 'browser' ? 'st-browser' : 'st-device'}>
-        {device === 'browser' && <div className="st-browser-bar" aria-hidden="true"><i /><i /><i /></div>}
-        <div className={device === 'browser' ? 'st-browser-page' : 'st-device-screen'}>
-          <video
-            ref={ref}
-            src={load ? src : undefined}
-            poster={load ? poster : undefined}
-            muted
-            loop={!onEnd}
-            playsInline
-            preload={load && onEnd ? 'auto' : 'none'}
-            aria-label={alt}
-            onTimeUpdate={onTime}
-            onEnded={() => { if (onEnd && !ended.current) { ended.current = true; onEnd() } }}
-            onPlay={() => setPlaying(true)}
-            onPause={() => setPlaying(false)}
-          />
-          {device !== 'browser' && <span className="st-device-island" aria-hidden="true" />}
+      {device === 'pos' ? (
+        <PosFrame logo={logo}>{video}</PosFrame>
+      ) : (
+        <div className={device === 'browser' ? 'st-browser' : 'st-device'}>
+          {device === 'browser' && <div className="st-browser-bar" aria-hidden="true"><i /><i /><i /></div>}
+          <div className={device === 'browser' ? 'st-browser-page' : 'st-device-screen'}>
+            {video}
+            {isPhone && <span className="st-device-island" aria-hidden="true" />}
+          </div>
         </div>
-        {/* flows play through on their own, with no buttons over the screen */}
-        {!onEnd && <>
-          <button type="button" className={'st-reel-btn st-demo-btn' + (playing ? ' is-playing' : '')} onClick={toggle} aria-label={playing ? 'Pause video' : 'Play video'}>
-            {playing ? ICONS.pause : ICONS.play}
-          </button>
-          <button type="button" className="st-reel-btn st-demo-btn st-demo-full is-aux" onClick={toggleFull} aria-label="Full screen">
-            {ICONS.expand}
-          </button>
-        </>}
+      )}
+    </div>
+  )
+}
+
+// Tablet bezel from the home thumbnail, without the counter stand.
+export function PosFrame({ children, ratio, screenClass, logo }) {
+  const mark = logo === undefined ? '/logos/orderflow.png' : logo
+  return (
+    <div className={'em-pos' + (mark ? '' : ' is-plain')}>
+      <div className="em-pos-body">
+        {!mark && <span className="em-pos-hw" aria-hidden="true" />}
+        <div className={'em-pos-screen' + (screenClass ? ' ' + screenClass : '')} style={ratio ? { aspectRatio: ratio } : undefined}>{children}</div>
+        {mark && <div className="em-pos-chin"><img src={mark} alt="" /></div>}
       </div>
     </div>
   )
@@ -1250,9 +1235,7 @@ export function Steps({ items }) {
         <li key={it.t} className="cs-step">
           {it.count != null
             ? <span className="cs-step-count">{it.count}</span>
-            : it.spot && SPOTS[it.spot]
-              ? <span className="cs-spot cs-step-ic" aria-hidden="true"><svg viewBox="0 0 48 48"><g className="cs-spot-edge">{SPOTS[it.spot]}</g><g>{SPOTS[it.spot]}</g></svg></span>
-              : <span className="cs-step-n">{String(i + 1).padStart(2, '0')}</span>}
+            : <span className="cs-step-n">{String(i + 1).padStart(2, '0')}</span>}
           <b>{it.t}</b>
           {it.p && <p>{it.p}</p>}
           {/* optional samples from the design system: colour swatches, a type scale, chips */}
@@ -1280,9 +1263,3 @@ export function IaTree({ items }) {
   )
 }
 
-// One doodle icon from SPOTS, with its white sticker edge (see .cs-doodle).
-export function Doodle({ name, className = '' }) {
-  const d = SPOTS[name]
-  if (!d) return null
-  return <svg viewBox="0 0 48 48" className={'cs-doodle ' + className} aria-hidden="true"><g className="cs-spot-edge">{d}</g><g>{d}</g></svg>
-}

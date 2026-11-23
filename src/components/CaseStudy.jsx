@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { CASES, HOME_WORK, MORE_WORK } from '../data'
+import { CASES, HOME_WORK } from '../data'
 import { scrollToY } from '../scroll'
 import { useDragPill } from '../useDragPill'
 import {
@@ -7,11 +7,11 @@ import {
   JourneyMap, Tree, Frameworks, Wireframes, Spec, Closing,
   HMW, Details, Achievements, Roadmap,
 } from './CaseBlocks'
-import { Impact, Role, Sub, IconList, Segments, Table, Iterations, Pills, Walkthrough, Film, Shot, WalkTabs, ShotTabs, Reel, Demo, FlowSwitch, Choices, Rail, BeforeAfter, Compare2, Steps, IaTree, Doodle } from './Story'
-import { Illo, Person } from './Illos'
-import { Card, BackButton, ConnectCard, Icon } from './ui'
+import { Impact, Role, Sub, IconList, Segments, Table, Iterations, Pills, Walkthrough, Film, Shot, WalkTabs, ShotTabs, Reel, Demo, FlowSwitch, Choices, Rail, BeforeAfter, Compare2, Steps, IaTree, Pillars, Bilingual, PosFrame } from './Story'
+import { Card, BackButton, Icon } from './ui'
 import Media from './Media'
 import { avif } from '../avif'
+import { HOME_PROJECTS, ProjectShot } from './Home'
 
 // Case study as a column of cards, like the project pages on the reference:
 //   cover card (project art, back button, title over its foot)
@@ -23,6 +23,7 @@ import { avif } from '../avif'
 // films, journey maps, boards) sit on a light plate inside the card, the way
 // photos sit on the reference's dark cards.
 export default function CaseStudy({ slug }) {
+  const caseRef = useRef(null)
   const c = CASES.find((x) => x.slug === slug)
   if (!c) {
     return (
@@ -34,151 +35,377 @@ export default function CaseStudy({ slug }) {
     )
   }
   const s = c.study
+  const homePreview = HOME_PROJECTS[c.slug]
+  const useHomePreview = c.slug === 'flowy-design-system' && homePreview
 
-  const facts = (s
-    ? [
-        ['Role', [s.role]],
-        ['Timeline', [s.duration]],
-        ['Scope', s.scope],
-        ['Team', s.team],
-        ['Tools', s.tools?.split(',').map((t) => t.trim())],
-      ]
-    : [
-        ['Domain', [c.domain]],
-        ['Focus', c.tags],
-      ]
-  )
-    .map(([k, v]) => [k, (v || []).filter(Boolean)])
-    .filter(([, v]) => v.length)
-
-  // A study that opens with its Impact shows the numbers right after the facts,
-  // before the summary.
-  const impactTop = s?.sections?.[0]?.id === 'impact' ? s.sections[0] : null
+  const meta = caseMeta(c)
+  const sections = s?.sections || []
+  const jumpSections = sections.filter((sec) => sec.jumpLabel)
+  if (s?.glance?.jumpLabel) jumpSections.unshift({ id: 'cs-project-overview', jumpLabel: s.glance.jumpLabel })
 
   return (
-    <div className="sv-case" style={s?.accent ? { '--acc': s.accent } : undefined}>
-      {s?.sections?.length > 1 && <CaseNav sections={s.sections} top={s.navTop !== false} overview={s.overviewNav} overviewPart={s.overviewPart} />}
-      <Card className="sv-cover" id="cs-top">
-        <Media art={c.art} title={c.title} eager video={c.art.video} />
-        <BackButton href="/" label="Back" />
-        <h1 className="sv-cover-title">{c.coverTitle || c.title}</h1>
-      </Card>
+    <div ref={caseRef} className={'sv-case rv-case em-case' + (s?.ref ? ' is-ref' : '')} style={s?.accent ? { '--acc': s.accent } : undefined}>
+      <header className="em-case-head" id="cs-overview">
+        <h1>{plain(c.name || c.coverTitle || c.title)}</h1>
+        <hr className="em-case-rule" />
+        {meta.length > 0 && (
+          <dl className="em-case-meta">
+            {meta.map((col) => (
+              <div key={col.label} className={'em-meta-' + col.column}>
+                <dt>{col.label}</dt>
+                <dd>
+                  {col.lines.map((line) => <span key={line}>{line}</span>)}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        )}
+      </header>
 
-      {/* what it is first, then the impact, then role, timeline, team and tools */}
-      <Card className="sv-text" id="cs-overview">
-        {s?.heading && <p className="sv-statement">{plain(s.heading)}</p>}
-        <p>{s?.summary ?? c.desc}</p>
-      </Card>
+      <div className={'rv-stage' + (useHomePreview ? ' is-home-preview' : '')} id="cs-top">
+        {useHomePreview ? (
+          <ProjectShot item={{ slug: c.slug, ...homePreview }} on />
+        ) : (
+          <Media art={{ ...c.art, img: c.art.poster || c.art.img }} title={plain(c.coverTitle || c.title)} eager video={c.art.video} />
+        )}
+      </div>
+      {!useHomePreview && <HeroMotion slug={c.slug} />}
 
-      {impactTop && <Section sec={impactTop} />}
-
-      {facts.length > 0 && (
-        <Card className={'sv-facts' + (facts.length % 2 ? ' is-odd' : '')}>
-          {facts.map(([k, v]) => (
-            <div className="sv-fact" key={k}>
-              <dt>{k}</dt>
-              <dd>{v.join(k === 'Tools' || k === 'Focus' ? ', ' : ' · ')}</dd>
+      {s?.intro !== false && (s?.heading || s?.summary || c.desc) && (
+        <section className="em-sec" id="cs-about">
+          <div className="em-sec-row">
+            {s?.heading && <h2>{s.heading}</h2>}
+            <div className="em-sec-copy">
+              <p>{s?.summary ?? c.desc}</p>
             </div>
-          ))}
-        </Card>
+          </div>
+        </section>
       )}
 
-      {s?.sections.filter((sec) => sec !== impactTop).map((sec) => <Section key={sec.id} sec={sec} />)}
+      {s?.glance && <Glance glance={s.glance} title={s.overviewNav || 'Project Overview'} />}
+      {jumpSections.length > 0 && <CaseJump caseRef={caseRef} sections={jumpSections} />}
 
-      <OtherWork key={c.slug} current={c.slug} />
+      {sections.map((sec) => <Section key={sec.id} sec={sec} />)}
+
+      <Pager slug={c.slug} />
 
       {s?.gallery?.length > 0 && <Gallery images={s.gallery} />}
-      <ConnectCard />
     </div>
   )
 }
 
-// The end of a case study: the next two projects to look at. The main projects
-// (the home page's) come first, then the More Work ones, in their set order, and
-// a project already opened on this visit doesn't come back. With one left it shows
-// alone; once everything has been viewed the list restarts in the same order. A new
-// visit starts fresh (sessionStorage), and without storage only the current project
-// is left out.
-const SEEN_KEY = 'sv-seen-work'
-const readSeen = () => { try { return JSON.parse(sessionStorage.getItem(SEEN_KEY)) || [] } catch { return [] } }
-function OtherWork({ current }) {
-  const [items] = useState(() => {
-    const all = [...HOME_WORK, ...MORE_WORK].filter((slug) => slug !== current)
-    const seen = readSeen()
-    let left = all.filter((slug) => !seen.includes(slug))
-    if (!left.length) { // everything viewed: start over
-      left = all
-      try { sessionStorage.removeItem(SEEN_KEY) } catch { /* private window */ }
-    }
-    return left
-      .slice(0, 2)
-      .map((slug) => CASES.find((c) => c.slug === slug))
-      .filter(Boolean)
-  })
+// The cover drifts a little as the page scrolls under it. Transform only;
+// the stage clips the edges, and reduced motion leaves the cover still.
+function HeroMotion({ slug }) {
   useEffect(() => {
-    try { const seen = readSeen(); if (!seen.includes(current)) sessionStorage.setItem(SEEN_KEY, JSON.stringify([...seen, current])) } catch { /* private window: this page only */ }
-  }, [current])
+    const media = document.querySelector('.em-case .rv-stage .media')
+    if (!media || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
+    media.style.willChange = 'transform'
+    let raf = 0
+    const tick = () => {
+      raf = 0
+      const box = media.parentElement.getBoundingClientRect()
+      const p = Math.min(1, Math.max(0, -box.top / Math.max(1, box.height)))
+      media.style.transform = `translate3d(0, ${(p * 24 - 12).toFixed(2)}px, 0) scale(1.06)`
+    }
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(tick) }
+    tick()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      cancelAnimationFrame(raf)
+      media.style.transform = ''
+      media.style.willChange = ''
+    }
+  }, [slug])
+  return null
+}
+
+// The end of a case study: a compact, project-tinted card for what comes next,
+// with the way back to the index and the project before this one.
+function Pager({ slug }) {
+  const list = HOME_WORK.filter((id) => CASES.some((c) => c.slug === id))
+  const i = Math.max(0, list.indexOf(slug))
+  const prev = CASES.find((c) => c.slug === list[(i - 1 + list.length) % list.length])
+  const next = CASES.find((c) => c.slug === list[(i + 1) % list.length])
+  const label = (c) => c.name || c.title.replace(/\u00a0/g, ' ')
+  const preview = HOME_PROJECTS[next.slug]
+  const nextAccent = next.study?.accent || next.art?.color || '#202833'
   return (
-    <Card className="sv-others">
-      <h2 className="sv-h2">More Works</h2>
-      <ul className={'sv-others-grid' + (items.length === 1 ? ' is-one' : '')}>
-        {items.map((c) => (
-          <li key={c.slug}>
-            <a className="sv-other" href={`/work/${c.slug}`}>
-              <Media art={c.art.card ? { ...c.art, img: c.art.card } : c.art.thumb ? { ...c.art, img: c.art.thumb } : c.art} title="" />
-              <span className="sv-other-row">
-                <span className="sv-other-name">{c.name || c.title.replace(/\u00a0/g, ' ')}</span>
-                <span className="sv-other-arrow"><Icon name="arrowRight" size={20} stroke={1.8} /></span>
-              </span>
-              {(c.short || c.desc) && <span className="sv-other-desc">{c.short || c.desc}</span>}
+    <section className="em-next" id="more-work">
+      <a
+        className={'em-next-card' + (preview ? ' has-preview' : '')}
+        href={`/work/${next.slug}`}
+        style={{ '--next-accent': nextAccent }}
+      >
+        <span className="em-next-copy">
+          <span className="em-next-name">{preview?.line || next.result || label(next)}</span>
+          <span className="em-next-desc">{aboutExcerpt(next.desc || next.study?.summary)}</span>
+          <span className="em-next-go">View project <span aria-hidden="true">→</span></span>
+        </span>
+        {preview && (
+          <span className="em-next-preview" aria-hidden="true">
+            <ProjectShot item={{ slug: next.slug, ...preview }} on />
+          </span>
+        )}
+      </a>
+      <nav className="em-next-nav" aria-label="More projects">
+        <a href={`/work/${prev.slug}`}>← {label(prev)}</a>
+        <a href="/">All work</a>
+      </nav>
+    </section>
+  )
+}
+
+function aboutExcerpt(text = '') {
+  const sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || []
+  const excerpt = sentences.slice(0, 2).join(' ').replace(/\s+/g, ' ').trim()
+  if (excerpt.length <= 250) return excerpt
+  const clipped = excerpt.slice(0, 247).replace(/\s+\S*$/, '')
+  return `${clipped}…`
+}
+
+// `*words*` in a title render as a light italic accent; plain() strips the
+// markers for labels.
+// Industries already named on the case. Design-system and brand labels are
+// the kind of work, not an industry, so they stay out of this column.
+const INDUSTRY = new Set(['F&B', 'Fintech'])
+
+function caseMeta(c) {
+  const s = c.study
+  const cols = []
+  if (s?.metaIndustry) {
+    if (s.role) cols.push({ label: 'Role', column: 1, lines: [s.role] })
+    const scope = (s.scope || []).filter(Boolean)
+    if (scope.length) cols.push({ label: 'Scope', column: 2, lines: scope })
+    if (c.domain) cols.push({ label: 'Industry', column: 3, lines: [c.domain] })
+    if (s.timeline) cols.push({ label: 'Timeline', column: 4, lines: [s.timeline] })
+    return cols.slice(0, 4)
+  }
+  if (s?.timeline) {
+    if (s.role) cols.push({ label: 'Role', column: 1, lines: [s.role] })
+    const scope = (s.scope || []).filter(Boolean)
+    if (scope.length) cols.push({ label: 'Scope', column: 2, lines: scope })
+    const type = (c.tags || []).filter(Boolean)
+    if (type.length) cols.push({ label: 'Type', column: 3, lines: type })
+    cols.push({ label: 'Timeline', column: 4, lines: [s.timeline] })
+    return cols.slice(0, 4)
+  }
+  const role = [s?.role, s?.duration].filter(Boolean)
+  if (role.length) cols.push({ label: 'Role', column: 1, lines: role })
+  const scope = (s?.scope || []).filter(Boolean)
+  if (scope.length) cols.push({ label: 'Scope', column: 2, lines: scope })
+  if (c.domain && INDUSTRY.has(c.domain)) cols.push({ label: 'Industry', column: 3, lines: [c.domain] })
+  const type = (c.tags || []).filter(Boolean)
+  if (type.length) cols.push({ label: 'Type', column: 4, lines: type })
+  return cols.slice(0, 4)
+}
+
+const plain = (t = '') => t.replace(/\*/g, '')
+function rich(t = '') {
+  return t.split(/(\*\*.+?\*\*|\*.+?\*)/g).filter(Boolean).map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) return <mark className="cs-mark" key={i}>{part.slice(2, -2)}</mark>
+    if (part.startsWith('*') && part.endsWith('*')) return <em className="acc-i" key={i}>{part.slice(1, -1)}</em>
+    return part
+  })
+}
+
+// A short summary band under the intro: the argument in four cells, then a
+// way to jump to the sections that carry it, like the reference's at-a-glance.
+function Glance({ glance, title }) {
+  return (
+    <section id="cs-project-overview" className={'em-glance' + (glance.cols === 2 ? ' is-grid' : '')} aria-label="At a glance">
+      {title && <h2 tabIndex={glance.jumpLabel ? -1 : undefined}>{title}</h2>}
+      <dl className="em-glance-grid">
+        {glance.items.map((it) => (
+          <div key={it.label} className="em-glance-item">
+            <dt>{it.label}</dt>
+            <dd>{it.value}</dd>
+          </div>
+        ))}
+      </dl>
+      {glance.links?.length > 0 && (
+        <nav className="em-glance-jump" aria-label="Jump to a section">
+          {glance.links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              onClick={(e) => {
+                const el = document.getElementById(l.href.slice(1))
+                if (!el) return
+                e.preventDefault()
+                scrollToY(el.getBoundingClientRect().top + window.scrollY - 80, 1)
+              }}
+            >
+              {l.label}<span aria-hidden="true">↓</span>
+            </a>
+          ))}
+        </nav>
+      )}
+    </section>
+  )
+}
+
+const JUMP_OFFSET = 88
+
+function CaseJump({ caseRef, sections }) {
+  const [active, setActive] = useState(null)
+
+  useEffect(() => {
+    const page = caseRef.current
+    const headings = [...page.querySelectorAll(':scope > .em-glance > h2[tabindex], :scope > .em-sec .em-sec-row > h2[tabindex]')]
+    if (!headings.length) return undefined
+
+    let frame = 0
+    const update = () => {
+      frame = 0
+      if (headings[0].getBoundingClientRect().top > window.innerHeight * 0.8) {
+        setActive(null)
+        return
+      }
+      const readingLine = Math.max(JUMP_OFFSET + 12, window.innerHeight * 0.2)
+      const atEnd = window.scrollY >= document.documentElement.scrollHeight - window.innerHeight - 2
+      const current = atEnd ? headings.at(-1) : headings.findLast((heading) => heading.getBoundingClientRect().top <= readingLine)
+      setActive((current ?? headings[0]).closest('section').id)
+    }
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update) }
+    const resize = new ResizeObserver(schedule)
+    resize.observe(page)
+    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule)
+    schedule()
+    return () => {
+      cancelAnimationFrame(frame)
+      resize.disconnect()
+      window.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
+    }
+  }, [caseRef])
+
+  function jump(event, id) {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+    const heading = caseRef.current.querySelector(`#${CSS.escape(id)} h2`)
+    if (!heading) return
+    event.preventDefault()
+    heading.focus({ preventScroll: true })
+    const y = heading.getBoundingClientRect().top + window.scrollY - JUMP_OFFSET
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    scrollToY(y, reduced ? 0 : 0.8)
+  }
+
+  return (
+    <nav
+      className={'em-case-jump' + (active ? ' is-visible' : '')}
+      aria-label="Case study sections"
+      aria-hidden={!active}
+    >
+      <ul className="em-case-jump-list">
+        {sections.map(({ id, jumpLabel }) => (
+          <li key={id}>
+            <a href={`#${id}`} aria-current={active === id ? 'location' : undefined} onClick={(event) => jump(event, id)}>
+              {jumpLabel}
             </a>
           </li>
         ))}
       </ul>
-    </Card>
+    </nav>
   )
 }
 
-
-// `*words*` in a title render as a light italic accent; plain() strips the
-// markers for labels.
-const plain = (t = '') => t.replace(/\*/g, '')
-function rich(t = '') {
-  return t.split(/\*(.+?)\*/).map((part, i) => (i % 2 ? <em className="acc-i" key={i}>{part}</em> : part))
-}
-
 // One section as one card. `bare` sections (the product film) are the visual
-// alone. A section's opening `lead` block sits under its heading, and an
-// optional `illo` sits beside the heading. `title` (optional) is the heading
-// when it should say more than the short `nav` label in the side list.
-function Section({ sec }) {
-  if (sec.bare) {
-    const card = (
-      <Card className="sv-sec sv-sec-bare" aria-label={plain(sec.nav)} id={sec.id}>
-        {sec.blocks.map((b, j) => <Block key={j} block={b} />)}
-      </Card>
-    )
-    return card
+// alone. A section's opening `lead` block sits under its heading. `title`
+// (optional) is the heading when it should say more than the short `nav` label
+// in the side list.
+const COPY = new Set(['lead', 'split', 'list', 'subheading'])
+
+function AsideSection({ sec }) {
+  const title = plain(sec.title || sec.nav)
+  const blocks = sec.blocks || []
+  const leads = []
+  const decisions = []
+  for (let i = 0; i < blocks.length; i++) {
+    const block = blocks[i]
+    if (block.kind === 'lead') {
+      leads.push(block)
+      continue
+    }
+    if (block.kind === 'split') {
+      const next = blocks[i + 1]
+      const phones = next?.kind === 'phones' ? next : null
+      if (phones) i += 1
+      decisions.push({ h: block.h, p: block.p, phones })
+      continue
+    }
+    if (block.kind === 'phones') decisions.push({ phones: block })
   }
-  const opensWithLead = sec.blocks[0]?.kind === 'lead'
-  const lead = opensWithLead ? sec.blocks[0].p : null
-  const body = opensWithLead ? sec.blocks.slice(1) : sec.blocks
   return (
-    <Card className={'sv-sec' + (sec.illo ? ' has-illo' : '') + (sec.notitle ? ' no-title' : '')} id={sec.id}>
-      {(!sec.notitle || lead || sec.illo) && <div className="sv-sec-head">
-        <div>
-          {sec.eyebrow && <p className="sv-label sv-label-left">{sec.eyebrow}</p>}
-          {!sec.notitle && <h2 className="sv-h2">{rich(sec.title || sec.nav)}</h2>}
-          {lead && <p className="sv-sec-lead">{rich(lead)}</p>}
-        </div>
-        {sec.illo && <Illo name={sec.illo} className="sv-illo" />}
-      </div>}
-      {body.length > 0 && (
-        <div className="sv-sec-body">
-          {body.map((b, j) => <Block key={j} block={b} />)}
+    <section className="em-sec is-aside" id={sec.id} aria-label={title}>
+      {title && <h2 tabIndex={sec.jumpLabel ? -1 : undefined}>{title}</h2>}
+      {leads.length > 0 && (
+        <div className="em-sec-aside">
+          <div className="em-sec-copy">
+            {leads.map((block, i) => <Block key={i} block={block} />)}
+          </div>
         </div>
       )}
-    </Card>
+      {decisions.length > 0 && (
+        <div className={'cs-aside-decs is-' + decisions.length}>
+          {decisions.map((decision, i) => (
+            <div className="cs-aside-dec" key={decision.h || i}>
+              <div className="cs-aside-copy">
+                <p className="cs-aside-k">Decision {String(i + 1).padStart(2, '0')}</p>
+                {decision.h && <h3>{decision.h}</h3>}
+                {decision.p && <p>{decision.p}</p>}
+              </div>
+              {decision.phones && <PhoneRow items={decision.phones.items} alt={decision.phones.alt} />}
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+  )
+}
+
+function Section({ sec }) {
+  if (sec.layout === 'aside') return <AsideSection sec={sec} />
+  const blocks = sec.blocks || []
+  const title = !sec.notitle && plain(sec.title || sec.nav)
+  // Keep the order the case was written in. A sentence that introduces a
+  // screen stays above that screen, instead of every paragraph collecting
+  // at the top and every picture collecting at the bottom.
+  const groups = []
+  for (const block of blocks) {
+    const copy = !block.kind || COPY.has(block.kind)
+    const last = groups[groups.length - 1]
+    if (last && last.copy === copy) last.items.push(block)
+    else groups.push({ copy, items: [block] })
+  }
+  const firstIsCopy = groups[0]?.copy
+  const rest = firstIsCopy ? groups.slice(1) : groups
+  return (
+    <section className={'em-sec' + (sec.notitle ? ' is-media' : '')} id={sec.id} aria-label={plain(sec.nav)}>
+      {(title || firstIsCopy) && (
+        <div className="em-sec-row">
+          {title && <h2 tabIndex={sec.jumpLabel ? -1 : undefined}>{title}</h2>}
+          {firstIsCopy && (
+            <div className="em-sec-copy">
+              {groups[0].items.map((b, j) => <Block key={j} block={b} />)}
+            </div>
+          )}
+        </div>
+      )}
+      {rest.map((g, i) => g.copy ? (
+        <div className="em-sec-row" key={i}>
+          <div className="em-sec-copy">
+            {g.items.map((b, j) => <Block key={j} block={b} />)}
+          </div>
+        </div>
+      ) : (
+        <div className="em-sec-stack reveal" key={i}>
+          {g.items.map((b, j) => <Block key={j} block={b} />)}
+        </div>
+      ))}
+    </section>
   )
 }
 
@@ -195,6 +422,59 @@ function Gallery({ images }) {
   )
 }
 
+// Two photographs side by side as matching squares, like the reference's
+// two-column image rows.
+function Duo({ images }) {
+  return (
+    <div className="sv-duo">
+      {images.map((it) => <Shot key={it.src} {...it} />)}
+    </div>
+  )
+}
+
+function IllustratedNeeds({ items }) {
+  return (
+    <ul className="cs-illustrated-needs">
+      {items.map(({ src, p }) => (
+        <li key={src}>
+          <img src={src} alt="" width={112} height={112} loading="lazy" />
+          <p>{p}</p>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+function ScreenComparison({ h, before, after, notes }) {
+  return (
+    <figure className="cs-screen-compare">
+      <figcaption>
+        <h3>{h}</h3>
+        <div className="cs-screen-compare-notes">
+          <ul>
+            {notes.map((note) => (
+              <li key={note.h}>
+                <span className="cs-screen-compare-index" aria-hidden="true" />
+                <div><strong>{note.h}</strong><p>{note.p}</p></div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </figcaption>
+      <div className="cs-screen-compare-grid">
+        <div className="cs-screen-compare-drag">
+          <div className="st-device">
+            <div className="st-device-screen">
+              <BeforeAfter before={before.src} after={after.src} alt={after.alt} ratio="402 / 874" />
+              <span className="st-device-island" aria-hidden="true" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </figure>
+  )
+}
+
 // Blocks keyed by `kind` in data.js. TEXT kinds sit on the dark card; every
 // other visual goes on a light plate.
 const VISUALS = {
@@ -204,15 +484,32 @@ const VISUALS = {
   hmw: HMW, details: Details, achievements: Achievements, roadmap: Roadmap,
   impact: Impact, role: Role, sub: Sub, iconlist: IconList, segments: Segments, table: Table,
   iterations: Iterations, pills: Pills, walkthrough: Walkthrough, film: Film, shot: Shot, walktabs: WalkTabs, shottabs: ShotTabs,
-  reel: Reel, demo: Demo, flows: FlowSwitch, choices: Choices, rail: Rail, beforeafter: BeforeAfter, compare2: Compare2, steps: Steps, iatree: IaTree, hub: Hub, decisions: Decisions, arch: Arch, mockpair: MockPair, ship: Ship, photos: Photos, loop: Loop,
+  reel: Reel, demo: Demo, flows: FlowSwitch, choices: Choices, rail: Rail, beforeafter: BeforeAfter, compare2: Compare2, steps: Steps, iatree: IaTree, hub: Hub, decisions: Decisions, arch: Arch, mockpair: MockPair, ship: Ship, photos: Photos, loop: Loop, duo: Duo, pillars: Pillars, bilingual: Bilingual, phones: PhoneRow,
 }
-const TEXT = new Set(['hub', 'decisions', 'arch', 'mockpair', 'ship', 'photos', 'loop', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'flows', 'choices', 'rail', 'compare2', 'steps', 'iatree'])
+const TEXT = new Set(['hub', 'decisions', 'arch', 'mockpair', 'ship', 'photos', 'loop', 'impact', 'role', 'sub', 'iconlist', 'segments', 'table', 'iterations', 'pills', 'demo', 'flows', 'choices', 'rail', 'compare2', 'steps', 'iatree', 'phones'])
+
+function PhoneRow({ items, alt }) {
+  return (
+    <div className="cs-phones" style={{ '--n': items.length }} role="group" aria-label={alt}>
+      {items.map((src) => (
+        <div className="st-device" key={src}>
+          <div className="st-device-screen">
+            <img src={src} alt="" loading="lazy" />
+            <span className="st-device-island" aria-hidden="true" />
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
 
 function Block({ block }) {
+  if (block.kind === 'illustrated-needs') return <IllustratedNeeds items={block.items} />
+  if (block.kind === 'screen-comparison') return <ScreenComparison {...block} />
   const Visual = VISUALS[block.kind]
   if (Visual) {
     const node = <Visual {...block} caption={undefined} />
-    const plated = TEXT.has(block.kind) ? node : <div className={'sv-plate is-' + block.kind + (block.wide ? ' is-wide' : '')}>{node}</div>
+    const plated = TEXT.has(block.kind) ? node : <div className={'sv-plate is-' + block.kind + (block.wide ? ' is-wide' : '') + (block.natural ? ' is-natural' : '') + (block.portrait ? ' is-portrait' : '')}>{node}</div>
     if (!block.caption) return plated
     return (
       <figure className="cs-fig">
@@ -221,14 +518,13 @@ function Block({ block }) {
       </figure>
     )
   }
-  // Term / explanation rows. An item's `illo` puts that person's bust in
-  // front of the term.
+  // Term / explanation rows.
   if (block.kind === 'notes') {
     return (
-      <dl className={'cs-notes' + (block.items.some((it) => it.illo) ? ' has-people' : '')}>
+      <dl className="cs-notes">
         {block.items.map((it) => (
           <div key={it.t}>
-            <dt>{it.illo && <Person name={it.illo} className="cs-notes-person" />}{it.t}</dt>
+            <dt>{it.t}</dt>
             <dd>{it.p}</dd>
           </div>
         ))}
@@ -236,14 +532,30 @@ function Block({ block }) {
     )
   }
   if (block.kind === 'split') {
-    return block.items.map((it, i) => (
+    const items = block.items || [{ h: block.h, p: block.p, ps: block.ps }]
+    const cards = items.map((it, i) => (
       <div className="cs-sub" key={i}>
+        {it.illustration && <img className="cs-sub-illustration" src={it.illustration} alt="" width={96} height={96} loading="lazy" />}
         <h3>{it.h}</h3>
-        <p>{it.p}</p>
+        {(it.ps || [it.p]).filter(Boolean).map((p, j) => <p key={j}>{p}</p>)}
+        {it.bullets && <ul className="cs-list">{it.bullets.map((b, j) => <li key={j}>{b}</li>)}</ul>}
       </div>
     ))
+    if (block.cols === 2 || block.cols === 3) return <div className={'cs-split' + (block.cols === 3 ? ' is-3' : '')}>{cards}</div>
+    return cards
   }
+  if (block.kind === 'donut') return <Donut items={block.items} p={block.p} />
+  if (block.kind === 'flowpair') return <FlowPair phone={block.phone} browser={block.browser} shared={block.shared} />
+  if (block.kind === 'flowphone') return <FlowPhone label={block.label} items={block.items} note={block.note} points={block.points} steps={block.steps} />
   if (block.kind === 'lead') return <p className="sv-sec-lead">{block.p}</p>
+  if (block.kind === 'subheading') {
+    return (
+      <div className="cs-subheading">
+        <h3>{block.h}{block.h2 && <> <span className="cs-subheading-rest">{block.h2}</span></>}</h3>
+        {block.p && <p>{rich(block.p)}</p>}
+      </div>
+    )
+  }
   if (block.kind === 'list') {
     return (
       <div className="cs-prose">
@@ -270,7 +582,98 @@ function Block({ block }) {
       </div>
     )
   }
+  // What the first shift exposed: numbered findings, two by two.
+  if (block.kind === 'findings') {
+    return (
+      <div className="cs-findings">
+        {block.items.map((it, i) => (
+          <div className="cs-finding" key={it.t}>
+            <span className="cs-finding-n">{String(i + 1).padStart(2, '0')}</span>
+            <b>{it.t}</b>
+            <p>{it.p}</p>
+          </div>
+        ))}
+      </div>
+    )
+  }
+  // What the first shift said, and the change each note caused.
+  if (block.kind === 'feedback') {
+    return (
+      <div className="cs-feedback">
+        {block.h && <h3 className="cs-feedback-h">{block.h}</h3>}
+        <div className="cs-feedback-grid">
+          {block.items.map((it) => (
+            <div className="cs-feedback-item" key={it.q}>
+              <p className="cs-feedback-q">“{it.q}”</p>
+              <span className="cs-feedback-who">{it.who}</span>
+              <p className="cs-feedback-did">{it.did}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+  // Four honest notes at the close: assumed, missed, would do, outcome.
+  if (block.kind === 'timemachine') {
+    return (
+      <div className="cs-time">
+        {block.items.map((it) => (
+          <div className="cs-time-item" key={it.t}>
+            <span className="cs-time-label">{it.t}</span>
+            <b>{it.h}</b>
+            <p>{it.p}</p>
+          </div>
+        ))}
+      </div>
+    )
+  }
   return <p>{block.p}</p>
+}
+
+// Who was in the room: a donut, with the count in the hole and the roles beside it.
+const DONUT_COLORS = ['#416d50', '#739a79', '#9fbea1', '#c8dcca']
+function Donut({ items, p }) {
+  const sum = items.reduce((a, it) => a + it.n, 0)
+  const r = 46
+  const c = 2 * Math.PI * r
+  const gap = 3.5
+  let cursor = 0
+  const slices = items.map((it, i) => {
+    const span = (it.n / sum) * c
+    const slice = {
+      ...it,
+      color: DONUT_COLORS[i % DONUT_COLORS.length],
+      dash: `${Math.max(0, span - gap)} ${c}`,
+      offset: -cursor,
+    }
+    cursor += span
+    return slice
+  })
+  return (
+    <div className="cs-donut-row">
+      {p && <p>{p}</p>}
+    <figure className="cs-donut">
+      <svg viewBox="0 0 140 140" role="img" aria-label={`${sum} people. ${items.map((it) => `${it.t}, ${it.n}`).join('. ')}.`}>
+        <g transform="rotate(-90 70 70)">
+          {slices.map((s) => (
+            <circle key={s.t} cx="70" cy="70" r={r} fill="none" stroke={s.color} strokeWidth="18" strokeDasharray={s.dash} strokeDashoffset={s.offset} />
+          ))}
+        </g>
+        <text className="cs-donut-n" x="70" y="68" textAnchor="middle">{sum}</text>
+        <text className="cs-donut-cap" x="70" y="86" textAnchor="middle">people</text>
+      </svg>
+      <ul>
+        {slices.map((s) => (
+          <li key={s.t}>
+            <i style={{ background: s.color }} aria-hidden="true" />
+            <span>{s.t}</span>
+            <b>{s.n}</b>
+          </li>
+        ))}
+      </ul>
+    </figure>
+    </div>
+  )
 }
 
 // Section list: a glass panel fixed on the left, mirroring the main menu,
@@ -331,7 +734,7 @@ function CaseNav({ sections, top = true, overview, overviewPart }) {
     const target = () => {
       const el = document.getElementById(id)
       if (id === 'cs-top' || !el) return 0
-      return el.getBoundingClientRect().top + window.scrollY - 24
+      return el.getBoundingClientRect().top + window.scrollY - 80
     }
     scrollToY(target(), 1)
     setTimeout(() => {
@@ -355,8 +758,7 @@ function CaseNav({ sections, top = true, overview, overviewPart }) {
     <nav className="sv-toc" aria-label="On this page">
       {/* the way back sits here; the cover's back button only shows where this list is hidden */}
       <a className="sv-toc-back" href="/" data-back>
-        <span className="sv-toc-back-ic"><Icon name="arrowLeft" size={18} /></span>
-        Back to Previous
+        Work
       </a>
       <ol ref={list} className={drag.dragging ? 'is-dragging' : undefined} {...drag.handlers}>
         <span
@@ -647,7 +1049,7 @@ function Decisions({ items }) {
 // short line for each. The highlight moves from guest to staff to owner.
 const ARCH_SHOTS = { owner: avif('/case/orderflow/arch-owner.jpg?v=2'), staff: avif('/case/orderflow/arch-staff.jpg'), guest: avif('/case/orderflow/guest-latest.jpg') }
 // Each screen is clickable too: it picks that step and comes to the front.
-const pressable = (label, onPick) => ({ role: 'button', tabIndex: 0, 'aria-label': label, onClick: onPick, onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPick() } } })
+const pressable = (label, onPick) => ({ role: 'button', tabIndex: 0, 'aria-label': label, onClick: onPick, onPointerEnter: onPick, onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPick() } } })
 function ArchBrowser({ who, on, label, onPick }) {
   return (
     <div className={'st-browser cs-arch-' + who + (on ? ' is-on' : '')} {...pressable(label, onPick)} aria-pressed={on}>
@@ -676,16 +1078,6 @@ function Arch({ items }) {
           <div className="st-device-screen"><img src={ARCH_SHOTS.guest} alt="" loading="lazy" /><span className="st-device-island" /></div>
         </div>
       </div>
-      <ol className="cs-arch-steps">
-        {items.map((it, i) => (
-          <li key={it.key}>
-            <button type="button" className={i === on ? 'is-on' : undefined} aria-pressed={i === on} onClick={() => { setOn(i); setAuto(false) }}>
-              <b>{it.t}</b>
-              <span>{it.p}</span>
-            </button>
-          </li>
-        ))}
-      </ol>
     </div>
   )
 }
@@ -707,6 +1099,77 @@ function MockScreens({ srcs, alt, hold }) {
     </>
   )
 }
+// Guest and shop recordings, side by side. Each side keeps its own flow,
+// switched with a quiet row of names under the frame.
+function FlowPicks({ label, items, on, pick, breakAfter }) {
+  if (!items || items.length < 2) return null
+  return (
+    <div className="cs-flow-picks" role="tablist" aria-label={label + ' flows'}>
+      {items.flatMap((it, i) => {
+        const button = (
+          <button key={it.name} type="button" role="tab" aria-selected={i === on} className={i === on ? 'is-on' : undefined} onClick={() => pick(i)}>{it.name}</button>
+        )
+        if (breakAfter !== i + 1) return [button]
+        return [button, <span key={it.name + '-break'} className="cs-flow-break" aria-hidden="true" />]
+      })}
+    </div>
+  )
+}
+function FlowPhone({ label, items, note, points, steps }) {
+  const [on, setOn] = useState(0)
+  const it = items[on]
+  const hasCopy = note || points?.length > 0 || steps?.length > 0
+  return (
+    <figure className="cs-flow-phone">
+      <Demo key={it.src} src={it.src} poster={it.poster} alt={it.alt} device="phone" bare active load />
+      {hasCopy ? (
+        <div className="cs-flow-copy">
+          <FlowPicks label={label} items={items} on={on} pick={setOn} breakAfter={4} />
+          {steps?.length > 0 && (
+            <div className="cs-flow-steps">
+              {steps.map((item, i) => (
+                <div className="cs-sub" key={item.h || i}>
+                  <h3>{item.h}</h3>
+                  {(item.ps || [item.p]).filter(Boolean).map((p, j) => <p key={j}>{p}</p>)}
+                </div>
+              ))}
+            </div>
+          )}
+          {note && <p>{note}</p>}
+          {points?.length > 0 && <ul className="cs-list">{points.map((item) => <li key={item}>{item}</li>)}</ul>}
+        </div>
+      ) : (
+        <FlowPicks label={label} items={items} on={on} pick={setOn} breakAfter={4} />
+      )}
+    </figure>
+  )
+}
+function FlowSide({ side, device, on, pick, shared, logo }) {
+  const [localOn, setLocalOn] = useState(0)
+  const at = shared ? on : localOn
+  const setAt = shared ? pick : setLocalOn
+  const it = side.items[at]
+  return (
+    <figure className={'cs-mock-col is-' + (device === 'phone' ? 'phone' : 'browser')}>
+      {!shared && <FlowPicks label={side.label} items={side.items} on={at} pick={setAt} />}
+      <Demo key={it.src} {...it} device={device} logo={logo} bare active load />
+      <figcaption>{side.label}</figcaption>
+    </figure>
+  )
+}
+function FlowPair({ phone, browser, shared }) {
+  const [on, setOn] = useState(0)
+  const canShare = shared && phone.items.length === browser.items.length && phone.items.every((it, i) => it.name === browser.items[i].name)
+  return (
+    <div className="cs-mock-wrap">
+      {canShare && <FlowPicks label="Phone and web" items={phone.items} on={on} pick={setOn} />}
+      <div className={'cs-mock' + (browser.logo === null ? ' is-plain-frame' : '')}>
+        <FlowSide side={phone} device="phone" on={on} pick={setOn} shared={canShare} />
+        <FlowSide side={browser} device={browser.device || 'pos'} on={on} pick={setOn} shared={canShare} logo={browser.logo} />
+      </div>
+    </div>
+  )
+}
 function MockPair({ phone, browser }) {
   const [hold, setHold] = useState(false)
   return (
@@ -716,36 +1179,34 @@ function MockPair({ phone, browser }) {
         <figcaption>{phone.label}</figcaption>
       </figure>
       <figure className="cs-mock-col is-browser">
-        <div className="st-browser">
-          <div className="st-browser-bar" aria-hidden="true"><i /><i /><i /></div>
-          <div className="st-browser-page cs-mock-screen" style={{ aspectRatio: '1440 / 1024' }}><MockScreens {...browser} hold={hold} /></div>
-        </div>
+        <PosFrame ratio="16 / 10" screenClass="cs-mock-screen"><MockScreens {...browser} hold={hold} /></PosFrame>
         <figcaption>{browser.label}</figcaption>
       </figure>
     </div>
   )
 }
 
-// Shipping the front end: a few real numbers and a terminal with real
-// commits from the two front-end repos.
-function Ship({ stats, log }) {
+function Ship({ stats, image, alt, summary, year }) {
   return (
     <div className="cs-ship">
       <div className="cs-stats">
         {stats.map((it) => <div key={it.label}><span className="cs-stat-num">{it.num}</span><span>{it.label}</span></div>)}
       </div>
-      <div className="cs-term" aria-label="Recent commits">
-        <div className="cs-term-bar" aria-hidden="true"><i /><i /><i /><span>orderflow · zsh</span></div>
-        <pre className="cs-term-body">
-          <span className="cs-term-cmd"><b>$</b> git log --oneline --author=sai397</span>
-          {log.map(([hash, repo, msg], i) => (
-            <span key={hash} className="cs-term-line" style={{ animationDelay: `${0.4 + i * 0.22}s` }}>
-              <b>{hash}</b> <em>{repo}</em> {msg}
-            </span>
-          ))}
-          <span className="cs-term-cmd is-cursor"><b>$</b> <i /></span>
-        </pre>
-      </div>
+      <figure className="cs-contributions">
+        <figcaption className="cs-contributions-head">
+          <span>{summary}</span>
+          <span>{year}</span>
+        </figcaption>
+        <div className="cs-contributions-scroll" role="region" tabIndex={0} aria-label="Contribution calendar; scroll horizontally to see all months">
+          <img src={image} alt={alt} width="1450" height="222" loading="lazy" />
+        </div>
+        <div className="cs-contributions-footer">
+          <span className="cs-contributions-source">GitHub activity <span>· Scroll to see all months</span></span>
+          <span className="cs-contributions-legend" role="img" aria-label="Darker green indicates more contributions">
+            <span>Less</span><i /><i /><i /><i /><i /><span>More</span>
+          </span>
+        </div>
+      </figure>
     </div>
   )
 }
@@ -797,7 +1258,7 @@ function Loop({ steps }) {
       el.style.opacity = String(0.25 + 0.75 * near)
       el.style.zIndex = String(Math.round(depth * 100))
       el.style.setProperty('--solid', String(near))
-      el.style.filter = `blur(${(1 - near) * 1.6}px)`
+      el.style.filter = 'none'
     })
   }
   useEffect(() => {
@@ -859,7 +1320,6 @@ function Loop({ steps }) {
         <svg className="cs-loop-orbit" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="50" cy="15" rx="48" ry="13" /></svg>
         {steps.map((st, i) => (
           <article key={st.t} ref={(el) => { cards.current[i] = el }} className="cs-loop-card" aria-hidden={i !== cur} aria-current={i === cur ? 'step' : undefined}>
-            <span className="cs-loop-ic"><Doodle name={{ staff: 'clipboard', alerts: 'chat', reports: 'chartup' }[st.icon] || st.icon} /></span>
             <span className="cs-loop-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
             <b>{st.t}</b>
             <p>{st.p}</p>
