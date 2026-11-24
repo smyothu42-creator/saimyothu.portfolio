@@ -159,23 +159,23 @@ export const CASES = [
         {
           id: 'shipped',
           nav: 'What shipped',
-          title: 'Three decisions shaped the next release.',
+          title: 'Decisions shaped the next release.',
           blocks: [
             { kind: 'split', cols: 3, items: [
-              { h: '01 · Make guest ordering easy to correct', bullets: [
-                'No app. The order opens from the table QR, in Burmese or English.',
-                'The basket button is bigger, and search sits where a guest can find it.',
-                'A guest can review the order and fix a wrong item before it is placed.',
+              { h: 'Make guest ordering easier to find and fix', bullets: [
+                'Order Again returns to the menu on the same phone, keeping the first order one tap away.',
+                'Make the basket bigger and put search where guests can find it without scanning the menu.',
+                'Let guests review the order and fix mistakes before placing it.',
               ] },
-              { h: '02 · Prioritise the kitchen hand-off', bullets: [
-                'The items and the table number arrive together.',
-                'One click prints the kitchen slip.',
-                'The kitchen gets that slip without the order being said again across the room.',
+              { h: 'Keep orders moving from counter to kitchen', bullets: [
+                'Give the cashier a record slip and the kitchen a separate slip to cook from.',
+                'Keep only cashier statuses and remove side-panel extras so frequent work is easier to reach.',
+                'Send the kitchen its slip directly, so staff need not repeat the order.',
               ] },
-              { h: '03 · Finish the owner’s recurring tasks', bullets: [
-                'Items and prices update once, on the QR menu. Nothing to reprint.',
-                'Daily and monthly sales are already added up.',
-                'The shop does not have to total the orders in Excel.',
+              { h: 'Make the owner’s daily work easier', bullets: [
+                'Make admin screens work well on a phone, so the owner can check the shop anywhere.',
+                'Prioritise daily and monthly sales reports, with an interface to export them.',
+                'Add totals automatically, so the shop no longer calculates orders in Excel.',
               ] },
             ] },
             { kind: 'arch', items: [
