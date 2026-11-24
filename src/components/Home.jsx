@@ -13,7 +13,7 @@ export const HOME_PROJECTS = {
   },
   'mtb-pay-merchant': { year: '2025', line: '100+ merchants on the App Store', metric: 'A wallet for shopkeepers at a busy counter', kind: 'phone', src: '/case/mtb-pay-merchant/flows/receive.mp4' },
   'flowy-design-system': { year: 'Ongoing', line: 'Flowy an agentic design system', metric: 'Catalog in review, screens not moved yet', kind: 'flowy', src: '/case/flowy/cover.jpg?v=2' },
-  pohpoh: { year: '2024', line: 'Gold wallet with 4.5/5 Ease-of-use rating', metric: 'Save money or build up gold in smaller amounts', kind: 'phone', src: '/case/pohpoh/hover.mp4?v=4', poster: '/case/pohpoh/hover-poster.webp' },
+  pohpoh: { year: '2024', line: 'Poh Poh · Money and gold wallet', metric: 'Prototype · tested with 4 participants', kind: 'phone', src: '/case/pohpoh/hover.mp4?v=4', poster: '/case/pohpoh/hover-poster.webp' },
   'superfine-employee': { year: '2026', line: '$173K in lunch orders in 6 weeks', metric: 'Office meal ordering with the allowance up front', kind: 'phone', src: '/case/superfine-employee/flows/m-order.mp4' },
   'uz-branding': {
     year: '2026',
@@ -304,7 +304,8 @@ export default function Home() {
                       <span className="sr-only">{item.year}</span>
                       <span className="em-row-year-text" aria-hidden="true">{item.year}</span>
                       <svg className="em-row-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d={item.href ? 'M5 19 19 5M8 5h11v11' : 'M4 12h16m-7-7 7 7-7 7'} stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                        {/* Internal rows get the same ↗ hover mark as the external link. */}
+                        <path d="M5 19 19 5M8 5h11v11" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </span>
                   </span>

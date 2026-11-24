@@ -2335,8 +2335,10 @@ html:has(.rv-sheet.is-home) { overflow-x: clip; }
 }
 .em-row-year {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   flex: none;
+  min-height: 28px;
   overflow: hidden;
   font-family: inherit;
   font-size: 16px;
@@ -2350,9 +2352,9 @@ html:has(.rv-sheet.is-home) { overflow-x: clip; }
   position: absolute;
   top: 50%;
   right: 0;
-  width: 20px;
-  height: 20px;
-  margin-top: -10px;
+  width: 28px;
+  height: 28px;
+  margin-top: -14px;
   transform: translateY(125%);
 }
 .em-row-line {
@@ -2491,8 +2493,10 @@ html:has(.rv-sheet.is-home) { overflow-x: clip; }
 .about-hero-photo {
   display: block;
   width: 100%;
-  height: auto;
-  align-self: start;
+  height: 100%;
+  /* Fill the copy column's height so both sides end level; the ratio is only
+     the intrinsic fallback for when the copy is the shorter side. */
+  align-self: stretch;
   aspect-ratio: 1600 / 1500;
   object-fit: cover;
   object-position: center bottom;

@@ -125,24 +125,11 @@ export const CASES = [
           jumpLabel: 'Actions',
           title: 'Seven conversations shaped the MVP.',
           blocks: [
-            { kind: 'donut', p: 'Before that shift I caught up with seven people. Not a workshop, and not a survey. I sat with them the way you catch up, and listened for what they wanted, what they needed, and the trouble they already met every day. I wanted the day in their words, before a screen existed.', items: [
+            { kind: 'donut', p: 'I held informal conversations with seven people about menu updates, counter work and ordering. These conversations set the direction for the MVP; observing a real shift then helped me check the assumptions.', items: [
               { t: 'Business owner', n: 2 },
               { t: 'F&B expert', n: 1 },
               { t: 'Cashier', n: 1 },
               { t: 'Regular customer', n: 3 },
-            ] },
-          ],
-        },
-        {
-          id: 'rules',
-          nav: 'The gap',
-          title: 'The product had to fit the way a café actually works.',
-          blocks: [
-            { kind: 'lead', p: 'The interviews made the constraints clear: guests would not install an app, owners needed a menu they could update without reprinting, and staff needed the kitchen to receive an accurate order without the usual rush and repetition.' },
-            { kind: 'list', items: [
-              'Let guests order without installing an app. They should be able to scan the table QR and use the browser already on their phone, in Burmese or English.',
-              'Let owners update the menu without reprinting it. They should be able to change an item or price once and have the QR menu show the latest version.',
-              'Remove the need to repeat an order. OrderFlow needed to keep the items and table number together, then let staff print a clear kitchen slip in one click.',
             ] },
           ],
         },
@@ -161,15 +148,9 @@ export const CASES = [
         {
           id: 'shift',
           nav: 'What we learned',
-          title: 'Interviews and live testing revealed four things the product had to do.',
+          title: 'The live shift changed the priorities.',
           blocks: [
-            { kind: 'lead', p: 'What people said in interviews and what happened during a real shift pointed to the same four needs, from getting an order to the kitchen to closing the month.' },
-            { kind: 'split', items: [
-              { h: 'Print the order for the kitchen', p: 'If OrderFlow could turn each order into a clear slip that staff could print in one click and pass straight to the kitchen, it would meet their most important need.' },
-              { h: 'Items and table number at a glance', p: 'I could have asked staff to keep checking statuses. On shift, they needed the order items and the table number together. The items told them what to make. The table number told them where to serve it.' },
-              { h: 'Make orders easy to place and fix', p: 'Guests could make a mistake at any point. Older guests had trouble with the small basket button and where search sat. The basket needed a bigger button, search needed a clearer spot, and guests needed a way to catch and fix a mistake.' },
-              { h: 'Daily and monthly sales, already added up.', p: 'Shops put together sales reports every day and at the end of each month. Many shops in Myanmar do this in Excel. An export of individual orders still leaves the shop to add up the sales. The daily and monthly totals had to be ready in OrderFlow.' },
-            ] },
+            { kind: 'lead', p: 'Staff needed items and table numbers immediately, rather than more statuses to monitor. Older guests struggled to find search and the basket. Owners needed ready-made sales totals rather than an export they still had to add up. Those observations shaped the three decisions below.' },
             { kind: 'photos', items: [
               { src: '/case/orderflow/setup.jpg', alt: 'Training the café’s staff on the OrderFlow admin at a table' },
             ] },
@@ -178,21 +159,20 @@ export const CASES = [
         {
           id: 'shipped',
           nav: 'What shipped',
-          title: 'Decisions that came from the findings.',
+          title: 'Three decisions shaped the next release.',
           blocks: [
-            { kind: 'lead', p: 'The interviews and the live shift pointed to the same actions. These are the decisions that went into the next release.' },
             { kind: 'split', cols: 3, items: [
-              { h: 'Guest', bullets: [
+              { h: '01 · Make guest ordering easy to correct', bullets: [
                 'No app. The order opens from the table QR, in Burmese or English.',
                 'The basket button is bigger, and search sits where a guest can find it.',
                 'A guest can review the order and fix a wrong item before it is placed.',
               ] },
-              { h: 'Staff', bullets: [
+              { h: '02 · Prioritise the kitchen hand-off', bullets: [
                 'The items and the table number arrive together.',
                 'One click prints the kitchen slip.',
                 'The kitchen gets that slip without the order being said again across the room.',
               ] },
-              { h: 'Owner', bullets: [
+              { h: '03 · Finish the owner’s recurring tasks', bullets: [
                 'Items and prices update once, on the QR menu. Nothing to reprint.',
                 'Daily and monthly sales are already added up.',
                 'The shop does not have to total the orders in Excel.',
@@ -408,6 +388,7 @@ export const CASES = [
           jumpLabel: 'Result',
           title: 'Launch activity and design checks.',
           blocks: [
+            { kind: 'lead', p: 'Source: the Superfine corporate employee project README and its accessibility audit dated 23 July 2026. Launch figures cover the first six weeks after the first customer was onboarded. They describe product activity, rather than an increase attributable to the redesign; the figures are reproduced as recorded, without a per-meal or per-person conversion.' },
             { kind: 'lead', p: 'In the first six weeks after the first customer was onboarded, the product handled the orders and sales below. I also checked 17 desktop and phone screens with a keyboard, screen reader and automated tools. I found and fixed 16 accessibility issues; 36 automated checks reported no WCAG 2.2 AA violations.' },
             { kind: 'stats', h: 'First six weeks', items: [
               { num: '$173K', label: 'Lunch orders' },
@@ -566,6 +547,7 @@ export const CASES = [
           jumpLabel: 'Four decisions',
           title: 'Four decisions for the counter.',
           blocks: [
+            { kind: 'lead', p: 'The main trade-off was between exposing every service and keeping the next counter action easy to find. I kept the balance and core services prominent, then used a shared review, confirmation and receipt sequence across tasks. This prioritised predictable payment steps over a different interaction for each service.' },
             { kind: 'lead', p: 'Built for the counter: one strong colour, big numbers, plain words. The home is the same on every visit, so a shopkeeper does not have to relearn it.' },
             { kind: 'split', items: [
               { h: 'The balance, first', p: 'Then money in and money out. Then the four services. Then the latest transactions. That order does not change.' },
@@ -580,9 +562,14 @@ export const CASES = [
           id: 'shipped',
           nav: 'Getting paid',
           jumpLabel: 'Getting paid',
-          title: 'Both phones say the money moved.',
+          title: 'Waiting, payment confirmation and refunds.',
           blocks: [
-            { kind: 'lead', p: 'A payment now has a summary before the confirm, a success that says the customer paid, a receipt to save or share, and the same detail in History. The customer confirms with a PIN, and both phones show it.' },
+            { kind: 'lead', p: 'The receive-payment walkthrough separates waiting for the customer from a successful payment. The refund walkthrough starts from an existing transaction, asks for a reason and shows a summary before PIN confirmation. Both finish with a receipt, so the outcome can be checked again.' },
+            { kind: 'split', items: [
+              { h: 'Waiting is a distinct step', p: 'After the merchant requests payment, the customer still needs to confirm. The waiting step keeps that hand-off separate from the success message.' },
+              { h: 'A refund keeps its context', p: 'The merchant finds the transaction number and checks the payment before entering a refund reason and confirming the summary.' },
+              { h: 'Evidence boundary', p: 'These recordings demonstrate waiting, success and refund flows. They do not demonstrate failed payments or timeout recovery, so this case does not claim those states were validated.' },
+            ] },
             { kind: 'flowphone', label: 'Getting paid',
               steps: [
                 { h: '01 · Get paid', ps: ['A payment by QR, at the counter.', 'Start at the shop’s home, scan their QR, and wait while they confirm.'] },
@@ -651,6 +638,7 @@ export const CASES = [
           { label: 'Current state', value: 'The inventory, tokens, contracts and private package are in place. Twenty-one shared components are being reviewed in Storybook; screen migration has not started.' },
           { label: 'Principle', value: 'One job, one value. Shared jobs use one contract, while product-specific jobs keep their own component. Consistency does not require both products to look identical.' },
         ],
+        links: [{ href: '/flowy', label: 'Explore the public component reference' }],
       },
       accent: '#583207',
       tags: ['Tokens', 'Components', 'Documentation'],
@@ -661,6 +649,22 @@ export const CASES = [
       gallery: [],
       tools: 'React, Storybook',
       sections: [
+        {
+          id: 'evidence',
+          nav: 'Working reference',
+          jumpLabel: 'Evidence',
+          title: 'Inspect the component reference.',
+          blocks: [
+            { kind: 'lead', p: 'The public Flowy reference provides an inspectable example of the UI language. It is separate from the private 21-component Storybook catalog and does not demonstrate migration of the live products.' },
+            { kind: 'list', items: [
+              'Order cards keep items, quantities and table context together. The selected card exposes its pressed state rather than relying on colour alone.',
+              'Segmented controls expose the selected option through aria-pressed. The button primitive also supports a busy state through aria-busy.',
+              'Search fields support invalid state and an accompanying message. Shared primitives keep those state hooks in one place.',
+            ] },
+            { kind: 'shot', src: '/case/flowy/cover.jpg?v=2', alt: 'Flowy component examples arranged as a board', caption: 'Component examples from the public reference; product migration is still pending.' },
+            { kind: 'lead', p: 'Open the working reference to inspect the components and their states.' },
+          ],
+        },
         {
           id: 'next',
           nav: 'Next',
@@ -840,6 +844,7 @@ export const CASES = [
           jumpLabel: 'Result',
           blocks: [
             { kind: 'lead', p: 'After the changes, a second round tested the same six tasks with four participants. All four completed every task without assistance.' },
+            { kind: 'lead', p: 'These results describe a small prototype study, not market adoption. The current record does not specify whether the participants returned from round one or the exact wording of the ease-of-use question; the rating and timing comparison should be read with those limits.' },
             { kind: 'stats', items: [
               { num: '100%', label: 'Task completion without help' },
               { num: '12.2 s', label: 'Average time on task, down from 19.3 s' },
@@ -885,6 +890,14 @@ export const CASES = [
       gallery: [],
       tools: 'Figma',
       sections: [
+        {
+          id: 'scope',
+          nav: 'Presentation scope',
+          title: 'An identity and its application studies.',
+          blocks: [
+            { kind: 'lead', p: 'This case presents the identity direction and application studies for packaging, retail and digital use. The images demonstrate the proposed visual system; they are not evidence of a manufactured range or an operating storefront. Client engagement and production rollout are not documented in this case.' },
+          ],
+        },
         {
           id: 'brief',
           nav: 'The brief',
@@ -954,7 +967,7 @@ export const CASES = [
           nav: 'Print and packaging',
           title: 'The tag, the label, the box',
           blocks: [
-            { kind: 'lead', p: 'Every piece leaves with a thank-you tag, a woven label at the neck and a cotton dust bag. The box is Dusty Rose outside, with the pattern on the tissue inside. The pattern is never used on the street.' },
+            { kind: 'lead', p: 'The proposed packaging set pairs a thank-you tag with a woven neck label and cotton dust bag. The box uses Dusty Rose outside and patterned tissue inside. The application rules reserve the pattern for packaging rather than street signage.' },
             { kind: 'shot', natural: true, src: '/case/uz-branding/use-02-tag-v2.jpg', alt: 'Dusty Rose and ivory thank-you tags: the UZ mark blind-embossed on the front, a handwritten-style note and QR code on the back' },
             { kind: 'shot', src: '/case/uz-branding/use-19-invitation.jpg', alt: 'The invitation and its Dusty Rose envelope' },
           ],
@@ -964,7 +977,7 @@ export const CASES = [
           nav: 'In the city',
           title: 'The shopfront',
           blocks: [
-            { kind: 'lead', p: 'Outside, the brand goes quiet: a Dusty Rose fascia, one photograph in the window, and the mark on the glass. That is the whole shopfront — nothing else needed.' },
+            { kind: 'lead', p: 'The shopfront study uses a Dusty Rose fascia, one photograph in the window and the mark on the glass. It tests how the identity could carry into a retail space.' },
             { kind: 'shot', src: '/case/uz-branding/env-12-shopfront.jpg', alt: 'The shopfront at dusk, warm light inside and the mark on the glass' },
           ],
         },

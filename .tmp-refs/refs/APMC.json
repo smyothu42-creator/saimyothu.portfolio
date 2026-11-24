@@ -1,0 +1,163 @@
+{
+ "title": "Eric Sin — Selected Works",
+ "width": 1440,
+ "pageH": 8260,
+ "main": {
+  "w": 1440,
+  "x": 0,
+  "pad": "0px",
+  "maxW": "none"
+ },
+ "imgs": [
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "assets/04_FULL_Image.jpg",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 2268,
+   "ar": "auto",
+   "fit": "fill",
+   "radius": "4px"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "assets/05_FULL_Image.jpg",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 2985,
+   "ar": "auto",
+   "fit": "fill",
+   "radius": "4px"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "assets/06_FULL_Image.jpg",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 3702,
+   "ar": "auto",
+   "fit": "fill",
+   "radius": "4px"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "assets/07_2COL_Image-01.jpg",
+   "w": 604,
+   "h": 604,
+   "x": 104,
+   "y": 4419,
+   "ar": "auto",
+   "fit": "fill",
+   "radius": "4px"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "assets/07_2COL_Image-02.jpg",
+   "w": 604,
+   "h": 604,
+   "x": 732,
+   "y": 4419,
+   "ar": "auto",
+   "fit": "fill",
+   "radius": "4px"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "assets/08_FULL_Image.jpg",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 5047,
+   "ar": "auto",
+   "fit": "fill",
+   "radius": "4px"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "assets/09_FULL_Image.jpg",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 5764,
+   "ar": "auto",
+   "fit": "fill",
+   "radius": "4px"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "assets/10_FULL_Image.jpg",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 6481,
+   "ar": "auto",
+   "fit": "fill",
+   "radius": "4px"
+  }
+ ],
+ "vids": [
+  {
+   "tag": "video",
+   "cls": "",
+   "src": "assets/01_FULLHERO_Video.mp4",
+   "w": 1232,
+   "h": 690,
+   "x": 104,
+   "y": 393,
+   "ar": "auto",
+   "fit": "contain",
+   "radius": "0px",
+   "poster": "",
+   "loop": true,
+   "autoplay": true,
+   "dur": 8.2,
+   "t": 6.7457
+  },
+  {
+   "tag": "video",
+   "cls": "",
+   "src": "assets/03_FULL_Video.mp4",
+   "w": 1232,
+   "h": 689,
+   "x": 104,
+   "y": 1555,
+   "ar": "auto",
+   "fit": "contain",
+   "radius": "4px",
+   "poster": "",
+   "loop": true,
+   "autoplay": true,
+   "dur": 9.733333,
+   "t": 3.8813
+  },
+  {
+   "tag": "video",
+   "cls": "",
+   "src": "assets/11_FULL_Video.mp4",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 7198,
+   "ar": "auto",
+   "fit": "contain",
+   "radius": "4px",
+   "poster": "",
+   "loop": true,
+   "autoplay": true,
+   "dur": 4.416667,
+   "t": 3.1343
+  }
+ ],
+ "bodyBg": "rgb(255, 255, 255)"
+}

@@ -1,0 +1,26 @@
+import { spawn } from 'node:child_process'
+const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+const PORT = 9341
+const chrome = spawn(CHROME, ['--headless=new','--disable-gpu','--hide-scrollbars',`--remote-debugging-port=${PORT}`,'--window-size=1440,900','--user-data-dir=/tmp/cdp-profile-check','about:blank'], { stdio: 'ignore' })
+const wait = (ms) => new Promise(r => setTimeout(r, ms))
+async function getWS(){for(let i=0;i<50;i++){try{const l=await(await fetch(`http://127.0.0.1:${PORT}/json/list`)).json();const p=l.find(t=>t.type==='page');if(p)return p.webSocketDebuggerUrl}catch{}await wait(200)}throw new Error('no chrome')}
+const ws = new WebSocket(await getWS())
+await new Promise(r => ws.addEventListener('open', r, { once: true }))
+let id=0; const pending=new Map(); const errs=[]
+ws.addEventListener('message', ev => { const m=JSON.parse(ev.data)
+  if(m.method==='Runtime.exceptionThrown') errs.push('EXC '+(m.params.exceptionDetails?.exception?.description||m.params.exceptionDetails?.text))
+  if(m.method==='Log.entryAdded' && m.params.entry.level==='error') errs.push('LOG '+m.params.entry.text)
+  if(m.id&&pending.has(m.id)){pending.get(m.id)(m);pending.delete(m.id)} })
+const send=(method,params={})=>new Promise((res,rej)=>{const mid=++id;pending.set(mid,m=>m.error?rej(new Error(JSON.stringify(m.error))):res(m.result));ws.send(JSON.stringify({id:mid,method,params}))})
+const ev=async e=>(await send('Runtime.evaluate',{expression:e,awaitPromise:true,returnByValue:true})).result?.value
+await send('Runtime.enable'); await send('Log.enable'); await send('Page.enable')
+await send('Emulation.setDeviceMetricsOverride',{width:1440,height:900,deviceScaleFactor:1,mobile:false})
+await send('Page.navigate',{url:'http://localhost:5173/work/uz-branding'})
+await wait(2000)
+await ev(`(async()=>{for(let y=0;y<document.documentElement.scrollHeight;y+=700){scrollTo(0,y);await new Promise(r=>setTimeout(r,120))}return 1})()`)
+await wait(2500)
+const imgs = await ev(`[...document.images].filter(i=>i.closest('.sv-case')).map(i=>({src:i.currentSrc.split('/').pop(),ok:i.complete&&i.naturalWidth>0}))`)
+console.log('broken:', JSON.stringify(imgs.filter(i=>!i.ok)))
+console.log('images:', imgs.length)
+console.log('errors:', errs.length ? errs.join('\n') : 'none')
+ws.close(); chrome.kill()

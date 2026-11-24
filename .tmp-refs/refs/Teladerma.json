@@ -1,0 +1,212 @@
+{
+ "pageH": 5354,
+ "vids": [
+  {
+   "tag": "video",
+   "cls": "",
+   "src": "https://www.ericsin.com/work/Teladerma/assets/01_FULLHERO_Video.mp4",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 415,
+   "radius": "0px",
+   "fit": "contain",
+   "poster": "",
+   "loop": true,
+   "muted": true,
+   "dur": 10.033333
+  },
+  {
+   "tag": "video",
+   "cls": "",
+   "src": "https://www.ericsin.com/work/Teladerma/assets/05_FULL_Video.mp4",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 2858,
+   "radius": "4px",
+   "fit": "contain",
+   "poster": "",
+   "loop": true,
+   "muted": true,
+   "dur": 21.966667
+  },
+  {
+   "tag": "video",
+   "cls": "",
+   "src": "https://www.ericsin.com/work/Teladerma/assets/07_FULL_Video.mp4",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 4292,
+   "radius": "4px",
+   "fit": "contain",
+   "poster": "",
+   "loop": true,
+   "muted": true,
+   "dur": 8.033333
+  }
+ ],
+ "imgs": [
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "https://www.ericsin.com/work/Teladerma/assets/03_FULL_Image.jpg",
+   "w": 1232,
+   "h": 692,
+   "x": 104,
+   "y": 1515,
+   "radius": "4px",
+   "fit": "fill"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "https://www.ericsin.com/work/Teladerma/assets/04_2COL_Image-01.jpg",
+   "w": 604,
+   "h": 604,
+   "x": 104,
+   "y": 2230,
+   "radius": "4px",
+   "fit": "fill"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "https://www.ericsin.com/work/Teladerma/assets/04_2COL_Image-02.jpg",
+   "w": 604,
+   "h": 604,
+   "x": 732,
+   "y": 2230,
+   "radius": "4px",
+   "fit": "fill"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "https://www.ericsin.com/work/Teladerma/assets/06_FULL_Image.jpg",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 3575,
+   "radius": "4px",
+   "fit": "fill"
+  }
+ ],
+ "text": [
+  {
+   "t": "P",
+   "s": "Eric Sin",
+   "y": 0,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "Brand & Product",
+   "y": 0,
+   "size": "16px"
+  },
+  {
+   "t": "P",
+   "s": "Orange County, CA",
+   "y": 16,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "‘89—South Korea",
+   "y": 32,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "Contact",
+   "y": 16,
+   "size": "12px"
+  },
+  {
+   "t": "H1",
+   "s": "Teladerma",
+   "y": 176,
+   "size": "50px"
+  },
+  {
+   "t": "P",
+   "s": "Overview",
+   "y": 1236,
+   "size": "12px"
+  },
+  {
+   "t": "H2",
+   "s": "Branding the Accessibility Gap in Dermatology",
+   "y": 1292,
+   "size": "24px"
+  },
+  {
+   "t": "P",
+   "s": "Teladerma is a startup that aims to provide patients with more practical access to board-c",
+   "y": 1292,
+   "size": "15px"
+  },
+  {
+   "t": "P",
+   "s": "I helped Joseph Kamel, a board-certified dermatologist, create a brand identity system and",
+   "y": 1369,
+   "size": "15px"
+  },
+  {
+   "t": "P",
+   "s": "Contact",
+   "y": 0,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "© 2026 Eric Sin",
+   "y": 5076,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "Selected works",
+   "y": 5092,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "Local time (PST)",
+   "y": 5076,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "8:26 AM",
+   "y": 5092,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "Build",
+   "y": 5076,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "f96afa4",
+   "y": 5092,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "Social",
+   "y": 5076,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "Thanks for stopping by.",
+   "y": 5228,
+   "size": "48px"
+  }
+ ]
+}

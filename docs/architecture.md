@@ -59,6 +59,8 @@ Video components respect reduced-motion and, where implemented, Data Saver. `Med
 
 ## Build and hosting
 
+- `index.html` supplies the portfolio description and Open Graph/Twitter preview using the existing profile photo. Set `PORTFOLIO_SITE_URL` to the public production origin in the build environment; `vite.config.js` resolves social image paths to absolute URLs in initial HTML. Without it, local previews retain root-relative paths. Case routes currently share this portfolio-level preview.
+
 - `npm run build` creates generated `dist/`, which is ignored by Git and should not be edited directly.
 - `vercel.json` rewrites all paths to `/index.html`, enabling direct visits to client routes.
 - Vercel gives immutable one-year caching to `/fonts/*` and `/assets/*`; user-facing media and PDFs are configured to revalidate.

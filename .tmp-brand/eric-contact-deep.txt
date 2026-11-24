@@ -1,0 +1,107 @@
+span | 104 | 16 | 61 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | Eric Sin
+span | 104 | 32 | 61 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | Designer
+p | 418 | 16 | 131 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | Orange County, CA
+p | 418 | 32 | 143 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | ‘89—South Korea
+img | 418 | 33 | 23 | 14 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 |  SRC=https://www.ericsin.com/v8/flag.svg
+a | 837 | 16 | 31 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | Work
+a | 837 | 32 | 38 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | About
+a | 837 | 48 | 61 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | Archives
+p | 1151 | 16 | 54 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | Contact
+a | 1151 | 32 | 131 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | hello@ericsin.com
+img | 104 | 136 | 929 | 151 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/v8/hero-designing-and.svg
+img | 795 | 280 | 541 | 151 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/v8/hero-building.svg
+img | 340 | 411 | 417 | 117 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/v8/hero-whats.svg
+img | 783 | 425 | 317 | 103 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/v8/hero-next.svg
+img | 442 | 477 | 556 | 358 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/v8/fox.png
+p | 104 | 939 | 1232 | 16 | 12px | Geist Mono | 500 | normal | 0.6px | 16px | rgb(153, 153, 153) | start | uppercase | 0 | /01. Overview
+span | 209 | 995 | 395 | 28 | 24px | SF Pro Display | 500 | normal | -0.66px | 28px | rgb(30, 30, 30) | start | none | 1 | .
+span | 209 | 994 | 159 | 29 | 24px | SF Pro Display | 500 | normal | -0.66px | 28px | rgb(153, 153, 153) | start | none | 1 | Hey, my name is
+strong | 368 | 994 | 37 | 29 | 24px | SF Pro Display | 600 | normal | -0.66px | 28px | rgb(30, 30, 30) | start | none | 1 | Eric
+span | 209 | 1022 | 145 | 29 | 24px | SF Pro Display | 500 | normal | -0.66px | 28px | rgb(153, 153, 153) | start | none | 1 | I’m currently at
+img | 358 | 1025 | 24 | 24 | 24px | SF Pro Display | 500 | normal | -0.66px | 24px | rgb(30, 30, 30) | start | none | 1 |  SRC=https://www.ericsin.com/v8/netflix.png
+strong | 387 | 1025 | 65 | 24 | 24px | SF Pro Display | 600 | normal | -0.66px | 24px | rgb(30, 30, 30) | start | none | 1 | Netflix
+span | 460 | 1022 | 3 | 29 | 24px | SF Pro Display | 500 | normal | -0.66px | 28px | rgb(153, 153, 153) | start | none | 1 | ,
+span | 209 | 1022 | 337 | 57 | 24px | SF Pro Display | 500 | normal | -0.66px | 28px | rgb(153, 153, 153) | start | none | 1 | working as a
+strong | 252 | 1050 | 229 | 29 | 24px | SF Pro Display | 600 | normal | -0.66px | 28px | rgb(30, 30, 30) | start | none | 1 | Staff Product Designer.
+img | 209 | 1184 | 18 | 18 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/v8/icon-th.svg
+img | 243 | 1184 | 18 | 18 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/v8/icon-ig.svg
+img | 276 | 1184 | 18 | 18 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/v8/icon-li.svg
+img | 310 | 1184 | 18 | 18 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/v8/icon-yt.svg
+p | 732 | 995 | 395 | 88 | 15px | SF Pro Display | 500 | normal | normal | 22px | rgb(93, 93, 93) | start | none | 1 | I believe great experiences start with a strong, well-define
+p | 732 | 1114 | 395 | 88 | 15px | SF Pro Display | 500 | normal | normal | 22px | rgb(93, 93, 93) | start | none | 1 | I do this practically by working as a product designer in my
+p | 104 | 1362 | 1232 | 16 | 12px | Geist Mono | 500 | normal | 0.6px | 16px | rgb(153, 153, 153) | start | uppercase | 0 | /02. work
+h2 | 209 | 1418 | 395 | 66 | 24px | SF Pro Display | 600 | normal | -0.66px | 28px | rgb(30, 30, 30) | start | none | 1 | Selected Work
+span | 209 | 1445 | 126 | 29 | 24px | SF Pro Display | 500 | normal | -0.66px | 28px | rgb(153, 153, 153) | start | none | 1 | 2018—2026
+p | 732 | 1418 | 395 | 66 | 15px | SF Pro Display | 500 | normal | normal | 22px | rgb(93, 93, 93) | start | none | 1 | I enjoy working on projects that are usually highly focused 
+img | 104 | 1554 | 395 | 341 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/work/VICTORY-PLUS/assets/thumbnail.webp
+p | 104 | 1907 | 395 | 16 | 14px | SF Pro Display | 700 | normal | 0.07px | 16px | rgb(30, 30, 30) | start | none | 1 | VICTORY+
+p | 104 | 1925 | 395 | 16 | 14px | SF Pro Display | 500 | normal | 0.14px | 16px | rgb(153, 153, 153) | start | none | 1 | Product, 2024-2026
+img | 104 | 1969 | 395 | 341 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/work/Auditboard/assets/thumbnail.jpg
+p | 104 | 2322 | 395 | 16 | 14px | SF Pro Display | 700 | normal | 0.07px | 16px | rgb(30, 30, 30) | start | none | 1 | AuditBoard
+p | 104 | 2340 | 395 | 16 | 14px | SF Pro Display | 500 | normal | 0.14px | 16px | rgb(153, 153, 153) | start | none | 1 | Product, 2022—2023
+img | 104 | 2384 | 395 | 267 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/work/REVOPS/assets/thumbnail.webp
+p | 104 | 2663 | 395 | 16 | 14px | SF Pro Display | 700 | normal | 0.07px | 16px | rgb(30, 30, 30) | start | none | 1 | REVOPS
+p | 104 | 2681 | 395 | 16 | 14px | SF Pro Display | 500 | normal | 0.14px | 16px | rgb(153, 153, 153) | start | none | 1 | Brand, Q3—2024
+img | 523 | 1554 | 395 | 446 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/work/ProducerAI/assets/thumbnail.webp
+p | 523 | 2013 | 395 | 16 | 14px | SF Pro Display | 700 | normal | 0.07px | 16px | rgb(30, 30, 30) | start | none | 1 | Producer.AI
+p | 523 | 2031 | 395 | 16 | 14px | SF Pro Display | 500 | normal | 0.14px | 16px | rgb(153, 153, 153) | start | none | 1 | Product, Q3—2024
+img | 523 | 2075 | 395 | 382 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/work/OMOMO/assets/thumbnail.jpg
+p | 523 | 2468 | 395 | 16 | 14px | SF Pro Display | 700 | normal | 0.07px | 16px | rgb(30, 30, 30) | start | none | 1 | OMOMO Tea Shoppe
+p | 523 | 2486 | 395 | 16 | 14px | SF Pro Display | 500 | normal | 0.14px | 16px | rgb(153, 153, 153) | start | none | 1 | Brand, Q4—2018
+img | 523 | 2530 | 395 | 395 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/work/You/assets/thumbnail.webp
+p | 523 | 2937 | 395 | 16 | 14px | SF Pro Display | 700 | normal | 0.07px | 16px | rgb(30, 30, 30) | start | none | 1 | You.com
+p | 523 | 2955 | 395 | 16 | 14px | SF Pro Display | 500 | normal | 0.14px | 16px | rgb(153, 153, 153) | start | none | 1 | Product, 2024-2025
+video | 941 | 1554 | 395 | 150 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 | 
+p | 941 | 1716 | 395 | 16 | 14px | SF Pro Display | 700 | normal | 0.07px | 16px | rgb(30, 30, 30) | start | none | 1 | APMC (A Parent Media Co. Inc.)
+p | 941 | 1734 | 395 | 16 | 14px | SF Pro Display | 500 | normal | 0.14px | 16px | rgb(153, 153, 153) | start | none | 1 | Brand, 2024—Present
+img | 941 | 1778 | 395 | 267 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/work/LilyLink/assets/thumbnail.webp
+p | 941 | 2058 | 395 | 16 | 14px | SF Pro Display | 700 | normal | 0.07px | 16px | rgb(30, 30, 30) | start | none | 1 | LilyLink
+p | 941 | 2076 | 395 | 16 | 14px | SF Pro Display | 500 | normal | 0.14px | 16px | rgb(153, 153, 153) | start | none | 1 | Brand, Q4—2024
+img | 941 | 2120 | 395 | 418 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/work/Teladerma/assets/thumbnail.webp
+p | 941 | 2550 | 395 | 16 | 14px | SF Pro Display | 700 | normal | 0.07px | 16px | rgb(30, 30, 30) | start | none | 1 | Teladerma
+p | 941 | 2568 | 395 | 16 | 14px | SF Pro Display | 500 | normal | 0.14px | 16px | rgb(153, 153, 153) | start | none | 1 | Brand, Q4—2023
+p | 104 | 3103 | 115 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | © 2026 Eric Sin
+p | 104 | 3119 | 108 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | Selected works
+p | 418 | 3103 | 123 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | Local time (PST)
+p | 418 | 3119 | 54 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | 3:59 PM
+p | 837 | 3103 | 38 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | Build
+p | 837 | 3119 | 54 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | f96afa4
+p | 1151 | 3103 | 46 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | Social
+a | 1151 | 3119 | 15 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | LI
+span | 1168 | 3119 | 8 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(153, 153, 153) | start | uppercase | 1 | /
+a | 1178 | 3119 | 15 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | YT
+span | 1195 | 3119 | 8 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(153, 153, 153) | start | uppercase | 1 | /
+a | 1205 | 3119 | 15 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | TH
+span | 1222 | 3119 | 8 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(153, 153, 153) | start | uppercase | 1 | /
+a | 1232 | 3119 | 15 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | start | uppercase | 1 | IG
+p | 104 | 3255 | 290 | 86 | 48px | Denton | 700 | normal | -0.96px | 43.2px | rgb(18, 18, 18) | start | none | 0 | Thanks for stopping by.
+img | 418 | 3234 | 161 | 107 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/v8/fox-1.svg
+img | 664 | 3243 | 169 | 98 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/v8/fox-2.svg
+img | 910 | 3231 | 176 | 90 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/v8/fox-3.svg
+img | 1173 | 3243 | 163 | 98 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | start | none | 1 |  SRC=https://www.ericsin.com/v8/fox-4.svg
+div | -188 | -236 | 94 | 28 | 13px | SF Pro Display | 500 | normal | 0.13px | 16px | rgb(255, 255, 255) | start | none | 0 | View Details
+---IMGS---
+data:image/svg+xml,%3csvg%20preserveAspectRatio='none'%20overflow='visible'%20style='display:%20block;'%20width='17.1885'%20height='8.63871'%20viewBox='0%200%2017.1885%208.63871'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cg%20id='Vector'%3e%3cpath%20d='M10.6878%208.48588V0.147647H11.9821V4.14052H12.0168L15.3798%200.147647H16.9169L13.7561%203.83427L17.1885%208.48588H15.5879L12.8316%204.71836L11.9821%205.70069V8.48588H10.6878Z'%20fill='white'/%3e%3cpath%20d='M2.50205%203.40926H1.71041C0.768528%203.40926%200%202.66384%200%201.71619C0%200.768528%200.762749%200%201.71041%200C2.65229%200%203.42081%200.768528%203.42081%201.71619V2.50205H5.2179V1.71619C5.2179%200.768528%205.98643%200%206.92831%200C7.87596%200%208.64449%200.768528%208.64449%201.71619C8.64449%202.66384%207.87596%203.40926%206.92831%203.40926H6.14244V5.22946H6.92831C7.87596%205.23523%208.64449%205.97487%208.64449%206.92253C8.64449%207.87019%207.87596%208.63871%206.92831%208.63871C5.98643%208.63871%205.2179%207.87019%205.2179%206.92253V6.14244H3.42081V6.92253C3.42081%207.87019%202.65229%208.63871%201.71041%208.63871C0.762749%208.63871%200%207.87019%200%206.92253C0%205.97487%200.768528%205.23523%201.71041%205.22946H2.50205V3.40926ZM1.72196%202.51361H2.50205V1.72774C2.50205%201.28281%202.13801%200.924545%201.71041%200.924545C1.28281%200.924545%200.924545%201.28281%200.924545%201.71619C0.924545%202.15534%201.28281%202.51361%201.72196%202.51361ZM6.91675%202.51361C7.36169%202.51361%207.71417%202.15534%207.71417%201.71619C7.71417%201.28281%207.36169%200.924545%206.92831%200.924545C6.5007%200.924545%206.14244%201.28281%206.14244%201.72774V2.51361H6.91675ZM3.42081%205.24101H5.2179V3.40348H3.42081V5.24101ZM1.72196%206.12511C1.28281%206.12511%200.924545%206.48337%200.924545%206.91675C0.924545%207.35591%201.28281%207.70839%201.71041%207.70839C2.13801%207.70839%202.50205%207.35013%202.50205%206.90519V6.12511H1.72196ZM6.91675%206.12511H6.14244V6.90519C6.14244%207.35013%206.5007%207.70839%206.92831%207.70839C7.36169%207.70839%207.71417%207.35591%207.71417%206.91675C7.71417%206.48337%207.36169%206.12511%206.91675%206.12511Z'%20fill='white'/%3e%3c/g%3e%3c/svg%3e
+https://www.ericsin.com/v8/flag.svg
+https://www.ericsin.com/v8/hero-designing-and.svg
+https://www.ericsin.com/v8/hero-building.svg
+https://www.ericsin.com/v8/hero-whats.svg
+https://www.ericsin.com/v8/hero-next.svg
+https://www.ericsin.com/v8/fox.png
+https://www.ericsin.com/v8/netflix.png
+https://www.ericsin.com/v8/icon-th.svg
+https://www.ericsin.com/v8/icon-ig.svg
+https://www.ericsin.com/v8/icon-li.svg
+https://www.ericsin.com/v8/icon-yt.svg
+https://www.ericsin.com/work/VICTORY-PLUS/assets/thumbnail.webp
+https://www.ericsin.com/work/Auditboard/assets/thumbnail.jpg
+https://www.ericsin.com/work/REVOPS/assets/thumbnail.webp
+https://www.ericsin.com/work/ProducerAI/assets/thumbnail.webp
+https://www.ericsin.com/work/OMOMO/assets/thumbnail.jpg
+https://www.ericsin.com/work/You/assets/thumbnail.webp
+https://www.ericsin.com/work/LilyLink/assets/thumbnail.webp
+https://www.ericsin.com/work/Teladerma/assets/thumbnail.webp
+https://www.ericsin.com/v8/fox-1.svg
+https://www.ericsin.com/v8/fox-2.svg
+https://www.ericsin.com/v8/fox-3.svg
+https://www.ericsin.com/v8/fox-4.svg

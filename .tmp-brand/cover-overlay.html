@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; padding: 0; background: #fff; }
+  #stage { position: relative; width: 2400px; height: 1350px; background: #fff; overflow: hidden; }
+  #para {
+    position: absolute; left: 1273px; top: 990px; width: 680px; margin: 0;
+    font-family: "Myanmar Sangam MN", "Myanmar MN", "Noto Sans Myanmar", sans-serif;
+    font-size: 20px; line-height: 1.58; letter-spacing: 0.02em;
+    color: #453539;
+  }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <p id="para">အထည်ကောင်းနှင့် သေသပ်သော ချုပ်ရိုး၊ ပျော့ပျောင်းသော လိုင်းနှင့် ကြာရှည်ခံမှုကို<br>အခြေခံသည်။ နေ့စဉ်ဘဝတွင် သင့်နှင့်အတူ ရွေ့လျားရန် ဖန်တီးထားသည်။</p>
+  </div>
+  <script>
+    window.__ready = new Promise((r) => {
+      document.fonts.ready.then(() => {
+        const b = document.getElementById('para').getBoundingClientRect()
+        window.__box = { x: b.x, y: b.y, w: b.width, h: b.height }
+        r(true)
+      })
+    })
+  </script>
+</body>
+</html>

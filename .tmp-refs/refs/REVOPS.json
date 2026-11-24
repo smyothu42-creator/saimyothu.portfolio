@@ -1,0 +1,226 @@
+{
+ "pageH": 7524,
+ "vids": [
+  {
+   "tag": "video",
+   "cls": "",
+   "src": "https://www.ericsin.com/work/REVOPS/assets/05_FULL_Video.mp4",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 2838,
+   "radius": "4px",
+   "fit": "contain",
+   "poster": "",
+   "loop": true,
+   "muted": true,
+   "dur": 22.433333
+  }
+ ],
+ "imgs": [
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "https://www.ericsin.com/work/REVOPS/assets/01_FULLHERO_Image.jpg",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 393,
+   "radius": "0px",
+   "fit": "fill"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "https://www.ericsin.com/work/REVOPS/assets/03_FULL_Image.jpg",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 1493,
+   "radius": "4px",
+   "fit": "fill"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "https://www.ericsin.com/work/REVOPS/assets/04_2COL_Image-01.jpg",
+   "w": 604,
+   "h": 604,
+   "x": 104,
+   "y": 2210,
+   "radius": "4px",
+   "fit": "fill"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "https://www.ericsin.com/work/REVOPS/assets/04_2COL_Image-02.jpg",
+   "w": 604,
+   "h": 604,
+   "x": 732,
+   "y": 2210,
+   "radius": "4px",
+   "fit": "fill"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "https://www.ericsin.com/work/REVOPS/assets/06_FULL_Image.jpg",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 3555,
+   "radius": "4px",
+   "fit": "fill"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "https://www.ericsin.com/work/REVOPS/assets/07_FULL_Image.jpg",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 4272,
+   "radius": "4px",
+   "fit": "fill"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "https://www.ericsin.com/work/REVOPS/assets/08_FULL_Image.jpg",
+   "w": 1232,
+   "h": 1449,
+   "x": 104,
+   "y": 4989,
+   "radius": "4px",
+   "fit": "fill"
+  },
+  {
+   "tag": "img",
+   "cls": "",
+   "src": "https://www.ericsin.com/work/REVOPS/assets/09_FULL_Image.jpg",
+   "w": 1232,
+   "h": 693,
+   "x": 104,
+   "y": 6462,
+   "radius": "4px",
+   "fit": "fill"
+  }
+ ],
+ "text": [
+  {
+   "t": "P",
+   "s": "Eric Sin",
+   "y": 0,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "Brand & Product",
+   "y": 0,
+   "size": "16px"
+  },
+  {
+   "t": "P",
+   "s": "Orange County, CA",
+   "y": 16,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "‘89—South Korea",
+   "y": 32,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "Contact",
+   "y": 16,
+   "size": "12px"
+  },
+  {
+   "t": "H1",
+   "s": "REVOPS",
+   "y": 176,
+   "size": "50px"
+  },
+  {
+   "t": "P",
+   "s": "Overview",
+   "y": 1214,
+   "size": "12px"
+  },
+  {
+   "t": "H2",
+   "s": "Streamlined Equipment Financing, Branded",
+   "y": 1270,
+   "size": "24px"
+  },
+  {
+   "t": "P",
+   "s": "REVOPS is a startup that seeks to elevate confidence in equipment financing with expert ad",
+   "y": 1270,
+   "size": "15px"
+  },
+  {
+   "t": "P",
+   "s": "I worked with its founder to create an identity system that felt modern, clean, and releva",
+   "y": 1347,
+   "size": "15px"
+  },
+  {
+   "t": "P",
+   "s": "Contact",
+   "y": 0,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "© 2026 Eric Sin",
+   "y": 7246,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "Selected works",
+   "y": 7262,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "Local time (PST)",
+   "y": 7246,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "8:26 AM",
+   "y": 7262,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "Build",
+   "y": 7246,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "f96afa4",
+   "y": 7262,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "Social",
+   "y": 7246,
+   "size": "12px"
+  },
+  {
+   "t": "P",
+   "s": "Thanks for stopping by.",
+   "y": 7397,
+   "size": "48px"
+  }
+ ]
+}

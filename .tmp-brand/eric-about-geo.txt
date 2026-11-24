@@ -1,0 +1,12 @@
+header | 104 | 0 | 1232 | 64 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | 
+span | 104 | 16 | 61 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | Eric Sin
+span | 104 | 32 | 61 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | Designer
+p | 418 | 16 | 131 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | Orange County, CA
+p | 418 | 32 | 143 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | ‘89—South Korea
+p | 1151 | 16 | 54 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | Contact
+a | 1151 | 32 | 131 | 16 | 12px | Geist Mono | 400 | normal | 0.48px | 16px | rgb(18, 18, 18) | hello@ericsin.com
+section | 104 | 64 | 1232 | 700 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | 
+h1 | 104 | 176 | 616 | 104 | 100px | Denton | 700 | normal | -2.75px | 104px | rgb(0, 0, 0) | About
+section | 104 | 764 | 1232 | 607 | 16px | SF Pro Display | 400 | normal | normal | normal | rgb(18, 18, 18) | 
+p | 104 | 828 | 1232 | 16 | 12px | Geist Mono | 500 | normal | 0.6px | 16px | rgb(153, 153, 153) | Experience
+div | -188 | -236 | 94 | 28 | 13px | SF Pro Display | 500 | normal | 0.13px | 16px | rgb(255, 255, 255) | View Details

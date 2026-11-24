@@ -1,0 +1,312 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root {
+    --ink: #3b2a20;
+    --brown: #583207;
+    --mut: #857363;
+    --line: #e5d6c4;
+    --paper: #f7eee2;
+    --orange: #ff9e3d;
+    --cream: #fff4e7;
+    --green: #3daa5c;
+    --red: #cc6c54;
+    --blue: #3b7dd8;
+    --yellow: #e7b33d;
+    --sans: -apple-system, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+    --mono: "SF Mono", ui-monospace, Menlo, monospace;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1280px; height: 960px; overflow: hidden; position: relative;
+    background: var(--paper); color: var(--ink); font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(88, 50, 7, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(88, 50, 7, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  header { position: absolute; left: 56px; right: 56px; top: 42px; display: flex; align-items: flex-end; justify-content: space-between; }
+  .word { font-family: var(--serif); font-size: 54px; line-height: 1; letter-spacing: -0.01em; color: var(--brown); display: block; }
+  .sub { display: block; margin-top: 11px; font-size: 15px; letter-spacing: 0.015em; color: var(--mut); }
+  .meta { font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mut); padding-bottom: 8px; }
+
+  .card {
+    position: absolute; top: 150px; height: 512px; width: 360px;
+    background: #fff; border: 1px solid var(--line); border-radius: 18px;
+    padding: 28px 28px 26px;
+    box-shadow: 0 20px 44px -28px rgba(88, 50, 7, 0.5);
+  }
+  .c1 { left: 56px; }
+  .c2 { left: 460px; }
+  .c3 { left: 864px; }
+  .idx {
+    position: absolute; top: 24px; right: 26px;
+    font-family: var(--mono); font-size: 12px; color: #b9a893; letter-spacing: 0.1em;
+  }
+  .kicker {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--orange);
+  }
+  h2 { font-family: var(--serif); font-weight: 500; font-size: 30px; line-height: 1.1; letter-spacing: -0.01em; color: var(--brown); margin-top: 8px; }
+
+  /* tokens */
+  .swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 13px 12px; margin-top: 22px; }
+  .sw { font-size: 11px; color: var(--mut); }
+  .sw i {
+    display: block; height: 48px; border-radius: 10px; margin-bottom: 7px;
+    background: var(--c); box-shadow: inset 0 0 0 1px rgba(88, 50, 7, 0.08);
+  }
+  .type { display: flex; align-items: center; gap: 14px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .aa { font-family: var(--serif); font-size: 40px; line-height: 1; color: var(--brown); width: 60px; }
+  .aa.sans { font-family: var(--sans); font-weight: 500; letter-spacing: -0.03em; }
+  .type b { display: block; font-size: 14px; font-weight: 600; color: var(--ink); }
+  .type span { display: block; font-size: 11.5px; color: var(--mut); margin-top: 2px; }
+  .space { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .space > p { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: #b9a893; }
+  .bars { display: flex; align-items: flex-end; gap: 16px; margin-top: 8px; }
+  .bars span { display: flex; flex-direction: column; gap: 5px; font-family: var(--mono); font-size: 9px; color: var(--mut); }
+  .bars i { display: block; width: var(--w); height: 9px; border-radius: 3px; background: #f2e6d7; }
+
+  /* components */
+  .btns { display: flex; gap: 8px; margin-top: 20px; }
+  .btn { font: 500 12px var(--sans); padding: 9px 13px; border-radius: 8px; border: 1px solid transparent; }
+  .btn.pri { background: var(--orange); color: #fff; }
+  .btn.sec { background: #fff; border-color: #e2d3bf; color: var(--brown); }
+  .btn.gho { color: var(--mut); }
+  .fld { display: block; margin-top: 14px; }
+  .fld span { display: block; font-size: 11px; color: var(--mut); margin-bottom: 5px; }
+  .fld i {
+    display: block; font-style: normal; font-size: 12.5px; color: #b7a793;
+    padding: 10px 12px; border: 1px solid #e6d9c8; border-radius: 8px; background: #fffdfb;
+  }
+  .seg { display: inline-flex; margin-top: 14px; padding: 3px; border-radius: 9px; background: #f5ece0; }
+  .seg span { font-size: 11.5px; color: var(--mut); padding: 6px 11px; border-radius: 7px; }
+  .seg .on { background: #fff; color: var(--brown); font-weight: 600; box-shadow: 0 1px 3px rgba(88,50,7,.12); }
+  .tog-row { display: flex; align-items: center; gap: 9px; margin-top: 13px; font-size: 12px; color: var(--ink); }
+  .tog { width: 33px; height: 19px; border-radius: 10px; background: var(--orange); position: relative; }
+  .tog i { position: absolute; top: 2.5px; right: 2.5px; width: 14px; height: 14px; border-radius: 50%; background: #fff; }
+  .mini { display: flex; gap: 11px; align-items: center; margin-top: 15px; padding: 11px; border: 1px solid var(--line); border-radius: 10px; }
+  .mini b { display: block; font-size: 12.5px; }
+  .mini p { font-size: 11px; color: var(--mut); margin-top: 2px; }
+  .thumb { width: 38px; height: 38px; border-radius: 8px; background: linear-gradient(140deg, #cfe3ff, #e8f1ff); flex: none; }
+  .chips { display: flex; gap: 7px; margin-top: 14px; }
+  .chip { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.04em; padding: 4px 8px; border-radius: 5px; background: #f3ece3; color: var(--mut); }
+  .chip.act { background: #e6f4ea; color: #2c7a45; }
+  .chip.err { background: #fbe9e5; color: #a34a36; }
+  .trow { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fffdfb; }
+  .trow b { display: block; font-size: 12.5px; color: var(--ink); }
+  .trow small { display: block; font-size: 10.5px; color: var(--mut); margin-top: 1px; }
+  .trow em { margin-left: auto; font-style: normal; font-family: var(--mono); font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: #2c7a45; background: #e6f4ea; padding: 4px 7px; border-radius: 5px; }
+
+  /* cursors */
+  .cursor { position: absolute; z-index: 3; display: flex; align-items: flex-start; gap: 4px; }
+  .cursor svg { filter: drop-shadow(0 2px 2px rgba(0,0,0,.18)); }
+  .cursor em {
+    font-style: normal; font: 500 9.5px var(--sans); color: #fff;
+    padding: 3px 6px; border-radius: 4px; margin-top: 14px;
+  }
+  .cur-a { left: 182px; top: 296px; }
+  .cur-a em { background: var(--orange); }
+  .cur-b { left: 258px; top: 224px; }
+  .cur-b em { background: var(--blue); }
+
+  /* agents */
+  .agents { list-style: none; margin-top: 20px; }
+  .agents li { display: flex; align-items: center; gap: 10px; padding: 11px 0; border-top: 1px solid var(--line); }
+  .agents li:first-child { border-top: 0; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--orange); flex: none; }
+  .dot.b { background: var(--blue); }
+  .dot.g { background: var(--green); }
+  .agents b { display: block; font-size: 13px; font-weight: 600; }
+  .agents span { display: block; font-size: 11px; color: var(--mut); margin-top: 1px; }
+  .agents em { margin-left: auto; font-style: normal; font-family: var(--mono); font-size: 9px; color: #b7a793; letter-spacing: .04em; }
+  .code {
+    margin-top: 14px; padding: 13px 14px; border-radius: 9px; background: #2f241d;
+    font-family: var(--mono); font-size: 11px; line-height: 1.6; color: #f4e6d4; white-space: pre;
+  }
+  .code b { color: #ffb25e; font-weight: 500; }
+  .code i { color: #cfa98a; font-style: normal; }
+  .pipe { display: flex; align-items: center; gap: 6px; margin-top: 14px; }
+  .pipe span { font-family: var(--mono); font-size: 9.5px; color: var(--brown); background: #fdf2e2; padding: 5px 7px; border-radius: 5px; }
+  .pipe span.ok { background: #e6f4ea; color: #2c7a45; }
+  .pipe i { font-style: normal; color: #c9b9a6; font-size: 10px; }
+  .stats { display: flex; margin-top: 16px; padding-top: 15px; border-top: 1px solid var(--line); }
+  .stats div { flex: 1; }
+  .stats b { display: block; font-family: var(--serif); font-weight: 500; font-size: 25px; line-height: 1; color: var(--brown); }
+  .stats span { display: block; font-size: 10px; color: var(--mut); margin-top: 6px; letter-spacing: 0.02em; }
+
+  /* bottom flow */
+  .flow {
+    position: absolute; left: 56px; right: 56px; top: 700px; height: 196px;
+    background: #fff; border: 1px solid var(--line); border-radius: 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 34px; box-shadow: 0 20px 44px -30px rgba(88, 50, 7, 0.5);
+  }
+  .chain { display: flex; align-items: center; gap: 11px; }
+  .node {
+    display: flex; flex-direction: column; gap: 3px;
+    font-size: 14px; font-weight: 600; color: var(--brown);
+    padding: 13px 17px; border: 1px solid #ebdfd0; border-radius: 10px; background: #fffdfa;
+  }
+  .node small { font-family: var(--mono); font-size: 8.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--mut); font-weight: 400; }
+  .node.hot { background: var(--cream); border-color: #ffd9ac; }
+  .arrow { color: #c9b9a6; font-size: 15px; }
+  .scr-set { display: flex; align-items: flex-end; gap: 14px; }
+  .scr { position: relative; border: 1.5px solid #dbcbb7; border-radius: 7px; background: #fffdfa; overflow: hidden; }
+  .scr::before { content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 9px; background: #f4e9db; border-bottom: 1px solid #eadccc; }
+  .scr::after {
+    content: ""; position: absolute; left: 7px; right: 7px; top: 17px; bottom: 7px; border-radius: 3px;
+    background:
+      linear-gradient(#f6ecdf, #f6ecdf) 0 0 / 100% 20% no-repeat,
+      linear-gradient(#f6ecdf, #f6ecdf) 0 34% / 62% 14% no-repeat,
+      linear-gradient(#f6ecdf, #f6ecdf) 0 58% / 84% 14% no-repeat,
+      linear-gradient(#ffe7c9, #ffe7c9) 0 100% / 44% 16% no-repeat;
+  }
+  .scr.d { width: 128px; height: 82px; }
+  .scr.t { width: 64px; height: 82px; }
+  .scr.p { width: 40px; height: 82px; }
+  .roles { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+  .role-tags { display: flex; gap: 6px; }
+  .role-tags span { font-size: 10.5px; color: var(--brown); border: 1px solid #ebdfd0; border-radius: 20px; padding: 5px 10px; }
+  .roles p { font-size: 13px; color: var(--mut); }
+  .roles p b { color: var(--ink); font-weight: 600; }
+
+  .wires { position: absolute; inset: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+
+  <header>
+    <div>
+      <span class="word">Flowy</span>
+      <span class="sub">Design system for the OrderFlow admin</span>
+    </div>
+    <div class="meta">Tokens · Components · Agents</div>
+  </header>
+
+  <svg class="wires" width="1280" height="960">
+    <defs>
+      <marker id="ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L8 4 L0 8 z" fill="#c9b9a6"/>
+      </marker>
+    </defs>
+    <path d="M416 406 H448" stroke="#c9b9a6" stroke-width="1.2" marker-end="url(#ar)"/>
+    <path d="M820 406 H852" stroke="#c9b9a6" stroke-width="1.2" marker-end="url(#ar)"/>
+  </svg>
+
+  <section class="card c1">
+    <span class="idx">01</span>
+    <p class="kicker">Tokens</p>
+    <h2>Foundations</h2>
+    <div class="swatches">
+      <div class="sw"><i style="--c:#ff9e3d"></i>Brand</div>
+      <div class="sw"><i style="--c:#583207"></i>Ink</div>
+      <div class="sw"><i style="--c:#fffbf7"></i>Surface</div>
+      <div class="sw"><i style="--c:#e9dfd3"></i>Line</div>
+      <div class="sw"><i style="--c:#3daa5c"></i>Success</div>
+      <div class="sw"><i style="--c:#e7b33d"></i>Warning</div>
+      <div class="sw"><i style="--c:#cc6c54"></i>Error</div>
+      <div class="sw"><i style="--c:#3b7dd8"></i>Info</div>
+    </div>
+    <div class="type">
+      <span class="aa">Aa</span>
+      <div><b>Cormorant Garamond</b><span>Headlines · 500</span></div>
+    </div>
+    <div class="type">
+      <span class="aa sans">Aa</span>
+      <div><b>Jost</b><span>Body and labels · 400 / 500</span></div>
+    </div>
+    <div class="space">
+      <p>Spacing</p>
+      <div class="bars">
+        <span><i style="--w:10px"></i>4</span>
+        <span><i style="--w:18px"></i>8</span>
+        <span><i style="--w:28px"></i>12</span>
+        <span><i style="--w:38px"></i>16</span>
+        <span><i style="--w:52px"></i>24</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="card c2">
+    <span class="idx">02</span>
+    <p class="kicker">Components</p>
+    <h2>Built from tokens</h2>
+    <div class="btns">
+      <span class="btn pri">Primary</span>
+      <span class="btn sec">Secondary</span>
+      <span class="btn gho">Ghost</span>
+    </div>
+    <label class="fld"><span>Label</span><i>Placeholder text</i></label>
+    <div class="seg"><span class="on">Week</span><span>Month</span><span>Year</span></div>
+    <div class="tog-row"><span class="tog"><i></i></span>Auto-order</div>
+    <div class="mini">
+      <span class="thumb"></span>
+      <div><b>Card title</b><p>Supporting text goes here.</p></div>
+    </div>
+    <div class="chips"><span class="chip act">Active</span><span class="chip">Draft</span><span class="chip err">Error</span></div>
+    <div class="trow">
+      <div><b>Order #1042</b><small>Latte × 2 · Table 3</small></div>
+      <em>Ready</em>
+    </div>
+    <div class="cursor cur-a">
+      <svg width="15" height="20" viewBox="0 0 15 20"><path d="M1 1 L14 10.5 L7.6 11.8 L4.4 19 Z" fill="#ff9e3d" stroke="#fff" stroke-width="1.2"/></svg>
+      <em>Design</em>
+    </div>
+    <div class="cursor cur-b">
+      <svg width="15" height="20" viewBox="0 0 15 20"><path d="M1 1 L14 10.5 L7.6 11.8 L4.4 19 Z" fill="#3b7dd8" stroke="#fff" stroke-width="1.2"/></svg>
+      <em>Dev</em>
+    </div>
+  </section>
+
+  <section class="card c3">
+    <span class="idx">03</span>
+    <p class="kicker">AI agents &amp; dev</p>
+    <h2>Ship from one source</h2>
+    <ul class="agents">
+      <li><i class="dot"></i><div><b>Design agent</b><span>suggests variants</span></div><em>DRAFT</em></li>
+      <li><i class="dot b"></i><div><b>Code agent</b><span>writes the component</span></div><em>PR</em></li>
+      <li><i class="dot g"></i><div><b>Docs agent</b><span>updates the page</span></div><em>LIVE</em></li>
+    </ul>
+    <pre class="code"><i>.btn-danger</i> {
+  background: <b>var(--color-error)</b>;
+  color: <b>var(--color-on-action)</b>;
+}</pre>
+    <div class="pipe"><span>PR #214</span><i>→</i><span class="ok">CI ✓</span><i>→</i><span class="ok">Docs ✓</span></div>
+    <div class="stats">
+      <div><b>9</b><span>foundations</span></div>
+      <div><b>6</b><span>components</span></div>
+      <div><b>100%</b><span>documented</span></div>
+    </div>
+  </section>
+
+  <section class="flow">
+    <div class="chain">
+      <span class="node"><small>Step 01</small>Tokens</span>
+      <span class="arrow">→</span>
+      <span class="node hot"><small>Step 02</small>Components</span>
+      <span class="arrow">→</span>
+      <span class="node"><small>Step 03</small>Screens</span>
+      <span class="arrow">→</span>
+      <span class="node"><small>Step 04</small>Docs</span>
+    </div>
+    <div class="scr-set">
+      <span class="scr d"></span>
+      <span class="scr t"></span>
+      <span class="scr p"></span>
+    </div>
+    <div class="roles">
+      <div class="role-tags"><span>Design</span><span>Dev</span><span>QA</span></div>
+      <p><b>One system</b> · three roles and their agents</p>
+    </div>
+  </section>
+</body>
+</html>
