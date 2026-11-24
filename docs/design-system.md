@@ -69,6 +69,7 @@ Case-study UI is data-driven. Add reusable story shapes to the renderer files an
 - Lenis handles smooth page scrolling and is the only scroll controller components should call through `scrollToY`.
 - Native View Transitions provide a fallback page cross-fade when supported.
 - `.reveal` elements are activated by `App.jsx`, although `revamp.css` currently neutralizes older reveal styles and supplies its own targeted entrances.
+- About testimonials continue the Hero's opening motion: the heading and any quotes already in view join the page-sheet stagger in `PagePane`; below-fold quotes rise 18px and fade in through a local IntersectionObserver as they scroll into view.
 - UI sounds are installed once by `main.jsx`; interactive links and controls get a select sound.
 
 Reduced motion is a first-class behavior: JavaScript checks `prefers-reduced-motion`, and all major stylesheets contain reduced-motion overrides. Preserve a still/instant path for every new animation.

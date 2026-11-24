@@ -44,13 +44,23 @@ function PagePane({ name, slug, back, targetY, onDone }) {
     const mid = (el) => { const r = el.getBoundingClientRect(); return r.top + r.height / 2 }
     // The page's pieces, in reading order, so the text and media land one
     // after the other instead of all at once.
-    const blocks = content ? [
+    const baseBlocks = content ? [
       content.querySelector('h1'),
       content.querySelector('.em-case-meta, .about-bio, .contact-lede'),
       content.querySelector('.rv-stage, .about-xp, .contact-facts'),
       content.querySelector('.about-hero-photo, .contact-channels, .em-sec'),
-      content.querySelector('.about-notes-list'),
     ].filter(Boolean) : []
+    // Testimonials already in view animate with the page open. The rest stay
+    // for AboutPage's scroll reveal once the sheet settles.
+    const layerY = back ? window.scrollY : targetY
+    const noteBlocks = content ? [
+      content.querySelector('.about-notes-title'),
+      ...content.querySelectorAll('.about-notes-list > li'),
+    ].filter(Boolean).filter((el) => {
+      const r = el.getBoundingClientRect()
+      return r.bottom - layerY > 0 && r.top - layerY < window.innerHeight
+    }) : []
+    const blocks = [...baseBlocks, ...(back ? [] : noteBlocks)]
     const toPage = { paddingLeft: padEnd, paddingRight: padEnd, y: targetY, duration: 0.68, ease: 'power3.inOut' }
     const tl = gsap.timeline({ onComplete: () => done.current() })
     // Where the stage puts the brand; measured once with the stage's type in
@@ -97,7 +107,7 @@ function PagePane({ name, slug, back, targetY, onDone }) {
       // Same beat as the close: the first piece takes the longest to arrive,
       // and each next one starts after a clear pause (0.15) so the page reads
       // in one item at a time rather than as a single fade.
-      const inDur = [0.52, 0.4, 0.34, 0.3]
+      const inDur = [0.52, 0.4, 0.34, 0.3, 0.4, 0.32, 0.3]
       blocks.forEach((el, i) => {
         tl.to(el, { opacity: 1, y: 0, duration: inDur[i] ?? 0.3, ease: 'power2.out' }, 0.14 + i * 0.15)
       })
@@ -127,7 +137,7 @@ function PagePane({ name, slug, back, targetY, onDone }) {
         </div>
         <div className={'pg-pane-layer em-root is-' + name}>
           <Topbar path={href} />
-          <main className="sv-col page">{createElement(getPage(name), { slug })}</main>
+          <main className="sv-col page">{createElement(getPage(name), { slug, animateNotes: false })}</main>
         </div>
       </div>
       {back && <div className="pg-fold-edge" ref={edgeRef} aria-hidden="true" />}
@@ -178,13 +188,13 @@ function PageRail({ name, slug, from, fromSlug, dir, targetY, onDone }) {
         <div className="pg-rail-panel pg-rail-out">
           <div className={'pg-rail-layer em-root is-' + from}>
             <Topbar path={hrefFor(from, fromSlug)} />
-            <main className="sv-col page">{createElement(getPage(from), { slug: fromSlug })}</main>
+            <main className="sv-col page">{createElement(getPage(from), { slug: fromSlug, animateNotes: false })}</main>
           </div>
         </div>
         <div className="pg-rail-panel pg-rail-in" style={inStyle}>
           <div className={'pg-rail-layer em-root is-' + name}>
             <Topbar path={hrefFor(name, slug)} />
-            <main className="sv-col page">{createElement(getPage(name), { slug })}</main>
+            <main className="sv-col page">{createElement(getPage(name), { slug, animateNotes: false })}</main>
           </div>
         </div>
       </div>
@@ -213,6 +223,7 @@ export default function App() {
   const [path, setPath] = useState(() => window.location.pathname)
   const [slide, setSlide] = useState(null)
   const [homeReturned, setHomeReturned] = useState(false)
+  const [paneOpened, setPaneOpened] = useState(false)
   const lenisRef = useRef(null)
   const entryKey = useRef(null)
   const currentRoute = useRef(route)
@@ -274,6 +285,7 @@ export default function App() {
       setPath(slide.to)
       setRoute(next)
       setHomeReturned(next.name === 'home')
+      setPaneOpened(slide.kind === 'pane' && !slide.back && slide.name === 'about')
       setSlide(null)
     })
     restoreScroll(slide.scrollY)
@@ -311,6 +323,7 @@ export default function App() {
         setPath(to)
         setRoute(next)
         setHomeReturned(next.name === 'home')
+        setPaneOpened(false)
       })
       restoreScroll(scrollY)
     })
@@ -414,7 +427,7 @@ export default function App() {
           leaves a second, static logo/nav floating over the uncovered home. */}
       {route.name !== 'home' && route.name !== 'flowy' && !slide && <Topbar path={path} />}
       <main className="sv-col page" key={path}>
-        {createElement(getPage(route.name), { slug: route.slug })}
+        {createElement(getPage(route.name), { slug: route.slug, notesEntered: paneOpened })}
         {slide && (slide.kind === 'rail'
           ? <PageRail name={slide.name} slug={slide.slug} from={slide.from} fromSlug={slide.fromSlug} dir={slide.dir} targetY={slide.scrollY} onDone={() => finishSlide(slide)} />
           : <PagePane name={slide.name} slug={slide.slug} back={slide.back} targetY={slide.scrollY} onDone={() => finishSlide(slide)} />)}

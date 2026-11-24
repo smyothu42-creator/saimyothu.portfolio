@@ -1,13 +1,46 @@
+import { useLayoutEffect, useRef } from 'react'
+import gsap from 'gsap'
 import { ABOUT, TESTIMONIALS } from '../data'
 import { newestFirst } from '../dates'
 
 const spanLabel = (role) => (role.end ? `${role.start.slice(0, 4)}—${role.end.slice(0, 4)}` : 'Current')
 
-export default function AboutPage() {
+export default function AboutPage({ animateNotes = true, notesEntered = false }) {
+  const notesRef = useRef(null)
   const roles = newestFirst(ABOUT.experience)
   const notes = TESTIMONIALS.filter((p) => !p.placeholder)
   const firstYear = Math.min(...roles.map((r) => +r.start.slice(0, 4)))
   const thisYear = new Date().getFullYear()
+
+  useLayoutEffect(() => {
+    const section = notesRef.current
+    if (!animateNotes || !section || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
+    const title = section.querySelector('.about-notes-title')
+    const items = [title, ...section.querySelectorAll('.about-notes-list > li')].filter(Boolean)
+    // PagePane already lands the testimonials that are on screen when About
+    // opens from home; keep only the below-fold ones for the scroll reveal.
+    const pending = notesEntered ? items.filter((item) => {
+      const r = item.getBoundingClientRect()
+      return r.top >= window.innerHeight || r.bottom <= 0
+    }) : items
+    const ctx = gsap.context(() => {
+      gsap.set(pending, { opacity: 0, y: 18 })
+    }, section)
+    const io = new IntersectionObserver((entries) => {
+      const entering = entries.filter((entry) => entry.isIntersecting).sort((a, b) => a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top)
+      entering.forEach((entry) => io.unobserve(entry.target))
+      const tl = gsap.timeline()
+      entering.forEach((entry, i) => {
+        tl.to(entry.target, { opacity: 1, y: 0, duration: entry.target === title ? 0.52 : 0.4, ease: 'power2.out' }, i * 0.15)
+      })
+    }, { threshold: 0.15 })
+    pending.forEach((item) => io.observe(item))
+    return () => {
+      io.disconnect()
+      gsap.killTweensOf(items)
+      ctx.revert()
+    }
+  }, [animateNotes, notesEntered])
 
   return (
     <article className="about">
@@ -43,7 +76,7 @@ export default function AboutPage() {
           />
         </div>
       </section>
-      <section className="about-notes" aria-labelledby="about-notes-title">
+      <section className="about-notes" aria-labelledby="about-notes-title" ref={notesRef}>
         <div className="about-wrap">
           <h2 id="about-notes-title" className="about-notes-title">
             What people I’ve worked<br />with say about me.

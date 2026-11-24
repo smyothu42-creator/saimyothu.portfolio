@@ -89,14 +89,14 @@ export const CASES = [
         jumpLabel: 'Overview',
         items: [
           { label: 'Problem', value: 'Staff rushed to enter every order into the POS and paid for mistakes. Guests felt pressure from the queue but would not install an app. Owners could not keep reprinting changing menus.' },
-          { label: 'Role', value: 'Product designer. I led product strategy, discovery and validation, owned the guest and café-admin flows, and contributed to front-end development.' },
+          { label: 'Role', value: 'Co-Founder & Product Designer. I led product strategy, discovery and validation, owned the guest and café-admin flows, and contributed to front-end development.' },
           { label: 'Actions', value: 'Spoke with people across the F&B domain, built the MVP, tested it in a real café, iterated, tested and compared it again, then released the next version.' },
           { label: 'Result', value: '1,300+ orders in 42 days for 35.7M MMK. In the second test, a counter order reached the kitchen in about 1–10 seconds with one click.' },
         ],
       },
       accent: '#44403c',
       tags: ['Product Strategy', 'B2B SaaS', 'F&B'],
-      role: 'Product Designer',
+      role: 'Co-Founder & Product Designer',
       scope: ['Guest App / Café Admin'],
       timeline: '2026-Ongoing',
       metaIndustry: true,
@@ -1087,7 +1087,7 @@ export const ABOUT = {
   // `logo` is optional (falls back to the company initial on a tile).
   // `note` (optional) shows when the row is opened.
   experience: [
-    { co: 'OrderFlow', role: 'Product Designer', start: '2025-11', end: null, logo: '/logos/orderflow-icon.png', note: 'QR table ordering for cafés, restaurants and tea houses in Myanmar. I lead product and design.' },
+    { co: 'OrderFlow', role: 'Co-Founder & Product Designer', start: '2025-11', end: null, logo: '/logos/orderflow-icon.png', note: 'QR table ordering for cafés, restaurants and tea houses in Myanmar. I lead product and design.' },
     { co: 'Heizen', role: 'Product Designer', start: '2025-11', end: '2026-11', logo: '/logos/heizen.png', note: 'Leading product design. Most days sit between strategy, systems and shipping.' },
     { co: 'Prime Ace Limousine', role: 'UI/UX Designer', start: '2025-09', end: '2025-11', logo: '/logos/prime-ace.png' },
     { co: 'Dinger', role: 'UX/UI Designer', start: '2024-12', end: '2025-12', logo: '/logos/dinger-logo.png', note: 'Learned to design flows, not just screens, and why clear structure matters.' },
